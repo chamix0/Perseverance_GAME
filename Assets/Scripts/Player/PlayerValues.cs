@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class PlayerValues : MonoBehaviour
@@ -8,17 +9,23 @@ public class PlayerValues : MonoBehaviour
     #region DATA
 
     [Header("VALUES")] [SerializeField] private List<float> movementSpeeds;
-
-    public bool canMove, isGrounded;
+    public bool canMove = true, isGrounded;
     [SerializeField] [Range(0, 4)] private int gear = 1;
     public Camera mainCamera;
 
+    [Header("COMPONENTES")] public CinemachineFreeLook thirdPersonCamera;
+
     #endregion
+
+    private void Awake()
+    {
+        movementSpeeds = new List<float> { -1, 0, 1, 2, 3 };
+    }
 
     private void Start()
     {
-        movementSpeeds = new List<float> { -1, 0, 1, 2, 3 };
-        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        canMove = true;
+        gear = 1;
     }
 
     #region GEAR

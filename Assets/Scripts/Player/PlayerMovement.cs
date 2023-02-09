@@ -13,14 +13,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        _rigidbody = GetComponentInChildren<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
         _playerValues = GetComponent<PlayerValues>();
     }
 
     private void FixedUpdate()
     {
         //move on ground
-        if (_playerValues.canMove)
+        if (_playerValues.canMove && _playerValues.GetGear() != 1)
         {
             Vector3 moveDirection = GetMoveDirection();
             _rigidbody.AddForce(moveDirection * _playerValues.GetSpeed() - _rigidbody.velocity,
@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 GetMoveDirection()
     {
-        Vector3 direction = new Vector3(transform.forward.x, 0f, transform.forward.y)
+        Vector3 direction = new Vector3(0, 0f, 1)
             .normalized;
         float targetAngle = Mathf.Atan2(direction.x, direction.z) *
                             Mathf.Rad2Deg +
