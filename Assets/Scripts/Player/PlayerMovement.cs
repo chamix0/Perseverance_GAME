@@ -44,21 +44,8 @@ public class PlayerMovement : MonoBehaviour
         return moveDirection;
     }
 
-    // void OnCollisionEnter(Collision collision)
-    // {
-    //     Debug.Log("Entered");
-    //     if (collision.gameObject.CompareTag("Ground"))
-    //     {
-    //         _playerValues.isGrounded = true;
-    //     }
-    // }
-    //
-    // void OnCollisionExit(Collision collision)
-    // {
-    //     Debug.Log("Exited");
-    //     if (collision.gameObject.CompareTag("Ground"))
-    //     {
-    //         _playerValues.isGrounded = false;
-    //     }
-    // }
+
+
+
+
 }
