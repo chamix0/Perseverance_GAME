@@ -15,11 +15,14 @@ public class StairsBehavior : MonoBehaviour
     private static readonly int Move1 = Animator.StringToHash("move");
     private BoxCollider _boxCollider;
 
+    private MyInputManager _myInputManager;
+
     // Start is called before the first frame update
     void Start()
     {
         _boxCollider = GetComponent<BoxCollider>();
         _playerValues = FindObjectOfType<PlayerValues>();
+        _myInputManager = FindObjectOfType<MyInputManager>();
         _rigidbodyOriginalConstraints = _playerValues._rigidbody.constraints;
         _animator = GetComponentInParent<Animator>();
         endAnimation = false;
@@ -33,14 +36,14 @@ public class StairsBehavior : MonoBehaviour
         {
             if (AnimationFinished())
             {
-                _playerValues.SetCanMove(true);
+                // _playerValues.SetCanMove(true);
                 _playerValues.gameObject.transform.parent = null;
                 _playerValues._rigidbody.constraints = _rigidbodyOriginalConstraints;
                 _playerValues._rigidbody.isKinematic = false;
                 _playerValues._rigidbody.useGravity = true;
-                _playerValues.SetSitAnim(false);
                 endAnimation = false;
                 reset = true;
+                StartCoroutine(EndAnimationCoroutine());
             }
         }
 
@@ -60,6 +63,8 @@ public class StairsBehavior : MonoBehaviour
         {
             _playerValues.snapRotationTo(targetAngle);
             _playerValues.SnapPositionTo(snapPos.transform.position);
+            _playerValues.SetGear(1);
+            _myInputManager.SetInputsEnabled(false);
             _playerValues.SetCanMove(false);
             _playerValues.SetSitAnim(true);
             StartCoroutine(startAnimationCoroutine());
@@ -87,5 +92,13 @@ public class StairsBehavior : MonoBehaviour
         _animator.SetTrigger(Move1);
         _animator.SetTrigger(Move1);
         endAnimation = true;
+    }
+
+    IEnumerator EndAnimationCoroutine()
+    {
+        _playerValues.SetSitAnim(false);
+        yield return new WaitForSeconds(4f);
+        _myInputManager.SetInputsEnabled(true);
+        _playerValues.StopMovement();
     }
 }

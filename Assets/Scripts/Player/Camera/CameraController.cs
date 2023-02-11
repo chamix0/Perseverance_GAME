@@ -10,6 +10,8 @@ public class CameraController : MonoBehaviour
     private float rotationValueY, targetRotationY, tY = 0;
     private float rotationValueX, targetRotationX, tX = 0;
 
+    private float originalYSpeed, originalXSpeed;
+
 
     public float rotateStepY = 0.1f, angleStepX = 15f;
     private bool updateValueY = false, updateValueX = false;
@@ -21,6 +23,8 @@ public class CameraController : MonoBehaviour
         targetRotationY = rotationValueY = _playerValues.thirdPersonCamera.m_YAxis.Value;
         angleStepX = 15f;
         rotateStepY = 0.25f;
+        originalXSpeed = _playerValues.thirdPersonCamera.m_XAxis.m_MaxSpeed;
+        originalYSpeed = _playerValues.thirdPersonCamera.m_YAxis.m_MaxSpeed;
     }
 
     // Update is called once per frame
@@ -54,6 +58,18 @@ public class CameraController : MonoBehaviour
     public void RotateXClockwise()
     {
         targetRotationX = SnapPosition(_playerValues.thirdPersonCamera.m_XAxis.Value + angleStepX);
+        updateValueX = true;
+    }
+
+    public void RotateXCustom(float angle)
+    {
+        targetRotationX = SnapPosition(angle);
+        updateValueX = true;
+    }
+
+    public void RotateYCustom(float value)
+    {
+        targetRotationY = Mathf.Clamp(value, 0, 1);
         updateValueX = true;
     }
 

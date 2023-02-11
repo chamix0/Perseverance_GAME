@@ -8,13 +8,12 @@ public class BasicCameraMovementInputs : MonoBehaviour
     // Start is called before the first frame update
     private PlayerValues _playerValues;
     private CameraController _cameraController;
-    private PlayerLights _playerLights;
-
+    private MyInputManager _myInputManager;
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraController = FindObjectOfType<CameraController>();
-        _playerLights = FindObjectOfType<PlayerLights>();
+        _myInputManager = FindObjectOfType<MyInputManager>();
     }
 
     // Update is called once per frame
@@ -22,25 +21,29 @@ public class BasicCameraMovementInputs : MonoBehaviour
     {
         //keyboard inputs
         //accelerate and decelerate
-        if (Input.GetKeyDown(KeyCode.W))
+        if (_myInputManager.GetCurrentInput()==CurrentInput.Movement&&_myInputManager.GetInputsEnabled())
         {
-            _playerValues.ResetRigidBodyConstraints();
-            _playerValues.RiseGear();
-        }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                _playerValues.ResetRigidBodyConstraints();
+                _playerValues.RiseGear();
+            }
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            _playerValues.ResetRigidBodyConstraints();
-            _playerValues.DecreaseGear();
-        }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                _playerValues.ResetRigidBodyConstraints();
+                _playerValues.DecreaseGear();
+            }
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (_playerValues.lightsOn)
-                _playerValues.TurnOffLights();
-            else
-                _playerValues.TurnOnLights();
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                if (_playerValues.lightsOn)
+                    _playerValues.TurnOffLights();
+                else
+                    _playerValues.TurnOnLights();
+            }
         }
+        
     }
 
     public void PerformAction(Move move)

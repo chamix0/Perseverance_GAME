@@ -9,15 +9,15 @@ public class PlayerValues : MonoBehaviour
     #region DATA
 
     [Header("VALUES")] [SerializeField] private List<float> movementSpeeds;
-    public bool canMove = true, isGrounded, lightsOn = false, updateGearAnim;
+    public bool canMove = true, isGrounded, lightsOn = false, updateGearAnim, cameraIsFreezed;
     [SerializeField] [Range(0, 4)] private int gear = 1;
     private float gearAnim, gearAnimTarget;
     public Camera mainCamera;
     [SerializeField] private LayerMask colisionLayers;
-
-
+    public CameraController _cameraController;
     [Header("COMPONENTES")] public CinemachineFreeLook thirdPersonCamera;
     [NonSerialized] public Rigidbody _rigidbody;
+
     private Animator _animator;
     private PlayerLights _playerLights;
 
@@ -37,6 +37,10 @@ public class PlayerValues : MonoBehaviour
 
     public float stamina, maxStamina;
 
+    //is grounded
+    [Header("Grounded stuff")] public float raySize;
+    public Vector3 RayOffset;
+
     [NonSerialized] public RigidbodyConstraints _originalRigidBodyConstraints;
 
     private Vector3 _lookAtPos;
@@ -51,6 +55,7 @@ public class PlayerValues : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _playerLights = GetComponent<PlayerLights>();
         _animator = GetComponentInChildren<Animator>();
+        _cameraController = GetComponent<CameraController>();
         _originalRigidBodyConstraints = _rigidbody.constraints;
     }
 
@@ -103,6 +108,13 @@ public class PlayerValues : MonoBehaviour
         ChangeGearAnim(old, gear);
     }
 
+    public void SetGear(int value)
+    {
+        int old = gear;
+        gear = Mathf.Clamp(value, 0, 4);
+        ChangeGearAnim(old, gear);
+    }
+
     #endregion
 
     public float GetSpeed()
@@ -115,9 +127,6 @@ public class PlayerValues : MonoBehaviour
     public void SetCanMove(bool val)
     {
         canMove = val;
-        int old = gear;
-        gear = 1;
-        ChangeGearAnim(old, gear);
     }
 
     public void SnapPositionTo(Vector3 pos)
@@ -172,9 +181,9 @@ public class PlayerValues : MonoBehaviour
     private void UpdateSnapAngle()
     {
         transform.rotation =
-            Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, _targetAngle, 0), Time.deltaTime * 3f);
+            Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, Clamp0360(_targetAngle), 0), Time.deltaTime * 5f);
 
-        if (Mathf.Abs(transform.rotation.y - _targetAngle) < 0.01f)
+        if (Mathf.Abs(transform.eulerAngles.y - Clamp0360(_targetAngle)) < 0.01f)
         {
             _updateLookAt = false;
         }
@@ -182,21 +191,43 @@ public class PlayerValues : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Entered");
-        if (IsInLayerMask(collision.gameObject, colisionLayers))
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position + RayOffset,
+                transform.TransformDirection(Vector3.down), out hit, raySize))
+        {
+            if (IsInLayerMask(hit.transform.gameObject, colisionLayers))
+            {
+                SetCanMove(true);
+                isGrounded = true;
+            }
+        }
+        else if (IsInLayerMask(collision.gameObject, colisionLayers))
         {
             if (!isGrounded)
             {
-                canMove = true;
+                SetCanMove(true);
                 isGrounded = true;
             }
         }
     }
 
+
     void OnCollisionExit(Collision collision)
     {
-        Debug.Log("Exited");
-        if (IsInLayerMask(collision.gameObject, colisionLayers))
+        RaycastHit hit;
+
+
+        if (Physics.Raycast(transform.position + RayOffset,
+                transform.TransformDirection(Vector3.down), out hit, raySize))
+        {
+            if (IsInLayerMask(hit.transform.gameObject, colisionLayers))
+            {
+                SetCanMove(true);
+                isGrounded = true;
+            }
+        }
+        else if (IsInLayerMask(collision.gameObject, colisionLayers))
         {
             if (isGrounded)
             {
@@ -209,6 +240,7 @@ public class PlayerValues : MonoBehaviour
             }
         }
     }
+
 
     private bool IsInLayerMask(GameObject obj, LayerMask layerMask)
 
@@ -272,4 +304,37 @@ public class PlayerValues : MonoBehaviour
     }
 
     #endregion
+
+    #region Camera
+
+    public void FreezeCamera()
+    {
+        cameraIsFreezed = true;
+        thirdPersonCamera.m_XAxis.m_MaxSpeed = 0;
+        thirdPersonCamera.m_YAxis.m_MaxSpeed = 0;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Debug.DrawRay(transform.position + RayOffset,
+            transform.TransformDirection(Vector3.down) * raySize, Color.red);
+    }
+
+    public void UnFreezeCamera()
+    {
+        cameraIsFreezed = false;
+        thirdPersonCamera.m_XAxis.m_MaxSpeed = 300;
+        thirdPersonCamera.m_YAxis.m_MaxSpeed = 2;
+    }
+
+    #endregion
+
+    public static float Clamp0360(float eulerAngles)
+    {
+        float result = eulerAngles - Mathf.CeilToInt(eulerAngles / 360f) * 360f;
+        if (result < 0)
+            result += 360f;
+
+        return result;
+    }
 }
