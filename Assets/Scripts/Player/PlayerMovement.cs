@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     private PlayerValues _playerValues;
     private Rigidbody _rigidbody;
     private float speed, _turnSmoothVel;
+    public float stompUmbral, rayOffset;
+    public float staminaUsage = 1f, staminaRecovery = 0.5f;
     [SerializeField] private float turnSmoothTime = 0.1f;
 
 
@@ -17,17 +19,62 @@ public class PlayerMovement : MonoBehaviour
         _playerValues = GetComponent<PlayerValues>();
     }
 
+    private void Update()
+    {
+        if (CheckIfStopm() && _playerValues.GetGear() > 1)
+        {
+            _playerValues.StopMovement();
+            //play animation
+        }
+    }
+
+  
+
     private void FixedUpdate()
     {
         //move on ground
         if (_playerValues.canMove && _playerValues.GetGear() != 1)
         {
+            if (_playerValues.GetGear() == 4)
+            {
+                if (_playerValues.stamina > 0)
+                {
+                    _playerValues.stamina = Mathf.Max(_playerValues.stamina - staminaUsage, 0);
+                    //change rocket light color and add particles
+                }
+                else
+                {
+                    _playerValues.DecreaseGear();
+                }
+            }
+            else
+            {
+                _playerValues.stamina = Mathf.Min(_playerValues.stamina + staminaRecovery, _playerValues.maxStamina);
+            }
+
             Vector3 moveDirection = GetMoveDirection();
             _rigidbody.AddForce(moveDirection * _playerValues.GetSpeed() - _rigidbody.velocity,
                 ForceMode.VelocityChange);
         }
+        else
+        {
+            _playerValues.stamina = Mathf.Min(_playerValues.stamina + staminaRecovery, _playerValues.maxStamina);
+        }
     }
 
+    private bool CheckIfStopm()
+    {
+        RaycastHit hit;
+        Debug.DrawRay(transform.position + new Vector3(0, rayOffset, 0),
+            transform.TransformDirection(Vector3.forward) * stompUmbral, Color.red);
+        if (Physics.Raycast(transform.position + new Vector3(0, rayOffset, 0),
+                transform.TransformDirection(Vector3.forward), out hit, stompUmbral))
+        {
+            return true;
+        }
+
+        return false;
+    }
     private Vector3 GetMoveDirection()
     {
         Vector3 direction = new Vector3(0, 0f, 1)
@@ -43,9 +90,11 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         return moveDirection;
     }
-
-
-
-
-
+    
+    // IEnumerator recoverMovement()
+    // {
+    //
+    //     yield return new WaitForSeconds(2f);
+    //
+    // }
 }

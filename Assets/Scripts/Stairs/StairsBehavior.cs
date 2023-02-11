@@ -38,6 +38,7 @@ public class StairsBehavior : MonoBehaviour
                 _playerValues._rigidbody.constraints = _rigidbodyOriginalConstraints;
                 _playerValues._rigidbody.isKinematic = false;
                 _playerValues._rigidbody.useGravity = true;
+                _playerValues.SetSitAnim(false);
                 endAnimation = false;
                 reset = true;
             }
@@ -60,6 +61,7 @@ public class StairsBehavior : MonoBehaviour
             _playerValues.snapRotationTo(targetAngle);
             _playerValues.SnapPositionTo(snapPos.transform.position);
             _playerValues.SetCanMove(false);
+            _playerValues.SetSitAnim(true);
             StartCoroutine(startAnimationCoroutine());
         }
     }

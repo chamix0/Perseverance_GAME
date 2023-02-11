@@ -9,15 +9,16 @@ public class PlayerValues : MonoBehaviour
     #region DATA
 
     [Header("VALUES")] [SerializeField] private List<float> movementSpeeds;
-    public bool canMove = true, isGrounded, lightsOn = false;
+    public bool canMove = true, isGrounded, lightsOn = false, updateGearAnim;
     [SerializeField] [Range(0, 4)] private int gear = 1;
+    private float gearAnim, gearAnimTarget;
     public Camera mainCamera;
     [SerializeField] private LayerMask colisionLayers;
 
 
     [Header("COMPONENTES")] public CinemachineFreeLook thirdPersonCamera;
-    [NonSerialized]public Rigidbody _rigidbody;
-
+    [NonSerialized] public Rigidbody _rigidbody;
+    private Animator _animator;
     private PlayerLights _playerLights;
 
     //variables
@@ -31,12 +32,16 @@ public class PlayerValues : MonoBehaviour
         _tY,
         _tZ,
         _tR,
+        _tG,
         _targetAngle;
 
-    public RigidbodyConstraints _originalRigidBodyConstraints;
+    public float stamina, maxStamina;
+
+    [NonSerialized] public RigidbodyConstraints _originalRigidBodyConstraints;
 
     private Vector3 _lookAtPos;
     private bool _updateSnap, _updateLookAt;
+    private static readonly int Gear = Animator.StringToHash("Gear");
 
     #endregion
 
@@ -45,7 +50,16 @@ public class PlayerValues : MonoBehaviour
         // movementSpeeds = new List<float> { -1, 0, 1, 2, 3 };
         _rigidbody = GetComponent<Rigidbody>();
         _playerLights = GetComponent<PlayerLights>();
+        _animator = GetComponentInChildren<Animator>();
         _originalRigidBodyConstraints = _rigidbody.constraints;
+    }
+
+    private void Update()
+    {
+        if (updateGearAnim)
+        {
+            _animator.SetFloat("Gear", UpdateGearValAnim());
+        }
     }
 
     private void FixedUpdate()
@@ -65,6 +79,7 @@ public class PlayerValues : MonoBehaviour
     {
         canMove = true;
         gear = 1;
+        _animator.SetFloat("Gear", gear);
     }
 
     #region GEAR
@@ -76,12 +91,16 @@ public class PlayerValues : MonoBehaviour
 
     public void RiseGear()
     {
+        int old = gear;
         gear = Mathf.Min(gear + 1, 4);
+        ChangeGearAnim(old, gear);
     }
 
     public void DecreaseGear()
     {
+        int old = gear;
         gear = Mathf.Max(gear - 1, 0);
+        ChangeGearAnim(old, gear);
     }
 
     #endregion
@@ -96,7 +115,9 @@ public class PlayerValues : MonoBehaviour
     public void SetCanMove(bool val)
     {
         canMove = val;
+        int old = gear;
         gear = 1;
+        ChangeGearAnim(old, gear);
     }
 
     public void SnapPositionTo(Vector3 pos)
@@ -139,6 +160,15 @@ public class PlayerValues : MonoBehaviour
         return new Vector3(_snapPosX, _snapPosY, _snapPosZ);
     }
 
+    private void ChangeGearAnim(int oldGear, int newGear)
+    {
+        updateGearAnim = true;
+        _tG = 0.0f;
+        gearAnim = oldGear;
+        gearAnimTarget = newGear;
+    }
+
+
     private void UpdateSnapAngle()
     {
         transform.rotation =
@@ -171,7 +201,9 @@ public class PlayerValues : MonoBehaviour
             if (isGrounded)
             {
                 _rigidbody.constraints = RigidbodyConstraints.None;
+                int old = gear;
                 gear = 1;
+                ChangeGearAnim(old, 1);
                 SetCanMove(false);
                 isGrounded = false;
             }
@@ -192,6 +224,14 @@ public class PlayerValues : MonoBehaviour
         }
     }
 
+    public void StopMovement()
+    {
+        int old = gear;
+
+        gear = 1;
+        ChangeGearAnim(old, gear);
+    }
+
     #endregion
 
     #region Lights
@@ -206,6 +246,29 @@ public class PlayerValues : MonoBehaviour
     {
         _playerLights.TurnOffLights();
         lightsOn = false;
+    }
+
+    #endregion
+
+    #region animation
+
+    private float UpdateGearValAnim()
+    {
+        gearAnim = Mathf.Lerp(gearAnim, gearAnimTarget, _tG);
+        _tG += 0.5f * Time.deltaTime;
+
+        if (_tG > 1.0f)
+        {
+            _tG = 1.0f;
+            updateGearAnim = false;
+        }
+
+        return gearAnim;
+    }
+
+    public void SetSitAnim(bool val)
+    {
+        _animator.SetBool("Sit", val);
     }
 
     #endregion

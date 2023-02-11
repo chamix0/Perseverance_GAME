@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1ec05f8f24a7e9549aaa3a3cb46637af
+guid: ed118292264645844ac3a2c0fa95a931
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -39,11 +39,6 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: EARS
     second: {fileID: 2100000, guid: 082be1576c34dc24eb93bec868a79c09, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: LEFT METAL
-    second: {fileID: 2100000, guid: 619a44e29dcd29346b35fe9724a1b770, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
