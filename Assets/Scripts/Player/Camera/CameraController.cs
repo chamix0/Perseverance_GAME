@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     private PlayerValues _playerValues;
     private float rotationValueY, targetRotationY, tY = 0;
-    private float rotationValueX, targetRotationX, tX = 0;
+    private float rotationValueX, targetRotationX;
 
     private float originalYSpeed, originalXSpeed;
 

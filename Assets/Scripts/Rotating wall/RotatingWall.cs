@@ -79,6 +79,8 @@ public class RotatingWall : MonoBehaviour
         {
             inside = true;
             _rotatingWallInputs._rotatingWall = this;
+            _myInputManager.SetCurrentInput(CurrentInput.RotatingWall);
+            _myInputManager.SetInputsEnabled(false);
             //camera snap
             _playerValues._cameraController.RotateXCustom(_playerValues.transform.eulerAngles.y - Vector3.Angle(
                 _playerValues.transform.forward,
@@ -92,8 +94,12 @@ public class RotatingWall : MonoBehaviour
             _playerValues.SnapPositionTo(snapPos.transform.position);
             _playerValues.SetCanMove(false);
             _playerValues.SetSitAnim(true);
-            _playerValues.SetGear(1);
-            StartCoroutine(GiveControllToWallCoroutine());
+            _playerValues.gameObject.transform.parent = this.transform;
+            //rigid body
+            _playerValues._rigidbody.isKinematic = true;
+            _playerValues._rigidbody.useGravity = false;
+            _playerValues._rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            StartCoroutine(WaitToSnapCoroutine());
         }
     }
 
@@ -110,15 +116,10 @@ public class RotatingWall : MonoBehaviour
     }
 
 
-    IEnumerator GiveControllToWallCoroutine()
+    IEnumerator WaitToSnapCoroutine()
     {
-        _playerValues.gameObject.transform.parent = this.transform;
-        //rigid body
-        _playerValues._rigidbody.isKinematic = true;
-        _playerValues._rigidbody.useGravity = false;
-        _playerValues._rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-        yield return new WaitForSeconds(3f);
-        _myInputManager.SetCurrentInput(CurrentInput.RotatingWall);
+        yield return new WaitForSeconds(4f);
+        _myInputManager.SetInputsEnabled(true);
     }
 
     IEnumerator ExitRotWallCoroutine()

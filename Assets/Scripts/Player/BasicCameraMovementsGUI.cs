@@ -10,19 +10,23 @@ public class BasicCameraMovementsGUI : MonoBehaviour
     private PlayerValues _playerValues;
     [SerializeField] private Slider staminaSlider;
     [SerializeField] private TMP_Text info;
+    private MyInputManager _myInputManager;
 
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
+        _myInputManager = FindObjectOfType<MyInputManager>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         staminaSlider.value = _playerValues.stamina / 100;
-        info.text = "Lights: " + _playerValues.lightsOn + "\n" +
-                    "Can move: " + _playerValues.canMove + "\n" +
-                    "is Grounded: " + _playerValues.isGrounded + "\n" +
-                    "Gear: " + _playerValues.GetGear() + "\n";
+        info.text = "Lights: " + _playerValues.GetLights() + "\n" +
+                    "Can move: " + _playerValues.GetCanMove() + "\n" +
+                    "is Grounded: " + _playerValues.GetIsGrounded() + "\n" +
+                    "Gear: " + _playerValues.GetGear() + "\n" +
+                    "Stucked: " + _playerValues.GetIsStucked() + "\n" +
+                    "imputs enabled: " + _myInputManager.GetInputsEnabled();
     }
 }

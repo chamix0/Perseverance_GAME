@@ -9,6 +9,7 @@ public class BasicCameraMovementInputs : MonoBehaviour
     private PlayerValues _playerValues;
     private CameraController _cameraController;
     private MyInputManager _myInputManager;
+
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
@@ -21,29 +22,30 @@ public class BasicCameraMovementInputs : MonoBehaviour
     {
         //keyboard inputs
         //accelerate and decelerate
-        if (_myInputManager.GetCurrentInput()==CurrentInput.Movement&&_myInputManager.GetInputsEnabled())
+        if (_myInputManager.GetCurrentInput() == CurrentInput.Movement && _myInputManager.GetInputsEnabled())
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W) && _playerValues.GetCanMove())
             {
                 _playerValues.ResetRigidBodyConstraints();
                 _playerValues.RiseGear();
+                _playerValues.CheckIfStuck();
             }
 
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.S) && _playerValues.GetCanMove())
             {
                 _playerValues.ResetRigidBodyConstraints();
                 _playerValues.DecreaseGear();
+                _playerValues.CheckIfStuck();
             }
 
             if (Input.GetKeyDown(KeyCode.L))
             {
-                if (_playerValues.lightsOn)
+                if (_playerValues.GetLights())
                     _playerValues.TurnOffLights();
                 else
                     _playerValues.TurnOnLights();
             }
         }
-        
     }
 
     public void PerformAction(Move move)
@@ -51,6 +53,8 @@ public class BasicCameraMovementInputs : MonoBehaviour
         //accelerate deccelerate
         if (move.face == FACES.R)
         {
+            _playerValues.CheckIfStuck();
+
             if (move.direction == 1)
                 _playerValues.RiseGear();
             else

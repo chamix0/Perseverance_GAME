@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         //move on ground
-        if (_playerValues.canMove && _playerValues.GetGear() != 1)
+        if (_playerValues.GetCanMove() && _playerValues.GetGear() != 1)
         {
             if (_playerValues.GetGear() == 4)
             {
@@ -90,11 +90,5 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         return moveDirection;
     }
-    
-    // IEnumerator recoverMovement()
-    // {
-    //
-    //     yield return new WaitForSeconds(2f);
-    //
-    // }
+
 }

@@ -63,7 +63,6 @@ public class StairsBehavior : MonoBehaviour
         {
             _playerValues.snapRotationTo(targetAngle);
             _playerValues.SnapPositionTo(snapPos.transform.position);
-            _playerValues.SetGear(1);
             _myInputManager.SetInputsEnabled(false);
             _playerValues.SetCanMove(false);
             _playerValues.SetSitAnim(true);
@@ -99,6 +98,6 @@ public class StairsBehavior : MonoBehaviour
         _playerValues.SetSitAnim(false);
         yield return new WaitForSeconds(4f);
         _myInputManager.SetInputsEnabled(true);
-        _playerValues.StopMovement();
+        _playerValues.SetCanMove(true);
     }
 }

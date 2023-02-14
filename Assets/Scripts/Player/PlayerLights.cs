@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerLights : MonoBehaviour
 {
     // Start is called before the first frame update
-    private List<Light> _lights;
+    [SerializeField] List<Light> _lights;
     private PlayerValues _playerValues;
     public Material EarLightsColor;
 
@@ -19,7 +19,6 @@ public class PlayerLights : MonoBehaviour
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
-        _lights = new List<Light>(GetComponentsInChildren<Light>());
         EarLightsColor.SetColor(EmissionColor, offColor);
     }
 
