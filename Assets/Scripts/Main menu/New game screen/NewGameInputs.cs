@@ -6,12 +6,14 @@ public class NewGameInputs : MonoBehaviour
 {
     // Start is called before the first frame update
     private MyMenuInputManager _myInputManager;
-    private MainMenuManager _menuManager;
+    private NewGameManager _newGameManager;
+    private MenuCamerasController _camerasController;
 
     void Start()
     {
         _myInputManager = FindObjectOfType<MyMenuInputManager>();
-        _menuManager = FindObjectOfType<MainMenuManager>();
+        _newGameManager = FindObjectOfType<NewGameManager>();
+        _camerasController = FindObjectOfType<MenuCamerasController>();
     }
 
     // Update is called once per frame
@@ -19,15 +21,17 @@ public class NewGameInputs : MonoBehaviour
     {
         //keyboard inputs
         //accelerate and decelerate
-        if (_myInputManager.GetCurrentInput() == CurrentMenuInput.Menu && _myInputManager.GetInputsEnabled())
+        if (_myInputManager.GetCurrentInput() == CurrentMenuInput.NewGame && _myInputManager.GetInputsEnabled())
         {
             //siguiente modelo
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
+                _newGameManager.ShowNext();
             }
             //modelo anterior
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
+                _newGameManager.ShowPrev();
             }
             //confirmar modelo
             else if (Input.GetKeyDown(KeyCode.Return))
@@ -36,6 +40,8 @@ public class NewGameInputs : MonoBehaviour
             //volver al menú
             else if (Input.GetKeyDown(KeyCode.Escape))
             {
+                _camerasController.SetCamera(0);
+                _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
             }
         }
     }

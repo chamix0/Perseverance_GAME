@@ -28,13 +28,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-  
 
     private void FixedUpdate()
     {
         //move on ground
         if (_playerValues.GetCanMove() && _playerValues.GetGear() != 1)
         {
+            if (_playerValues.allStaminaUsed)
+                _playerValues.allStaminaUsed = !(_playerValues.stamina >= 100);
+            
             if (_playerValues.GetGear() == 4)
             {
                 if (_playerValues.stamina > 0)
@@ -44,12 +46,18 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
+                    _playerValues.allStaminaUsed = true;
                     _playerValues.DecreaseGear();
                 }
             }
             else
             {
-                _playerValues.stamina = Mathf.Min(_playerValues.stamina + staminaRecovery, _playerValues.maxStamina);
+                if (_playerValues.GetGear() == 3)
+                    _playerValues.stamina =
+                        Mathf.Min(_playerValues.stamina + staminaRecovery / 4, _playerValues.maxStamina);
+                else
+                    _playerValues.stamina =
+                        Mathf.Min(_playerValues.stamina + staminaRecovery, _playerValues.maxStamina);
             }
 
             Vector3 moveDirection = GetMoveDirection();
@@ -75,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
 
         return false;
     }
+
     private Vector3 GetMoveDirection()
     {
         Vector3 direction = new Vector3(0, 0f, 1)
@@ -90,5 +99,4 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         return moveDirection;
     }
-
 }

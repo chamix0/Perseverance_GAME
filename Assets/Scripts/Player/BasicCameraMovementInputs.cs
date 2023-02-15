@@ -24,16 +24,14 @@ public class BasicCameraMovementInputs : MonoBehaviour
         //accelerate and decelerate
         if (_myInputManager.GetCurrentInput() == CurrentInput.Movement && _myInputManager.GetInputsEnabled())
         {
-            if (Input.GetKeyDown(KeyCode.W) && _playerValues.GetCanMove())
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                _playerValues.ResetRigidBodyConstraints();
                 _playerValues.RiseGear();
                 _playerValues.CheckIfStuck();
             }
 
-            if (Input.GetKeyDown(KeyCode.S) && _playerValues.GetCanMove())
+            if (Input.GetKeyDown(KeyCode.S))
             {
-                _playerValues.ResetRigidBodyConstraints();
                 _playerValues.DecreaseGear();
                 _playerValues.CheckIfStuck();
             }

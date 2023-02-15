@@ -14,6 +14,7 @@ public enum CurrentMenuInput
     None
 }
 
+[DefaultExecutionOrder(1)]
 public class MyMenuInputManager : MonoBehaviour
 {
     private MovesQueue _inputsMoves;
@@ -39,6 +40,9 @@ public class MyMenuInputManager : MonoBehaviour
             switch (_currentInput)
             {
                 case CurrentMenuInput.Menu:
+                    _menuInputs.PerformAction(move);
+                    break;
+                case CurrentMenuInput.NewGame:
                     _menuInputs.PerformAction(move);
                     break;
             }

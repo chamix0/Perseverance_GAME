@@ -12,14 +12,12 @@ public class RotatingWall : MonoBehaviour
     public GameObject snapPos;
     public float targetWallAngle, angleStep;
     [SerializeField] private Transform baseTransform;
-    private BoxCollider _boxCollider;
     private bool _updateRotation, inside;
     public int exitAngle;
 
     // Start is called before the first frame update
     void Start()
     {
-        _boxCollider = GetComponent<BoxCollider>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _myInputManager = FindObjectOfType<MyInputManager>();
         _rotatingWallInputs = FindObjectOfType<RotatingWallInputs>();
@@ -82,15 +80,11 @@ public class RotatingWall : MonoBehaviour
             _myInputManager.SetCurrentInput(CurrentInput.RotatingWall);
             _myInputManager.SetInputsEnabled(false);
             //camera snap
-            _playerValues._cameraController.RotateXCustom(_playerValues.transform.eulerAngles.y - Vector3.Angle(
-                _playerValues.transform.forward,
-                transform.right));
+            _playerValues._cameraController.RotateXCustom(transform.rotation.y + 90);
             _playerValues._cameraController.RotateYCustom(0.5f);
             _playerValues.FreezeCamera();
             //player snap
-            _playerValues.snapRotationTo(_playerValues.transform.eulerAngles.y - Vector3.Angle(
-                _playerValues.transform.forward,
-                transform.right));
+            _playerValues.snapRotationTo(transform.rotation.y + 90);
             _playerValues.SnapPositionTo(snapPos.transform.position);
             _playerValues.SetCanMove(false);
             _playerValues.SetSitAnim(true);

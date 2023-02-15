@@ -10,7 +10,7 @@ public class SaveData
 
     public SaveData()
     {
-        slots = new GameData[] { null, null, null, null };
+        slots = new GameData[MAX_SLOTS];
         lastSesionSlotIndex = -1;
     }
 
@@ -33,11 +33,11 @@ public class SaveData
 
     public void EraseSlot(int index)
     {
-        slots[index] = null;
+        slots[index] = new GameData();
         bool empty = true;
         for (int i = 0; i < MAX_SLOTS; i++)
         {
-            if (slots[i] != null)
+            if (slots[i].GetGameStarted())
                 empty = false;
         }
 
@@ -48,9 +48,15 @@ public class SaveData
     public bool AreThereEmptySlots()
     {
         foreach (var slot in slots)
-            if (slot == null)
+            if (!slot.GetGameStarted())
                 return true;
         return false;
+    }
+
+    public GameData LoadGameData(int index)
+    {
+        lastSesionSlotIndex = index;
+        return slots[index];
     }
 
     public GameData GetGameData(int index)

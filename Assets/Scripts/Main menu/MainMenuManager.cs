@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(1)]
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] private List<Button> _buttons;
@@ -62,7 +63,6 @@ public class MainMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(selectedButton);
     }
 
     public void clicked(int button)
@@ -175,7 +175,7 @@ public class MainMenuManager : MonoBehaviour
     public void SelectPrevButton()
     {
         int aux = selectedButton;
-        aux = selectedButton - 1 < 0 ? _buttons.Count - 1 : aux - 1;
+        aux = aux - 1 < 0 ? _buttons.Count - 1 : aux - 1;
         if (aux == 1 && !NewGameInteractable)
             aux = 0;
         if (aux == 0 && !continueInteractable)
@@ -192,7 +192,6 @@ public class MainMenuManager : MonoBehaviour
 
     private void UpdateColors()
     {
-        print("selected button " + selectedButton);
         for (int i = 0; i < _buttons.Count; i++)
         {
             _texts[i].color = Color.black;

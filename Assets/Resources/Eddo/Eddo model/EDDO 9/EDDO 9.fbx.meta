@@ -8,42 +8,42 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: ANTHENA ROBOT
-    second: {fileID: 2100000, guid: dafaa415d7fd1644cad1a1dcd74ba0f5, type: 2}
+    second: {fileID: 2100000, guid: 2d9aba773bc9e574590d8a5565609aa0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BACK LIGHTS
-    second: {fileID: 2100000, guid: 1c26a734436d83b438680a849df59926, type: 2}
+    second: {fileID: 2100000, guid: f4f94a6f34c4ab940abafdf6c2c6a986, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BODY
-    second: {fileID: 2100000, guid: a54eee10ff1192d41bc4ddf658fa8042, type: 2}
+    second: {fileID: 2100000, guid: 46fabdc4f4431774a84014d32bbe6060, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BUTTON 2
-    second: {fileID: 2100000, guid: e5062f6846f01154e9c03a43e035c368, type: 2}
+    second: {fileID: 2100000, guid: e9e2c67205235b14987326fdf59c9210, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: DRON
-    second: {fileID: 2100000, guid: a75538ef0435937418e3b34395f3f85d, type: 2}
+    second: {fileID: 2100000, guid: 19251aca6af1f0e4f9e29c750afb71fb, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: EAR LIGHTS
-    second: {fileID: 2100000, guid: 77a9cc0e635210e4696108ccdc107e9c, type: 2}
+    second: {fileID: 2100000, guid: 1fb5593438e619e40b1972be3ae82b92, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: EARS
-    second: {fileID: 2100000, guid: 082be1576c34dc24eb93bec868a79c09, type: 2}
+    second: {fileID: 2100000, guid: ae613412820cd7d44afd345ed2545d31, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: LEFT SCREWS
-    second: {fileID: 2100000, guid: a1a3db128eac27c4f90c82d471897c73, type: 2}
+    second: {fileID: 2100000, guid: 64d9fca18c756614ba6435eb2bb5ff41, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -53,7 +53,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: RIGHT FRONT LEG
-    second: {fileID: 2100000, guid: 429b603de02719f4babfd698cb61a8ed, type: 2}
+    second: {fileID: 2100000, guid: e80e7a855f748ff48bfe1980227c466a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -63,7 +63,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: RIGHT SCREWS
-    second: {fileID: 2100000, guid: 2ebfe60b06ef538458b0670ec1b5ffd1, type: 2}
+    second: {fileID: 2100000, guid: e0d2c74d56cc89b45af84a7561f08206, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -78,22 +78,22 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: ROCKET LIGHTS
-    second: {fileID: 2100000, guid: b260a818379c2474590dcb8a33911a65, type: 2}
+    second: {fileID: 2100000, guid: ec42204dc3e490a45853ff665ba47652, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: SCREEN
-    second: {fileID: 2100000, guid: 760c629e3e9f4234aaa69104ba1335c4, type: 2}
+    second: {fileID: 2100000, guid: d64b6f31bc1201642b5c39b445518116, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: SCREWS NEON
-    second: {fileID: 2100000, guid: 2a890bf451cc58549b84766035dff812, type: 2}
+    second: {fileID: 2100000, guid: f11633bce6c093f4fa39a812743f5a82, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: bUTTON 1
-    second: {fileID: 2100000, guid: 7197fd6e2dca66f40a6f434676632b5e, type: 2}
+    second: {fileID: 2100000, guid: b414695bb67cf424b9aca0ee79c15c38, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

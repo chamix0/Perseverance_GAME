@@ -32,6 +32,7 @@ public class PlayerValues : MonoBehaviour
     private Animator _animator;
     private PlayerLights _playerLights;
     public Camera mainCamera;
+    [NonSerialized] public bool allStaminaUsed = false;
     [NonSerialized] public RigidbodyConstraints _originalRigidBodyConstraints;
 
     //variables
@@ -114,10 +115,16 @@ public class PlayerValues : MonoBehaviour
 
     public void RiseGear()
     {
-        if (isGrounded)
+        if (isGrounded && canMove)
         {
+            ResetRigidBodyConstraints();
             int old = gear;
-            gear = Mathf.Min(gear + 1, 4);
+            if (allStaminaUsed)
+                gear = Mathf.Min(gear + 1, 3);
+            else
+                gear = Mathf.Min(gear + 1, 4);
+
+
             ChangeGearAnim(old, gear);
         }
         else
@@ -128,8 +135,9 @@ public class PlayerValues : MonoBehaviour
 
     public void DecreaseGear()
     {
-        if (isGrounded)
+        if (isGrounded && canMove)
         {
+            ResetRigidBodyConstraints();
             int old = gear;
             gear = Mathf.Max(gear - 1, 0);
             ChangeGearAnim(old, gear);
