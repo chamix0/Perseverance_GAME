@@ -6,25 +6,31 @@ using UnityEngine;
 [Serializable]
 public class GameData
 {
+    [SerializeField] private string runName;
     [SerializeField] private float volume;
     [SerializeField] private bool muted;
     [SerializeField] private float tiltSens;
     [SerializeField] private bool GameStarted;
     [SerializeField] private int eddoModel;
 
-    // [SerializeField] private Level[] _levels;
     [SerializeField] private bool[] zonesEnabled;
     [SerializeField] private long[] zonestime;
+    [SerializeField] private string lastTimePlayed;
+    [SerializeField] private int totalTimePlayed;
     [SerializeField] private string[] zonesPB;
+
     private const int MAX_ZONES = 5;
 
-    public GameData(int model)
+    public GameData(int model, string name)
     {
         volume = 1;
+        runName = name;
         tiltSens = 75;
         eddoModel = model;
+        totalTimePlayed = 0;
+        lastTimePlayed = DateTime.Now.ToString();
         muted = false;
-        GameStarted = false;
+        GameStarted = true;
         zonesEnabled = new bool[MAX_ZONES];
         zonestime = new long[MAX_ZONES];
         zonesPB = new string[MAX_ZONES];
@@ -34,6 +40,7 @@ public class GameData
     public GameData()
     {
         volume = 1;
+        runName = "------";
         tiltSens = 75;
         eddoModel = 1;
         muted = false;
@@ -44,6 +51,10 @@ public class GameData
         intializeLevels();
     }
 
+    public int GetEddoModel()
+    {
+        return eddoModel;
+    }
     public bool getMuted()
     {
         return muted;
@@ -124,6 +135,23 @@ public class GameData
     public void StartGame()
     {
         GameStarted = true;
+    }
+
+    public string getTotalTime()
+    {
+        int hours = totalTimePlayed / 60;
+        int minutes = totalTimePlayed % 60;
+        return hours + "H " + minutes + "m";
+    }
+
+    public string GetName()
+    {
+        return runName;
+    }
+
+    public string GetLastTimePlayed()
+    {
+        return lastTimePlayed;
     }
 
     public override string ToString()

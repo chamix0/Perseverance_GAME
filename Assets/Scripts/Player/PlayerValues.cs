@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Cinemachine;
+using Mechanics.General_Inputs;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -13,7 +13,7 @@ public class PlayerValues : MonoBehaviour
     //status values
     [Header("VALUES")] [SerializeField] private List<float> movementSpeeds;
     [SerializeField] [Range(0, 4)] private int gear = 1;
-    private bool isGrounded, lightsOn, updateGearAnim, cameraIsFreezed, stucked;
+    private bool isGrounded, lightsOn, cameraIsFreezed, stucked;
     private bool canMove;
 
     //stamina values
@@ -26,18 +26,29 @@ public class PlayerValues : MonoBehaviour
     public float stuckTime = 3f;
 
     //compontes
-    [Header("COMPONENTES")] public CinemachineFreeLook thirdPersonCamera;
-    [NonSerialized] public Rigidbody _rigidbody;
+    [Header("COMPONENTES")] [NonSerialized]
+    public Rigidbody _rigidbody;
+
     [NonSerialized] public CameraController _cameraController;
-    private Animator _animator;
     private PlayerLights _playerLights;
     public Camera mainCamera;
     [NonSerialized] public bool allStaminaUsed = false;
     [NonSerialized] public RigidbodyConstraints _originalRigidBodyConstraints;
+    private PlayerAnimations _playerAnimations;
+
+    //Inputs
+    private CurrentInput _currentInput;
+
+    private bool inputsEnabled;
+
+    //save data
+    private JSONsaving _jsoNsaving;
+    private SaveData _saveData;
+    public GameData _gameData;
 
     //variables
-    private float gearAnim, gearAnimTarget;
     private bool _updateSnap, _updateLookAt, moveForward;
+
 
     private float _snapPosX,
         _snapPosY,
@@ -48,7 +59,6 @@ public class PlayerValues : MonoBehaviour
         _tX,
         _tY,
         _tZ,
-        _tG,
         _targetAngle;
 
 
@@ -65,10 +75,17 @@ public class PlayerValues : MonoBehaviour
     private void Awake()
     {
         // movementSpeeds = new List<float> { -1, 0, 1, 2, 3 };
+        _currentInput = CurrentInput.Movement;
+        inputsEnabled = true;
+        _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _rigidbody = GetComponent<Rigidbody>();
-        _playerLights = GetComponent<PlayerLights>();
-        _animator = GetComponentInChildren<Animator>();
-        _cameraController = GetComponent<CameraController>();
+        _playerLights = FindObjectOfType<PlayerLights>();
+        _cameraController = FindObjectOfType<CameraController>();
+        //save data
+        _jsoNsaving = FindObjectOfType<JSONsaving>();
+        _saveData = _jsoNsaving._saveData;
+        _gameData = _saveData.GetGameData(_saveData.GetLastSessionSlotIndex());
+        
         _originalRigidBodyConstraints = _rigidbody.constraints;
         stuckTimer = new Stopwatch();
     }
@@ -81,10 +98,6 @@ public class PlayerValues : MonoBehaviour
     private void Update()
     {
         CheckIfGrounded();
-        if (updateGearAnim)
-        {
-            _animator.SetFloat("Gear", UpdateGearValAnim());
-        }
     }
 
     private void FixedUpdate()
@@ -106,6 +119,26 @@ public class PlayerValues : MonoBehaviour
             transform.TransformDirection(Vector3.down) * raySize, Color.red);
     }
 
+    public void SetCurrentInput(CurrentInput currentInput)
+    {
+        _currentInput = currentInput;
+    }
+
+    public CurrentInput GetCurrentInput()
+    {
+        return _currentInput;
+    }
+
+    public bool GetInputsEnabled()
+    {
+        return inputsEnabled;
+    }
+
+    public void SetInputsEnabled(bool val)
+    {
+        inputsEnabled = val;
+    }
+
     #region GEAR
 
     public int GetGear()
@@ -123,9 +156,7 @@ public class PlayerValues : MonoBehaviour
                 gear = Mathf.Min(gear + 1, 3);
             else
                 gear = Mathf.Min(gear + 1, 4);
-
-
-            ChangeGearAnim(old, gear);
+            _playerAnimations.ChangeGearAnim(old, gear);
         }
         else
         {
@@ -140,7 +171,7 @@ public class PlayerValues : MonoBehaviour
             ResetRigidBodyConstraints();
             int old = gear;
             gear = Mathf.Max(gear - 1, 0);
-            ChangeGearAnim(old, gear);
+            _playerAnimations.ChangeGearAnim(old, gear);
         }
         else
         {
@@ -154,13 +185,13 @@ public class PlayerValues : MonoBehaviour
         {
             int old = gear;
             gear = Mathf.Clamp(value, 0, 4);
-            ChangeGearAnim(old, gear);
+            _playerAnimations.ChangeGearAnim(old, gear);
         }
         else
         {
             int old = gear;
             gear = 1;
-            ChangeGearAnim(old, gear);
+            _playerAnimations.ChangeGearAnim(old, gear);
         }
     }
 
@@ -246,17 +277,6 @@ public class PlayerValues : MonoBehaviour
 
     #endregion
 
-    #region animator
-
-    private void ChangeGearAnim(int oldGear, int newGear)
-    {
-        updateGearAnim = true;
-        _tG = 0.0f;
-        gearAnim = oldGear;
-        gearAnimTarget = newGear;
-    }
-
-    #endregion
 
     #region Grounded and stuck
 
@@ -386,43 +406,8 @@ public class PlayerValues : MonoBehaviour
 
     #endregion
 
-    #region animation
-
-    private float UpdateGearValAnim()
-    {
-        gearAnim = Mathf.Lerp(gearAnim, gearAnimTarget, _tG);
-        _tG += 0.5f * Time.deltaTime;
-
-        if (_tG > 1.0f)
-        {
-            _tG = 1.0f;
-            updateGearAnim = false;
-        }
-
-        return gearAnim;
-    }
-
-    public void SetSitAnim(bool val)
-    {
-        _animator.SetBool("Sit", val);
-    }
-
-    #endregion
 
     #region Camera
-
-    public void FreezeCamera()
-    {
-        thirdPersonCamera.m_XAxis.m_MaxSpeed = 0;
-        thirdPersonCamera.m_YAxis.m_MaxSpeed = 0;
-    }
-
-
-    public void UnFreezeCamera()
-    {
-        thirdPersonCamera.m_XAxis.m_MaxSpeed = 300;
-        thirdPersonCamera.m_YAxis.m_MaxSpeed = 2;
-    }
 
     #endregion
 

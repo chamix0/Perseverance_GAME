@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     // Start is called before the first frame update
-    private PlayerValues _playerValues;
+    [SerializeField] private CinemachineFreeLook thirdPersonCamera;
     private float rotationValueY, targetRotationY, tY = 0;
     private float rotationValueX, targetRotationX;
 
@@ -19,12 +20,11 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        _playerValues = FindObjectOfType<PlayerValues>();
-        targetRotationY = rotationValueY = _playerValues.thirdPersonCamera.m_YAxis.Value;
+        targetRotationY = rotationValueY = thirdPersonCamera.m_YAxis.Value;
         angleStepX = 15f;
         rotateStepY = 0.25f;
-        originalXSpeed = _playerValues.thirdPersonCamera.m_XAxis.m_MaxSpeed;
-        originalYSpeed = _playerValues.thirdPersonCamera.m_YAxis.m_MaxSpeed;
+        originalXSpeed = thirdPersonCamera.m_XAxis.m_MaxSpeed;
+        originalYSpeed = thirdPersonCamera.m_YAxis.m_MaxSpeed;
     }
 
     // Update is called once per frame
@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
     {
         if (updateValueY)
         {
-            _playerValues.thirdPersonCamera.m_YAxis.Value = UpdateRotateCameraY();
+            thirdPersonCamera.m_YAxis.Value = UpdateRotateCameraY();
         }
 
         if (updateValueX)
@@ -40,24 +40,24 @@ public class CameraController : MonoBehaviour
             UpdateRotateCameraX();
         }
     }
-
+    
     public void RotateYClockwise()
     {
-        targetRotationY = _playerValues.thirdPersonCamera.m_YAxis.Value - rotateStepY;
+        targetRotationY = thirdPersonCamera.m_YAxis.Value - rotateStepY;
         updateValueY = true;
         tY = 0.0f;
     }
 
     public void RotateYCounterClockwise()
     {
-        targetRotationY = _playerValues.thirdPersonCamera.m_YAxis.Value + rotateStepY;
+        targetRotationY = thirdPersonCamera.m_YAxis.Value + rotateStepY;
         updateValueY = true;
         tY = 0.0f;
     }
 
     public void RotateXClockwise()
     {
-        targetRotationX = SnapPosition(_playerValues.thirdPersonCamera.m_XAxis.Value + angleStepX);
+        targetRotationX = SnapPosition(thirdPersonCamera.m_XAxis.Value + angleStepX);
         updateValueX = true;
     }
 
@@ -75,14 +75,14 @@ public class CameraController : MonoBehaviour
 
     public void RotateXCounterClockwise()
     {
-        targetRotationX = SnapPosition(_playerValues.thirdPersonCamera.m_XAxis.Value - angleStepX);
+        targetRotationX = SnapPosition(thirdPersonCamera.m_XAxis.Value - angleStepX);
         print(targetRotationX);
         updateValueX = true;
     }
 
     private float UpdateRotateCameraY()
     {
-        rotationValueY = Mathf.Lerp(_playerValues.thirdPersonCamera.m_YAxis.Value, targetRotationY, tY);
+        rotationValueY = Mathf.Lerp(thirdPersonCamera.m_YAxis.Value, targetRotationY, tY);
 
         tY += 0.5f * Time.deltaTime;
 
@@ -95,13 +95,29 @@ public class CameraController : MonoBehaviour
         return rotationValueY;
     }
 
+    public CinemachineFreeLook GetThirdPErsonCamera()
+    {
+        return thirdPersonCamera;
+    }
+    public void FreezeCamera()
+    {
+        thirdPersonCamera.m_XAxis.m_MaxSpeed = 0;
+        thirdPersonCamera.m_YAxis.m_MaxSpeed = 0;
+    }
+
+    public void UnFreezeCamera()
+    {
+        thirdPersonCamera.m_XAxis.m_MaxSpeed = 300;
+        thirdPersonCamera.m_YAxis.m_MaxSpeed = 2;
+    }
+
     private void UpdateRotateCameraX()
     {
-        _playerValues.thirdPersonCamera.m_XAxis.Value = Quaternion
-            .Lerp(Quaternion.Euler(0, _playerValues.thirdPersonCamera.m_XAxis.Value, 0),
+        thirdPersonCamera.m_XAxis.Value = Quaternion
+            .Lerp(Quaternion.Euler(0, thirdPersonCamera.m_XAxis.Value, 0),
                 Quaternion.Euler(0, targetRotationX, 0), 5 * Time.deltaTime).eulerAngles.y;
 
-        if (Mathf.Abs(_playerValues.thirdPersonCamera.m_XAxis.Value - targetRotationX) < 0.01f)
+        if (Mathf.Abs(thirdPersonCamera.m_XAxis.Value - targetRotationX) < 0.01f)
         {
             updateValueX = false;
         }

@@ -90,11 +90,33 @@ public class CubeInputs : MonoBehaviour
                 {
                     //double moves
                     move = DoubleMove(move);
+                    move.color = GetColor(move.face);
                     _moves.Enqueue(move);
                     _moves.lastMove = move;
                     print(move.face + " " + move.direction);
                 }
             }
+        }
+    }
+
+    private Color GetColor(FACES faces)
+    {
+        switch (faces)
+        {
+            case FACES.F:
+                return centers[1, 0];
+            case FACES.R:
+                return centers[1, 1];
+            case FACES.L:
+                return centers[1, 3];
+            case FACES.B:
+                return centers[1, 2];
+            case FACES.D:
+                return centers[2, 0];
+            case FACES.U:
+                return centers[0, 0];
+            default:
+                return Color.clear;
         }
     }
 
@@ -212,6 +234,7 @@ public class CubeInputs : MonoBehaviour
                 move.face = FaceSwap(face, FACES.B, FACES.F, FACES.D, FACES.U, FACES.L, FACES.R);
             }
         }
+
         return move;
     }
 

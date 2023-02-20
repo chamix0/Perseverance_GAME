@@ -1,0 +1,18 @@
+{
+    "name": "LaberinthAssembly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5799156d6de523348be72912ff1ab056",
+        "GUID:3419401ee06995048afc9d3656d906fe",
+        "GUID:fa59623ad24fd534893a842ce9c7c518"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -14,7 +14,7 @@ public class JSONsaving : MonoBehaviour
     void Awake()
     {
         SetPaths();
-        if (File.Exists(persistentPath))
+        if (File.Exists(path))
         {
             LoadData();
         }

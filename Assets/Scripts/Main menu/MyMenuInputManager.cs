@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Main_menu.Load_game_screen;
+using Main_menu.New_game_screen;
 using UnityEngine;
 
 public enum CurrentMenuInput
@@ -17,14 +19,21 @@ public enum CurrentMenuInput
 [DefaultExecutionOrder(1)]
 public class MyMenuInputManager : MonoBehaviour
 {
+    //components
     private MovesQueue _inputsMoves;
     private CurrentMenuInput _currentInput;
-    private bool inputsEnabled = true;
     private MainMenuInputs _menuInputs;
+    private NewGameInputs _newGameInputs;
+    private LoadGameInputs _loadGameInputs;
+
+    //variables
+    private bool _inputsEnabled = true;
 
     private void Awake()
     {
         _menuInputs = GetComponent<MainMenuInputs>();
+        _newGameInputs = FindObjectOfType<NewGameInputs>();
+        _loadGameInputs = FindObjectOfType<LoadGameInputs>();
     }
 
     private void Start()
@@ -34,7 +43,7 @@ public class MyMenuInputManager : MonoBehaviour
 
     private void Update()
     {
-        if (_inputsMoves && _inputsMoves.HasMessages() && inputsEnabled)
+        if (_inputsMoves && _inputsMoves.HasMessages() && _inputsEnabled)
         {
             Move move = _inputsMoves.Dequeue();
             switch (_currentInput)
@@ -43,7 +52,10 @@ public class MyMenuInputManager : MonoBehaviour
                     _menuInputs.PerformAction(move);
                     break;
                 case CurrentMenuInput.NewGame:
-                    _menuInputs.PerformAction(move);
+                    _newGameInputs.PerformAction(move);
+                    break;
+                case CurrentMenuInput.LoadGame:
+                    _loadGameInputs.PerformAction(move);
                     break;
             }
 
@@ -63,11 +75,11 @@ public class MyMenuInputManager : MonoBehaviour
 
     public bool GetInputsEnabled()
     {
-        return inputsEnabled;
+        return _inputsEnabled;
     }
 
     public void SetInputsEnabled(bool val)
     {
-        inputsEnabled = val;
+        _inputsEnabled = val;
     }
 }

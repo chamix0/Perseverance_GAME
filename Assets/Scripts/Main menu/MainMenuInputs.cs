@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MainMenuInputs : MonoBehaviour
 {
-    // Start is called before the first frame update
+    //components
     private MyMenuInputManager _myInputManager;
     private MainMenuManager _menuManager;
 
@@ -17,30 +15,38 @@ public class MainMenuInputs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //keyboard inputs
-        //accelerate and decelerate
         if (_myInputManager.GetCurrentInput() == CurrentMenuInput.Menu && _myInputManager.GetInputsEnabled())
         {
+            //select next button
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            {
                 _menuManager.SelectPrevButton();
-            }
+
+            //select previous button 
             else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-            {
                 _menuManager.SelectNextButton();
-            }
-            else if (Input.GetKeyDown(KeyCode.Return))
-            {
+
+            //select button
+            else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.D))
                 _menuManager.PressEnter();
-            }
         }
     }
 
     public void PerformAction(Move move)
     {
-        //accelerate deccelerate
+        //move between buttons
         if (move.face == FACES.R)
         {
+            if (move.direction == 1)
+                _menuManager.SelectPrevButton();
+            else
+                _menuManager.SelectNextButton();
+        }
+
+        //select button
+        if (move.face == FACES.F)
+        {
+            if (move.direction == 1)
+                _menuManager.PressEnter();
         }
     }
 }

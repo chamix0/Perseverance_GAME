@@ -1,66 +1,116 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class NewGameManager : MonoBehaviour
+namespace Main_menu.New_game_screen
 {
-    [SerializeField] private List<GameObject> models;
-    private List<List<Renderer>> renderers;
-    private int modelIndex;
-
-    private void Start()
+    public class NewGameManager : MonoBehaviour
     {
-        modelIndex = 1;
-        renderers = new List<List<Renderer>>();
-        GetRenderers();
-        HideModels();
-        ActivateModel(modelIndex);
-    }
+        //components
+        [SerializeField] private List<GameObject> models;
+        [SerializeField] private GameObject uiObject;
+        private MyMenuInputManager _myMenuInputManager;
+        private TMP_InputField _inputField;
 
+        //variables
+        private int _modelIndex;
+        private string _name;
 
-    public void ShowNext()
-    {
-        int aux = modelIndex;
-        DeactivateModel(aux);
-        aux = (aux + 1) % models.Count;
-        ActivateModel(aux);
-        modelIndex = aux;
-    }
+        //lists
+        private List<List<Renderer>> _renderers;
 
-    public void ShowPrev()
-    {
-        int aux = modelIndex;
-        DeactivateModel(aux);
-        aux = aux - 1 < 0 ? models.Count - 1 : aux - 1;
-        ActivateModel(aux);
-        modelIndex = aux;
-    }
-
-    private void HideModels()
-    {
-        for (int i = 0; i < models.Count; i++)
-            DeactivateModel(i);
-    }
-
-    private void GetRenderers()
-    {
-        foreach (var model in models)
+        private void Awake()
         {
-            List<Renderer> auxRenderers = new List<Renderer>(model.GetComponentsInChildren<Renderer>());
-            renderers.Add(auxRenderers);
+            _myMenuInputManager = FindObjectOfType<MyMenuInputManager>();
+            _inputField = uiObject.GetComponent<TMP_InputField>();
+            _renderers = new List<List<Renderer>>();
         }
-    }
 
-    private void DeactivateModel(int index)
-    {
-        foreach (var renderer in renderers[index])
-            renderer.enabled = false;
-    }
+        private void Start()
+        {
+            _modelIndex = 1;
+            GetRenderers();
+            HideModels();
+            HideUI();
+            ActivateModel(_modelIndex);
+            _inputField.onValueChanged.AddListener(delegate(string arg0) { OnValueChanged(arg0); });
+            _inputField.onSelect.AddListener(delegate { OnSelect(); });
+            _inputField.onDeselect.AddListener(delegate { OnDeselect(); });
+        }
 
-    private void ActivateModel(int index)
-    {
-        foreach (var renderer in renderers[index])
-            renderer.enabled = true;
+
+        /// <summary>
+        /// Show next model and update current model index
+        /// </summary>
+        public void ShowNext()
+        {
+            DeactivateModel(_modelIndex);
+            _modelIndex = (_modelIndex + 1) % models.Count;
+            ActivateModel(_modelIndex);
+        }
+
+        /// <summary>
+        /// Show previous model and update current model index
+        /// </summary>
+        public void ShowPrev()
+        {
+            DeactivateModel(_modelIndex);
+            _modelIndex = _modelIndex - 1 < 0 ? models.Count - 1 : _modelIndex - 1;
+            ActivateModel(_modelIndex);
+        }
+
+        public void ShowUI() => uiObject.SetActive(true);
+
+        public void HideUI() => uiObject.SetActive(false);
+
+        private void HideModels()
+        {
+            for (int i = 0; i < models.Count; i++)
+                DeactivateModel(i);
+        }
+
+        private void GetRenderers()
+        {
+            foreach (var model in models)
+            {
+                List<Renderer> auxRenderers = new List<Renderer>(model.GetComponentsInChildren<Renderer>());
+                _renderers.Add(auxRenderers);
+            }
+        }
+
+        private void OnValueChanged(string value) => _name = value;
+
+        /// <summary>
+        /// avoids un wanted changes of model
+        /// </summary>
+        private void OnSelect() => _myMenuInputManager.SetInputsEnabled(false);
+
+        /// <summary>
+        /// avoids un wanted changes of model
+        /// </summary>
+        private void OnDeselect() => _myMenuInputManager.SetInputsEnabled(true);
+
+
+        private void DeactivateModel(int index)
+        {
+            foreach (var renderer in _renderers[index])
+                renderer.enabled = false;
+        }
+
+        private void ActivateModel(int index)
+        {
+            foreach (var renderer in _renderers[index])
+                renderer.enabled = true;
+        }
+
+        public int GetModelIndex()
+        {
+            return _modelIndex;
+        }
+
+        public string GetName()
+        {
+            return name;
+        }
     }
 }

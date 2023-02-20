@@ -6,7 +6,6 @@ public class PlayerLights : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] List<Light> _lights;
-    private PlayerValues _playerValues;
     public Material EarLightsColor;
 
     private Color offColor = new Color(0.172549024f, 3.24705887f, 0.188235298f, 0f);
@@ -18,7 +17,14 @@ public class PlayerLights : MonoBehaviour
 
     void Start()
     {
-        _playerValues = FindObjectOfType<PlayerValues>();
+        foreach (var material in transform.Find("Boton 2").gameObject.GetComponent<Renderer>().materials)
+        {
+            if (material.name == "EAR LIGHTS (Instance)")
+            {
+                EarLightsColor = material;
+                break;
+            }
+        }
         EarLightsColor.SetColor(EmissionColor, offColor);
     }
 

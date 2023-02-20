@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Main_menu;
+using Main_menu.Load_game_screen;
+using Main_menu.New_game_screen;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,60 +12,55 @@ using UnityEngine.UI;
 [DefaultExecutionOrder(1)]
 public class MainMenuManager : MonoBehaviour
 {
-    [SerializeField] private List<Button> _buttons;
-    private List<TMP_Text> _texts;
-    private List<Material> _materials;
+    //components
+    private MyMenuInputManager _menuInputManager;
+    private NewGameManager _newGameManager;
+    private MenuCamerasController _camerasController;
     private JSONsaving _jsoNsaving;
     private SaveData _saveData;
+    [SerializeField] private Shader buttonShader;
+    private LoadGameManager _loadGameManager;
+
+    //variables
     public Color _colorHighlighted;
     private Color _colorSelected;
     public Color _notInteracctableColor;
     private bool continueInteractable, NewGameInteractable;
-    private int selectedButton;
-    [SerializeField] private Shader buttonShader;
-    private MyMenuInputManager _menuInputManager;
 
-    private MenuCamerasController _camerasController;
+    private int selectedButton;
+
+    //lists
+    [SerializeField] private List<Button> _buttons;
+    private List<TMP_Text> _texts;
+    private List<Material> _materials;
+
 
     //shader properties
     private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
 
 
-    // Start is called before the first frame update
     private void Awake()
     {
         _camerasController = FindObjectOfType<MenuCamerasController>();
         _menuInputManager = FindObjectOfType<MyMenuInputManager>();
+        _newGameManager = FindObjectOfType<NewGameManager>();
+        _loadGameManager = FindObjectOfType<LoadGameManager>();
         _jsoNsaving = GetComponent<JSONsaving>();
+        _materials = new List<Material>();
+        _texts = new List<TMP_Text>();
         _saveData = _jsoNsaving._saveData;
     }
 
     void Start()
     {
-        _materials = new List<Material>();
-        _texts = new List<TMP_Text>();
-        _colorSelected = _buttons[0].GetComponent<Image>().material.GetColor(BackgroundColor);
-        for (int i = 0; i < _buttons.Count; i++)
-        {
-            Material material = new Material(buttonShader);
-            _buttons[i].GetComponent<Image>().material = material;
-            _materials.Add(material);
-            _texts.Add(_buttons[i].GetComponentInChildren<TMP_Text>());
-            int aux = i;
-            _buttons[i].onClick.AddListener(() => clicked(aux));
-        }
-
         selectedButton = 0;
+        _colorSelected = _buttons[0].GetComponent<Image>().material.GetColor(BackgroundColor);
+        SetButtons();
         CheckForContinueAndNewGame();
         if (!continueInteractable)
             selectedButton = 1;
         UpdateColors();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
     public void clicked(int button)
@@ -84,7 +82,11 @@ public class MainMenuManager : MonoBehaviour
         StartCoroutine(ActionForButtonCoroutine(aux));
     }
 
-    private void CheckForContinueAndNewGame()
+    /// <summary>
+    /// Enables and disable continue and new game. Continue is disabled when there is no save data at all and
+    /// new game is disabled when all slots are full.
+    /// </summary>
+    public void CheckForContinueAndNewGame()
     {
         if (_saveData.GetLastSessionSlotIndex() == -1)
         {
@@ -113,24 +115,40 @@ public class MainMenuManager : MonoBehaviour
 
     #region Actual actions for buttons
 
+    /// <summary>
+    /// Perform corresponding actions depending to the selected button
+    /// </summary>
+    /// <param name="index">index of the selected button</param>
+    /// <returns></returns>
     IEnumerator ActionForButtonCoroutine(int index)
     {
         CheckForContinueAndNewGame();
-        yield return new WaitForSeconds(1f);
+        if (index != 2)
+            _loadGameManager.HideUI();
+        if (index == 1)
+            _camerasController.SetCamera(1);
+
+        yield return new WaitForSeconds(0.25f);
         switch (index)
         {
             //continue
             case 0:
-                print("continue --------");
+                print("continue with slot: " + _saveData.GetLastSessionSlotIndex());
+                //change scene to game
                 break;
             //new game
             case 1:
                 //cambiar la camara para pasar al modo seleccion de personajes
-                _camerasController.SetCamera(1);
                 _menuInputManager.SetCurrentInput(CurrentMenuInput.NewGame);
+                _newGameManager.ShowUI();
                 break;
             //load game
             case 2:
+                _menuInputManager.SetCurrentInput(CurrentMenuInput.LoadGame);
+                _loadGameManager.ShowUI();
+                _loadGameManager.UpdateText();
+                _loadGameManager.UpdateColors();
+
                 break;
             //tutorial
             case 3:
@@ -151,13 +169,9 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    private void Exit()
-    {
-        Application.Quit();
-    }
+    private void Exit() => Application.Quit();
 
     #endregion
-
 
     public void SelectNextButton()
     {
@@ -185,11 +199,6 @@ public class MainMenuManager : MonoBehaviour
         UpdateColors();
     }
 
-    public int GetSelectedButton()
-    {
-        return selectedButton;
-    }
-
     private void UpdateColors()
     {
         for (int i = 0; i < _buttons.Count; i++)
@@ -210,5 +219,18 @@ public class MainMenuManager : MonoBehaviour
             _texts[0].color = _notInteracctableColor;
         if (!NewGameInteractable)
             _texts[1].color = _notInteracctableColor;
+    }
+
+    private void SetButtons()
+    {
+        for (int i = 0; i < _buttons.Count; i++)
+        {
+            Material material = new Material(buttonShader);
+            _buttons[i].GetComponent<Image>().material = material;
+            _materials.Add(material);
+            _texts.Add(_buttons[i].GetComponentInChildren<TMP_Text>());
+            int aux = i;
+            _buttons[i].onClick.AddListener(() => clicked(aux));
+        }
     }
 }

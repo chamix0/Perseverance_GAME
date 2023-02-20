@@ -16,13 +16,13 @@ public class SaveData
 
     #region Methods
 
-    public bool StartNewGame()
+    public bool StartNewGame(int model, string name)
     {
         for (int i = 0; i < MAX_SLOTS; i++)
         {
-            if (slots[i] == null)
+            if (!slots[i].GetGameStarted())
             {
-                slots[i] = new GameData();
+                slots[i] = new GameData(model, name);
                 lastSesionSlotIndex = i;
                 return true;
             }
