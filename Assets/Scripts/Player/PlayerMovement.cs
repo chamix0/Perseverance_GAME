@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float stompUmbral, rayOffset;
     public float staminaUsage = 1f, staminaRecovery = 0.5f;
     [SerializeField] private float turnSmoothTime = 0.1f;
+    [SerializeField] private LayerMask rayLayers;
 
 
     private void Start()
@@ -76,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         Debug.DrawRay(transform.position + new Vector3(0, rayOffset, 0),
             transform.TransformDirection(Vector3.forward) * stompUmbral, Color.red);
         if (Physics.Raycast(transform.position + new Vector3(0, rayOffset, 0),
-                transform.TransformDirection(Vector3.forward), out hit, stompUmbral))
+                transform.TransformDirection(Vector3.forward), out hit, stompUmbral,rayLayers))
         {
             return true;
         }

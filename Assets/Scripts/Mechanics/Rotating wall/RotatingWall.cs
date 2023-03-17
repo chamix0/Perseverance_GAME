@@ -54,7 +54,7 @@ public class RotatingWall : MonoBehaviour
             Quaternion.Slerp(baseTransform.rotation, Quaternion.Euler(0, targetWallAngle, 0), Time.deltaTime * 3f);
         _cameraController.RotateXCustom(baseTransform.eulerAngles.y + 90);
 
-        if (Mathf.Abs(PlayerValues.Clamp0360(baseTransform.eulerAngles.y) - PlayerValues.Clamp0360(targetWallAngle)) <
+        if (Mathf.Abs(MyUtils.Clamp0360(baseTransform.eulerAngles.y) - MyUtils.Clamp0360(targetWallAngle)) <
             0.01f)
         {
             _updateRotation = false;
@@ -68,8 +68,8 @@ public class RotatingWall : MonoBehaviour
 
     public bool CanExitRotatingWall()
     {
-        if (Mathf.Abs(baseTransform.eulerAngles.y - PlayerValues.Clamp0360(exitAngle)) < 0.01f ||
-            Mathf.Abs(baseTransform.eulerAngles.y - PlayerValues.Clamp0360(exitAngle + 180)) < 0.01f)
+        if (Mathf.Abs(baseTransform.eulerAngles.y - MyUtils.Clamp0360(exitAngle)) < 0.01f ||
+            Mathf.Abs(baseTransform.eulerAngles.y - MyUtils.Clamp0360(exitAngle + 180)) < 0.01f)
             return true;
         return false;
     }
@@ -89,8 +89,7 @@ public class RotatingWall : MonoBehaviour
             //player snap
             _playerValues.snapRotationTo(transform.rotation.y + 90);
             _playerValues.SnapPositionTo(snapPos.transform.position);
-            _playerValues.SetCanMove(false);
-            _playerAnimations.SetSitAnim(true);
+            _playerValues.Sit();
             _playerValues.gameObject.transform.parent = this.transform;
             //rigid body
             _playerValues._rigidbody.isKinematic = true;
@@ -107,8 +106,8 @@ public class RotatingWall : MonoBehaviour
         _playerValues._rigidbody.useGravity = true;
         _playerValues._rigidbody.constraints = _playerValues._originalRigidBodyConstraints;
         exitAngle = (-exitAngle);
-        _playerAnimations.SetSitAnim(false);
         _playerValues.SetInputsEnabled(false);
+        _playerValues.StandUp(false, 3f);
         StartCoroutine(ExitRotWallCoroutine());
     }
 
@@ -121,9 +120,7 @@ public class RotatingWall : MonoBehaviour
 
     IEnumerator ExitRotWallCoroutine()
     {
-        _playerValues.SetCurrentInput(CurrentInput.Movement);
         yield return new WaitForSeconds(3f);
-        _playerValues.SetCanMove(true);
         _playerValues.SetGear(0);
         yield return new WaitForSeconds(3f);
         _playerValues.StopMovement();

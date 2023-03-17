@@ -40,7 +40,7 @@ public class StairsBehavior : MonoBehaviour
                 _playerValues._rigidbody.useGravity = true;
                 endAnimation = false;
                 reset = true;
-                StartCoroutine(EndAnimationCoroutine());
+                _playerValues.StandUp(true, 4f);
             }
         }
 
@@ -60,9 +60,7 @@ public class StairsBehavior : MonoBehaviour
         {
             _playerValues.snapRotationTo(targetAngle);
             _playerValues.SnapPositionTo(snapPos.transform.position);
-            _playerValues.SetInputsEnabled(false);
-            _playerValues.SetCanMove(false);
-            _playerAnimations.SetSitAnim(true);
+            _playerValues.Sit();
             StartCoroutine(startAnimationCoroutine());
         }
     }
@@ -88,13 +86,5 @@ public class StairsBehavior : MonoBehaviour
         _animator.SetTrigger(Move1);
         _animator.SetTrigger(Move1);
         endAnimation = true;
-    }
-
-    IEnumerator EndAnimationCoroutine()
-    {
-        _playerAnimations.SetSitAnim(false);
-        yield return new WaitForSeconds(4f);
-        _playerValues.SetInputsEnabled(true);
-        _playerValues.SetCanMove(true);
     }
 }

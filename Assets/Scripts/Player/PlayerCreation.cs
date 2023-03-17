@@ -15,8 +15,7 @@ public class PlayerCreation : MonoBehaviour
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
-        model = _playerValues._gameData.GetEddoModel();
-        print(model);
+        model = _playerValues.gameData.GetEddoModel();
         Material[] oldMaterials = modelObjects[0].GetComponent<Renderer>().materials;
         Material[] newMaterials = modelTextures[model].gameObject.GetComponent<Renderer>().sharedMaterials;
 

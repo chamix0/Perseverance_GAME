@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
+[DefaultExecutionOrder(4)]
 public class MinigameManager : MonoBehaviour
 {
     //components
@@ -13,11 +15,11 @@ public class MinigameManager : MonoBehaviour
     [SerializeField] private Shader shader;
 
     //variables
-    private int lastMinigame = -1;
+    private int _lastMinigame = -1;
 
     //lists
-    private List<Image> counterImages;
-    [SerializeField] private List<Minigame> _minigames;
+    private List<Image> _counterImages;
+    private List<Minigame> minigames;
 
     //shader names
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
@@ -25,12 +27,23 @@ public class MinigameManager : MonoBehaviour
 
     private void Awake()
     {
-        counterImages = new List<Image>();
+        _counterImages = new List<Image>();
+        minigames = new List<Minigame>();
     }
 
     void Start()
     {
-        counterImages.AddRange(counterObject.GetComponentsInChildren<Image>());
+        //minigames 
+        minigames.Add(GetComponent<ColorsManager>());
+        minigames.Add(GetComponent<AsteroidsManager>());
+        minigames.Add(GetComponent<PushFastManager>());
+        minigames.Add(GetComponent<JustWaitManager>());
+        minigames.Add(GetComponent<RollTheNutManager>());
+        minigames.Add(GetComponent<AdjustValuesManager>());
+        minigames.Add(GetComponent<MemoryMingameManager>());
+
+
+        _counterImages.AddRange(counterObject.GetComponentsInChildren<Image>());
         SetCounterImages();
         SetCounterVisivility(false);
     }
@@ -44,24 +57,24 @@ public class MinigameManager : MonoBehaviour
 
     public void UpdateCounter(int correctCount)
     {
-        for (int i = 0; i < counterImages.Count; i++)
+        for (int i = 0; i < _counterImages.Count; i++)
         {
             if (i < correctCount)
             {
-                counterImages[i].material.SetFloat(MyAlpha, 1f);
-                counterImages[i].material.SetColor(BackgroundColor, Color.magenta);
+                _counterImages[i].material.SetFloat(MyAlpha, 1f);
+                _counterImages[i].material.SetColor(BackgroundColor, Color.magenta);
             }
             else
             {
-                counterImages[i].material.SetColor(BackgroundColor, Color.green);
-                counterImages[i].material.SetFloat(MyAlpha, 0.1f);
+                _counterImages[i].material.SetColor(BackgroundColor, Color.green);
+                _counterImages[i].material.SetFloat(MyAlpha, 0.1f);
             }
         }
     }
 
     private void SetCounterImages()
     {
-        foreach (var image in counterImages)
+        foreach (var image in _counterImages)
         {
             Material material = new Material(shader);
             image.material = material;
@@ -74,18 +87,19 @@ public class MinigameManager : MonoBehaviour
     public void StartRandomMinigame()
     {
         int index;
-        if (lastMinigame == -1)
-            index = Random.Range(0, _minigames.Count);
+        if (_lastMinigame == -1)
+        {
+            index = Random.Range(0, minigames.Count);
+            _lastMinigame = index;
+        }
         else
         {
             do
             {
-                index = Random.Range(0, _minigames.Count);
-            } while (index != lastMinigame);
-            lastMinigame = index;
+                index = Random.Range(0, minigames.Count);
+            } while (index == _lastMinigame);
+            _lastMinigame = index;
         }
-
-        print("selecting  minigame");
-        _minigames[index].StartMinigame();
+        minigames[index].StartMinigame();
     }
 }

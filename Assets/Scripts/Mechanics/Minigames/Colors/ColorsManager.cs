@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-
+[DefaultExecutionOrder(2)]
 public class ColorsManager : Minigame
 {
     //game variables
@@ -74,8 +74,6 @@ public class ColorsManager : Minigame
 
         Material targetMaterial = new Material(shader);
         targetImage.material = targetMaterial;
-        ChangeTargetColor();
-        _minigameManager.UpdateCounter(correctCount);
         _genericScreenUi.SetTextAlpha(0);
         HideUI();
     }
@@ -117,7 +115,6 @@ public class ColorsManager : Minigame
 
     public void MoveFace(Move move)
     {
-        print("DDDDDDDDDDDDDDDDDDDDDDDD");
         if (move.color.Equals(targetColor))
         {
             correctCount++;
@@ -137,7 +134,7 @@ public class ColorsManager : Minigame
         Color oldColor = targetColor;
         do
         {
-            int ranColorTarget = Random.Range(0, _colors.Count - 1);
+            int ranColorTarget = Random.Range(0, _colors.Count);
             targetColor = _colors[ranColorTarget];
         } while (oldColor == targetColor);
 
@@ -148,15 +145,17 @@ public class ColorsManager : Minigame
     {
         correctCount = 0;
         DistributeColors();
+        ChangeTargetColor();
         ShowUI();
         HideGameUi();
-        _playerValues.SetCurrentInput(CurrentInput.Colors_Minigame);
+        _playerValues.SetCurrentInput(CurrentInput.ColorsMinigame);
         _playerValues.SetInputsEnabled(true);
         StartCoroutine(StartGameCoroutine());
     }
 
     private void EndMinigame()
     {
+        _minigameManager.UpdateCounter(0);
         HideGameUi();
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(EndGameCoroutine());
@@ -217,10 +216,6 @@ public class ColorsManager : Minigame
         yield return new WaitForSeconds(2f);
         _cameraChanger.SetOrbitCamera();
         yield return new WaitForSeconds(2f);
-        _playerAnimations.SetSitAnim(false);
-        yield return new WaitForSeconds(1f);
-        _playerValues.SetCurrentInput(CurrentInput.Movement);
-        _playerValues.SetInputsEnabled(true);
-        _playerValues.SetCanMove(true);
+        _playerValues.StandUp(true, 3f);
     }
 }

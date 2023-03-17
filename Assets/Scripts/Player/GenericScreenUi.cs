@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,9 +11,13 @@ public class GenericScreenUi : MonoBehaviour
     private bool updateText;
     private TMP_Text genericText;
 
-    void Start()
+    private void Awake()
     {
         genericText = GameObject.Find("generic text").gameObject.GetComponent<TMP_Text>();
+    }
+
+    void Start()
+    {
         genericText.alpha = 0;
     }
 

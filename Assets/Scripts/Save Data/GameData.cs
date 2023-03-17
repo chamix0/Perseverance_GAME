@@ -14,7 +14,7 @@ public class GameData
     [SerializeField] private int eddoModel;
 
     [SerializeField] private bool[] zonesEnabled;
-    [SerializeField] private long[] zonestime;
+    [SerializeField] private double[] zonestime;
     [SerializeField] private string lastTimePlayed;
     [SerializeField] private int totalTimePlayed;
     [SerializeField] private string[] zonesPB;
@@ -32,7 +32,7 @@ public class GameData
         muted = false;
         GameStarted = true;
         zonesEnabled = new bool[MAX_ZONES];
-        zonestime = new long[MAX_ZONES];
+        zonestime = new Double[MAX_ZONES];
         zonesPB = new string[MAX_ZONES];
         intializeLevels();
     }
@@ -46,7 +46,7 @@ public class GameData
         muted = false;
         GameStarted = false;
         zonesEnabled = new bool[MAX_ZONES];
-        zonestime = new long[MAX_ZONES];
+        zonestime = new Double[MAX_ZONES];
         zonesPB = new string[MAX_ZONES];
         intializeLevels();
     }
@@ -55,6 +55,7 @@ public class GameData
     {
         return eddoModel;
     }
+
     public bool getMuted()
     {
         return muted;
@@ -79,18 +80,18 @@ public class GameData
         }
     }
 
-    public void setTime(int level, long time, string timeString)
+    public void setTime(int level, double timeMiliseconds, string timeString)
     {
         if (zonestime[level] < 0)
         {
-            zonestime[level] = time;
+            zonestime[level] = timeMiliseconds;
             zonesPB[level] = timeString;
         }
         else
         {
-            if (zonestime[level] > time)
+            if (zonestime[level] > timeMiliseconds)
             {
-                zonestime[level] = time;
+                zonestime[level] = timeMiliseconds;
                 zonesPB[level] = timeString;
             }
         }

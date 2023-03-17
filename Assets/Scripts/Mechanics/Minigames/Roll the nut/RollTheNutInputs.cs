@@ -7,18 +7,28 @@ public class RollTheNutInputs : MonoBehaviour
     // Start is called before the first frame update
     // Start is called before the first frame update  
     private PlayerValues _playerValues;
-    private MemoryMingameManager memoryMingame;
+    private RollTheNutManager rollTheNutManager;
 
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
-        memoryMingame = FindObjectOfType<MemoryMingameManager>();
+        rollTheNutManager = FindObjectOfType<RollTheNutManager>();
     }
 
     // Update is called once per frame
 
     public void PerformAction(Move move)
     {
-        memoryMingame.Select(move.color);
+        if (move.face == FACES.F)
+        {
+            if (move.direction == 1)
+            {
+                rollTheNutManager.RollClockWise();
+            }
+            else
+            {
+                rollTheNutManager.RollCounterClockWise();
+            }
+        }
     }
 }

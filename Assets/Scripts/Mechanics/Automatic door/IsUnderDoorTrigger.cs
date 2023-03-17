@@ -1,0 +1,35 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class IsUnderDoorTrigger : MonoBehaviour
+{
+    //components
+    private DoorManager _doorBase;
+
+    void Start()
+    {
+        _doorBase = transform.parent.GetComponentInChildren<DoorManager>();
+    }
+
+    // Update is called once per frame
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            _doorBase.OpenDoor();
+            _doorBase._inside = true;
+            print("in");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            _doorBase._inside = false;
+            print("out");
+        }
+    }
+}

@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(3)]
 public class MemoryMingameManager : Minigame
 {
     private enum Colors
@@ -40,7 +41,6 @@ public class MemoryMingameManager : Minigame
 
     //variables
     private float textAlpha, targetAlpha, _tA;
-    private bool updateText;
     private Image targetImage;
     private int correctSequenceCount;
     private int correctCount;
@@ -92,11 +92,8 @@ public class MemoryMingameManager : Minigame
             t.GetComponent<Image>().material = material;
         }
 
-        Material targetMaterial = new Material(shader);
-        targetImage.material = targetMaterial;
         _genericScreenUi.SetTextAlpha(0);
         HideUI();
-        updateText = false;
     }
 
     private void DistributeColors()
@@ -200,7 +197,7 @@ public class MemoryMingameManager : Minigame
         DistributeColors();
         ShowUI();
         HideGameUi();
-        _playerValues.SetCurrentInput(CurrentInput.Memory_Minigame);
+        _playerValues.SetCurrentInput(CurrentInput.MemoryMinigame);
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(StartGameCoroutine());
     }
@@ -208,6 +205,7 @@ public class MemoryMingameManager : Minigame
     private void EndMinigame()
     {
         HideGameUi();
+        _minigameManager.UpdateCounter(0);
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(EndGameCoroutine());
     }
@@ -267,10 +265,6 @@ public class MemoryMingameManager : Minigame
         yield return new WaitForSeconds(2f);
         _cameraChanger.SetOrbitCamera();
         yield return new WaitForSeconds(2f);
-        _playerAnimations.SetSitAnim(false);
-        yield return new WaitForSeconds(1f);
-        _playerValues.SetCurrentInput(CurrentInput.Movement);
-        _playerValues.SetInputsEnabled(true);
-        _playerValues.SetCanMove(true);
+        _playerValues.StandUp( true, 3f);
     }
 }

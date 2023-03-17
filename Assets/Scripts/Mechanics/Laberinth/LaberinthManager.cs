@@ -1,8 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using Mechanics.Laberinth;
 using UnityEngine;
 
+[DefaultExecutionOrder(4)]
 public class LaberinthManager : MonoBehaviour
 {
     //components
@@ -22,7 +23,7 @@ public class LaberinthManager : MonoBehaviour
     private float _closeY;
 
     //values
-    private const float OpenY = 5;
+    private float _openY;
 
     //lists
     private List<TerminalLaberinth> _terminalLaberinthList;
@@ -38,11 +39,13 @@ public class LaberinthManager : MonoBehaviour
         _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         var parent = transform.parent;
-        _terminalLaberinthList.AddRange(parent.GetComponentsInChildren<TerminalLaberinth>());
+        _terminalLaberinthList.AddRange(parent.parent.GetComponentsInChildren<TerminalLaberinth>());
         cameraChanger = FindObjectOfType<CameraChanger>();
         _snapPos = transform.gameObject.transform.Find("snap pos").gameObject;
         door = parent.Find("Door").gameObject;
-        _closeY = door.transform.position.y;
+        var position = door.transform.position;
+        _openY = position.y + 5;
+        _closeY = position.y;
         _playerValues = FindObjectOfType<PlayerValues>();
     }
 
@@ -50,7 +53,7 @@ public class LaberinthManager : MonoBehaviour
     {
         if (_openDoor)
         {
-            if (door.transform.position.y < OpenY)
+            if (door.transform.position.y < _openY)
                 door.transform.position += new Vector3(0, 0.1f, 0);
             else
                 _openDoor = false;
@@ -91,15 +94,14 @@ public class LaberinthManager : MonoBehaviour
         {
             _inside = true;
             var rotation = transform.rotation;
-            _playerValues.snapRotationTo(rotation.y + 180);
+            var eulerAngles = _snapPos.transform.eulerAngles;
+            _playerValues.snapRotationTo(eulerAngles.y);
             _playerValues.SnapPositionTo(_snapPos.transform.position);
-            _cameraController.RotateXCustom(rotation.y);
+            _cameraController.RotateXCustom(MyUtils.Clamp0360(eulerAngles.y+180));
             _cameraController.RotateYCustom(0.5f);
             _cameraController.FreezeCamera();
 
-            _playerValues.SetInputsEnabled(false);
-            _playerValues.SetCanMove(false);
-            _playerAnimations.SetSitAnim(true);
+            _playerValues.Sit();
             cameraChanger.SetScreenCamera();
             //mostrar mensaje
             StartCoroutine(ShowMessageOpenDoor());
@@ -114,7 +116,6 @@ public class LaberinthManager : MonoBehaviour
     IEnumerator ShowMessageOpenDoor()
     {
         string msg = "";
-        print("miss " + GetFinishedTerminals());
         if (GetMissingTerminals() > 0)
         {
             msg = "Terminals left:" + GetMissingTerminals();
@@ -130,10 +131,8 @@ public class LaberinthManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
         _genericScreenUi.FadeOutText();
         cameraChanger.SetOrbitCamera();
-        yield return new WaitForSeconds(2f);
-        _playerAnimations.SetSitAnim(false);
+        _playerValues.StandUp(false, 2.5f);
         yield return new WaitForSeconds(2.5f);
-        _playerValues.SetCanMove(true);
         _playerValues.SetGear(0);
         yield return new WaitForSeconds(3f);
         _playerValues.StopMovement();

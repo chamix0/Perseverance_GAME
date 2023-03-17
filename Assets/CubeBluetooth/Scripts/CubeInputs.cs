@@ -8,16 +8,16 @@ using UnityEngine;
 /// </summary>
 public enum FACES
 {
-    R,
-    L,
-    U,
-    D,
-    F,
-    B,
-    M,
-    E,
-    S,
-    NULL
+    R = 'R',
+    L = 'L',
+    U = 'U',
+    D = 'D',
+    F = 'F',
+    B = 'B',
+    M = 'M',
+    E = 'E',
+    S = 'S',
+    Null
 }
 
 [DefaultExecutionOrder(3)]
@@ -93,7 +93,7 @@ public class CubeInputs : MonoBehaviour
                     move.color = GetColor(move.face);
                     _moves.Enqueue(move);
                     _moves.lastMove = move;
-                    print(move.face + " " + move.direction);
+                    // print(move.face + " " + move.direction);
                 }
             }
         }
@@ -246,7 +246,7 @@ public class CubeInputs : MonoBehaviour
         if (face == FACES.L) return L;
         if (face == FACES.U) return U;
         if (face == FACES.D) return D;
-        return FACES.NULL;
+        return FACES.Null;
     }
 
     private Move DoubleMove(Move move)
@@ -256,8 +256,8 @@ public class CubeInputs : MonoBehaviour
         Move move2 = _moves.lastMove;
 
 
-        print("turn  " + (move1.time));
-        print("turn difference " + Math.Abs(move1.time.TotalMilliseconds - move2.time.TotalMilliseconds));
+        // print("turn  " + (move1.time));
+        // print("turn difference " + Math.Abs(move1.time.TotalMilliseconds - move2.time.TotalMilliseconds));
         if (Math.Abs(move1.time.TotalMilliseconds - move2.time.TotalMilliseconds) < 500)
         {
             //could be a double move

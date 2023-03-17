@@ -4,33 +4,34 @@ using Mechanics.General_Inputs;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
-
+[DefaultExecutionOrder(3)]
 public class RollTheNutManager : Minigame
 {
-    public GraphicRaycaster m_Raycaster;
-    PointerEventData m_PointerEventData;
+    public GraphicRaycaster mRaycaster;
+    PointerEventData _mPointerEventData;
 
-    EventSystem m_EventSystem;
+    EventSystem _mEventSystem;
 
     //text to show on screen before the game
     private readonly string _name = "Roll the nut",
-        _tutorial = "Click the corresponding color\n or \n turn the corresponding face.",
-        endMessage = "WELL DONE!";
+        _tutorial = "Click the corresponding color\n or \n turn the corresponding face.";
+
+    private const string endMessage = "WELL DONE!";
 
     //values
-    private int maxTurns = 5;
+    private int _maxTurns = 5;
 
     //variables
-    private int turnCount;
-    private float prevVal = 0;
-    private float prevOffset;
-    private bool canTurn;
+    private int _turnCount;
+    private float _prevVal = 0;
+    private float _prevOffset;
+    private bool _canTurn;
 
     //game variables
-    private bool isEnabled;
-    private const int NUM_ROUNDS = 5;
+    private bool _isEnabled;
 
 
     //components
@@ -38,17 +39,15 @@ public class RollTheNutManager : Minigame
     [SerializeField] private Shader shader;
     private PlayerValues _playerValues;
     private CameraChanger _cameraChanger;
-    private PlayerAnimations _playerAnimations;
-    private Image nut;
+    private GameObject _nut;
     private MinigameManager _minigameManager;
     private GenericScreenUi _genericScreenUi;
+    private float _targetAngle;
+    private bool _updateAngle;
 
+    private readonly float angleStep = 90;
     //variables
-
-
-    //lists
-    private List<Image> counterImages;
-
+    
     //shader names
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
     private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
@@ -56,15 +55,14 @@ public class RollTheNutManager : Minigame
     void Start()
     {
         //Fetch the Event System from the Scene
-        m_EventSystem = FindObjectOfType<EventSystem>();
+        _mEventSystem = FindObjectOfType<EventSystem>();
 
-        _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
-        nut = uiObject.transform.Find("nut").gameObject.GetComponent<Image>();
-        _minigameManager.UpdateCounter(turnCount);
+        _nut = uiObject.transform.Find("nut").gameObject;
+        _minigameManager.UpdateCounter(_turnCount);
         _genericScreenUi.SetTextAlpha(0);
         HideUI();
     }
@@ -72,19 +70,19 @@ public class RollTheNutManager : Minigame
 
     void Update()
     {
-        //Check if the left Mouse button is clicked
-        if (isEnabled && Input.GetKey(KeyCode.Mouse0))
+        //mouse inputs
+        if (_isEnabled && Input.GetKey(KeyCode.Mouse0))
         {
             //Set up the new Pointer Event
-            m_PointerEventData = new PointerEventData(m_EventSystem);
+            _mPointerEventData = new PointerEventData(_mEventSystem);
             //Set the Pointer Event Position to that of the mouse position
-            m_PointerEventData.position = Input.mousePosition;
+            _mPointerEventData.position = Input.mousePosition;
 
             //Create a list of Raycast Results
             List<RaycastResult> results = new List<RaycastResult>();
 
             //Raycast using the Graphics Raycaster and mouse click position
-            m_Raycaster.Raycast(m_PointerEventData, results);
+            mRaycaster.Raycast(_mPointerEventData, results);
 
             //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
             foreach (RaycastResult result in results)
@@ -96,53 +94,112 @@ public class RollTheNutManager : Minigame
                     float ca = point.y;
                     float aux;
                     aux = Mathf.Acos(ca / h);
-                    if (point.x > 0)
+                    if (point.x < 0)
                         aux *= -1;
                     //turn 1 full time clockwise
                     float actualOffset = aux * Mathf.Rad2Deg;
-                    float offset = actualOffset - prevOffset;
+                    float offset = actualOffset - _prevOffset;
 
                     if (offset < 0)
-                        canTurn = true;
+                        _canTurn = true;
 
                     if (Mathf.Abs(offset) < 10f)
                     {
-                        if (canTurn)
-                            result.gameObject.transform.localRotation = Quaternion.Euler(0, 0, offset + prevVal);
+                        if (_canTurn)
+                            result.gameObject.transform.localRotation = Quaternion.Euler(0, 0, offset + _prevVal);
                     }
 
 
-                    prevOffset = actualOffset;
+                    _prevOffset = actualOffset;
                     float actualVal = result.gameObject.transform.localRotation.eulerAngles.z;
-                    if (prevVal == 0)
+                    if (_prevVal == 0)
                     {
                         result.gameObject.transform.localRotation = Quaternion.Euler(0, 0, 359);
                     }
-                    else if (offset < 0 && prevVal > 0 && prevVal < 20 && actualVal < 360 && actualVal > 340)
+                    else if (offset < 0 && _prevVal > 0 && _prevVal < 20 && actualVal < 360 && actualVal > 340)
                     {
-                        turnCount++;
-                        _minigameManager.UpdateCounter(turnCount);
-                        canTurn = true;
-                        if (turnCount >= maxTurns)
+                        _turnCount++;
+                        _minigameManager.UpdateCounter(_turnCount);
+                        _canTurn = true;
+                        if (_turnCount >= _maxTurns)
                             EndMinigame();
                     }
                     else if (offset >= 0)
                     {
-                        canTurn = false;
+                        _canTurn = false;
                     }
 
                     print(offset);
-                    prevVal = actualVal;
+                    _prevVal = actualVal;
                 }
+            }
+        }
+
+        //cube inputs
+        if (_updateAngle)
+        {
+            UpdateSnapAngle();
+        }
+    }
+
+    private void UpdateSnapAngle()
+    {
+        _nut.transform.localRotation =
+            Quaternion.Slerp(_nut.transform.localRotation, Quaternion.Euler(0, 0, MyUtils.Clamp0360(_targetAngle)),
+                Time.deltaTime * 5f);
+
+        if (Mathf.Abs(_nut.transform.localRotation.eulerAngles.z - MyUtils.Clamp0360(_targetAngle)) < 0.01f)
+        {
+            _updateAngle = false;
+        }
+    }
+
+    public void RollCounterClockWise()
+    {
+        print("FASDFASDFASDFA");
+        _targetAngle = RoundValue(MyUtils.Clamp0360(_nut.transform.localRotation.eulerAngles.z + angleStep));
+        if (_targetAngle == 90f)
+        {
+            if (_turnCount > 0)
+            {
+                _turnCount--;
+                _minigameManager.UpdateCounter(_turnCount);
+                _updateAngle = true;
+            }
+            else
+            {
+                _updateAngle = false;
+                _targetAngle = RoundValue(_nut.transform.localRotation.eulerAngles.z);
             }
         }
     }
 
+    public void RollClockWise()
+    {
+        _targetAngle = RoundValue(MyUtils.Clamp0360(_nut.transform.localRotation.eulerAngles.z - angleStep));
+
+        if (_targetAngle == 0)
+        {
+            _turnCount++;
+            _minigameManager.UpdateCounter(_turnCount);
+            _canTurn = true;
+            if (_turnCount >= _maxTurns)
+                EndMinigame();
+        }
+
+        _updateAngle = true;
+    }
+
+    float RoundValue(float input)
+    {
+        return Mathf.Round(input / angleStep) * angleStep;
+    }
+
     public override void StartMinigame()
     {
-        maxTurns = 5;
-        turnCount = 0;
-        _playerValues.SetCurrentInput(CurrentInput.Roll_The_Nut_Minigame);
+        _maxTurns = 5;
+        _turnCount = 0;
+        _playerValues.SetCurrentInput(CurrentInput.RollTheNutMinigame);
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(StartGameCoroutine());
     }
@@ -159,11 +216,11 @@ public class RollTheNutManager : Minigame
         uiObject.SetActive(false);
     }
 
-
     private void EndMinigame()
     {
-        isEnabled = false;
+        _isEnabled = false;
         HideUI();
+        _minigameManager.UpdateCounter(0);
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(EndGameCoroutine());
     }
@@ -183,7 +240,10 @@ public class RollTheNutManager : Minigame
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(1f);
         ShowUI();
-        isEnabled = true;
+        _isEnabled = true;
+        _playerValues.SetInputsEnabled(true);
+
+
         //empezar minijuego
     }
 
@@ -196,10 +256,6 @@ public class RollTheNutManager : Minigame
         yield return new WaitForSeconds(2f);
         _cameraChanger.SetOrbitCamera();
         yield return new WaitForSeconds(2f);
-        _playerAnimations.SetSitAnim(false);
-        yield return new WaitForSeconds(1f);
-        _playerValues.SetCurrentInput(CurrentInput.Movement);
-        _playerValues.SetInputsEnabled(true);
-        _playerValues.SetCanMove(true);
+        _playerValues.StandUp(true, 3);
     }
 }

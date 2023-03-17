@@ -110,7 +110,7 @@ namespace Main_menu.New_game_screen
 
         public string GetName()
         {
-            return name;
+            return _name;
         }
     }
 }

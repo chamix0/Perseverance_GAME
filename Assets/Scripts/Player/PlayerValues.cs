@@ -1,12 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using Mechanics.General_Inputs;
 using UnityEngine;
+using UnityEngine.Diagnostics;
+using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 
-public class PlayerValues : MonoBehaviour
+[DefaultExecutionOrder(1)]
+public class PlayerValues : Subject
 {
     #region DATA
 
@@ -18,6 +22,7 @@ public class PlayerValues : MonoBehaviour
 
     //stamina values
     public float stamina, maxStamina;
+    public int lives = 3;
 
     //stuck values
     private Stopwatch stuckTimer;
@@ -29,12 +34,13 @@ public class PlayerValues : MonoBehaviour
     [Header("COMPONENTES")] [NonSerialized]
     public Rigidbody _rigidbody;
 
-    [NonSerialized] public CameraController _cameraController;
     private PlayerLights _playerLights;
-    public Camera mainCamera;
+    [NonSerialized] public Camera mainCamera;
     [NonSerialized] public bool allStaminaUsed = false;
     [NonSerialized] public RigidbodyConstraints _originalRigidBodyConstraints;
     private PlayerAnimations _playerAnimations;
+
+    [SerializeField] private Transform isgroundedPos;
 
     //Inputs
     private CurrentInput _currentInput;
@@ -44,7 +50,7 @@ public class PlayerValues : MonoBehaviour
     //save data
     private JSONsaving _jsoNsaving;
     private SaveData _saveData;
-    public GameData _gameData;
+    [NonSerialized]public GameData gameData;
 
     //variables
     private bool _updateSnap, _updateLookAt, moveForward;
@@ -74,18 +80,19 @@ public class PlayerValues : MonoBehaviour
 
     private void Awake()
     {
-        // movementSpeeds = new List<float> { -1, 0, 1, 2, 3 };
         _currentInput = CurrentInput.Movement;
         inputsEnabled = true;
         _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _rigidbody = GetComponent<Rigidbody>();
         _playerLights = FindObjectOfType<PlayerLights>();
-        _cameraController = FindObjectOfType<CameraController>();
+        mainCamera = Camera.main;
+        //observers
+        AddObserver(_playerAnimations);
+        AddObserver(_playerLights);
         //save data
         _jsoNsaving = FindObjectOfType<JSONsaving>();
         _saveData = _jsoNsaving._saveData;
-        _gameData = _saveData.GetGameData(_saveData.GetLastSessionSlotIndex());
-        
+        gameData = _saveData.GetGameData(_saveData.GetLastSessionSlotIndex());
         _originalRigidBodyConstraints = _rigidbody.constraints;
         stuckTimer = new Stopwatch();
     }
@@ -115,7 +122,7 @@ public class PlayerValues : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Debug.DrawRay(transform.position + RayOffset,
+        Debug.DrawRay(isgroundedPos.position + RayOffset,
             transform.TransformDirection(Vector3.down) * raySize, Color.red);
     }
 
@@ -157,11 +164,10 @@ public class PlayerValues : MonoBehaviour
             else
                 gear = Mathf.Min(gear + 1, 4);
             _playerAnimations.ChangeGearAnim(old, gear);
+            NotifyObservers(PlayerActions.RiseGear);
         }
         else
-        {
             SetGear(1);
-        }
     }
 
     public void DecreaseGear()
@@ -172,6 +178,7 @@ public class PlayerValues : MonoBehaviour
             int old = gear;
             gear = Mathf.Max(gear - 1, 0);
             _playerAnimations.ChangeGearAnim(old, gear);
+            NotifyObservers(PlayerActions.DecreaseGear);
         }
         else
         {
@@ -263,13 +270,19 @@ public class PlayerValues : MonoBehaviour
         return new Vector3(_snapPosX, _snapPosY, _snapPosZ);
     }
 
+    private void StopRigidBodyVelocity()
+    {
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.angularVelocity = Vector3.zero;
+    }
 
     private void UpdateSnapAngle()
     {
         transform.rotation =
-            Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, Clamp0360(_targetAngle), 0), Time.deltaTime * 5f);
+            Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, MyUtils.Clamp0360(_targetAngle), 0),
+                Time.deltaTime * 5f);
 
-        if (Mathf.Abs(transform.eulerAngles.y - Clamp0360(_targetAngle)) < 0.01f)
+        if (Mathf.Abs(transform.eulerAngles.y - MyUtils.Clamp0360(_targetAngle)) < 0.01f)
         {
             _updateLookAt = false;
         }
@@ -277,6 +290,40 @@ public class PlayerValues : MonoBehaviour
 
     #endregion
 
+    #region ACTIONS
+
+    public void Sit()
+    {
+        StopRigidBodyVelocity();
+        SetInputsEnabled(false);
+        SetCanMove(false);
+        NotifyObservers(PlayerActions.Sit);
+    }
+
+    public void StandUp(bool inputs, float time)
+    {
+        NotifyObservers(PlayerActions.StandUp);
+        StartCoroutine(StandUpCoroutine(inputs, time));
+    }
+
+    public void Die(Vector3 spawnPos)
+    {
+        NotifyObservers(PlayerActions.Die);
+        StopRigidBodyVelocity();
+        transform.rotation = default;
+        TpToLastCheckPoint(spawnPos);
+    }
+
+
+    IEnumerator StandUpCoroutine(bool inputs, float time)
+    {
+        yield return new WaitForSeconds(time);
+        SetCurrentInput(CurrentInput.Movement);
+        SetCanMove(true);
+        SetInputsEnabled(inputs);
+    }
+
+    #endregion
 
     #region Grounded and stuck
 
@@ -316,7 +363,7 @@ public class PlayerValues : MonoBehaviour
         if (Physics.Raycast(transform.position,
                 Vector3.down, out hit, Single.PositiveInfinity))
         {
-            if (IsInLayerMask(hit.transform.gameObject, colisionLayers))
+            if (MyUtils.IsInLayerMask(hit.transform.gameObject, colisionLayers))
             {
                 transform.position = hit.point;
             }
@@ -327,6 +374,11 @@ public class PlayerValues : MonoBehaviour
         }
 
         transform.up = Vector3.up;
+    }
+
+    public void TpToLastCheckPoint(Vector3 position)
+    {
+        transform.position = position;
     }
 
     public bool GetIsGrounded()
@@ -342,10 +394,10 @@ public class PlayerValues : MonoBehaviour
     private void CheckIfGrounded()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position + RayOffset,
+        if (Physics.Raycast(isgroundedPos.position + RayOffset,
                 transform.TransformDirection(Vector3.down), out hit, raySize))
         {
-            if (IsInLayerMask(hit.transform.gameObject, colisionLayers))
+            if (MyUtils.IsInLayerMask(hit.transform.gameObject, colisionLayers))
             {
                 if (!isGrounded)
                 {
@@ -389,43 +441,19 @@ public class PlayerValues : MonoBehaviour
 
     public void TurnOnLights()
     {
-        _playerLights.TurnOnLights();
+        NotifyObservers(PlayerActions.TurnOnLights);
         lightsOn = true;
     }
 
     public void TurnOffLights()
     {
-        _playerLights.TurnOffLights();
+        NotifyObservers(PlayerActions.TurnOffLights);
         lightsOn = false;
     }
 
     public bool GetLights()
     {
         return lightsOn;
-    }
-
-    #endregion
-
-
-    #region Camera
-
-    #endregion
-
-    #region utils
-
-    private bool IsInLayerMask(GameObject obj, LayerMask layerMask)
-
-    {
-        return ((layerMask.value & (1 << obj.layer)) > 0);
-    }
-
-    public static float Clamp0360(float eulerAngles)
-    {
-        float result = eulerAngles - Mathf.CeilToInt(eulerAngles / 360f) * 360f;
-        if (result < 0)
-            result += 360f;
-
-        return result;
     }
 
     #endregion
