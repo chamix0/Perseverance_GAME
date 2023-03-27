@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 530496518729540382}
   - component: {fileID: 3527277628912020667}
   - component: {fileID: 1663973518224349297}
+  - component: {fileID: 3263624302663713413}
   m_Layer: 0
   m_Name: wall separator
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3263624302663713413
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871274357484485028}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.010000004, y: 0.010791087, z: 0.06999999}
+  m_Center: {x: -0.005, y: -0.005395564, z: 0.035}
