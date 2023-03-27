@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+
 [DefaultExecutionOrder(4)]
 public class MoveSequencePiece : MonoBehaviour
 {
@@ -14,6 +13,9 @@ public class MoveSequencePiece : MonoBehaviour
     private Vector2 targetPos;
     private RectTransform _rectTransform;
     private bool isLast;
+
+    private Action move;
+    private bool finishedMoving = true;
 
 
     // Start is called before the first frame update
@@ -36,6 +38,11 @@ public class MoveSequencePiece : MonoBehaviour
             SmoothSetAlpha();
     }
 
+    public bool GetFinishedMoving()
+    {
+        return finishedMoving;
+    }
+
     public void SetTextColor(Color color)
     {
         _text.color = color;
@@ -46,9 +53,10 @@ public class MoveSequencePiece : MonoBehaviour
         _text.text = value;
     }
 
-    public void MoveElement(RectTransform pos, bool value)
+    public void MoveAction(RectTransform pos, bool value)
     {
         targetPos = pos.anchoredPosition;
+        finishedMoving = false;
         _updateSnap = true;
         isLast = value;
         _tX = 0;
@@ -64,30 +72,42 @@ public class MoveSequencePiece : MonoBehaviour
         auxPos.z = 0;
 
         _rectTransform.anchoredPosition = auxPos;
-        if (isLast)
-            _tY += 1f * Time.deltaTime;
-        else
-            _tY += 0.85f * Time.deltaTime;
+
+        _tY += 5f * Time.deltaTime;
+        _tX += 1f * Time.deltaTime;
 
         if (_tX > 1.0f && _tY > 1.0f)
         {
             _tX = 1.0f;
             _tY = 1.0f;
+            finishedMoving = true;
             _updateSnap = false;
         }
     }
 
     public void SetAlpha(float value)
     {
-        targetAlpha = value;
-        _updateAlpha = true;
-        _tA = 0;
+        if (value == 0f)
+        {
+            _text.alpha = 0;
+        }
+        else
+        {
+            targetAlpha = value;
+            _updateAlpha = true;
+            _tA = 0;
+        }
+    }
+
+    public void SetColor(Color color)
+    {
+        _text.color = color;
     }
 
     private void SmoothSetAlpha()
     {
         _text.alpha = Mathf.Lerp(_text.alpha, targetAlpha, _tA);
-        _tA += 1f * Time.deltaTime;
+        _tA += 5f * Time.deltaTime;
         if (_tA > 1.0f)
         {
             _tA = 1.0f;

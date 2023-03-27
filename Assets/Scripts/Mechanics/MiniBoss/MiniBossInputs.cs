@@ -12,7 +12,7 @@ namespace Mechanics.MiniBoss
         private MiniBossManager _miniBossManager;
         private KeyCode kCode; //this stores your custom key
         private Stopwatch _timer;
-        private float _keyCooldown = 10;
+        private float _keyCooldown = 50;
 
         private List<string> alphabetList;
 
@@ -63,7 +63,27 @@ namespace Mechanics.MiniBoss
 
         public void PerformAction(Move move)
         {
-            _miniBossManager.ProcessInput(move);
+            if (_miniBossManager._phase == ScreenPhase.Game)
+            {
+                _miniBossManager.ProcessInput(move);
+            }
+            else if (_miniBossManager._phase == ScreenPhase.Boss)
+            {
+                if (move.face == FACES.L)
+                {
+                    if (move.direction > 0) _miniBossManager.SelectAction(PlayerFightAction.SpecialDefense);         
+                    else
+                                      _miniBossManager.SelectAction(PlayerFightAction.Defend);
+
+                }
+                else if (move.face == FACES.R)
+                {
+                    if (move.direction > 0)
+                        _miniBossManager.SelectAction(PlayerFightAction.Attack);
+                    else
+                        _miniBossManager.SelectAction(PlayerFightAction.SpecialAttack);
+                }
+            }
         }
     }
 }

@@ -1,0 +1,16 @@
+{
+    "name": "ShootAssembly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3419401ee06995048afc9d3656d906fe"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -40,7 +40,7 @@ public class CameraController : MonoBehaviour
             UpdateRotateCameraX();
         }
     }
-    
+
     public void RotateYClockwise()
     {
         targetRotationY = thirdPersonCamera.m_YAxis.Value - rotateStepY;
@@ -70,21 +70,20 @@ public class CameraController : MonoBehaviour
     public void RotateYCustom(float value)
     {
         targetRotationY = Mathf.Clamp(value, 0, 1);
-        updateValueX = true;
+        tY = 0;
+        updateValueY = true;
     }
 
     public void RotateXCounterClockwise()
     {
         targetRotationX = SnapPosition(thirdPersonCamera.m_XAxis.Value - angleStepX);
-        print(targetRotationX);
         updateValueX = true;
     }
 
     private float UpdateRotateCameraY()
     {
         rotationValueY = Mathf.Lerp(thirdPersonCamera.m_YAxis.Value, targetRotationY, tY);
-
-        tY += 0.5f * Time.deltaTime;
+        tY += 1f * Time.deltaTime;
 
         if (tY > 1.0f)
         {
@@ -99,6 +98,7 @@ public class CameraController : MonoBehaviour
     {
         return thirdPersonCamera;
     }
+
     public void FreezeCamera()
     {
         thirdPersonCamera.m_XAxis.m_MaxSpeed = 0;
@@ -117,7 +117,7 @@ public class CameraController : MonoBehaviour
             .Lerp(Quaternion.Euler(0, thirdPersonCamera.m_XAxis.Value, 0),
                 Quaternion.Euler(0, targetRotationX, 0), 5 * Time.deltaTime).eulerAngles.y;
 
-        if (Mathf.Abs(thirdPersonCamera.m_XAxis.Value - targetRotationX) < 0.01f)
+        if (Mathf.Abs(thirdPersonCamera.m_XAxis.Value - targetRotationX) < 0.1f)
         {
             updateValueX = false;
         }

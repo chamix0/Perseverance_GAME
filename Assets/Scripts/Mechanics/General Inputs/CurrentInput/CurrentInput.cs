@@ -12,6 +12,7 @@
         ClickFastMinigame,
         LockerMinigame,
         MiniBoss,
+        StealthMovement,
         Conversation,
         Battle,
         None

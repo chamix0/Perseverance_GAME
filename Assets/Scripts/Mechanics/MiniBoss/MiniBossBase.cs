@@ -22,11 +22,16 @@ public class MiniBossBase : MonoBehaviour
     private float _openY;
 
 
-    //values
+    //parameters
     public string bossName;
     public Sprite bossSprite;
     public int openHeight = 5;
+    public int bossTurnTime = 10;
+    public int gameTime = 20;
+    public int sequenceLength = 50;
+    public float bossMaxHealth = 100;
 
+    [Range(0, 3)] public int gameDifficulty = 0;
 
     void Start()
     {
@@ -90,13 +95,14 @@ public class MiniBossBase : MonoBehaviour
             _playerValues.Sit();
             _cameraChanger.SetScreenCamera();
             //Empezar minijuego
-            miniBossManager.StartMinigame(bossName,bossSprite);
+            miniBossManager.StartMinigame(bossName, bossSprite, bossTurnTime, gameTime, sequenceLength, gameDifficulty,bossMaxHealth,this);
         }
     }
 
     public void EndFight()
     {
         _minigameFinished = true;
+        StartCoroutine(ExitBaseCoroutine());
         OpenDoor();
     }
 

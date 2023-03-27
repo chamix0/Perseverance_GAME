@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using Mechanics.General_Inputs;
 using UnityEngine;
-using UnityEngine.Diagnostics;
-using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 
 [DefaultExecutionOrder(1)]
@@ -44,13 +41,15 @@ public class PlayerValues : Subject
 
     //Inputs
     private CurrentInput _currentInput;
+    private bool _inputsEnabled;
 
-    private bool inputsEnabled;
+    //stealth mode
+ [SerializeField]   private bool _distractionEnabled;
 
     //save data
     private JSONsaving _jsoNsaving;
     private SaveData _saveData;
-    [NonSerialized]public GameData gameData;
+    [NonSerialized] public GameData gameData;
 
     //variables
     private bool _updateSnap, _updateLookAt, moveForward;
@@ -81,7 +80,7 @@ public class PlayerValues : Subject
     private void Awake()
     {
         _currentInput = CurrentInput.Movement;
-        inputsEnabled = true;
+        _inputsEnabled = true;
         _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _rigidbody = GetComponent<Rigidbody>();
         _playerLights = FindObjectOfType<PlayerLights>();
@@ -105,10 +104,6 @@ public class PlayerValues : Subject
     private void Update()
     {
         CheckIfGrounded();
-    }
-
-    private void FixedUpdate()
-    {
         if (_updateSnap)
         {
             transform.position = UpdateSnapPosition();
@@ -138,12 +133,12 @@ public class PlayerValues : Subject
 
     public bool GetInputsEnabled()
     {
-        return inputsEnabled;
+        return _inputsEnabled;
     }
 
     public void SetInputsEnabled(bool val)
     {
-        inputsEnabled = val;
+        _inputsEnabled = val;
     }
 
     #region GEAR
@@ -286,6 +281,20 @@ public class PlayerValues : Subject
         {
             _updateLookAt = false;
         }
+    }
+
+    #endregion
+
+    #region Stealth
+
+    public bool GetDistractionEnabled()
+    {
+        return _distractionEnabled;
+    }
+
+    public void SetDistractionEnabled(bool val)
+    {
+        _distractionEnabled = val;
     }
 
     #endregion

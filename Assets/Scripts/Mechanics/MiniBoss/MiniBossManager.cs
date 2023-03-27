@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-enum PlayerFightAction
+public enum PlayerFightAction
 {
     Defend = 0,
     SpecialDefense = 1,
@@ -31,6 +31,20 @@ public enum ScreenPhase
     Fight
 }
 
+struct MoveElement
+{
+    public RectTransform pos;
+    public bool value;
+    public MoveSequencePiece piece;
+
+    public MoveElement(RectTransform r, bool b, MoveSequencePiece p)
+    {
+        pos = r;
+        value = b;
+        piece = p;
+    }
+}
+
 public class MiniBossManager : MonoBehaviour
 {
     //text to show on screen before the game
@@ -43,31 +57,49 @@ public class MiniBossManager : MonoBehaviour
     private PlayerValues _playerValues;
     private GenericScreenUi _genericScreenUi;
     private CameraChanger _cameraChanger;
-    [SerializeField] private GameObject pieceContainer;
-    [SerializeField] private GameObject pieceTemplate;
-    [SerializeField] private GameObject positionsContainer;
+    [SerializeField] private Image bossImage;
+    [SerializeField] private Image livesImage;
     private GameObject bossScreen;
     private GameObject gameScreen;
+    private GameObject fightScreen;
+    private MiniBossBase _miniBossBase;
+
+
+    //timer
+    private Stopwatch _timer;
+    int _bossTurnTime;
+    int _gameMaxTime;
+
+
+    //values
+    private const int NumPieces = 15;
+    public ScreenPhase _phase = ScreenPhase.Boss;
+    private int lives = 3;
+    private float _bossHealth, _bossMaxHealth;
+    public bool usingCube;
+
+    //list
+    [SerializeField] private List<Sprite> livesSprites;
+
+
+    #region BOSS PHASE STUFF
+
+    //values
+    private PlayerFightAction selectedAction = PlayerFightAction.Attack;
+    [SerializeField] private BossAction _bossAction;
+
+    //variables
 
     //texts
     [SerializeField] private TMP_Text bossNameText;
     [SerializeField] private TMP_Text bossIntentionText;
     [SerializeField] private TMP_Text bossTimeText;
-    [SerializeField] private TMP_Text correctCountText;
-    [SerializeField] private TMP_Text inCorrectCountText;
-    [SerializeField] private TMP_Text comboCountText;
-    [SerializeField] private TMP_Text maxComboCountText;
 
-
-    //timer
-    private Stopwatch _timer;
-    public int bossTurnTime;
-    public int gameMaxTime;
+    //lists
+    private List<Image> _buttonsImages;
 
     //buttons
-    [Header("Action buttons")] [SerializeField]
-    private Button defendButton;
-
+    [SerializeField] private Button defendButton;
     [SerializeField] private Button specialDefendButton;
     [SerializeField] private Button attackButton;
     [SerializeField] private Button specialAttackButton;
@@ -77,79 +109,103 @@ public class MiniBossManager : MonoBehaviour
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
     private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
 
+    #endregion
+
+    #region GAME PHASE STUFF
+
     //values
-    private const int NumPieces = 7;
-    public ScreenPhase _phase = ScreenPhase.Boss;
-    private int lives = 3;
-    public bool usingCube;
+    int _maxSequence = 100;
+    private int _normalSequenceLength;
+    private int _specialSequenceLength;
 
+    private int difficulty;
 
-    //list
-    private List<MoveSequencePiece> pieces;
-    private List<RectTransform> positions;
-    private List<Image> _buttonsImages;
-    [SerializeField] private List<Sprite> livesSprites;
-    private Queue<int> piecesIndex;
-
-    //boss phase stuff
-    private PlayerFightAction selectedAction = PlayerFightAction.Attack;
-    private BossAction _bossAction;
-    [SerializeField] private Image bossImage;
-
-    //game phase stuff
-    public int maxSequence = 100;
-    private List<SequenceValue> _sequenceValues;
+    //variables
     private int _sequenceValueIndex;
     private int _inCorrectCount;
     private int _correctCount;
     private int _currentCombo;
     private int _maxCombo;
-    private KeyCode kCode; //this stores your custom key
 
+    //lists
+    private List<SequenceValue> _sequenceValues;
+    private Queue<int> _piecesIndex;
+    private List<RectTransform> _positions;
+    private List<MoveSequencePiece> _pieces;
 
-    //fight phase stuff
-    [SerializeField] private Image livesImage;
+    //texts
+    [SerializeField] private TMP_Text gameTimeText;
+    [SerializeField] private TMP_Text correctCountText;
+    [SerializeField] private TMP_Text inCorrectCountText;
+    [SerializeField] private TMP_Text comboCountText;
+    [SerializeField] private TMP_Text maxComboCountText;
+
+    //components
+    [SerializeField] private GameObject pieceContainer;
+    [SerializeField] private GameObject pieceTemplate;
+    [SerializeField] private GameObject positionsContainer;
+
+    #endregion
+
+    #region FIGHT PHASE STUFF
+
+    //sliders
+    [SerializeField] private Slider bossHealthSlider;
+    [SerializeField] private Slider bossHealthRecoverySlider;
+    private float _targetHealthValue;
+    private float _tH, _tRh;
+    private bool updateSliders;
+
+    //animator
+    [SerializeField] private Animator _fightAnimator;
+
+    //text
+    [SerializeField] private TMP_Text actionEfficiencyText;
+
+    //sprites
+    [SerializeField] private Image bossImageFight;
+    [SerializeField] private Image playerImageFight;
+    [SerializeField] private Image bossActionImage;
+    [SerializeField] private Image playerActionImage;
+
+    [SerializeField]
+    private List<Sprite> actionSprites; //0 - attack 1 - deffend 2 - special attack 3 - special deffense
+
+    private static readonly int Fight1 = Animator.StringToHash("fight");
+    private static readonly int Action1 = Animator.StringToHash("action");
+
+    #endregion
 
 
     private void Awake()
     {
-        positions = new List<RectTransform>();
+        _positions = new List<RectTransform>();
         _buttonsImages = new List<Image>();
-        piecesIndex = new Queue<int>(new[] { 6, 5, 4, 3, 2, 1, 0 });
-        pieces = new List<MoveSequencePiece>();
+        _piecesIndex = new Queue<int>();
+        for (int i = NumPieces - 1; i >= 0; i--)
+        {
+            _piecesIndex.Enqueue(i);
+        }
+
+        _pieces = new List<MoveSequencePiece>();
         _timer = new Stopwatch();
         _sequenceValues = new List<SequenceValue>();
-        for (int i = 0; i < maxSequence; i++)
-        {
-            _sequenceValues.Add(new SequenceValue());
-        }
     }
 
     void Start()
     {
         bossScreen = uiObject.transform.transform.Find("boss screen").gameObject;
         gameScreen = uiObject.transform.transform.Find("game screen").gameObject;
+        fightScreen = uiObject.transform.transform.Find("fight screen").gameObject;
 
-        for (int i = 1; i <= NumPieces; i++)
-        {
-            positions.Add(positionsContainer.transform.transform.Find("pos (" + i + ")").gameObject
-                .GetComponent<RectTransform>());
-        }
+        InitializePositions();
 
         defendButton.onClick.AddListener(delegate { SelectAction(PlayerFightAction.Defend); });
         specialDefendButton.onClick.AddListener(delegate { SelectAction(PlayerFightAction.SpecialDefense); });
         attackButton.onClick.AddListener(delegate { SelectAction(PlayerFightAction.Attack); });
         specialAttackButton.onClick.AddListener(delegate { SelectAction(PlayerFightAction.SpecialAttack); });
-        _buttonsImages.AddRange(new[]
-        {
-            defendButton.GetComponent<Image>(), specialDefendButton.GetComponent<Image>(),
-            attackButton.GetComponent<Image>(), specialAttackButton.GetComponent<Image>()
-        });
-        foreach (var image in _buttonsImages)
-        {
-            Material material = new Material(_shader);
-            image.material = material;
-        }
+
+        InitializeButtons();
 
         _normalColor = _buttonsImages[0].material.GetColor(BackgroundColor);
         _playerValues = FindObjectOfType<PlayerValues>();
@@ -164,40 +220,28 @@ public class MiniBossManager : MonoBehaviour
     {
         if (_phase == ScreenPhase.Boss)
         {
-            if (_timer.Elapsed.TotalSeconds > bossTurnTime)
+            if (_timer.Elapsed.TotalSeconds > _bossTurnTime)
                 EndBossTurn();
             else
-                bossTimeText.text = "" + (int)(bossTurnTime - _timer.Elapsed.TotalSeconds);
+                bossTimeText.text = "" + (int)(_bossTurnTime - _timer.Elapsed.TotalSeconds);
         }
         else if (_phase == ScreenPhase.Game)
         {
-            correctCountText.text = "" + _correctCount;
+            if (_timer.Elapsed.TotalSeconds > _gameMaxTime)
+                EndGameTurn();
+            else
+                gameTimeText.text = "" + (int)(_gameMaxTime - _timer.Elapsed.TotalSeconds);
+            correctCountText.text = "" + _correctCount + " / " + _maxSequence;
             inCorrectCountText.text = "" + _inCorrectCount;
             comboCountText.text = "" + _currentCombo;
             maxComboCountText.text = "" + _maxCombo;
         }
         else
         {
+            if (updateSliders)
+                SmoothSetbossHealthbar();
         }
     }
-
-    public void StartMinigame(string bossName, Sprite bossSprite)
-    {
-        _name = bossName;
-        bossNameText.text = bossName;
-        bossImage.sprite = bossSprite;
-        lives = 3;
-        _playerValues.SetCurrentInput(CurrentInput.MiniBoss);
-        _playerValues.SetInputsEnabled(true);
-        StartCoroutine(StartGameCoroutine());
-    }
-
-    private void EndMinigame()
-    {
-        _playerValues.SetInputsEnabled(false);
-        StartCoroutine(EndGameCoroutine());
-    }
-
 
     #region SHOW/HIDE UI
 
@@ -205,7 +249,6 @@ public class MiniBossManager : MonoBehaviour
     {
         ShowUI();
         bossScreen.SetActive(true);
-        HideGameScreen();
     }
 
     private void HideBossScreen()
@@ -215,14 +258,22 @@ public class MiniBossManager : MonoBehaviour
 
     private void ShowGameScreen()
     {
-        ShowUI();
         gameScreen.SetActive(true);
-        HideBossScreen();
     }
 
     private void HideGameScreen()
     {
         gameScreen.SetActive(false);
+    }
+
+    private void ShowFightScreen()
+    {
+        fightScreen.SetActive(true);
+    }
+
+    private void HideFightScreen()
+    {
+        fightScreen.SetActive(false);
     }
 
     public void ShowUI()
@@ -237,13 +288,14 @@ public class MiniBossManager : MonoBehaviour
 
     #endregion
 
-    #region boss phase
+    #region Boss Phase
 
     private void EnterBossPhase()
     {
         _phase = ScreenPhase.Boss;
         ShowBossScreen();
         HideGameScreen();
+        HideFightScreen();
         HighlightButton();
         SetBossAction();
         //start turn timer
@@ -263,23 +315,27 @@ public class MiniBossManager : MonoBehaviour
         if (action == 0)
         {
             _bossAction = BossAction.Defend;
+            bossActionImage.sprite = actionSprites[0];
             bossIntentionText.text = bossNameText.text + " is going to defend.";
         }
         else if (action == 1)
         {
             _bossAction = BossAction.Attack;
+            bossActionImage.sprite = actionSprites[2];
             bossIntentionText.text = bossNameText.text + " is going to attack.";
         }
         else
         {
             _bossAction = BossAction.Nothing;
+            bossActionImage.sprite = null;
             bossIntentionText.text = bossNameText.text + " is going to do nothing.";
         }
     }
 
-    private void SelectAction(PlayerFightAction action)
+    public void SelectAction(PlayerFightAction action)
     {
         selectedAction = action;
+        playerActionImage.sprite = actionSprites[(int)selectedAction];
         HighlightButton();
     }
 
@@ -305,9 +361,38 @@ public class MiniBossManager : MonoBehaviour
     private void EnterGamePhase()
     {
         _phase = ScreenPhase.Game;
+        _correctCount = 0;
+        _currentCombo = 0;
+        _maxCombo = 0;
+        _inCorrectCount = 0;
+
         HideBossScreen();
+        HideFightScreen();
         ShowGameScreen();
-        CreatePieces();
+
+        if (selectedAction is PlayerFightAction.SpecialAttack or PlayerFightAction.SpecialAttack)
+            _maxSequence = _specialSequenceLength;
+        else
+            _maxSequence = _normalSequenceLength;
+
+        CreateSequence(difficulty, _maxSequence);
+
+        if (_pieces.Count == 0)
+            CreatePieces();
+        else
+        {
+            SetAlphaPieces();
+            UpdatePiecesValues();
+        }
+
+        _timer.Start();
+    }
+
+    private void EndGameTurn()
+    {
+        _timer.Stop();
+        _timer.Reset();
+        EnterFightPhase();
     }
 
     private void CreatePieces()
@@ -316,9 +401,9 @@ public class MiniBossManager : MonoBehaviour
         {
             GameObject pieceObj = Instantiate(pieceTemplate, pieceContainer.transform);
             MoveSequencePiece piece = pieceObj.GetComponent<MoveSequencePiece>();
-            pieces.Add(piece);
+            _pieces.Add(piece);
             int aux = i;
-            
+
             StartCoroutine(MovePieceCoroutine(piece, aux));
         }
 
@@ -329,7 +414,7 @@ public class MiniBossManager : MonoBehaviour
     IEnumerator MovePieceCoroutine(MoveSequencePiece piece, int index)
     {
         yield return new WaitForSeconds(0f);
-        piece.MoveElement(positions[index], false);
+        piece.MoveAction(_positions[index], false);
     }
 
     public void ChangeInputToCube()
@@ -346,128 +431,357 @@ public class MiniBossManager : MonoBehaviour
 
     private void UpdatePiecesValues()
     {
-        int aux = _sequenceValueIndex + 4;
-        int[] auxIndexes = piecesIndex.ToArray();
+        int aux = _sequenceValueIndex + NumPieces - 5;
+        int[] auxIndexes = _piecesIndex.ToArray();
 
         for (int i = 0; i < NumPieces; i++)
         {
             int index = aux - i;
-            if (i <= 4)
+            if (i <= NumPieces - 5)
             {
                 if (usingCube)
-                    pieces[auxIndexes[^(i + 1)]].SetText(_sequenceValues[index].GetCubeValue().ToString());
+                    _pieces[auxIndexes[^(i + 1)]].SetText(_sequenceValues[index].GetCubeValue().ToString());
                 else
-                    pieces[auxIndexes[^(i + 1)]].SetText(_sequenceValues[index].GetKeyValue());
+                    _pieces[auxIndexes[^(i + 1)]].SetText(_sequenceValues[index].GetKeyValue());
             }
             else
             {
                 if (index >= 0)
                     if (usingCube)
-                        pieces[auxIndexes[^(i + 1)]].SetText(_sequenceValues[index].GetCubeValue().ToString());
+                        _pieces[auxIndexes[^(i + 1)]].SetText(_sequenceValues[index].GetCubeValue().ToString());
                     else
-                        pieces[auxIndexes[^(i + 1)]].SetText(_sequenceValues[index].GetKeyValue());
+                        _pieces[auxIndexes[^(i + 1)]].SetText(_sequenceValues[index].GetKeyValue());
                 else
-                    pieces[auxIndexes[^(i + 1)]].SetText("");
+                    _pieces[auxIndexes[^(i + 1)]].SetText("");
             }
         }
     }
 
     private void UpdateNextPiece()
     {
-        int[] auxIndexes = piecesIndex.ToArray();
-        int aux = _sequenceValueIndex + 4;
-        if (usingCube)
-            pieces[auxIndexes[^1]].SetText(_sequenceValues[aux].GetCubeValue().ToString());
-        else
-            pieces[auxIndexes[^1]].SetText(_sequenceValues[aux].GetKeyValue());
+        int[] auxIndexes = _piecesIndex.ToArray();
+        int aux = _sequenceValueIndex + NumPieces - 5;
+        if (aux < _maxSequence)
+        {
+            if (usingCube)
+                _pieces[auxIndexes[^1]].SetText(_sequenceValues[aux].GetCubeValue().ToString());
+            else
+                _pieces[auxIndexes[^1]].SetText(_sequenceValues[aux].GetKeyValue());
+        }
+        else _pieces[auxIndexes[^1]].SetText("");
     }
 
     public void NextPiece()
     {
-        int[] auxIndexes = piecesIndex.ToArray();
+        int[] auxIndexes = _piecesIndex.ToArray();
         for (int i = 0; i < NumPieces; i++)
         {
             if (i < NumPieces - 1)
-                pieces[auxIndexes[^(i + 1)]].MoveElement(positions[i + 1], false);
+                _pieces[auxIndexes[^(i + 1)]].MoveAction(_positions[i + 1], false);
             else
-                pieces[auxIndexes[^(i + 1)]].MoveElement(positions[0], true);
+                _pieces[auxIndexes[^(i + 1)]].MoveAction(_positions[0], true);
         }
 
-        int aux = piecesIndex.Dequeue();
-        piecesIndex.Enqueue(aux);
+        int aux = _piecesIndex.Dequeue();
+        _piecesIndex.Enqueue(aux);
         UpdateNextPiece();
         SetAlphaPieces();
     }
 
+    private void CreateSequence(int dif, int max)
+    {
+        _sequenceValueIndex = 0;
+        for (int i = 0; i < max; i++)
+        {
+            _sequenceValues.Add(new SequenceValue(dif));
+        }
+    }
+
     private void SetAlphaPieces()
     {
-        int[] auxIndexes = piecesIndex.ToArray();
+        int[] auxIndexes = _piecesIndex.ToArray();
         for (int i = 0; i < NumPieces; i++)
         {
-            if (i == 0)
-                pieces[auxIndexes[^(i + 1)]].SetAlpha(0);
-            else if (i == 1)
-                pieces[auxIndexes[^(i + 1)]].SetAlpha(0.2f);
-            else if (i > 1 && i <= 4)
-                pieces[auxIndexes[^(i + 1)]].SetAlpha(1);
-            else if (i == 5)
-                pieces[auxIndexes[^(i + 1)]].SetAlpha(0.5f);
+            if (i >= NumPieces - 3) _pieces[auxIndexes[^(i + 1)]].SetAlpha(0);
+            else if (i == NumPieces - 4) _pieces[auxIndexes[^(i + 1)]].SetAlpha(0.2f);
+            else if (i >= NumPieces - 7 && i < NumPieces - 4) _pieces[auxIndexes[^(i + 1)]].SetAlpha(1);
+            else if (i >= NumPieces - 8) _pieces[auxIndexes[^(i + 1)]].SetAlpha(0.5f);
             else
-                pieces[auxIndexes[^(i + 1)]].SetAlpha(0);
+            {
+                _pieces[auxIndexes[^(i + 1)]].SetColor(Color.black);
+                _pieces[auxIndexes[^(i + 1)]].SetAlpha(0);
+            }
         }
     }
 
     public void ProcessInput(string letter)
     {
-        if (letter.ToLower() == _sequenceValues[_sequenceValueIndex].GetKeyValue().ToLower())
+        int[] auxIndexes = _piecesIndex.ToArray();
+        if (_sequenceValueIndex < _maxSequence)
         {
-            _correctCount++;
-            _sequenceValueIndex++;
-            _currentCombo++;
-            if (_currentCombo > _maxCombo)
-                _maxCombo = _currentCombo;
-        }
-        else
-        {
-            _currentCombo = 0;
-            _inCorrectCount++;
-            _sequenceValueIndex++;
-        }
+            if (letter.ToLower() == _sequenceValues[_sequenceValueIndex].GetKeyValue().ToLower())
+            {
+                _correctCount++;
+                _sequenceValueIndex++;
+                _currentCombo++;
+                if (_currentCombo > _maxCombo)
+                    _maxCombo = _currentCombo;
+                _pieces[auxIndexes[^(NumPieces - 4)]].SetColor(Color.green);
+                //play correct sound
+            }
+            else
+            {
+                _currentCombo = 0;
+                _inCorrectCount++;
+                _sequenceValueIndex++;
+                _pieces[auxIndexes[^(NumPieces - 4)]].SetColor(Color.red);
+                //play incorrect sound
+            }
 
-        if (usingCube)
-            ChangeInputToKey();
-        NextPiece();
+            if (usingCube)
+                ChangeInputToKey();
+            NextPiece();
+        }
     }
 
     public void ProcessInput(Move move)
     {
-        if (move.Equals(_sequenceValues[_sequenceValueIndex].GetCubeValue()))
+        int[] auxIndexes = _piecesIndex.ToArray();
+        if (_sequenceValueIndex < _maxSequence)
         {
-            _correctCount++;
-            _sequenceValueIndex++;
-            _currentCombo++;
-            if (_currentCombo > _maxCombo)
-                _maxCombo = _currentCombo;
-        }
-        else
-        {
-            _currentCombo = 0;
-            _inCorrectCount++;
-            _sequenceValueIndex++;
-        }
+            if (move.Equals(_sequenceValues[_sequenceValueIndex].GetCubeValue()))
+            {
+                _correctCount++;
+                _sequenceValueIndex++;
+                _currentCombo++;
+                if (_currentCombo > _maxCombo)
+                    _maxCombo = _currentCombo;
+                //set the leter in green
+                _pieces[auxIndexes[^(NumPieces - 4)]].SetColor(Color.green);
+                //play correct sound
+            }
+            else
+            {
+                _currentCombo = 0;
+                _inCorrectCount++;
+                _sequenceValueIndex++;
+                //sett the letter in red
+                _pieces[auxIndexes[^(NumPieces - 4)]].SetColor(Color.red);
+                //play incorrect sound
+            }
 
-        if (!usingCube)
-            ChangeInputToCube();
-        NextPiece();
+            if (!usingCube)
+                ChangeInputToCube();
+            NextPiece();
+        }
     }
 
     #endregion
 
     #region fight phase
 
+    private void EnterFightPhase()
+    {
+        _phase = ScreenPhase.Fight;
+        HideGameScreen();
+        ShowFightScreen();
+        Fight();
+    }
+
+    private void Fight()
+    {
+        float efficiency = CalculateEfficiency();
+        actionEfficiencyText.text = efficiency + "%";
+        bool actionSuccesful = efficiency > 50;
+        float maxAttackDamage = _bossMaxHealth / 4;
+        float attackDamage = (efficiency / 100) * maxAttackDamage;
+        switch (selectedAction)
+        {
+            case PlayerFightAction.Attack:
+                switch (_bossAction)
+                {
+                    case BossAction.Attack:
+                        StartCoroutine(HealthBarCoroutine(4, _bossHealth, attackDamage));
+                        _bossHealth = Mathf.Max(0, _bossHealth - attackDamage);
+                        lives--;
+                        PlayAnimation(5);
+                        StartCoroutine(livesCoroutine(4.5f));
+                        break;
+                    case BossAction.Defend:
+                        if (actionSuccesful)
+                        {
+                            StartCoroutine(HealthBarCoroutine(4, _bossHealth, attackDamage));
+                            _bossHealth = Mathf.Max(0, _bossHealth - attackDamage);
+                            PlayAnimation(0);
+                        }
+                        else
+                            PlayAnimation(1);
+
+                        break;
+                    case BossAction.Nothing:
+                        StartCoroutine(HealthBarCoroutine(4, _bossHealth, attackDamage));
+                        _bossHealth = Mathf.Max(0, _bossHealth - attackDamage);
+                        PlayAnimation(0);
+                        break;
+                }
+
+                break;
+            case PlayerFightAction.Defend:
+                switch (_bossAction)
+                {
+                    case BossAction.Attack:
+                        if (actionSuccesful)
+                            PlayAnimation(2);
+                        else
+                        {
+                            lives--;
+                            PlayAnimation(3);
+                            StartCoroutine(livesCoroutine(3));
+                        }
+
+                        break;
+                }
+
+                break;
+            case PlayerFightAction.SpecialAttack:
+                switch (_bossAction)
+                {
+                    case BossAction.Attack:
+                        StartCoroutine(HealthBarCoroutine(4, _bossHealth, maxAttackDamage * 2));
+                        _bossHealth = Mathf.Max(0, _bossHealth - attackDamage * 2);
+                        lives--;
+                        PlayAnimation(5);
+                        StartCoroutine(livesCoroutine(4.5f));
+                        break;
+                    case BossAction.Defend:
+                        if (actionSuccesful)
+                        {
+                            StartCoroutine(HealthBarCoroutine(4, _bossHealth, maxAttackDamage * 2));
+                            _bossHealth = Mathf.Max(0, _bossHealth - attackDamage * 2);
+                            PlayAnimation(0);
+                        }
+                        else
+                            PlayAnimation(1);
+
+
+                        break;
+                    case BossAction.Nothing:
+                        StartCoroutine(HealthBarCoroutine(4, _bossHealth, maxAttackDamage * 2));
+                        _bossHealth = Mathf.Max(0, _bossHealth - attackDamage * 2);
+                        PlayAnimation(0);
+                        break;
+                }
+
+                break;
+            case PlayerFightAction.SpecialDefense:
+                switch (_bossAction)
+                {
+                    case BossAction.Attack:
+                        if (actionSuccesful)
+                        {
+                            PlayAnimation(4);
+                            StartCoroutine(HealthBarCoroutine(4, _bossHealth, attackDamage));
+                            _bossHealth = Mathf.Max(0, _bossHealth - attackDamage);
+                        }
+                        else
+                        {
+                            lives--;
+                            PlayAnimation(3);
+                            StartCoroutine(livesCoroutine(3));
+                        }
+
+                        break;
+                    case BossAction.Defend:
+                        if (actionSuccesful)
+                        {
+                            StartCoroutine(HealthBarCoroutine(4, _bossHealth, attackDamage));
+                            PlayAnimation(0);
+                            _bossHealth = Mathf.Max(0, _bossHealth - attackDamage);
+                        }
+
+                        break;
+                    case BossAction.Nothing:
+                        if (actionSuccesful)
+                        {
+                            PlayAnimation(0);
+                            StartCoroutine(HealthBarCoroutine(4, _bossHealth, attackDamage));
+                            _bossHealth = Mathf.Max(0, _bossHealth - attackDamage);
+                        }
+
+                        break;
+                }
+
+                break;
+        }
+
+        StartCoroutine(EndFightTurn());
+    }
+
+    IEnumerator EndFightTurn()
+    {
+        yield return new WaitForSeconds(10);
+        if (lives <= 0)
+            ExitMinigame();
+        else if (_bossHealth <= 0)
+            EndMinigame();
+        else
+            EnterBossPhase();
+    }
+
+    private void PlayAnimation(int index)
+    {
+        _fightAnimator.SetInteger(Fight1, index);
+        _fightAnimator.SetTrigger(Action1);
+    }
+
+    IEnumerator HealthBarCoroutine(float time, float bossHealth, float healthAmount)
+    {
+        yield return new WaitForSeconds(time);
+        SetHealthBar(bossHealth, healthAmount);
+    }
+
+    IEnumerator livesCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        RemoveLive();
+    }
+
+    private void SetHealthBar(float bossHealth, float healthAmount)
+    {
+        _targetHealthValue = (bossHealth - healthAmount) / _bossMaxHealth;
+        updateSliders = true;
+        _tH = 0f;
+        _tRh = 0f;
+    }
+
+    private void SmoothSetbossHealthbar()
+    {
+        bossHealthSlider.value = Mathf.Lerp(bossHealthSlider.value, _targetHealthValue, _tH);
+        bossHealthRecoverySlider.value = Mathf.Lerp(bossHealthRecoverySlider.value, _targetHealthValue, _tRh);
+        _tH += 0.5f * Time.deltaTime;
+        _tRh += 0.01f * Time.deltaTime;
+        if (_tH > 1.0f && _tRh > 1.0f)
+        {
+            _tH = 1.0f;
+            _tRh = 1.0f;
+            updateSliders = false;
+        }
+    }
+
+    private float CalculateEfficiency()
+    {
+        float correct = _correctCount;
+        float incorrect = _inCorrectCount * 0.5f;
+        float maxCombo = _maxCombo;
+        float sequenceLength = _maxSequence;
+
+        float comboMultiplier = 1 + (maxCombo / sequenceLength) * 0.1f;
+        float overallPuntuation = Mathf.Max(0, (correct - incorrect) * comboMultiplier);
+        return (overallPuntuation / sequenceLength) * 100;
+    }
+
     private void RemoveLive()
     {
-        lives--;
         SetLivesSprite();
     }
 
@@ -477,6 +791,59 @@ public class MiniBossManager : MonoBehaviour
     }
 
     #endregion
+
+    public void StartMinigame(string bossName, Sprite bossSprite, int bossTime, int gameTime, int sequenceLength,
+        int difficul, float bossHealth, MiniBossBase miniBossBase)
+    {
+        //set partameters
+        _miniBossBase = miniBossBase;
+        _bossTurnTime = bossTime;
+        _gameMaxTime = gameTime;
+        _maxSequence = sequenceLength;
+        _normalSequenceLength = sequenceLength;
+        _specialSequenceLength = sequenceLength * 2;
+        _name = bossName;
+        bossNameText.text = bossName;
+        bossImage.sprite = bossImageFight.sprite = bossSprite;
+        lives = 3;
+        difficulty = difficul;
+        _bossHealth = _bossMaxHealth = bossHealth;
+
+        //set inputs
+        _playerValues.SetCurrentInput(CurrentInput.MiniBoss);
+        _playerValues.SetInputsEnabled(true);
+        StartCoroutine(StartGameCoroutine());
+    }
+
+    private void EndMinigame()
+    {
+        StopMinigame();
+        _playerValues.SetInputsEnabled(false);
+        StartCoroutine(EndGameCoroutine());
+    }
+
+    private void ExitMinigame()
+    {
+        StopMinigame();
+        _playerValues.SetInputsEnabled(false);
+        StartCoroutine(ExitMinigameCoroutine());
+    }
+
+    private void StopMinigame()
+    {
+        _timer.Stop();
+        HideUI();
+    }
+
+    IEnumerator ExitMinigameCoroutine()
+    {
+        _genericScreenUi.SetText("You lost...");
+        _genericScreenUi.FadeInText();
+        yield return new WaitForSeconds(2f);
+        _genericScreenUi.FadeOutText();
+        yield return new WaitForSeconds(2f);
+        _miniBossBase.ExitBase();
+    }
 
     IEnumerator StartGameCoroutine()
     {
@@ -502,8 +869,33 @@ public class MiniBossManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
-        _cameraChanger.SetOrbitCamera();
-        yield return new WaitForSeconds(2f);
-        _playerValues.StandUp(true, 3f);
+        _miniBossBase.EndFight();
     }
+
+    #region Initialization
+
+    private void InitializePositions()
+    {
+        for (int i = 1; i <= NumPieces; i++)
+        {
+            _positions.Add(positionsContainer.transform.transform.Find("pos (" + i + ")").gameObject
+                .GetComponent<RectTransform>());
+        }
+    }
+
+    private void InitializeButtons()
+    {
+        _buttonsImages.AddRange(new[]
+        {
+            defendButton.GetComponent<Image>(), specialDefendButton.GetComponent<Image>(),
+            attackButton.GetComponent<Image>(), specialAttackButton.GetComponent<Image>()
+        });
+        foreach (var image in _buttonsImages)
+        {
+            Material material = new Material(_shader);
+            image.material = material;
+        }
+    }
+
+    #endregion
 }
