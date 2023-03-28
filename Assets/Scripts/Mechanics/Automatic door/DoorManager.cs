@@ -21,8 +21,7 @@ public class DoorManager : MonoBehaviour
 
     void Start()
     {
-        var parent = transform.parent;
-        door = parent.Find("Door").gameObject;
+        door = transform.Find("Door").gameObject;
         opened = false;
         _closeY = door.transform.position.y;
         _openY = _closeY + 5;

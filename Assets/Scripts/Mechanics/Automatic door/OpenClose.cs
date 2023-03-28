@@ -11,7 +11,7 @@ enum DoorMode
 
 public class OpenClose : MonoBehaviour
 {
-    //components
+    //componentsw
     private DoorManager _doorBase;
     [SerializeField] private DoorMode doorMode;
 
