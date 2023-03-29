@@ -388,4 +388,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ecf0f8a7ed12147806c2f98aa41656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bossName: 
+  bossSprite: {fileID: 0}
   openHeight: 5
+  bossTurnTime: 10
+  gameTime: 20
+  sequenceLength: 50
+  bossMaxHealth: 100
+  gameDifficulty: 0

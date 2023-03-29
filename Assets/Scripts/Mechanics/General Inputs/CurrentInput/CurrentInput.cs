@@ -14,7 +14,7 @@
         MiniBoss,
         StealthMovement,
         Conversation,
-        Battle,
+        ShootMovement,
         None
     }
 }
