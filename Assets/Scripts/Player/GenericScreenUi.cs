@@ -77,12 +77,12 @@ public class GenericScreenUi : MonoBehaviour
             else if (_playerValues.GetIsStucked() || !_playerValues.GetIsGrounded())
             {
                 SetText(ScaredFace);
+                _faceUpdated = false;
             }
             else
             {
                 SetText(NormalFace);
             }
-
         }
     }
 
