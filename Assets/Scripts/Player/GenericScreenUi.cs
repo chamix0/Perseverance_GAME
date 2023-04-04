@@ -23,6 +23,7 @@ public class GenericScreenUi : MonoBehaviour
 
     private const string NormalFace = "O.O";
     private const string BlinkFace = "-.-";
+    private const string ScaredFace = ">.<";
 
     private void Awake()
     {
@@ -73,8 +74,15 @@ public class GenericScreenUi : MonoBehaviour
             _faceUpdated = true;
             if (_blinking)
                 SetText(BlinkFace);
+            else if (_playerValues.GetIsStucked() || !_playerValues.GetIsGrounded())
+            {
+                SetText(ScaredFace);
+            }
             else
+            {
                 SetText(NormalFace);
+            }
+
         }
     }
 
