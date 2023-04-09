@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SequenceValue
+public class 
+    
+    
+    SequenceValue
 {
     private Move cubeValue;
     private string keyValue;
@@ -55,7 +58,7 @@ public class SequenceValue
                 break;
         }
 
-        cubeValue = new Move(Move.GetRandomFace(), direction);
+        cubeValue = new Move(Move.GetRandomFace(dif), direction);
     }
 
     public Move GetCubeValue()

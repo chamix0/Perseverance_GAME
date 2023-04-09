@@ -360,11 +360,12 @@ public class MiniBossManager : MonoBehaviour
 
     private void EnterGamePhase()
     {
-        _phase = ScreenPhase.Game;
         _correctCount = 0;
         _currentCombo = 0;
         _maxCombo = 0;
         _inCorrectCount = 0;
+
+        _phase = ScreenPhase.Game;
 
         HideBossScreen();
         HideFightScreen();
@@ -419,14 +420,22 @@ public class MiniBossManager : MonoBehaviour
 
     public void ChangeInputToCube()
     {
-        usingCube = true;
-        UpdatePiecesValues();
+        if (!usingCube)
+        {
+             usingCube = true;
+             UpdatePiecesValues();
+        }
+       
     }
 
     public void ChangeInputToKey()
     {
-        usingCube = false;
-        UpdatePiecesValues();
+        if (usingCube)
+        {
+            usingCube = false;
+            UpdatePiecesValues();
+        }
+       
     }
 
     private void UpdatePiecesValues()

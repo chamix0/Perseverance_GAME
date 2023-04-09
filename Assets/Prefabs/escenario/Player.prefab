@@ -3585,6 +3585,10 @@ MonoBehaviour:
   thirdPersonCamera: {fileID: 0}
   rotateStepY: 1
   angleStepX: 15
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 83
+  offset: 0.4
 --- !u!114 &323632837102523038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6869,7 +6873,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323632837987341621}
-  m_LocalRotation: {x: -0, y: -0.40078777, z: -0, w: 0.91617095}
+  m_LocalRotation: {x: 0, y: -0.40078878, z: 0, w: 0.91617054}
   m_LocalPosition: {x: -11.06, y: 0.79, z: 0.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14225,6 +14229,10 @@ PrefabInstance:
     - target: {fileID: 127229259524103235, guid: a4725cfe3e3a4094fa401ad1389c0d69, type: 3}
       propertyPath: m_Name
       value: Distraction
+      objectReference: {fileID: 0}
+    - target: {fileID: 127229259524103235, guid: a4725cfe3e3a4094fa401ad1389c0d69, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 127229259524103235, guid: a4725cfe3e3a4094fa401ad1389c0d69, type: 3}
       propertyPath: m_TagString

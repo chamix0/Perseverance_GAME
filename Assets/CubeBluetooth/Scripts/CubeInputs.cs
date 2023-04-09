@@ -255,41 +255,32 @@ public class CubeInputs : MonoBehaviour
         if (_moves.lastMove == null) _moves.lastMove = move;
         Move move2 = _moves.lastMove;
 
-
-        // print("turn  " + (move1.time));
-        // print("turn difference " + Math.Abs(move1.time.TotalMilliseconds - move2.time.TotalMilliseconds));
         if (Math.Abs(move1.time.TotalMilliseconds - move2.time.TotalMilliseconds) < 500)
         {
             //could be a double move
-            if ((move1.face == FACES.L && move2.face == FACES.R ||
-                 move2.face == FACES.L && move1.face == FACES.R) && move1.direction != move2.direction)
+            if (move1.IsMiddleLayer(move2))
             {
-                //take out the other face move
-                if (move1.face == FACES.L)
-                    move1.direction *= -1;
-
-                move1.face = FACES.M;
-                offsetCentersX(move1.direction);
-            }
-
-            else if ((move1.face == FACES.U && move2.face == FACES.D ||
-                      move2.face == FACES.U && move1.face == FACES.D) && move1.direction != move2.direction)
-            {
-                //take out the other face move
-                if (move1.face == FACES.U)
-                    move1.direction *= -1;
-                move1.face = FACES.E;
-                offsetCentersY(move1.direction);
-            }
-
-            else if ((move1.face == FACES.F && move2.face == FACES.B ||
-                      move2.face == FACES.F && move1.face == FACES.B) && move1.direction != move2.direction)
-            {
-                if (move1.face == FACES.F)
-                    move1.direction *= -1;
-
-                move1.face = FACES.S;
-                offsetCentersZ(move1.direction);
+                switch (move1.face)
+                {
+                    case FACES.L or FACES.R:
+                        if (move1.face is FACES.L)
+                            move1.direction *= -1;
+                        move1.face = FACES.M;
+                        offsetCentersX(move1.direction);
+                        break;
+                    case FACES.U or FACES.D:
+                        if (move1.face is FACES.U)
+                            move1.direction *= -1;
+                        move1.face = FACES.E;
+                        offsetCentersY(move1.direction);
+                        break;
+                    case FACES.F or FACES.B:
+                        if (move1.face is FACES.B)
+                            move1.direction *= -1;
+                        move1.face = FACES.S;
+                        offsetCentersZ(move1.direction);
+                        break;
+                }
             }
         }
 

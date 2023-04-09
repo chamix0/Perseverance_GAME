@@ -63,6 +63,8 @@ namespace Mechanics.MiniBoss
 
         public void PerformAction(Move move)
         {
+            _miniBossManager.ChangeInputToCube();
+
             if (_miniBossManager._phase == ScreenPhase.Game)
             {
                 _miniBossManager.ProcessInput(move);
@@ -71,10 +73,9 @@ namespace Mechanics.MiniBoss
             {
                 if (move.face == FACES.L)
                 {
-                    if (move.direction > 0) _miniBossManager.SelectAction(PlayerFightAction.SpecialDefense);         
+                    if (move.direction > 0) _miniBossManager.SelectAction(PlayerFightAction.SpecialDefense);
                     else
-                                      _miniBossManager.SelectAction(PlayerFightAction.Defend);
-
+                        _miniBossManager.SelectAction(PlayerFightAction.Defend);
                 }
                 else if (move.face == FACES.R)
                 {
