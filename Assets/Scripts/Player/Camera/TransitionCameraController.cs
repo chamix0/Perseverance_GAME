@@ -14,13 +14,16 @@ public class TransitionCameraController : MonoBehaviour
     private bool updatePosition;
     private float _tP;
     private bool finishedPos = true;
+    private AudioListener audioListener;
 
     public Camera regularCamera;
 
-    private void Start()
+    private void Awake()
     {
         regularCamera = GetComponent<Camera>();
+        audioListener = GetComponent<AudioListener>();
     }
+
 
     private void Update()
     {
@@ -70,11 +73,15 @@ public class TransitionCameraController : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, rotSpeed * Time.deltaTime);
     }
 
-    bool RotationEquals(Quaternion r1, Quaternion r2)
+    public void EnableCamera()
     {
-        float abs = Mathf.Abs(Quaternion.Dot(r1, r2));
-        if (abs >= 0.9999999f)
-            return true;
-        return false;
+        regularCamera.enabled = true;
+        audioListener.enabled = true;
+    }
+
+    public void DisableCamera()
+    {
+        regularCamera.enabled = false;
+        audioListener.enabled = false;
     }
 }

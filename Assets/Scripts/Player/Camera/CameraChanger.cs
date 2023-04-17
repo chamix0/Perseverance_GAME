@@ -17,7 +17,8 @@ public class CameraChanger : MonoBehaviour
     private OrbitCameraController _orbitCameraController;
     private FirstPersonCameraController _firstPersonCameraController;
     private TransitionCameraController _transitionCameraController;
-
+    [SerializeField] private Camera screenCamera;
+    private AudioListener audioListenerScreen;
     [NonSerialized] public ActiveCamera activeCamera = ActiveCamera.Orbit;
     ActiveCamera nextCamera = ActiveCamera.None;
 
@@ -26,12 +27,11 @@ public class CameraChanger : MonoBehaviour
 
     private void Start()
     {
+        audioListenerScreen = screenCamera.GetComponent<AudioListener>();
         _transitionCameraController = FindObjectOfType<TransitionCameraController>();
         _orbitCameraController = FindObjectOfType<OrbitCameraController>();
         _firstPersonCameraController = FindObjectOfType<FirstPersonCameraController>();
-        _orbitCameraController.regularCamera.enabled = true;
-        _firstPersonCameraController.regularCamera.enabled = false;
-        _transitionCameraController.regularCamera.enabled = false;
+        ActivateOrbit();
     }
 
     private void LateUpdate()
@@ -54,6 +54,7 @@ public class CameraChanger : MonoBehaviour
                         ActivateFirstPerson();
                         break;
                     case ActiveCamera.Screen:
+                        ActivateScreen();
                         break;
                 }
             }
@@ -75,7 +76,7 @@ public class CameraChanger : MonoBehaviour
     public void SetScreenCamera()
     {
         nextCamera = ActiveCamera.Screen;
-        // Transition(_orbitCameraController.regularCamera.transform);
+        Transition(screenCamera.transform);
     }
 
     private void Transition(Transform to)
@@ -90,6 +91,7 @@ public class CameraChanger : MonoBehaviour
                 from = _firstPersonCameraController.transform;
                 break;
             case ActiveCamera.Screen:
+                from = screenCamera.transform;
                 break;
         }
 
@@ -103,20 +105,35 @@ public class CameraChanger : MonoBehaviour
     {
         _orbitCameraController.EnableCamera();
         _firstPersonCameraController.DisableCamera();
-        _transitionCameraController.regularCamera.enabled = false;
+        _transitionCameraController.DisableCamera();
+        screenCamera.enabled = false;
+        audioListenerScreen.enabled = false;
     }
 
     private void ActivateFirstPerson()
     {
         _orbitCameraController.DisableCamera();
         _firstPersonCameraController.EnableCamera();
-        _transitionCameraController.regularCamera.enabled = false;
+        _transitionCameraController.DisableCamera();
+        screenCamera.enabled = false;
+        audioListenerScreen.enabled = false;
     }
 
     private void ActivateTransition()
     {
         _orbitCameraController.DisableCamera();
         _firstPersonCameraController.DisableCamera();
-        _transitionCameraController.regularCamera.enabled = true;
+        _transitionCameraController.EnableCamera();
+        screenCamera.enabled = false;
+        audioListenerScreen.enabled = false;
+    }
+
+    private void ActivateScreen()
+    {
+        _orbitCameraController.DisableCamera();
+        _firstPersonCameraController.DisableCamera();
+        _transitionCameraController.DisableCamera();
+        screenCamera.enabled = true;
+        audioListenerScreen.enabled = true;
     }
 }

@@ -29,10 +29,13 @@ public class OrbitCameraController : MonoBehaviour
 
     private void Awake()
     {
+                audioListener = GetComponent<AudioListener>();
+
         regularCamera = GetComponent<Camera>();
         focusPoint = focus.position;
         transform.localRotation = Quaternion.Euler(orbitAngles);
     }
+
 
     private void LateUpdate()
     {
@@ -227,6 +230,7 @@ public class OrbitCameraController : MonoBehaviour
     public float rotateStepY = 15f, angleStepX = 15f;
     private bool updateValueY = false, updateValueX = false;
 
+    private AudioListener audioListener;
     //variables
     private float currentY;
     private float currentX;
@@ -234,10 +238,12 @@ public class OrbitCameraController : MonoBehaviour
     public void EnableCamera()
     {
         regularCamera.enabled = true;
+        audioListener.enabled = true;
     }
     public void DisableCamera()
     {
         regularCamera.enabled = false;
+        audioListener.enabled = false;
     }
     public void RotateYClockwise()
     {
