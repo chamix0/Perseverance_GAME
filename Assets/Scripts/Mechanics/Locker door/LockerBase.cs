@@ -9,7 +9,7 @@ public class LockerBase : MonoBehaviour
     private PlayerValues _playerValues;
     private GameObject _snapPos;
     private CameraChanger _cameraChanger;
-    private CameraController _cameraController;
+    private OrbitCameraController _cameraController;
     private GameObject _door;
     private RigidbodyConstraints _rigidbodyOriginalConstraints;
 
@@ -38,7 +38,7 @@ public class LockerBase : MonoBehaviour
     void Start()
     {
         _lockerManager = FindObjectOfType<LockerManager>();
-        _cameraController = FindObjectOfType<CameraController>();
+        _cameraController = FindObjectOfType<OrbitCameraController>();
         SetCode();
         var parent = transform.parent;
         _cameraChanger = FindObjectOfType<CameraChanger>();

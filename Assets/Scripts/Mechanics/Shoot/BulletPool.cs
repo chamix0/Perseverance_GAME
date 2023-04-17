@@ -1,29 +1,43 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletPool : MonoBehaviour
 {
-    private List<Bullet> usedBullets;
+    private Queue<Bullet> usedBullets;
     private Transform container;
     [SerializeField] private GameObject bulletTemplate;
 
-    public BulletPool()
+    private void Awake()
     {
-        usedBullets = new List<Bullet>();
+        usedBullets = new Queue<Bullet>();
     }
+
+    private void Start()
+    {
+        transform.parent = null;
+    }
+
 
     public Bullet GetBullet()
     {
-        foreach (var bullet in usedBullets)
+        int bulletCount = usedBullets.Count;
+
+        for (int i = 0; i < bulletCount; i++)
         {
+            Bullet bullet = usedBullets.Dequeue();
+            usedBullets.Enqueue(bullet);
             if (bullet.IsReadyToUse())
+            {
+                bullet.SetIsReadyToUse(false);
                 return bullet;
+            }
         }
 
-        GameObject newBullet = Instantiate(bulletTemplate, this.transform);
+        GameObject newBullet = Instantiate(bulletTemplate, transform);
         Bullet bulletComp = newBullet.GetComponent<Bullet>();
-        usedBullets.Add(bulletComp);
+        usedBullets.Enqueue(bulletComp);
         return bulletComp;
     }
 }

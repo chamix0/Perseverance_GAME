@@ -2,7 +2,8 @@
     "name": "ShootAssembly",
     "rootNamespace": "",
     "references": [
-        "GUID:3419401ee06995048afc9d3656d906fe"
+        "GUID:3419401ee06995048afc9d3656d906fe",
+        "GUID:949c73f3b268c5043af00f8cb0c1310e"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

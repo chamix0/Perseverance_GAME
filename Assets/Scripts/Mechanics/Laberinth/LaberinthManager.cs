@@ -11,7 +11,7 @@ public class LaberinthManager : MonoBehaviour
     private GameObject _snapPos;
     private MinigameManager _minigameManager;
     private CameraChanger cameraChanger;
-    private CameraController _cameraController;
+    private OrbitCameraController _cameraController;
     private PlayerAnimations _playerAnimations;
     private GameObject door;
     private RigidbodyConstraints _rigidbodyOriginalConstraints;
@@ -35,7 +35,7 @@ public class LaberinthManager : MonoBehaviour
 
     void Start()
     {
-        _cameraController = FindObjectOfType<CameraController>();
+        _cameraController = FindObjectOfType<OrbitCameraController>();
         _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         var parent = transform.parent;

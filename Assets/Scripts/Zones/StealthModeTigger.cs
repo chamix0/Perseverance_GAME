@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mechanics.General_Inputs;
@@ -20,4 +21,6 @@ public class StealthModeTigger : MonoBehaviour
             _playerValues.SetCurrentInput(_currentInput);
         }
     }
+
+ 
 }

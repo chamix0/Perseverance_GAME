@@ -20,6 +20,7 @@ namespace Mechanics.General_Inputs
         private MiniBossInputs _miniBossInputs;
         private LockerInputs _lockerInputs;
         private StealthMovementInputs _stealthMovementInputs;
+        private MachinegunMovementInputs _machinegunMovementInputs;
 
 
         private void Awake()
@@ -45,6 +46,7 @@ namespace Mechanics.General_Inputs
             _miniBossInputs = FindObjectOfType<MiniBossInputs>();
             _lockerInputs = FindObjectOfType<LockerInputs>();
             _stealthMovementInputs = FindObjectOfType<StealthMovementInputs>();
+            _machinegunMovementInputs = FindObjectOfType<MachinegunMovementInputs>();
         }
 
         private void Update()
@@ -86,6 +88,9 @@ namespace Mechanics.General_Inputs
                         break;
                     case CurrentInput.StealthMovement:
                         _stealthMovementInputs.PerformAction(move);
+                        break;
+                    case CurrentInput.ShootMovement:
+                        _machinegunMovementInputs.PerformAction(move);
                         break;
                     case CurrentInput.None:
 

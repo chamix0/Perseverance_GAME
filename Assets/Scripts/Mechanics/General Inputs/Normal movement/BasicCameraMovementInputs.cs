@@ -8,12 +8,12 @@ public class BasicCameraMovementInputs : MonoBehaviour
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;
-    private CameraController _cameraController;
+    private OrbitCameraController _cameraController;
 
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
-        _cameraController = FindObjectOfType<CameraController>();
+        _cameraController = FindObjectOfType<OrbitCameraController>();
     }
 
     // Update is called once per frame
@@ -25,7 +25,9 @@ public class BasicCameraMovementInputs : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
-                _playerValues.RiseGear();
+                if (_playerValues.GetGear() < 3)
+                    _playerValues.RiseGear();
+
                 _playerValues.CheckIfStuck();
             }
 

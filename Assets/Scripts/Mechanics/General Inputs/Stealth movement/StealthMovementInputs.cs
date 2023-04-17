@@ -8,14 +8,14 @@ public class StealthMovementInputs : MonoBehaviour
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;
-    private CameraController _cameraController;
+    private OrbitCameraController _cameraController;
     private Distraction _distraction;
 
 
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
-        _cameraController = FindObjectOfType<CameraController>();
+        _cameraController = FindObjectOfType<OrbitCameraController>();
         _distraction = FindObjectOfType<Distraction>();
     }
 
@@ -24,10 +24,15 @@ public class StealthMovementInputs : MonoBehaviour
     {
         //keyboard inputs
         //accelerate and decelerate
+        if (_playerValues.GetCurrentInput() == CurrentInput.StealthMovement)
+        {
+            if (!_distraction.GetIsVisible())
+                _distraction.SetVisible(true);
+        }
+        
         if (_playerValues.GetCurrentInput() == CurrentInput.StealthMovement && _playerValues.GetInputsEnabled())
         {
-            if (!_distraction.GetIsVisible() && _playerValues.GetDistractionEnabled())
-                _distraction.SetVisible(true);
+           
 
             if (Input.GetKeyDown(KeyCode.W))
             {
@@ -51,12 +56,12 @@ public class StealthMovementInputs : MonoBehaviour
                     _playerValues.TurnOnLights();
             }
 
-            if (_playerValues.GetDistractionEnabled() && Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 _distraction.ThrowDistraction();
             }
 
-            if (_playerValues.GetDistractionEnabled() && Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 _distraction.RecuperateDistraction();
             }
@@ -104,7 +109,7 @@ public class StealthMovementInputs : MonoBehaviour
             else
                 _playerValues.TurnOnLights();
         }
-        else if (_playerValues.GetDistractionEnabled() && move.face == FACES.M)
+        else if (move.face == FACES.M)
         {
             if (move.direction == 1)
                 _distraction.RecuperateDistraction();

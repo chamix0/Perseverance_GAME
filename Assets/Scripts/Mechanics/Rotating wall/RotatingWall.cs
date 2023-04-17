@@ -8,7 +8,7 @@ public class RotatingWall : MonoBehaviour
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;
-    private CameraController _cameraController;
+    private OrbitCameraController _cameraController;
     private RotatingWallInputs _rotatingWallInputs;
     public GameObject snapPos;
     public float targetWallAngle, angleStep;
@@ -21,7 +21,7 @@ public class RotatingWall : MonoBehaviour
     void Start()
     {
         _playerAnimations = FindObjectOfType<PlayerAnimations>();
-        _cameraController = FindObjectOfType<CameraController>();
+        _cameraController = FindObjectOfType<OrbitCameraController>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _rotatingWallInputs = FindObjectOfType<RotatingWallInputs>();
         inside = false;

@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
-  speed: 1
   _rigidbody: {fileID: -8666140382771644598}
-  ready: 0
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 347

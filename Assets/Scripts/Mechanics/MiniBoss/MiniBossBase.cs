@@ -8,7 +8,7 @@ public class MiniBossBase : MonoBehaviour
     private PlayerValues _playerValues;
     private GameObject _snapPos;
     private CameraChanger _cameraChanger;
-    private CameraController _cameraController;
+    private OrbitCameraController _cameraController;
     private GameObject _door;
     private RigidbodyConstraints _rigidbodyOriginalConstraints;
 
@@ -35,7 +35,7 @@ public class MiniBossBase : MonoBehaviour
 
     void Start()
     {
-        _cameraController = FindObjectOfType<CameraController>();
+        _cameraController = FindObjectOfType<OrbitCameraController>();
         miniBossManager = FindObjectOfType<MiniBossManager>();
         var parent = transform.parent;
         _cameraChanger = FindObjectOfType<CameraChanger>();

@@ -43,9 +43,6 @@ public class PlayerValues : Subject
     private CurrentInput _currentInput;
     private bool _inputsEnabled;
 
-    //stealth mode
- [SerializeField]   private bool _distractionEnabled;
-
     //save data
     private JSONsaving _jsoNsaving;
     private SaveData _saveData;
@@ -53,7 +50,6 @@ public class PlayerValues : Subject
 
     //variables
     private bool _updateSnap, _updateLookAt, moveForward;
-
 
     private float _snapPosX,
         _snapPosY,
@@ -285,19 +281,6 @@ public class PlayerValues : Subject
 
     #endregion
 
-    #region Stealth
-
-    public bool GetDistractionEnabled()
-    {
-        return _distractionEnabled;
-    }
-
-    public void SetDistractionEnabled(bool val)
-    {
-        _distractionEnabled = val;
-    }
-
-    #endregion
 
     #region ACTIONS
 

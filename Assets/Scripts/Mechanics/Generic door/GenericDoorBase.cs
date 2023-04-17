@@ -8,7 +8,7 @@ public class GenericDoorBase : MonoBehaviour
     private PlayerValues _playerValues;
     [SerializeField] private GameObject _snapPos;
     private CameraChanger cameraChanger;
-    private CameraController _cameraController;
+    private OrbitCameraController _cameraController;
     private GameObject door;
     private RigidbodyConstraints _rigidbodyOriginalConstraints;
     private GenericScreenUi _genericScreenUi;
@@ -23,7 +23,7 @@ public class GenericDoorBase : MonoBehaviour
 
     void Start()
     {
-        _cameraController = FindObjectOfType<CameraController>();
+        _cameraController = FindObjectOfType<OrbitCameraController>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         var parent = transform.parent;
         cameraChanger = FindObjectOfType<CameraChanger>();

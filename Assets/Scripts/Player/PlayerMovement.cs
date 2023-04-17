@@ -96,6 +96,9 @@ public class PlayerMovement : MonoBehaviour
             targetAngle, ref _turnSmoothVel,
             turnSmoothTime);
 
+        
+        
+        
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
         Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         return moveDirection;
