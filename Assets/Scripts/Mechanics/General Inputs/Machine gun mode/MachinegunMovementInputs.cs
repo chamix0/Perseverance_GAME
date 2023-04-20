@@ -10,7 +10,7 @@ public class MachinegunMovementInputs : MonoBehaviour
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;
-    private OrbitCameraController _cameraController;
+    private CameraController _cameraController;
     private CameraChanger _cameraChanger;
     private List<MachineGun> machineGuns;
 
@@ -27,7 +27,7 @@ public class MachinegunMovementInputs : MonoBehaviour
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
-        _cameraController = FindObjectOfType<OrbitCameraController>();
+        _cameraController = FindObjectOfType<CameraController>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
         machineGuns.AddRange(FindObjectsOfType<MachineGun>());
     }
@@ -46,9 +46,14 @@ public class MachinegunMovementInputs : MonoBehaviour
         }
         else
         {
+            bool changeCam = false;
             foreach (var machineGun in machineGuns)
             {
-                machineGun.HideMachinegun();
+                changeCam = machineGun.HideMachinegun();
+            }
+            if (changeCam)
+            {
+                _cameraChanger.SetOrbitCamera();
             }
         }
 
@@ -115,12 +120,12 @@ public class MachinegunMovementInputs : MonoBehaviour
                 if (_playerValues.GetLights())
                 {
                     _playerValues.TurnOffLights();
-                    _cameraChanger.SetFirstPersonCamera();
+                    _cameraChanger.SetOrbitCamera();
                 }
                 else
                 {
                     _playerValues.TurnOnLights();
-                    _cameraChanger.SetOrbitCamera();
+                    _cameraChanger.SetFirstPersonCamera();
                 }
             }
         }

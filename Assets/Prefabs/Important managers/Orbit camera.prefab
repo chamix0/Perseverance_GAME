@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2618846022880535671}
   m_Layer: 0
   m_Name: Orbit camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,17 +99,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   focus: {fileID: 0}
-  distance: 5
+  distance: 3.65
   focusRadius: 1
   focusCentering: 0.5
   rotationSpeed: 90
   minVerticalAngle: -30
   maxVerticalAngle: 60
+  invertX: 0
+  invertY: 1
   alignDelay: 5
   alignSmoothRange: 45
   CollisionLayers:
     serializedVersion: 2
     m_Bits: 91
+  regularCamera: {fileID: 5736981877296924713}
+  lookAtPoint: {fileID: 0}
   orbitAngles: {x: 45, y: 0}
   rotateStepY: 15
   angleStepX: 15

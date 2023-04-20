@@ -7,12 +7,13 @@ using UnityEngine;
 public class TransitionCameraController : MonoBehaviour
 {
     private Transform target;
+    private float targetFov;
     [SerializeField] private float speed = 0.01f, transitionTime = 3f, rotSpeed = 5;
     [SerializeField] private bool timeOrSpeed;
     float timeCount = 0.0f;
 
     private bool updatePosition;
-    private float _tP;
+    private float _tP, _tF;
     private bool finishedPos = true;
     private AudioListener audioListener;
 
@@ -31,14 +32,16 @@ public class TransitionCameraController : MonoBehaviour
         {
             UpdatePosition();
             UpdateRotation();
+            UpdateFov();
         }
     }
 
 
-    public void Transition(Transform from, Transform to)
+    public void Transition(Transform from, Transform to, float fov)
     {
         transform.position = from.position;
         transform.rotation = from.rotation;
+        targetFov = fov;
         target = to;
         updatePosition = true;
         finishedPos = false;
@@ -59,13 +62,16 @@ public class TransitionCameraController : MonoBehaviour
         else
             _tP += Time.deltaTime * rateVelocity;
         transform.position = Vector3.Lerp(transform.position, target.position, _tP);
-        print(_tP);
         if (_tP >= 1f)
         {
             updatePosition = false;
             finishedPos = true;
             _tP = 1f;
         }
+    }
+    private void UpdateFov()
+    {
+        regularCamera.fieldOfView = Mathf.Lerp(regularCamera.fieldOfView, targetFov, Time.deltaTime * 2);
     }
 
     private void UpdateRotation()

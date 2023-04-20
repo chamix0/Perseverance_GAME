@@ -15,7 +15,7 @@ enum States
     Alert
 }
 
-public class CameraEnemy : MonoBehaviour
+public class CameraEnemy : Enemy
 {
     [SerializeField] private States _state;
     private PlayerValues _playerValues;
@@ -81,11 +81,7 @@ public class CameraEnemy : MonoBehaviour
         if (_updateCamera)
             SmoothllylookAt();
         //special transitions
-        //if a player throws a distraction
-        if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
-        {
-            ChangeState(States.DestroyDistraction, Color.red, _sprites[1]);
-        }
+
 
         //if player has the lights on and in sight
         if (_playerValues.GetLights() && InSight())
@@ -136,6 +132,12 @@ public class CameraEnemy : MonoBehaviour
         }
 
         //transition
+
+        if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
+        {
+            ChangeState(States.DestroyDistraction, Color.red, _sprites[1]);
+        }
+
         if (CheckIsInCone())
         {
             ChangeState(States.Alert, Color.red, _sprites[1]);
@@ -146,6 +148,12 @@ public class CameraEnemy : MonoBehaviour
     {
         FollowSmothly();
         //transition
+
+        if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
+        {
+            ChangeState(States.DestroyDistraction, Color.red, _sprites[1]);
+        }
+
         if (CheckIsInCone())
         {
             ChangeState(States.Alert, Color.red, _sprites[1]);
@@ -276,6 +284,7 @@ public class CameraEnemy : MonoBehaviour
         _spriteRenderer.sprite = sprite;
     }
 
+
     private bool CheckIsInCone()
     {
         //transition
@@ -313,4 +322,22 @@ public class CameraEnemy : MonoBehaviour
     }
 
     #endregion
+
+    public override void RecieveDamage()
+    {
+        lives--;
+        if (lives<=0)
+        {
+            Die();
+        }
+    }
+
+    public override void Die()
+    {
+        //agacharse hacia abajo
+        //apagar la luz y la luz volumetrica
+        //sonidos
+        //efecto de particulas
+        
+    }
 }

@@ -18,26 +18,26 @@ public class FirstPersonCameraController : MonoBehaviour
     [SerializeField] private Transform lookAtPoint;
 
     private AudioListener audioListener;
+
     //variables
     private Vector3 focusPoint, previousFocusPoint;
     [SerializeField] Vector2 orbitAngles = new Vector2(45f, 0f);
 
+    private bool freezed;
     //values
 
     private void Awake()
     {
-                audioListener = GetComponent<AudioListener>();
-                regularCamera = GetComponent<Camera>();
+        audioListener = GetComponent<AudioListener>();
+        regularCamera = GetComponent<Camera>();
         focusPoint = focus.position;
         transform.localRotation = Quaternion.Euler(orbitAngles);
     }
 
 
-
     private void LateUpdate()
     {
         ManualRotation();
-
         if (updateValueX)
         {
             orbitAngles.x = UpdateRotateCameraX();
@@ -60,7 +60,8 @@ public class FirstPersonCameraController : MonoBehaviour
         }
 
         Vector3 lookPosition = focus.position;
-        transform.SetPositionAndRotation(lookPosition, lookRotation);
+        if (!freezed)
+            transform.SetPositionAndRotation(lookPosition, lookRotation);
     }
 
 
@@ -119,6 +120,7 @@ public class FirstPersonCameraController : MonoBehaviour
         regularCamera.enabled = true;
         audioListener.enabled = true;
     }
+
     public void DisableCamera()
     {
         regularCamera.enabled = false;
@@ -216,10 +218,12 @@ public class FirstPersonCameraController : MonoBehaviour
 
     public void FreezeCamera()
     {
+        freezed = true;
     }
 
     public void UnFreezeCamera()
     {
+        freezed = false;
     }
 
 

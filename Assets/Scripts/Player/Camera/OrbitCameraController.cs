@@ -20,16 +20,18 @@ public class OrbitCameraController : MonoBehaviour
     public Camera regularCamera;
 
     [SerializeField] private Transform lookAtPoint;
+
     //variables
     private Vector3 focusPoint, previousFocusPoint;
     [SerializeField] Vector2 orbitAngles = new Vector2(45f, 0f);
 
     //values
     float lastManualRotationTime;
+    private bool freezed;
 
     private void Awake()
     {
-                audioListener = GetComponent<AudioListener>();
+        audioListener = GetComponent<AudioListener>();
 
         regularCamera = GetComponent<Camera>();
         focusPoint = focus.position;
@@ -78,10 +80,11 @@ public class OrbitCameraController : MonoBehaviour
                 lookRotation, castDistance, CollisionLayers
             ))
         {
-            lookPosition = focusPoint - lookDirection * hit.distance;
-        }
+            rectPosition = castFrom + castDirection * hit.distance;
+            lookPosition = rectPosition - rectOffset;        }
 
-        transform.SetPositionAndRotation(lookPosition, lookRotation);
+        if (!freezed)
+            transform.SetPositionAndRotation(lookPosition, lookRotation);
     }
 
     void UpdateFocusPoint()
@@ -231,6 +234,7 @@ public class OrbitCameraController : MonoBehaviour
     private bool updateValueY = false, updateValueX = false;
 
     private AudioListener audioListener;
+
     //variables
     private float currentY;
     private float currentX;
@@ -240,11 +244,13 @@ public class OrbitCameraController : MonoBehaviour
         regularCamera.enabled = true;
         audioListener.enabled = true;
     }
+
     public void DisableCamera()
     {
         regularCamera.enabled = false;
         audioListener.enabled = false;
     }
+
     public void RotateYClockwise()
     {
         tY = 0.0f;
@@ -322,10 +328,12 @@ public class OrbitCameraController : MonoBehaviour
 
     public void FreezeCamera()
     {
+        freezed = true;
     }
 
     public void UnFreezeCamera()
     {
+        freezed = false;
     }
 
 

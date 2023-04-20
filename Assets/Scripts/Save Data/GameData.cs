@@ -17,6 +17,7 @@ public class GameData
     [SerializeField] private double[] zonestime;
     [SerializeField] private string lastTimePlayed;
     [SerializeField] private int totalTimePlayed;
+    [SerializeField] private int maxShootingRangeScore;
     [SerializeField] private string[] zonesPB;
 
     private const int MAX_ZONES = 5;
@@ -28,6 +29,7 @@ public class GameData
         tiltSens = 75;
         eddoModel = model;
         totalTimePlayed = 0;
+        maxShootingRangeScore = 0;
         lastTimePlayed = DateTime.Now.ToString();
         muted = false;
         GameStarted = true;
@@ -43,6 +45,7 @@ public class GameData
         runName = "------";
         tiltSens = 75;
         eddoModel = 1;
+        maxShootingRangeScore = 0;
         muted = false;
         GameStarted = false;
         zonesEnabled = new bool[MAX_ZONES];
@@ -64,6 +67,16 @@ public class GameData
     public void setMuted(bool mute)
     {
         muted = mute;
+    }
+
+    public int GetMaxShootingScore()
+    {
+        return maxShootingRangeScore;
+    }
+
+    public void SetMaxShootingScore(int score)
+    {
+        maxShootingRangeScore = Mathf.Max(score, maxShootingRangeScore);
     }
 
     private void intializeLevels()

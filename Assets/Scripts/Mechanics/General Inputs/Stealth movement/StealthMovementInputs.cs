@@ -8,14 +8,14 @@ public class StealthMovementInputs : MonoBehaviour
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;
-    private OrbitCameraController _cameraController;
+    private CameraController _cameraController;
     private Distraction _distraction;
 
 
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
-        _cameraController = FindObjectOfType<OrbitCameraController>();
+        _cameraController = FindObjectOfType<CameraController>();
         _distraction = FindObjectOfType<Distraction>();
     }
 
@@ -32,7 +32,6 @@ public class StealthMovementInputs : MonoBehaviour
         
         if (_playerValues.GetCurrentInput() == CurrentInput.StealthMovement && _playerValues.GetInputsEnabled())
         {
-           
 
             if (Input.GetKeyDown(KeyCode.W))
             {

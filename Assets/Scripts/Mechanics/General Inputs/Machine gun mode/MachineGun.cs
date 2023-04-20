@@ -12,6 +12,7 @@ enum ShootingMode
     Burst,
     Automatic
 }
+
 [DefaultExecutionOrder(6)]
 public class MachineGun : MonoBehaviour
 {
@@ -112,8 +113,10 @@ public class MachineGun : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (aiming)
+        if (isVisible && aiming)
             Laser();
+        else
+            StopAim();
     }
 
 
@@ -182,6 +185,7 @@ public class MachineGun : MonoBehaviour
     {
         if (laserRay.startWidth <= 0)
         {
+            laserRay.enabled = true;
             laserRay.startWidth = laserWidth;
             laserRay.endWidth = laserWidth;
         }
@@ -208,6 +212,7 @@ public class MachineGun : MonoBehaviour
     {
         laserRay.startWidth = 0;
         laserRay.endWidth = 0;
+        laserRay.enabled = false;
         aimSphere.gameObject.SetActive(false);
     }
 
@@ -220,13 +225,15 @@ public class MachineGun : MonoBehaviour
         }
     }
 
-    public void HideMachinegun()
+    public bool HideMachinegun()
     {
+        bool aux = isVisible;
         if (isVisible)
         {
             dissolveMaterials.DissolveOut();
             isVisible = false;
         }
+        return aux;
     }
 
     public void NextShootingMode()

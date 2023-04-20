@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Codice.Client.BaseCommands;
 using UnityEngine;
 
 public class DissolveMaterials : MonoBehaviour
@@ -10,6 +12,7 @@ public class DissolveMaterials : MonoBehaviour
     private Dictionary<string, Material> materials, dissolveMaterials;
     [SerializeField] private Shader shader;
     [SerializeField] private List<GameObject> exceptions;
+    [SerializeField] private bool hideOnStart = false;
 
     private bool updateValue;
     private float currentVal, targetValue;
@@ -36,7 +39,8 @@ public class DissolveMaterials : MonoBehaviour
     void Start()
     {
         GetOriginalMaterials();
-        HideMaterials();
+        if (hideOnStart)
+            HideMaterials();
     }
 
     // Update is called once per frame
@@ -79,7 +83,7 @@ public class DissolveMaterials : MonoBehaviour
         }
     }
 
-    private void HideMaterials()
+    public void HideMaterials()
     {
         foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
         {
@@ -117,14 +121,15 @@ public class DissolveMaterials : MonoBehaviour
         string lastName = "";
         foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
         {
-            if (!exceptions.Contains(meshRenderer.gameObject))
+            if (dissolveMaterials.ContainsKey(meshRenderer.name) && !exceptions.Contains(meshRenderer.gameObject))
             {
                 meshRenderer.sharedMaterial = dissolveMaterials[meshRenderer.name];
                 lastName = meshRenderer.name;
             }
         }
 
-        currentVal = dissolveMaterials[lastName].GetFloat(TimeStep);
+        if (dissolveMaterials.ContainsKey(lastName))
+            currentVal = dissolveMaterials[lastName].GetFloat(TimeStep);
         targetValue = 1;
         _tA = 0.0f;
         updateValue = true;

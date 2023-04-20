@@ -8,12 +8,12 @@ public class BasicCameraMovementInputs : MonoBehaviour
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;
-    private OrbitCameraController _cameraController;
+    private CameraController _cameraController;
 
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
-        _cameraController = FindObjectOfType<OrbitCameraController>();
+        _cameraController = FindObjectOfType<CameraController>();
     }
 
     // Update is called once per frame

@@ -83,9 +83,9 @@ public class RotatingWall : MonoBehaviour
             _playerValues.SetCurrentInput(CurrentInput.RotatingWall);
             _playerValues.SetInputsEnabled(false);
             //camera snap
-            _cameraController.RotateXCustom(transform.rotation.y + 90);
-            _cameraController.RotateYCustom(0.5f);
-            _cameraController.FreezeCamera();
+            // _cameraController.RotateXCustom(transform.rotation.y + 90);
+            // _cameraController.RotateYCustom(0.5f);
+            // _cameraController.FreezeCamera();
             //player snap
             _playerValues.snapRotationTo(transform.rotation.y + 90);
             _playerValues.SnapPositionTo(snapPos.transform.position);
@@ -124,7 +124,7 @@ public class RotatingWall : MonoBehaviour
         _playerValues.SetGear(0);
         yield return new WaitForSeconds(3f);
         _playerValues.StopMovement();
-        _cameraController.UnFreezeCamera();
+        // _cameraController.UnFreezeCamera();
         _playerValues.SetInputsEnabled(true);
         inside = false;
     }

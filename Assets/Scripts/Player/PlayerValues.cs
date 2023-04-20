@@ -117,6 +117,10 @@ public class PlayerValues : Subject
             transform.TransformDirection(Vector3.down) * raySize, Color.red);
     }
 
+    public void SaveGame()
+    {
+        _jsoNsaving.SaveTheData();
+    }
     public void SetCurrentInput(CurrentInput currentInput)
     {
         _currentInput = currentInput;

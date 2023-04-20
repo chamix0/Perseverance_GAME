@@ -18,6 +18,7 @@ public class Bullet : MonoBehaviour
 
     private void Start()
     {
+        
         _playerValues = FindObjectOfType<PlayerValues>();
         ready = false;
         _rigidbody.useGravity = false;

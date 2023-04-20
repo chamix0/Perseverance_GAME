@@ -82,6 +82,7 @@ public class CameraChanger : MonoBehaviour
     private void Transition(Transform to)
     {
         Transform from = transform;
+        float fov = 50;
         switch (activeCamera)
         {
             case ActiveCamera.Orbit:
@@ -92,10 +93,22 @@ public class CameraChanger : MonoBehaviour
                 break;
             case ActiveCamera.Screen:
                 from = screenCamera.transform;
+                                break;
+        }
+        switch (nextCamera)
+        {
+            case ActiveCamera.Orbit:
+                fov = _orbitCameraController.regularCamera.fieldOfView;
+                break;
+            case ActiveCamera.FirstPerson:
+                fov = _firstPersonCameraController.regularCamera.fieldOfView;
+                break;
+            case ActiveCamera.Screen:
+                fov = screenCamera.fieldOfView;
                 break;
         }
 
-        _transitionCameraController.Transition(from, to);
+        _transitionCameraController.Transition(from, to, fov);
         ActivateTransition();
         transition = true;
         transitioned = false;
