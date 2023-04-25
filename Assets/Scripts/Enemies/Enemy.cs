@@ -8,5 +8,4 @@ public abstract class Enemy : MonoBehaviour
     
     public abstract void RecieveDamage();
 
-    public abstract void Die();
 }

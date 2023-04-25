@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using EZCameraShake;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -7,7 +8,16 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     private OrbitCameraController orbitCameraController;
     private FirstPersonCameraController firstPersonCameraController;
+
     private CameraChanger cameraChanger;
+
+    //shake
+    [Header("Shake")]
+    [Range(0, 10)] public float magnitude = 2f;
+    [Range(0, 10)] public float roughness = 2f;
+    [Range(0, 1)] public float fadeInTime = .1f;
+    [Range(0, 5)] public float fadeOutTime = 1f;
+
 
     void Start()
     {
@@ -15,7 +25,11 @@ public class CameraController : MonoBehaviour
         orbitCameraController = FindObjectOfType<OrbitCameraController>();
         firstPersonCameraController = FindObjectOfType<FirstPersonCameraController>();
     }
-    
+
+    public void Shake()
+    {
+        CameraShaker.Instance.ShakeOnce(magnitude, roughness, fadeInTime, fadeOutTime);
+    }
 
     public void RotateYClockwise()
     {
@@ -54,7 +68,8 @@ public class CameraController : MonoBehaviour
         if (cameraChanger.activeCamera is ActiveCamera.FirstPerson)
             firstPersonCameraController.RotateYCounterClockwise();
         else if (cameraChanger.activeCamera is ActiveCamera.Orbit)
-            orbitCameraController.RotateYCounterClockwise();    }
+            orbitCameraController.RotateYCounterClockwise();
+    }
 
     public void RotateYCustom(float value)
     {

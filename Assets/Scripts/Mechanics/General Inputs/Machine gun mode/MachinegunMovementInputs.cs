@@ -51,6 +51,7 @@ public class MachinegunMovementInputs : MonoBehaviour
             {
                 changeCam = machineGun.HideMachinegun();
             }
+
             if (changeCam)
             {
                 _cameraChanger.SetOrbitCamera();
@@ -77,6 +78,7 @@ public class MachinegunMovementInputs : MonoBehaviour
                 if (shootTimer.Elapsed.TotalMilliseconds > shootCooldown)
                 {
                     shootTimer.Restart();
+                    // if (machineGuns[0].GetAim()) _cameraController.Shake();
                     foreach (var machineGun in machineGuns)
                     {
                         shootCooldown = machineGun.Shoot();
@@ -119,12 +121,12 @@ public class MachinegunMovementInputs : MonoBehaviour
             {
                 if (_playerValues.GetLights())
                 {
-                    _playerValues.TurnOffLights();
+                    _playerValues.NotifyAction(PlayerActions.TurnOffLights);
                     _cameraChanger.SetOrbitCamera();
                 }
                 else
                 {
-                    _playerValues.TurnOnLights();
+                    _playerValues.NotifyAction(PlayerActions.TurnOnLights);
                     _cameraChanger.SetFirstPersonCamera();
                 }
             }
@@ -161,9 +163,9 @@ public class MachinegunMovementInputs : MonoBehaviour
         else if (move.face == FACES.B)
         {
             if (move.direction == 1)
-                _playerValues.TurnOffLights();
+                _playerValues.NotifyAction(PlayerActions.TurnOffLights);
             else
-                _playerValues.TurnOnLights();
+                _playerValues.NotifyAction(PlayerActions.TurnOnLights);
         }
     }
 }

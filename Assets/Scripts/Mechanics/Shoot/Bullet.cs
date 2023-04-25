@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
     private Vector3 _direction;
     private bool shot;
     private Vector3 respawn;
+    [SerializeField] private ParticleSystem hit;
 
     private float speed = 1;
     [SerializeField] private Rigidbody _rigidbody;
@@ -18,7 +19,6 @@ public class Bullet : MonoBehaviour
 
     private void Start()
     {
-        
         _playerValues = FindObjectOfType<PlayerValues>();
         ready = false;
         _rigidbody.useGravity = false;
@@ -56,13 +56,14 @@ public class Bullet : MonoBehaviour
             }
             else
             {
-                if (collision.transform.CompareTag("Player"))
+                if (!_playerValues.dead && collision.transform.CompareTag("Player"))
                 {
                     _playerValues.Die(respawn);
                 }
             }
         }
 
+        hit.Play();
         if (MyUtils.IsInLayerMask(collision.gameObject, collisionLayers))
         {
             ready = true;

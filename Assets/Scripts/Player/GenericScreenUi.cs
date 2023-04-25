@@ -20,6 +20,7 @@ public class GenericScreenUi : MonoBehaviour
     private float _blinkCooldown;
     private bool _blinking;
     private bool _faceUpdated;
+    private float faceAlpha = 1;
 
     private const string NormalFace = "O.O";
     private const string BlinkFace = "-.-";
@@ -70,7 +71,10 @@ public class GenericScreenUi : MonoBehaviour
         if (!_faceUpdated)
         {
             SetTextSize(0.46f);
-            SetTextAlpha(1);
+            if (!updateText)
+                SetTextAlpha(faceAlpha);
+            else
+                faceAlpha = genericText.alpha;
             _faceUpdated = true;
             if (_blinking)
                 SetText(BlinkFace);

@@ -24,7 +24,6 @@ public class LookAtCamera : MonoBehaviour
     void LookToCamera()
     {
         transform.LookAt(camLook);
-        transform.Rotate(new Vector3(0, 180, 0));
     }
 
     void LookInCameraDirection()

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Codice.Client.BaseCommands.Differences;
 using Mechanics.General_Inputs;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -31,6 +32,8 @@ public class PlayerValues : Subject
     [Header("COMPONENTES")] [NonSerialized]
     public Rigidbody _rigidbody;
 
+    public GenericScreenUi genericScreenUi;
+
     private PlayerLights _playerLights;
     [NonSerialized] public Camera mainCamera;
     [NonSerialized] public bool allStaminaUsed = false;
@@ -50,6 +53,7 @@ public class PlayerValues : Subject
 
     //variables
     private bool _updateSnap, _updateLookAt, moveForward;
+    public bool dead = false;
 
     private float _snapPosX,
         _snapPosY,
@@ -71,6 +75,8 @@ public class PlayerValues : Subject
     //animator parameters
     private static readonly int Gear = Animator.StringToHash("Gear");
 
+    private DissolveMaterials dissolveMaterials;
+
     #endregion
 
     private void Awake()
@@ -79,6 +85,7 @@ public class PlayerValues : Subject
         _inputsEnabled = true;
         _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _rigidbody = GetComponent<Rigidbody>();
+        genericScreenUi = GetComponent<GenericScreenUi>();
         _playerLights = FindObjectOfType<PlayerLights>();
         mainCamera = Camera.main;
         //observers
@@ -90,6 +97,7 @@ public class PlayerValues : Subject
         gameData = _saveData.GetGameData(_saveData.GetLastSessionSlotIndex());
         _originalRigidBodyConstraints = _rigidbody.constraints;
         stuckTimer = new Stopwatch();
+        dissolveMaterials = GetComponent<DissolveMaterials>();
     }
 
     private void Start()
@@ -121,6 +129,7 @@ public class PlayerValues : Subject
     {
         _jsoNsaving.SaveTheData();
     }
+
     public void SetCurrentInput(CurrentInput currentInput)
     {
         _currentInput = currentInput;
@@ -298,23 +307,27 @@ public class PlayerValues : Subject
 
     public void StandUp(bool inputs, float time)
     {
-        NotifyObservers(PlayerActions.StandUp);
         StartCoroutine(StandUpCoroutine(inputs, time));
     }
 
     public void Die(Vector3 spawnPos)
     {
+        dead = true;
         NotifyObservers(PlayerActions.Die);
         StopRigidBodyVelocity();
-        transform.rotation = default;
-        TpToLastCheckPoint(spawnPos);
+        // TpToLastCheckPoint(spawnPos);
+        StartCoroutine(ResetPosCoroutine(spawnPos));
     }
 
 
     IEnumerator StandUpCoroutine(bool inputs, float time)
     {
         yield return new WaitForSeconds(time);
-        SetCurrentInput(CurrentInput.Movement);
+        NotifyObservers(PlayerActions.StandUp);
+        yield return new WaitForSeconds(2f);
+        if (_currentInput is not (CurrentInput.ShootMovement or  CurrentInput.StealthMovement
+            or CurrentInput.RaceMovement))
+            SetCurrentInput(CurrentInput.Movement);
         SetCanMove(true);
         SetInputsEnabled(inputs);
     }
@@ -361,15 +374,30 @@ public class PlayerValues : Subject
         {
             if (MyUtils.IsInLayerMask(hit.transform.gameObject, colisionLayers))
             {
-                transform.position = hit.point;
+                StartCoroutine(ResetPosCoroutine(hit.point));
             }
             else
             {
-                transform.position = lastValidPos;
+                StartCoroutine(ResetPosCoroutine(lastValidPos));
             }
         }
+    }
 
+    IEnumerator ResetPosCoroutine(Vector3 pos)
+    {
+        CurrentInput aux = _currentInput;
+        genericScreenUi.FadeOutText();
+        dissolveMaterials.DissolveOut();
+        _currentInput = CurrentInput.Movement;
+        Sit();
+        yield return new WaitForSeconds(2);
+        StandUp(true, 3f);
+        transform.position = pos;
         transform.up = Vector3.up;
+        dissolveMaterials.DissolveIn();
+        genericScreenUi.FadeInText();
+        dead = false;
+        _currentInput = aux;
     }
 
     public void TpToLastCheckPoint(Vector3 position)
@@ -399,7 +427,8 @@ public class PlayerValues : Subject
                 {
                     SetCanMove(true);
                     isGrounded = true;
-                    _rigidbody.constraints = _originalRigidBodyConstraints;
+                    if (transform.up == Vector3.up)
+                        _rigidbody.constraints = _originalRigidBodyConstraints;
                 }
 
                 lastValidPos = transform.position;
@@ -433,17 +462,20 @@ public class PlayerValues : Subject
 
     #endregion
 
+    public void NotifyAction(PlayerActions action)
+    {
+        NotifyObservers(action);
+    }
+
     #region Lights
 
-    public void TurnOnLights()
+    protected internal void TurnOnLights()
     {
-        NotifyObservers(PlayerActions.TurnOnLights);
         lightsOn = true;
     }
 
-    public void TurnOffLights()
+    protected internal void TurnOffLights()
     {
-        NotifyObservers(PlayerActions.TurnOffLights);
         lightsOn = false;
     }
 

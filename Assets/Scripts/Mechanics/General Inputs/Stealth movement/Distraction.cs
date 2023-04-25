@@ -28,6 +28,7 @@ public class Distraction : MonoBehaviour
     [SerializeField] private float distractionCooldown = 5;
     private float _targetAlpha, _tA;
     private bool _updateAlpha, _lockPos;
+    private Camera camera;
 
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class Distraction : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _renderer = GetComponent<Renderer>();
         _outline = GetComponent<Outline>();
+        camera = Camera.main;
     }
 
 
@@ -69,7 +71,7 @@ public class Distraction : MonoBehaviour
         {
             beingUsed = true;
             _rigidbody.drag = throwDrag;
-            _rigidbody.AddForce(_playerValues.transform.forward * throwForce, ForceMode.Impulse);
+            _rigidbody.AddForce(camera.transform.forward * throwForce, ForceMode.Impulse);
             _timer.Start();
         }
     }
@@ -78,13 +80,31 @@ public class Distraction : MonoBehaviour
     {
         if (_timer.Elapsed.TotalSeconds > distractionCooldown)
         {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, _playerValues.transform.position - transform.position, out hit,
+                    Mathf.Infinity))
+            {
+                if (hit.transform.gameObject.layer != 9)
+                {
+                    SetAlpha(0);
+                    StartCoroutine(RecuperateDistractionCoroutine());
+                }
+            }
+
             _lockPos = false;
             beingUsed = false;
             _rigidbody.drag = recoverDrag;
-
             _timer.Stop();
             _timer.Reset();
         }
+    }
+
+    IEnumerator RecuperateDistractionCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        transform.position = iddlePos.position;
+        SetAlpha(1);
     }
 
     public void SetAlpha(float targetAlpha)

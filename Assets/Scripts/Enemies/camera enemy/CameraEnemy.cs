@@ -2,19 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Enemies;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-enum States
-{
-    Off,
-    Iddle,
-    Searching,
-    DestroyDistraction,
-    Alert
-}
 
+[DefaultExecutionOrder(5)]
 public class CameraEnemy : Enemy
 {
     [SerializeField] private States _state;
@@ -27,12 +21,13 @@ public class CameraEnemy : Enemy
     private Stopwatch _timer;
     [SerializeField] private int timerCooldown = 5;
     private Vector3 _targetPoint;
-    private float _tX, _tY, _tZ;
     private bool _updateCamera;
     private int _currentPatrolPoint;
+    [SerializeField] private float speed = 3f;
 
     //CONE detector
-    [SerializeField] private Renderer cone;
+    [SerializeField] private MeshRenderer cone;
+    private Material coneMat;
     [SerializeField] private float radius;
     [SerializeField] private float detectionDepth = 10;
     [SerializeField] private LayerMask collision;
@@ -51,9 +46,11 @@ public class CameraEnemy : Enemy
     //light
     [SerializeField] private Light _light;
 
+
     //alerts
-    [SerializeField] private List<Sprite> _sprites; //0 searching 1 alert
-    private SpriteRenderer _spriteRenderer;
+    [SerializeField] private Animator animator;
+    private static readonly int Index1 = Animator.StringToHash("index");
+    private static readonly int Alpha = Shader.PropertyToID("_alpha");
 
     private void Awake()
     {
@@ -63,15 +60,19 @@ public class CameraEnemy : Enemy
 
     void Start()
     {
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _playerValues = FindObjectOfType<PlayerValues>();
         _targetDistraction = FindObjectOfType<Distraction>();
-        ChangeState(States.Iddle, Color.blue, null);
+        coneMat = cone.sharedMaterials[0];
+        coneMat.SetFloat(Alpha, 1);
+        ChangeState(States.Patrol, Color.blue, 0);
         _shootBullet = GetComponentInChildren<ShootBullet>();
         // _light = GetComponentInChildren<Light>();
-        _playerValues = FindObjectOfType<PlayerValues>();
         foreach (var point in patrolPointContainer.gameObject.GetComponentsInChildren<Transform>())
         {
-            _patrolPoints.Add(point);
+            if (point != patrolPointContainer.transform)
+            {
+                _patrolPoints.Add(point);
+            }
         }
     }
 
@@ -81,29 +82,30 @@ public class CameraEnemy : Enemy
         if (_updateCamera)
             SmoothllylookAt();
         //special transitions
-
-
-        //if player has the lights on and in sight
-        if (_playerValues.GetLights() && InSight())
+        if (lives > 0)
         {
-            ChangeState(States.Alert, Color.red, _sprites[1]);
+            //if player has the lights on and in sight
+            if (_playerValues.GetLights() && InSight())
+            {
+                ChangeState(States.Alert, Color.red, 2);
+            }
+
+            //if its moving too fast and in sight
+            if (_playerValues.GetGear() > 2 && InSight())
+            {
+                ChangeState(States.Alert, Color.red, 2);
+            }
+
+
+            if (_state is States.Patrol)
+                Iddle();
+            else if (_state is States.Searching)
+                Searching();
+            else if (_state is States.DestroyDistraction)
+                DestroyDistraction();
+            else if (_state is States.Alert)
+                Alert();
         }
-
-        //if its moving too fast and in sight
-        if (_playerValues.GetGear() > 2 && InSight())
-        {
-            ChangeState(States.Alert, Color.red, _sprites[1]);
-        }
-
-
-        if (_state is States.Iddle)
-            Iddle();
-        else if (_state is States.Searching)
-            Searching();
-        else if (_state is States.DestroyDistraction)
-            DestroyDistraction();
-        else if (_state is States.Alert)
-            Alert();
 
         Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit,
             Single.PositiveInfinity, collision);
@@ -135,12 +137,12 @@ public class CameraEnemy : Enemy
 
         if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
         {
-            ChangeState(States.DestroyDistraction, Color.red, _sprites[1]);
+            ChangeState(States.DestroyDistraction, Color.red, 2);
         }
 
         if (CheckIsInCone())
         {
-            ChangeState(States.Alert, Color.red, _sprites[1]);
+            ChangeState(States.Alert, Color.red, 2);
         }
     }
 
@@ -151,16 +153,16 @@ public class CameraEnemy : Enemy
 
         if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
         {
-            ChangeState(States.DestroyDistraction, Color.red, _sprites[1]);
+            ChangeState(States.DestroyDistraction, Color.red, 2);
         }
 
         if (CheckIsInCone())
         {
-            ChangeState(States.Alert, Color.red, _sprites[1]);
+            ChangeState(States.Alert, Color.red, 2);
         }
         else if (_timer.Elapsed.TotalSeconds > timerCooldown)
         {
-            ChangeState(States.Iddle, Color.blue, null);
+            ChangeState(States.Patrol, Color.blue, 0);
         }
     }
 
@@ -173,7 +175,7 @@ public class CameraEnemy : Enemy
         if (_timer.Elapsed.TotalSeconds > shootCooldown * 3)
         {
             _timer.Restart();
-            _shootBullet.Shoot(_targetDistraction.transform.position - transform.position,
+            _shootBullet.Shoot(_targetDistraction.transform.position - _shootBullet.transform.position,
                 shootSpeed,
                 respawn.position);
         }
@@ -182,7 +184,7 @@ public class CameraEnemy : Enemy
             Vector3.Distance(_targetDistraction.transform.position, transform.position) > detectionDepth)
         {
             _timer.Restart();
-            ChangeState(States.Searching, Color.yellow, _sprites[0]);
+            ChangeState(States.Searching, Color.yellow, 1);
         }
     }
 
@@ -195,14 +197,18 @@ public class CameraEnemy : Enemy
         if (_timer.Elapsed.TotalSeconds > shootCooldown)
         {
             _timer.Restart();
-            _shootBullet.Shoot((hit.point + new Vector3(0, offset, 0)) - transform.position, shootSpeed,
+            Ray ray = new Ray(_playerValues.transform.position, _playerValues.transform.forward);
+            int gear = _playerValues.GetGear();
+            int dist = gear > 2 ? 1 : 0;
+            var position = ray.GetPoint(dist);
+            _shootBullet.Shoot((position + new Vector3(0, offset, 0)) - transform.position, shootSpeed,
                 respawn.position);
         }
 
         if (!InSight() || hit.distance > detectionDepth)
         {
             _timer.Restart();
-            ChangeState(States.Searching, Color.yellow, _sprites[0]);
+            ChangeState(States.Searching, Color.yellow, 1);
         }
     }
 
@@ -210,7 +216,7 @@ public class CameraEnemy : Enemy
 
     public void EnableEnemy()
     {
-        ChangeState(States.Iddle, Color.blue, null);
+        ChangeState(States.Patrol, Color.blue, 0);
     }
 
     #region UTILS
@@ -219,9 +225,6 @@ public class CameraEnemy : Enemy
     {
         _updateCamera = true;
         _targetPoint = target;
-        _tX = 0f;
-        _tY = 0f;
-        _tZ = 0f;
     }
 
     private bool InSight()
@@ -252,23 +255,33 @@ public class CameraEnemy : Enemy
 
     private void SmoothllylookAt()
     {
-        Vector3 newPoint = new Vector3();
-        newPoint.x = Mathf.Lerp(hit.point.x, _targetPoint.x, _tX);
-        newPoint.y = Mathf.Lerp(hit.point.y, _targetPoint.y, _tY);
-        newPoint.z = Mathf.Lerp(hit.point.z, _targetPoint.z, _tZ);
+        Vector3 newPoint;
+        newPoint = Vector3.MoveTowards(hit.point, _targetPoint, speed * Time.deltaTime);
         transform.LookAt(newPoint);
-
-        _tX += 0.1f * Time.deltaTime;
-        _tY += 0.1f * Time.deltaTime;
-        _tZ += 0.1f * Time.deltaTime;
-
-        if ((_tX > 1.0f && _tY > 1.0f && _tZ > 1.0f) || _state != States.Iddle)
+        print("AAAAAA");
+        if (Vector3.Distance(newPoint, _targetPoint) < 0.01f || (lives > 0 && _state != States.Patrol))
         {
-            _tX = 1.0f;
-            _tY = 1.0f;
-            _tZ = 1.0f;
+            print("SSSZSDFA");
             _updateCamera = false;
         }
+    }
+
+    private void FollowSmothly()
+    {
+        Vector3 newPoint;
+
+        var position = _playerValues.transform.position;
+        float auxSpeed = _state is States.Searching ? speed / 2 : speed;
+        newPoint = Vector3.MoveTowards(hit.point, position, auxSpeed * Time.deltaTime);
+        transform.LookAt(newPoint);
+    }
+
+    private void FollowSmothlyDistraction()
+    {
+        Vector3 newPoint = new Vector3();
+        var position = _targetDistraction.transform.position;
+        newPoint = Vector3.MoveTowards(hit.point, position, speed * Time.deltaTime);
+        transform.LookAt(newPoint);
     }
 
     private void SetConeColor(Color color)
@@ -276,14 +289,13 @@ public class CameraEnemy : Enemy
         cone.material.SetColor(BackgroundColor, color);
     }
 
-    private void ChangeState(States s, Color color, Sprite sprite)
+    private void ChangeState(States s, Color color, int index)
     {
         _state = s;
         SetConeColor(color);
         _light.color = color;
-        _spriteRenderer.sprite = sprite;
+        animator.SetInteger(Index1, index);
     }
-
 
     private bool CheckIsInCone()
     {
@@ -299,45 +311,34 @@ public class CameraEnemy : Enemy
         return false;
     }
 
-    private void FollowSmothly()
-    {
-        Vector3 newPoint = new Vector3();
-        var position = _playerValues.transform.position;
-        float speed = _state is States.Searching ? 0.5f : 5f;
-        newPoint.x = Mathf.Lerp(hit.point.x, position.x, speed * Time.deltaTime);
-        newPoint.y = Mathf.Lerp(hit.point.y, position.y, speed * Time.deltaTime);
-        newPoint.z = Mathf.Lerp(hit.point.z, position.z, speed * Time.deltaTime);
-        transform.LookAt(newPoint);
-    }
-
-    private void FollowSmothlyDistraction()
-    {
-        Vector3 newPoint = new Vector3();
-        var position = _targetDistraction.transform.position;
-        float speed = 3;
-        newPoint.x = Mathf.Lerp(hit.point.x, position.x, speed * Time.deltaTime);
-        newPoint.y = Mathf.Lerp(hit.point.y, position.y, speed * Time.deltaTime);
-        newPoint.z = Mathf.Lerp(hit.point.z, position.z, speed * Time.deltaTime);
-        transform.LookAt(newPoint);
-    }
-
     #endregion
 
     public override void RecieveDamage()
     {
-        lives--;
-        if (lives<=0)
+        if (lives > 0)
         {
-            Die();
+            lives--;
+            if (lives <= 0)
+                Die();
         }
     }
 
-    public override void Die()
+    [SerializeField] private Transform deadPos;
+
+    private void Die()
     {
-        //agacharse hacia abajo
-        //apagar la luz y la luz volumetrica
         //sonidos
         //efecto de particulas
-        
+        cone.sharedMaterial.SetFloat(Alpha, 0);
+        _light.enabled = false;
+        StartCoroutine(DieCoroutine());
+    }
+
+    IEnumerator DieCoroutine()
+    {
+        yield return new WaitForSeconds(2f);
+        // speed = 100;
+        MoveCamera(deadPos.position);
+        //apagar la luz y la luz volumetrica
     }
 }

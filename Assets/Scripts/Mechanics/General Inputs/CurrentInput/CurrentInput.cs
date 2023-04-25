@@ -15,6 +15,7 @@
         StealthMovement,
         Conversation,
         ShootMovement,
+        RaceMovement,
         None
     }
 }

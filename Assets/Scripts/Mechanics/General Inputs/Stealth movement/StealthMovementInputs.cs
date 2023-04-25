@@ -29,10 +29,9 @@ public class StealthMovementInputs : MonoBehaviour
             if (!_distraction.GetIsVisible())
                 _distraction.SetVisible(true);
         }
-        
+
         if (_playerValues.GetCurrentInput() == CurrentInput.StealthMovement && _playerValues.GetInputsEnabled())
         {
-
             if (Input.GetKeyDown(KeyCode.W))
             {
                 if (_playerValues.GetGear() < 3)
@@ -50,9 +49,9 @@ public class StealthMovementInputs : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.L))
             {
                 if (_playerValues.GetLights())
-                    _playerValues.TurnOffLights();
+                    _playerValues.NotifyAction(PlayerActions.TurnOffLights);
                 else
-                    _playerValues.TurnOnLights();
+                    _playerValues.NotifyAction(PlayerActions.TurnOnLights);
             }
 
             if (Input.GetKeyDown(KeyCode.E))
@@ -104,9 +103,9 @@ public class StealthMovementInputs : MonoBehaviour
         else if (move.face == FACES.B)
         {
             if (move.direction == 1)
-                _playerValues.TurnOffLights();
+                _playerValues.NotifyAction(PlayerActions.TurnOffLights);
             else
-                _playerValues.TurnOnLights();
+                _playerValues.NotifyAction(PlayerActions.TurnOnLights);
         }
         else if (move.face == FACES.M)
         {

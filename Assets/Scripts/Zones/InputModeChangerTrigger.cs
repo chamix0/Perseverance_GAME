@@ -13,11 +13,12 @@ public class InputModeChangerTrigger : MonoBehaviour
         _playerValues = FindObjectOfType<PlayerValues>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             _playerValues.SetCurrentInput(_currentInput);
         }
     }
+    
 }

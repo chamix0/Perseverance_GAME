@@ -40,9 +40,9 @@ public class BasicCameraMovementInputs : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.L))
             {
                 if (_playerValues.GetLights())
-                    _playerValues.TurnOffLights();
+                    _playerValues.NotifyAction(PlayerActions.TurnOffLights);
                 else
-                    _playerValues.TurnOnLights();
+                    _playerValues.NotifyAction(PlayerActions.TurnOnLights);
             }
         }
     }
@@ -77,9 +77,9 @@ public class BasicCameraMovementInputs : MonoBehaviour
         else if (move.face == FACES.B)
         {
             if (move.direction == 1)
-                _playerValues.TurnOffLights();
+                _playerValues.NotifyAction(PlayerActions.TurnOffLights);
             else
-                _playerValues.TurnOnLights();
+                _playerValues.NotifyAction(PlayerActions.TurnOnLights);
         }
     }
 }

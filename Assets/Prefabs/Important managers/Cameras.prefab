@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 4942936172395834089}
   - component: {fileID: 4942936172395834088}
   - component: {fileID: 4942936172395834091}
+  - component: {fileID: 2015896335}
   m_Layer: 0
   m_Name: Cameras
   m_TagString: Untagged
@@ -197,6 +198,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11aab0e1452d0a4499a4bebd38f0bc86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  magnitude: 2
+  roughness: 2
+  fadeInTime: 0.1
+  fadeOutTime: 1
+--- !u!114 &2015896335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4942936172395834086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab8353b5ebd32545867da143199a814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultPosInfluence: {x: 0.15, y: 0.15, z: 0.15}
+  DefaultRotInfluence: {x: 1, y: 1, z: 1}
+  RestPositionOffset: {x: 0, y: 0, z: 0}
+  RestRotationOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &4942936172518384318
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +352,7 @@ MonoBehaviour:
   focus: {fileID: 0}
   rotationSpeed: 90
   minVerticalAngle: -30
-  maxVerticalAngle: 60
+  maxVerticalAngle: 80
   invertX: 0
   invertY: 1
   regularCamera: {fileID: 4942936172518384290}

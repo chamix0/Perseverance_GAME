@@ -5,15 +5,16 @@ using System.Linq;
 using Codice.Client.BaseCommands;
 using UnityEngine;
 
+[DefaultExecutionOrder(10)]
 public class DissolveMaterials : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private GameObject rootObject;
-    private Dictionary<string, Material> materials, dissolveMaterials;
+    private Dictionary<int, Material[]> materials, dissolveMaterials;
     [SerializeField] private Shader shader;
     [SerializeField] private List<GameObject> exceptions;
     [SerializeField] private bool hideOnStart = false;
-
+    [SerializeField] private float speed = 0.5f;
     private bool updateValue;
     private float currentVal, targetValue;
     private float _tA;
@@ -32,8 +33,8 @@ public class DissolveMaterials : MonoBehaviour
 
     private void Awake()
     {
-        materials = new Dictionary<string, Material>();
-        dissolveMaterials = new Dictionary<string, Material>();
+        materials = new Dictionary<int, Material[]>();
+        dissolveMaterials = new Dictionary<int, Material[]>();
     }
 
     void Start()
@@ -54,31 +55,101 @@ public class DissolveMaterials : MonoBehaviour
 
     private void GetOriginalMaterials()
     {
-        foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
+        List<GameObject> aux = new List<GameObject>();
+        foreach (var obj in exceptions)
         {
-            if (!exceptions.Contains(meshRenderer.gameObject))
+            foreach (var child in obj.GetComponentsInChildren<Transform>())
             {
-                Material oldMat = meshRenderer.sharedMaterial;
-                materials.Add(meshRenderer.name, oldMat);
-                Material disMat = new Material(shader);
-                dissolveMaterials.Add(meshRenderer.name, disMat);
-                disMat.SetTexture(Albedo, oldMat.GetTexture(BaseMap));
-                if (oldMat.GetTexture(EmissionMap) != null)
-                    disMat.SetTexture(Emission, oldMat.GetTexture(EmissionMap));
-                else
-                    disMat.SetInt(HasEmission, 0);
-                disMat.SetTexture(Metalic, oldMat.GetTexture(MetallicGlossMap));
+                if (!exceptions.Contains(child.gameObject))
+                    aux.Add(child.gameObject);
             }
         }
+        //
+        // foreach (var mats in rootObject.GetComponentsInChildren<DissolveMaterials>())
+        // {
+        //     if (mats.gameObject != rootObject)
+        //     {
+        //         foreach (var pair in mats.GetMats())
+        //             materials.Add(pair.Key, pair.Value);
+        //         foreach (var pair in mats.GetDisMats())
+        //             dissolveMaterials.Add(pair.Key, pair.Value);
+        //     }
+        // }
+
+        exceptions.AddRange(aux.ToArray());
+
+        foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
+        {
+            if (!materials.ContainsKey(meshRenderer.GetInstanceID()) && !exceptions.Contains(meshRenderer.gameObject))
+            {
+                Material[] oldMats = meshRenderer.sharedMaterials;
+                materials.Add(meshRenderer.GetInstanceID(), oldMats);
+                List<Material> auxMats = new List<Material>();
+                foreach (var oldMat in oldMats)
+                {
+                    Material disMat = new Material(shader);
+                    disMat.SetTexture(Albedo, oldMat.GetTexture(BaseMap));
+                    disMat.SetTexture(Emission, oldMat.GetTexture(EmissionMap));
+                    disMat.SetInt(HasEmission, 0);
+                    disMat.SetTexture(Metalic, oldMat.GetTexture(MetallicGlossMap));
+                    auxMats.Add(disMat);
+                }
+
+                dissolveMaterials.Add(meshRenderer.GetInstanceID(), auxMats.ToArray());
+            }
+        }
+
+        foreach (var skinnedMeshRenderer in rootObject.GetComponentsInChildren<SkinnedMeshRenderer>())
+        {
+            if (!materials.ContainsKey(skinnedMeshRenderer.GetInstanceID()) &&
+                !exceptions.Contains(skinnedMeshRenderer.gameObject))
+            {
+                Material[] oldMats = skinnedMeshRenderer.sharedMaterials;
+                materials.Add(skinnedMeshRenderer.GetInstanceID(), oldMats);
+                List<Material> auxMats = new List<Material>();
+                foreach (var oldMat in oldMats)
+                {
+                    Material disMat = new Material(shader);
+                    disMat.SetTexture(Albedo, oldMat.GetTexture(BaseMap));
+                    if (oldMat.GetTexture(EmissionMap) != null)
+                        disMat.SetTexture(Emission, oldMat.GetTexture(EmissionMap));
+                    else
+                        disMat.SetInt(HasEmission, 0);
+                    disMat.SetTexture(Metalic, oldMat.GetTexture(MetallicGlossMap));
+                    auxMats.Add(disMat);
+                }
+
+                dissolveMaterials.Add(skinnedMeshRenderer.GetInstanceID(), auxMats.ToArray());
+            }
+        }
+    }
+
+    public KeyValuePair<int, Material[]>[] GetMats()
+    {
+        return materials.ToArray();
+    }
+
+    public KeyValuePair<int, Material[]>[] GetDisMats()
+    {
+        return dissolveMaterials.ToArray();
     }
 
     private void PutOriginalMaterials()
     {
         foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
         {
-            if (!exceptions.Contains(meshRenderer.gameObject))
+            if (materials.ContainsKey(meshRenderer.GetInstanceID()) && !exceptions.Contains(meshRenderer.gameObject))
             {
-                meshRenderer.sharedMaterial = materials[meshRenderer.name];
+                meshRenderer.sharedMaterials = materials[meshRenderer.GetInstanceID()];
+            }
+        }
+
+        foreach (var skinnedMeshRenderer in rootObject.GetComponentsInChildren<SkinnedMeshRenderer>())
+        {
+            if (materials.ContainsKey(skinnedMeshRenderer.GetInstanceID()) &&
+                !exceptions.Contains(skinnedMeshRenderer.gameObject))
+            {
+                skinnedMeshRenderer.sharedMaterials = materials[skinnedMeshRenderer.GetInstanceID()];
             }
         }
     }
@@ -89,8 +160,23 @@ public class DissolveMaterials : MonoBehaviour
         {
             if (!exceptions.Contains(meshRenderer.gameObject))
             {
-                meshRenderer.sharedMaterial = dissolveMaterials[meshRenderer.name];
-                dissolveMaterials[meshRenderer.name].SetFloat(TimeStep, 1);
+                meshRenderer.sharedMaterials = dissolveMaterials[meshRenderer.GetInstanceID()];
+                foreach (var mat in dissolveMaterials[meshRenderer.GetInstanceID()])
+                {
+                    mat.SetFloat(TimeStep, 1);
+                }
+            }
+        }
+
+        foreach (var skinnedMeshRenderer in rootObject.GetComponentsInChildren<SkinnedMeshRenderer>())
+        {
+            if (!exceptions.Contains(skinnedMeshRenderer.gameObject))
+            {
+                skinnedMeshRenderer.sharedMaterials = dissolveMaterials[skinnedMeshRenderer.GetInstanceID()];
+                foreach (var mat in dissolveMaterials[skinnedMeshRenderer.GetInstanceID()])
+                {
+                    mat.SetFloat(TimeStep, 1);
+                }
             }
         }
 
@@ -100,17 +186,31 @@ public class DissolveMaterials : MonoBehaviour
 
     public void DissolveIn()
     {
-        string lastName = "";
-        foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
+        int lastId = 0;
+        foreach (var skinnedMeshRenderer in rootObject.GetComponentsInChildren<SkinnedMeshRenderer>())
         {
-            if (!exceptions.Contains(meshRenderer.gameObject))
+            if (!exceptions.Contains(skinnedMeshRenderer.gameObject))
             {
-                meshRenderer.sharedMaterial = dissolveMaterials[meshRenderer.name];
-                lastName = meshRenderer.name;
+                skinnedMeshRenderer.sharedMaterials = dissolveMaterials[skinnedMeshRenderer.GetInstanceID()];
             }
         }
 
-        currentVal = dissolveMaterials[lastName].GetFloat(TimeStep);
+        foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
+        {
+            if (dissolveMaterials.ContainsKey(meshRenderer.GetInstanceID()) &&
+                !exceptions.Contains(meshRenderer.gameObject))
+            {
+                meshRenderer.sharedMaterials = dissolveMaterials[meshRenderer.GetInstanceID()];
+                lastId = meshRenderer.GetInstanceID();
+            }
+        }
+
+
+        foreach (var mat in dissolveMaterials[lastId])
+        {
+            currentVal = mat.GetFloat(TimeStep);
+        }
+
         targetValue = 0;
         _tA = 0.0f;
         updateValue = true;
@@ -118,18 +218,33 @@ public class DissolveMaterials : MonoBehaviour
 
     public void DissolveOut()
     {
-        string lastName = "";
-        foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
+        int lastId = 0;
+
+        foreach (var skinnedMeshRenderer in rootObject.GetComponentsInChildren<SkinnedMeshRenderer>())
         {
-            if (dissolveMaterials.ContainsKey(meshRenderer.name) && !exceptions.Contains(meshRenderer.gameObject))
+            if (dissolveMaterials.ContainsKey(skinnedMeshRenderer.GetInstanceID()) &&
+                !exceptions.Contains(skinnedMeshRenderer.gameObject))
             {
-                meshRenderer.sharedMaterial = dissolveMaterials[meshRenderer.name];
-                lastName = meshRenderer.name;
+                skinnedMeshRenderer.sharedMaterials = dissolveMaterials[skinnedMeshRenderer.GetInstanceID()];
             }
         }
 
-        if (dissolveMaterials.ContainsKey(lastName))
-            currentVal = dissolveMaterials[lastName].GetFloat(TimeStep);
+        foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
+        {
+            if (dissolveMaterials.ContainsKey(meshRenderer.GetInstanceID()) &&
+                !exceptions.Contains(meshRenderer.gameObject))
+            {
+                meshRenderer.sharedMaterials = dissolveMaterials[meshRenderer.GetInstanceID()];
+                lastId = meshRenderer.GetInstanceID();
+            }
+        }
+
+        if (dissolveMaterials.ContainsKey(lastId))
+            foreach (var mat in dissolveMaterials[lastId])
+            {
+                currentVal = mat.GetFloat(TimeStep);
+            }
+
         targetValue = 1;
         _tA = 0.0f;
         updateValue = true;
@@ -138,19 +253,24 @@ public class DissolveMaterials : MonoBehaviour
 
     private void Fade()
     {
-        currentVal = Mathf.Lerp(currentVal, targetValue, _tA);
-        foreach (var mat in dissolveMaterials)
+        // currentVal = Mathf.Lerp(currentVal, targetValue, _tA);
+        _tA = speed * Time.deltaTime;
+
+        currentVal = Mathf.MoveTowards(currentVal, targetValue, _tA);
+        foreach (var sharedMats in dissolveMaterials)
         {
-            mat.Value.SetFloat(TimeStep, currentVal);
+            foreach (var mat in sharedMats.Value)
+            {
+                mat.SetFloat(TimeStep, currentVal);
+            }
         }
 
-        _tA += 0.1f * Time.deltaTime;
-        if (_tA >= 0.3f)
+        if (targetValue == 0)
         {
-            _tA = 1.0f;
-            updateValue = false;
-            if (currentVal <= 0.5f)
+            if (Mathf.Abs(targetValue - currentVal) < 0.1f)
             {
+                _tA = 1.0f;
+                updateValue = false;
                 PutOriginalMaterials();
             }
         }

@@ -18,18 +18,23 @@ public class MachineGun : MonoBehaviour
 {
     [SerializeField] private LayerMask collisionLayers;
     RaycastHit hit;
-    private CameraChanger cameraChanger;
+    private CameraController _cameraController;
+
+    private PlayerValues playerValues;
 
     //visibility
     bool isVisible = false;
 
     //laser
-    LineRenderer laserRay;
+    [SerializeField] LineRenderer laserRay;
     [SerializeField] private float laserWidth = 0.1f;
     [SerializeField] private float laserMaxDistance = 100;
     private Vector3 laserEndPoint;
     [SerializeField] private Transform aimPoint;
     [SerializeField] private Transform aimSphere;
+
+    //particles
+    [SerializeField] private ParticleSystem flash;
 
 
     //drum
@@ -72,13 +77,14 @@ public class MachineGun : MonoBehaviour
 
     void Start()
     {
+        playerValues = FindObjectOfType<PlayerValues>();
         dissolveMaterials = GetComponentInChildren<DissolveMaterials>();
-        cameraChanger = FindObjectOfType<CameraChanger>();
+        _cameraController = FindObjectOfType<CameraController>();
         shooter = GetComponentInChildren<ShootBullet>();
         aimSphere.gameObject.SetActive(false);
 
         Vector3[] initLaserPos = new Vector3[2] { Vector3.zero, Vector3.zero };
-        laserRay = GetComponent<LineRenderer>();
+        // laserRay = GetComponent<LineRenderer>();
         laserRay.SetPositions(initLaserPos);
         laserRay.SetWidth(laserWidth, laserWidth);
         shootingMode = (ShootingMode)modeIndex;
@@ -113,7 +119,7 @@ public class MachineGun : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (isVisible && aiming)
+        if (!playerValues.dead && isVisible && aiming)
             Laser();
         else
             StopAim();
@@ -159,7 +165,9 @@ public class MachineGun : MonoBehaviour
 
     private void ActualShot()
     {
+        _cameraController.Shake();
         shooter.Shoot(bulletSpeed);
+        flash.Play();
         recoil();
     }
 
@@ -197,15 +205,16 @@ public class MachineGun : MonoBehaviour
                 collisionLayers))
         {
             laserEndPoint = hit.point;
+            aimSphere.position = ray.GetPoint(hit.distance - 0.1f);
         }
         else
         {
             laserEndPoint = ray.GetPoint(laserMaxDistance);
+            aimSphere.position = ray.GetPoint(laserMaxDistance);
         }
 
         laserRay.SetPosition(0, laserEndPoint);
         laserRay.SetPosition(1, position);
-        aimSphere.position = laserEndPoint;
     }
 
     private void StopLaser()
@@ -233,6 +242,7 @@ public class MachineGun : MonoBehaviour
             dissolveMaterials.DissolveOut();
             isVisible = false;
         }
+
         return aux;
     }
 
@@ -275,6 +285,11 @@ public class MachineGun : MonoBehaviour
             hookTimer.Reset();
             _rigidbody.isKinematic = true;
         }
+    }
+
+    public bool GetAim()
+    {
+        return aiming;
     }
 
     private void ConstraintLocalAxisRigidbody()

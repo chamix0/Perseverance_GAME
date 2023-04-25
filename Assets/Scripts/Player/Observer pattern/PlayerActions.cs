@@ -4,6 +4,7 @@
     DecreaseGear,
     Sit,
     StandUp,
+    Shoot,
     TurnOnLights,
     TurnOffLights,
     Die
