@@ -9,13 +9,15 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _rigidbody;
     private float speed, _turnSmoothVel;
     public float stompUmbral, rayOffset;
+    
     public float staminaUsage = 1f, staminaRecovery = 0.5f;
     [SerializeField] private float turnSmoothTime = 0.1f;
     [SerializeField] private LayerMask rayLayers;
-
+    private CameraChanger cameraChanger;
 
     private void Start()
     {
+        cameraChanger = FindObjectOfType<CameraChanger>();
         _rigidbody = GetComponent<Rigidbody>();
         _playerValues = GetComponent<PlayerValues>();
     }
@@ -28,8 +30,7 @@ public class PlayerMovement : MonoBehaviour
             //play animation
         }
     }
-
-
+    
     private void FixedUpdate()
     {
         //move on ground
@@ -91,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
             .normalized;
         float targetAngle = Mathf.Atan2(direction.x, direction.z) *
                             Mathf.Rad2Deg +
-                            _playerValues.mainCamera.transform.eulerAngles.y;
+                            cameraChanger.GetActiveCam().transform.eulerAngles.y;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,
             targetAngle, ref _turnSmoothVel,
             turnSmoothTime);

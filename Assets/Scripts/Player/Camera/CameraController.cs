@@ -31,52 +31,52 @@ public class CameraController : MonoBehaviour
         CameraShaker.Instance.ShakeOnce(magnitude, roughness, fadeInTime, fadeOutTime);
     }
 
-    public void RotateYClockwise()
+    public void RotateVerticalDown()
     {
         if (cameraChanger.activeCamera is ActiveCamera.FirstPerson)
-            firstPersonCameraController.RotateXClockwise();
+            firstPersonCameraController.RotateVerticalDown();
         else
-            orbitCameraController.RotateXClockwise();
+            orbitCameraController.RotateVerticalDown();
     }
 
-    public void RotateYCounterClockwise()
+    public void RotateVerticalUp()
     {
         if (cameraChanger.activeCamera is ActiveCamera.FirstPerson)
-            firstPersonCameraController.RotateXCounterClockwise();
+            firstPersonCameraController.RotateVerticalUp();
         else if (cameraChanger.activeCamera is ActiveCamera.Orbit)
-            orbitCameraController.RotateXCounterClockwise();
+            orbitCameraController.RotateVerticalUp();
     }
 
-    public void RotateXClockwise()
+    public void RotateClockwise()
     {
         if (cameraChanger.activeCamera is ActiveCamera.FirstPerson)
-            firstPersonCameraController.RotateYClockwise();
+            firstPersonCameraController.RotateClockwise();
         else if (cameraChanger.activeCamera is ActiveCamera.Orbit)
-            orbitCameraController.RotateYClockwise();
+            orbitCameraController.RotateClockwise();
     }
 
-    public void RotateXCounterClockwise()
+    public void RotateCounterClockwise()
     {
         if (cameraChanger.activeCamera is ActiveCamera.FirstPerson)
-            firstPersonCameraController.RotateYCounterClockwise();
+            firstPersonCameraController.RotateCounterClockwise();
         else if (cameraChanger.activeCamera is ActiveCamera.Orbit)
-            orbitCameraController.RotateYCounterClockwise();
+            orbitCameraController.RotateCounterClockwise();
     }
 
-    public void RotateXCustom(float angle)
+    public void RotateCustom(float angle)
     {
         if (cameraChanger.activeCamera is ActiveCamera.FirstPerson)
-            firstPersonCameraController.RotateYCounterClockwise();
+            firstPersonCameraController.RotateCustom(angle);
         else if (cameraChanger.activeCamera is ActiveCamera.Orbit)
-            orbitCameraController.RotateYCounterClockwise();
+            orbitCameraController.RotateCustom(angle);
     }
 
-    public void RotateYCustom(float value)
+    public void RotateVerticalCustom(float value)
     {
         if (cameraChanger.activeCamera is ActiveCamera.FirstPerson)
-            firstPersonCameraController.RotateXCustom(value);
+            firstPersonCameraController.RotateVerticalCustom(value);
         else if (cameraChanger.activeCamera is ActiveCamera.Orbit)
-            orbitCameraController.RotateXCustom(value);
+            orbitCameraController.RotateVerticalCustom(value);
     }
 
     public void FreezeCamera()

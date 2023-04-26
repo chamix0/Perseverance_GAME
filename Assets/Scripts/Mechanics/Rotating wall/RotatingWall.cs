@@ -52,7 +52,7 @@ public class RotatingWall : MonoBehaviour
     {
         baseTransform.rotation =
             Quaternion.Slerp(baseTransform.rotation, Quaternion.Euler(0, targetWallAngle, 0), Time.deltaTime * 3f);
-        _cameraController.RotateXCustom(baseTransform.eulerAngles.y + 90);
+        // _cameraController.RotateXCustom(baseTransform.eulerAngles.y + 90);
 
         if (Mathf.Abs(MyUtils.Clamp0360(baseTransform.eulerAngles.y) - MyUtils.Clamp0360(targetWallAngle)) <
             0.01f)

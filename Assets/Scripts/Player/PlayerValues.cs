@@ -35,7 +35,6 @@ public class PlayerValues : Subject
     public GenericScreenUi genericScreenUi;
 
     private PlayerLights _playerLights;
-    [NonSerialized] public Camera mainCamera;
     [NonSerialized] public bool allStaminaUsed = false;
     [NonSerialized] public RigidbodyConstraints _originalRigidBodyConstraints;
     private PlayerAnimations _playerAnimations;
@@ -87,7 +86,6 @@ public class PlayerValues : Subject
         _rigidbody = GetComponent<Rigidbody>();
         genericScreenUi = GetComponent<GenericScreenUi>();
         _playerLights = FindObjectOfType<PlayerLights>();
-        mainCamera = Camera.main;
         //observers
         AddObserver(_playerAnimations);
         AddObserver(_playerLights);

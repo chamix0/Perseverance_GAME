@@ -7,17 +7,13 @@ using UnityEngine;
 public class MachingunRotation : MonoBehaviour
 {
     private CameraChanger cameraChanger;
-    private PlayerValues playerValues;
 
-    private Camera cam;
-    public float aaa = 0.5f;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         cameraChanger = FindObjectOfType<CameraChanger>();
-        playerValues = FindObjectOfType<PlayerValues>();
-        cam = playerValues.mainCamera;
     }
 
     // Update is called once per frame
@@ -25,14 +21,13 @@ public class MachingunRotation : MonoBehaviour
     {
         if (cameraChanger.activeCamera is ActiveCamera.FirstPerson)
         {
-            var transform1 = cam.transform;
-            Ray ray = new Ray(transform1.position,
-                transform1.forward);
+            var transform1 = cameraChanger.GetActiveCam().transform;
+            Ray ray = new Ray(transform1.position, transform1.forward);
             transform.LookAt(ray.GetPoint(20f));
         }
         else
         {
-            transform.rotation=Quaternion.Euler(0,cam.transform.rotation.eulerAngles.y,0);
+            transform.rotation=Quaternion.Euler(0,cameraChanger.GetActiveCam().transform.rotation.eulerAngles.y,0);
         }
     }
 }

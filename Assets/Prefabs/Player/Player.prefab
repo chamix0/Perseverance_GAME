@@ -2343,6 +2343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootCooldown: 250
+  yAngle: 30
 --- !u!1 &2065938465538481447
 GameObject:
   m_ObjectHideFlags: 0
@@ -4939,7 +4940,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!65 &4643490919132883612
@@ -4973,11 +4974,11 @@ MonoBehaviour:
   - {fileID: 4643490919722113169}
   - {fileID: 4643490919414414557}
   - {fileID: 5636995263580857848}
-  - {fileID: 1900818859239399484}
-  - {fileID: 6203634081200881305}
   - {fileID: 9106521550585653834}
   - {fileID: 4605866912134273276}
   - {fileID: 4605866911923545151}
+  - {fileID: 1900818859239399484}
+  - {fileID: 6203634081200881305}
   hideOnStart: 0
   speed: 0.5
 --- !u!1 &4643490919159732104
@@ -16341,7 +16342,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1476059571947889287, guid: bd15429dacd573e4db65d7a0417ec8c6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.59
+      value: 0.31
       objectReference: {fileID: 0}
     - target: {fileID: 1476059571947889287, guid: bd15429dacd573e4db65d7a0417ec8c6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -16673,7 +16674,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1476059571947889287, guid: bd15429dacd573e4db65d7a0417ec8c6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.59
+      value: 0.31
       objectReference: {fileID: 0}
     - target: {fileID: 1476059571947889287, guid: bd15429dacd573e4db65d7a0417ec8c6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -16702,6 +16703,10 @@ PrefabInstance:
     - target: {fileID: 1476059571947889287, guid: bd15429dacd573e4db65d7a0417ec8c6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8061486131132278859, guid: bd15429dacd573e4db65d7a0417ec8c6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 380.8452
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd15429dacd573e4db65d7a0417ec8c6, type: 3}

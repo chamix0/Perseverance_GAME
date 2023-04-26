@@ -258,10 +258,8 @@ public class CameraEnemy : Enemy
         Vector3 newPoint;
         newPoint = Vector3.MoveTowards(hit.point, _targetPoint, speed * Time.deltaTime);
         transform.LookAt(newPoint);
-        print("AAAAAA");
         if (Vector3.Distance(newPoint, _targetPoint) < 0.01f || (lives > 0 && _state != States.Patrol))
         {
-            print("SSSZSDFA");
             _updateCamera = false;
         }
     }

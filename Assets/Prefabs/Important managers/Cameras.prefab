@@ -358,8 +358,8 @@ MonoBehaviour:
   regularCamera: {fileID: 4942936172518384290}
   lookAtPoint: {fileID: 0}
   orbitAngles: {x: 45, y: 0}
-  rotateStepY: 15
-  angleStepX: 15
+  rotateStepVertical: 5
+  angleStep: 5
 --- !u!1001 &1713187025151981756
 PrefabInstance:
   m_ObjectHideFlags: 0

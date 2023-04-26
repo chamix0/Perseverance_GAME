@@ -38,14 +38,14 @@ public class FirstPersonCameraController : MonoBehaviour
     private void LateUpdate()
     {
         ManualRotation();
-        if (updateValueX)
+        if (updateVertical)
         {
-            orbitAngles.x = UpdateRotateCameraX();
+            orbitAngles.x = UpdateRotateCameraVertical();
         }
 
-        if (updateValueY)
+        if (updateRotation)
         {
-            orbitAngles.y = UpdateRotateCameraY();
+            orbitAngles.y = UpdateRotateCamera();
         }
 
         Quaternion lookRotation;
@@ -127,92 +127,90 @@ public class FirstPersonCameraController : MonoBehaviour
         audioListener.enabled = false;
     }
 
+    private float verticalValue, targetVerticalRotation, tV = 0;
+    private float rotationValue, targetRotation;
+    private float originalVerticalSpeed, originalRotationSpeed;
 
-    #region My stuff
+    public float rotateStepVertical = 15f, angleStep = 15f;
+    private bool updateVertical = false, updateRotation = false;
 
-    private float rotationValueY, targetRotationY, tY = 0;
-    private float rotationValueX, targetRotationX;
-    private float originalYSpeed, originalXSpeed;
-
-    public float rotateStepY = 15f, angleStepX = 15f;
-    private bool updateValueY = false, updateValueX = false;
 
     //variables
-    private float currentY;
-    private float currentX;
+    private float currentVerticalValue;
+    private float currentRotation;
 
-    public void RotateYClockwise()
+
+    public void RotateVerticalDown()
     {
-        tY = 0.0f;
-        updateValueY = true;
-        currentY = orbitAngles.y;
-        targetRotationY = currentY - rotateStepY;
+        tV = 0.0f;
+        updateVertical = true;
+        currentVerticalValue = orbitAngles.x;
+        targetVerticalRotation = Mathf.Max(minVerticalAngle, currentVerticalValue - rotateStepVertical);
     }
 
-    public void RotateYCounterClockwise()
+    public void RotateVerticalUp()
     {
-        tY = 0.0f;
-        updateValueY = true;
-        currentY = orbitAngles.y;
-        targetRotationY = currentY + rotateStepY;
+        tV = 0.0f;
+        updateVertical = true;
+        currentVerticalValue = orbitAngles.x;
+        targetVerticalRotation = Mathf.Min(maxVerticalAngle, currentVerticalValue + rotateStepVertical);
     }
 
-    public void RotateXClockwise()
+    public void RotateClockwise()
     {
-        currentX = orbitAngles.x;
-        targetRotationX = SnapPosition(orbitAngles.x + angleStepX);
-        updateValueX = true;
+        currentRotation = orbitAngles.y;
+        targetRotation = MyUtils.Clamp0360(SnapPosition(currentRotation + angleStep));
+        updateRotation = true;
     }
 
-    public void RotateXCounterClockwise()
+    public void RotateCounterClockwise()
     {
-        currentX = orbitAngles.x;
-        targetRotationX = SnapPosition(currentX - angleStepX);
-        updateValueX = true;
+        currentRotation = orbitAngles.y;
+        targetRotation = MyUtils.Clamp0360(SnapPosition(currentRotation - angleStep));
+        updateRotation = true;
     }
 
-    public void RotateXCustom(float angle)
+    public void RotateCustom(float angle)
     {
-        currentX = orbitAngles.x;
-        targetRotationX = SnapPosition(angle);
-        updateValueX = true;
+        currentRotation = orbitAngles.y;
+        targetRotation = MyUtils.Clamp0360(SnapPosition(angle));
+        updateRotation = true;
     }
 
-    public void RotateYCustom(float value)
+    public void RotateVerticalCustom(float value)
     {
-        currentY = orbitAngles.y;
-
-        tY = 0;
-        updateValueY = true;
+        currentVerticalValue = orbitAngles.x;
+        targetVerticalRotation = value;
+        tV = 0;
+        updateVertical = true;
     }
 
 
-    private float UpdateRotateCameraY()
+    private float UpdateRotateCameraVertical()
     {
-        currentY = Mathf.Lerp(currentY, targetRotationY, tY);
-        tY += 1f * Time.deltaTime;
-        if (tY > 1.0f)
+        currentVerticalValue = Mathf.Lerp(currentVerticalValue, targetVerticalRotation, tV);
+        tV += 1f * Time.deltaTime;
+        if (tV > 1.0f)
         {
-            tY = 1.0f;
-            updateValueY = false;
+            tV = 1.0f;
+            updateVertical = false;
         }
 
-        return currentY;
+        return currentVerticalValue;
     }
 
-    private float UpdateRotateCameraX()
+    private float UpdateRotateCamera()
     {
-        // thirdPersonCamera.m_XAxis.Value;
-        currentX = Quaternion
-            .Lerp(Quaternion.Euler(0, currentX, 0),
-                Quaternion.Euler(0, targetRotationX, 0), 5 * Time.deltaTime).eulerAngles.y;
+        currentRotation = Quaternion
+            .Lerp(Quaternion.Euler(0, currentRotation, 0), Quaternion.Euler(0, targetRotation, 0), 5 * Time.deltaTime)
+            .eulerAngles.y;
 
-        if (Mathf.Abs(currentX - targetRotationX) < 0.1f)
+        if (Mathf.Abs(currentRotation - targetRotation) < 0.1f)
         {
-            updateValueX = false;
+            updateRotation = false;
         }
 
-        return currentX;
+        return currentRotation;
     }
 
 
@@ -229,8 +227,6 @@ public class FirstPersonCameraController : MonoBehaviour
 
     float SnapPosition(float input)
     {
-        return Mathf.Round(input / angleStepX) * angleStepX;
+        return Mathf.Round(input / angleStep) * angleStep;
     }
-
-    #endregion
 }

@@ -28,7 +28,7 @@ public class Distraction : MonoBehaviour
     [SerializeField] private float distractionCooldown = 5;
     private float _targetAlpha, _tA;
     private bool _updateAlpha, _lockPos;
-    private Camera camera;
+    private CameraChanger cameraChanger;
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class Distraction : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _renderer = GetComponent<Renderer>();
         _outline = GetComponent<Outline>();
-        camera = Camera.main;
+        cameraChanger = FindObjectOfType<CameraChanger>();
     }
 
 
@@ -71,7 +71,7 @@ public class Distraction : MonoBehaviour
         {
             beingUsed = true;
             _rigidbody.drag = throwDrag;
-            _rigidbody.AddForce(camera.transform.forward * throwForce, ForceMode.Impulse);
+            _rigidbody.AddForce(cameraChanger.GetActiveCam().transform.forward * throwForce, ForceMode.Impulse);
             _timer.Start();
         }
     }

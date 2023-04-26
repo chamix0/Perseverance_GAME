@@ -16,6 +16,7 @@ public class MachinegunMovementInputs : MonoBehaviour
 
     private Stopwatch shootTimer;
     [SerializeField] private int shootCooldown = 250;
+    [SerializeField] private float yAngle;
 
     private void Awake()
     {
@@ -130,42 +131,102 @@ public class MachinegunMovementInputs : MonoBehaviour
                     _cameraChanger.SetFirstPersonCamera();
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                if (_cameraChanger.activeCamera is not ActiveCamera.FirstPerson)
+                    _cameraChanger.SetFirstPersonCamera();
+                else
+                    _cameraChanger.SetOrbitCamera();
+            }
         }
     }
 
     public void PerformAction(Move move)
     {
+        //set camera height
+        if (_cameraChanger.activeCamera is ActiveCamera.Orbit)
+            _cameraController.RotateVerticalCustom(yAngle);
+        _playerValues.CheckIfStuck();
+
         //accelerate deccelerate
         if (move.face == FACES.R)
         {
-            _playerValues.CheckIfStuck();
-
-            if (move.direction == 1)
-                _playerValues.RiseGear();
+            if (_cameraChanger.activeCamera is ActiveCamera.FirstPerson)
+            {
+                if (move.direction == 1)
+                    _cameraController.RotateVerticalUp();
+                else
+                    _cameraController.RotateVerticalDown();
+            }
             else
-                _playerValues.DecreaseGear();
+            {
+                if (move.direction == 1)
+                {
+                    if (_playerValues.GetGear() < 3)
+                        _playerValues.RiseGear();
+                }
+                else
+                {
+                    _playerValues.DecreaseGear();
+                }
+            }
         }
         //turn camera in y axis
         else if (move.face == FACES.L)
         {
             if (move.direction == 1)
-                _cameraController.RotateYClockwise();
+            {
+                foreach (var machineGun in machineGuns)
+                {
+                    machineGun.Aim();
+                }
+            }
             else
-                _cameraController.RotateYCounterClockwise();
+            {
+                if (shootTimer.Elapsed.TotalMilliseconds > shootCooldown)
+                {
+                    shootTimer.Restart();
+                    foreach (var machineGun in machineGuns)
+                    {
+                        shootCooldown = machineGun.Shoot();
+                        machineGun.StopAim();
+                    }
+                }
+            }
         }
         else if (move.face == FACES.U)
         {
             if (move.direction == 1)
-                _cameraController.RotateXClockwise();
+                _cameraController.RotateClockwise();
             else
-                _cameraController.RotateXCounterClockwise();
+                _cameraController.RotateCounterClockwise();
         }
         else if (move.face == FACES.B)
         {
             if (move.direction == 1)
-                _playerValues.NotifyAction(PlayerActions.TurnOffLights);
+            {
+                if (_playerValues.GetLights())
+                    _playerValues.NotifyAction(PlayerActions.TurnOffLights);
+                else
+                    _cameraChanger.SetOrbitCamera();
+            }
             else
-                _playerValues.NotifyAction(PlayerActions.TurnOnLights);
+            {
+                if (!_playerValues.GetLights())
+                    _playerValues.NotifyAction(PlayerActions.TurnOnLights);
+                else
+                    _cameraChanger.SetFirstPersonCamera();
+            }
+        }
+        else if (move.face == FACES.D)
+        {
+            if (move.direction == 1)
+                foreach (var machineGun in machineGuns)
+                    machineGun.NextShootingMode();
+            else
+                foreach (var machineGun in machineGuns)
+                    machineGun.PrevShootingMode();
         }
     }
 }

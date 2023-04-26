@@ -110,8 +110,8 @@ public class LockerBase : MonoBehaviour
             _inside = true;
             _playerValues.snapRotationTo(_snapPos.transform.eulerAngles.y);
             _playerValues.SnapPositionTo(_snapPos.transform.position);
-            _cameraController.RotateXCustom(MyUtils.Clamp0360(-_snapPos.transform.eulerAngles.y));
-            _cameraController.RotateYCustom(0.5f);
+            // _cameraController.RotateXCustom(MyUtils.Clamp0360(-_snapPos.transform.eulerAngles.y));
+            // _cameraController.RotateYCustom(0.5f);
             _cameraController.FreezeCamera();
             _playerValues.Sit();
             _cameraChanger.SetScreenCamera();

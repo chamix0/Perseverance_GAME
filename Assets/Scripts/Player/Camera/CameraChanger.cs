@@ -17,6 +17,7 @@ public class CameraChanger : MonoBehaviour
     private OrbitCameraController _orbitCameraController;
     private FirstPersonCameraController _firstPersonCameraController;
     private TransitionCameraController _transitionCameraController;
+    private List<Camera> cameras;
     [SerializeField] private Camera screenCamera;
     private AudioListener audioListenerScreen;
     [NonSerialized] public ActiveCamera activeCamera = ActiveCamera.Orbit;
@@ -24,6 +25,10 @@ public class CameraChanger : MonoBehaviour
 
     private bool transition, transitioned;
 
+    private void Awake()
+    {
+        cameras = new List<Camera>();
+    }
 
     private void Start()
     {
@@ -31,6 +36,10 @@ public class CameraChanger : MonoBehaviour
         _transitionCameraController = FindObjectOfType<TransitionCameraController>();
         _orbitCameraController = FindObjectOfType<OrbitCameraController>();
         _firstPersonCameraController = FindObjectOfType<FirstPersonCameraController>();
+
+        cameras.Add(_orbitCameraController.regularCamera);
+        cameras.Add(_firstPersonCameraController.regularCamera);
+        cameras.Add(screenCamera);
         ActivateOrbit();
     }
 
@@ -83,6 +92,7 @@ public class CameraChanger : MonoBehaviour
     {
         Transform from = transform;
         float fov = 50;
+
         switch (activeCamera)
         {
             case ActiveCamera.Orbit:
@@ -93,25 +103,24 @@ public class CameraChanger : MonoBehaviour
                 break;
             case ActiveCamera.Screen:
                 from = screenCamera.transform;
-                                break;
-        }
-        switch (nextCamera)
-        {
-            case ActiveCamera.Orbit:
-                fov = _orbitCameraController.regularCamera.fieldOfView;
-                break;
-            case ActiveCamera.FirstPerson:
-                fov = _firstPersonCameraController.regularCamera.fieldOfView;
-                break;
-            case ActiveCamera.Screen:
-                fov = screenCamera.fieldOfView;
                 break;
         }
+
+        if (nextCamera is not ActiveCamera.None)
+            fov = cameras[(int)nextCamera].fieldOfView;
+
 
         _transitionCameraController.Transition(from, to, fov);
         ActivateTransition();
         transition = true;
         transitioned = false;
+    }
+
+    public Camera GetActiveCam()
+    {
+        if (activeCamera is ActiveCamera.None)
+            return cameras[(int)ActiveCamera.Orbit];
+        return cameras[(int)activeCamera];
     }
 
     private void ActivateOrbit()

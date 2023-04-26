@@ -15,6 +15,9 @@ public class DissolveMaterials : MonoBehaviour
     [SerializeField] private List<GameObject> exceptions;
     [SerializeField] private bool hideOnStart = false;
     [SerializeField] private float speed = 0.5f;
+    private List<MeshRenderer> meshRenderers;
+    private List<SkinnedMeshRenderer> skinnedMeshRenderers;
+
     private bool updateValue;
     private float currentVal, targetValue;
     private float _tA;
@@ -33,6 +36,8 @@ public class DissolveMaterials : MonoBehaviour
 
     private void Awake()
     {
+        meshRenderers = new List<MeshRenderer>();
+        skinnedMeshRenderers = new List<SkinnedMeshRenderer>();
         materials = new Dictionary<int, Material[]>();
         dissolveMaterials = new Dictionary<int, Material[]>();
     }
@@ -64,22 +69,13 @@ public class DissolveMaterials : MonoBehaviour
                     aux.Add(child.gameObject);
             }
         }
-        //
-        // foreach (var mats in rootObject.GetComponentsInChildren<DissolveMaterials>())
-        // {
-        //     if (mats.gameObject != rootObject)
-        //     {
-        //         foreach (var pair in mats.GetMats())
-        //             materials.Add(pair.Key, pair.Value);
-        //         foreach (var pair in mats.GetDisMats())
-        //             dissolveMaterials.Add(pair.Key, pair.Value);
-        //     }
-        // }
+
 
         exceptions.AddRange(aux.ToArray());
 
         foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
         {
+            meshRenderers.Add(meshRenderer);
             if (!materials.ContainsKey(meshRenderer.GetInstanceID()) && !exceptions.Contains(meshRenderer.gameObject))
             {
                 Material[] oldMats = meshRenderer.sharedMaterials;
@@ -101,6 +97,7 @@ public class DissolveMaterials : MonoBehaviour
 
         foreach (var skinnedMeshRenderer in rootObject.GetComponentsInChildren<SkinnedMeshRenderer>())
         {
+            skinnedMeshRenderers.Add(skinnedMeshRenderer);
             if (!materials.ContainsKey(skinnedMeshRenderer.GetInstanceID()) &&
                 !exceptions.Contains(skinnedMeshRenderer.gameObject))
             {
@@ -136,7 +133,7 @@ public class DissolveMaterials : MonoBehaviour
 
     private void PutOriginalMaterials()
     {
-        foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
+        foreach (var meshRenderer in meshRenderers)
         {
             if (materials.ContainsKey(meshRenderer.GetInstanceID()) && !exceptions.Contains(meshRenderer.gameObject))
             {
@@ -144,7 +141,7 @@ public class DissolveMaterials : MonoBehaviour
             }
         }
 
-        foreach (var skinnedMeshRenderer in rootObject.GetComponentsInChildren<SkinnedMeshRenderer>())
+        foreach (var skinnedMeshRenderer in skinnedMeshRenderers)
         {
             if (materials.ContainsKey(skinnedMeshRenderer.GetInstanceID()) &&
                 !exceptions.Contains(skinnedMeshRenderer.gameObject))
@@ -156,7 +153,7 @@ public class DissolveMaterials : MonoBehaviour
 
     public void HideMaterials()
     {
-        foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
+        foreach (var meshRenderer in meshRenderers)
         {
             if (!exceptions.Contains(meshRenderer.gameObject))
             {
@@ -168,7 +165,7 @@ public class DissolveMaterials : MonoBehaviour
             }
         }
 
-        foreach (var skinnedMeshRenderer in rootObject.GetComponentsInChildren<SkinnedMeshRenderer>())
+        foreach (var skinnedMeshRenderer in skinnedMeshRenderers)
         {
             if (!exceptions.Contains(skinnedMeshRenderer.gameObject))
             {
@@ -187,7 +184,7 @@ public class DissolveMaterials : MonoBehaviour
     public void DissolveIn()
     {
         int lastId = 0;
-        foreach (var skinnedMeshRenderer in rootObject.GetComponentsInChildren<SkinnedMeshRenderer>())
+        foreach (var skinnedMeshRenderer in meshRenderers)
         {
             if (!exceptions.Contains(skinnedMeshRenderer.gameObject))
             {
@@ -195,7 +192,7 @@ public class DissolveMaterials : MonoBehaviour
             }
         }
 
-        foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
+        foreach (var meshRenderer in skinnedMeshRenderers)
         {
             if (dissolveMaterials.ContainsKey(meshRenderer.GetInstanceID()) &&
                 !exceptions.Contains(meshRenderer.gameObject))
@@ -205,11 +202,14 @@ public class DissolveMaterials : MonoBehaviour
             }
         }
 
-
-        foreach (var mat in dissolveMaterials[lastId])
+        if (dissolveMaterials.ContainsKey(lastId))
         {
-            currentVal = mat.GetFloat(TimeStep);
+            foreach (var mat in dissolveMaterials[lastId])
+            {
+                currentVal = mat.GetFloat(TimeStep);
+            }
         }
+
 
         targetValue = 0;
         _tA = 0.0f;
@@ -220,7 +220,7 @@ public class DissolveMaterials : MonoBehaviour
     {
         int lastId = 0;
 
-        foreach (var skinnedMeshRenderer in rootObject.GetComponentsInChildren<SkinnedMeshRenderer>())
+        foreach (var skinnedMeshRenderer in skinnedMeshRenderers)
         {
             if (dissolveMaterials.ContainsKey(skinnedMeshRenderer.GetInstanceID()) &&
                 !exceptions.Contains(skinnedMeshRenderer.gameObject))
@@ -229,7 +229,7 @@ public class DissolveMaterials : MonoBehaviour
             }
         }
 
-        foreach (var meshRenderer in rootObject.GetComponentsInChildren<MeshRenderer>())
+        foreach (var meshRenderer in meshRenderers)
         {
             if (dissolveMaterials.ContainsKey(meshRenderer.GetInstanceID()) &&
                 !exceptions.Contains(meshRenderer.gameObject))

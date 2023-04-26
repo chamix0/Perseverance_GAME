@@ -89,16 +89,16 @@ public class StealthMovementInputs : MonoBehaviour
         else if (move.face == FACES.L)
         {
             if (move.direction == 1)
-                _cameraController.RotateYClockwise();
+                _cameraController.RotateVerticalDown();
             else
-                _cameraController.RotateYCounterClockwise();
+                _cameraController.RotateVerticalUp();
         }
         else if (move.face == FACES.U)
         {
             if (move.direction == 1)
-                _cameraController.RotateXClockwise();
+                _cameraController.RotateClockwise();
             else
-                _cameraController.RotateXCounterClockwise();
+                _cameraController.RotateCounterClockwise();
         }
         else if (move.face == FACES.B)
         {

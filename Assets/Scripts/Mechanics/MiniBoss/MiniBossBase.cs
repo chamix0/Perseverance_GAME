@@ -89,8 +89,8 @@ public class MiniBossBase : MonoBehaviour
             var eulerAngles = _snapPos.transform.eulerAngles;
             _playerValues.snapRotationTo(eulerAngles.y);
             _playerValues.SnapPositionTo(_snapPos.transform.position);
-            _cameraController.RotateXCustom(MyUtils.Clamp0360(eulerAngles.y + 180));
-            _cameraController.RotateYCustom(0.5f);
+            // _cameraController.RotateXCustom(MyUtils.Clamp0360(eulerAngles.y + 180));
+            // _cameraController.RotateYCustom(0.5f);
             _cameraController.FreezeCamera();
             _playerValues.Sit();
             _cameraChanger.SetScreenCamera();
