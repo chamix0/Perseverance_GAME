@@ -134,6 +134,8 @@ public class CameraChanger : MonoBehaviour
 
     private void ActivateFirstPerson()
     {
+        _firstPersonCameraController.regularCamera.transform.forward =
+            _orbitCameraController.regularCamera.transform.forward;
         _orbitCameraController.DisableCamera();
         _firstPersonCameraController.EnableCamera();
         _transitionCameraController.DisableCamera();

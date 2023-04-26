@@ -15,7 +15,6 @@ public class FirstPersonCameraController : MonoBehaviour
     [SerializeField, Range(-89f, 89f)] float minVerticalAngle = -30f, maxVerticalAngle = 60f;
     [SerializeField] private bool invertX, invertY;
     public Camera regularCamera;
-    [SerializeField] private Transform lookAtPoint;
 
     private AudioListener audioListener;
 

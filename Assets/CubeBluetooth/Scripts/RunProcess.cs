@@ -65,7 +65,7 @@ public class RunProcess : MonoBehaviour
     void DataReceived(object sender, DataReceivedEventArgs eventArgs)
     {
         string data = eventArgs.Data;
-        print($"<color=#00FF00> Process : " + data + "</color>");
+        UnityEngine.Debug.Log($"<color=#00FF00> Process : " + data + "</color>");
         _messages.EnqueueMsg(data);
         _cubeInputs.ProcessMessages(_messages);
     }

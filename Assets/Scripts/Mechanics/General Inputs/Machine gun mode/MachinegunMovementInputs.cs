@@ -118,21 +118,19 @@ public class MachinegunMovementInputs : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 if (_playerValues.GetLights())
                 {
                     _playerValues.NotifyAction(PlayerActions.TurnOffLights);
-                    _cameraChanger.SetOrbitCamera();
                 }
                 else
                 {
                     _playerValues.NotifyAction(PlayerActions.TurnOnLights);
-                    _cameraChanger.SetFirstPersonCamera();
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.K))
+            if (Input.GetKeyDown(KeyCode.D))
             {
                 if (_cameraChanger.activeCamera is not ActiveCamera.FirstPerson)
                     _cameraChanger.SetFirstPersonCamera();
@@ -149,7 +147,6 @@ public class MachinegunMovementInputs : MonoBehaviour
             _cameraController.RotateVerticalCustom(yAngle);
         _playerValues.CheckIfStuck();
 
-        //accelerate deccelerate
         if (move.face == FACES.R)
         {
             if (_cameraChanger.activeCamera is ActiveCamera.FirstPerson)
@@ -206,16 +203,18 @@ public class MachinegunMovementInputs : MonoBehaviour
         {
             if (move.direction == 1)
             {
-                if (_playerValues.GetLights())
-                    _playerValues.NotifyAction(PlayerActions.TurnOffLights);
-                else
+                if (_cameraChanger.activeCamera is ActiveCamera.FirstPerson)
+                {
                     _cameraChanger.SetOrbitCamera();
+                }
+                else if (_playerValues.GetLights())
+                    _playerValues.NotifyAction(PlayerActions.TurnOffLights);
             }
             else
             {
                 if (!_playerValues.GetLights())
                     _playerValues.NotifyAction(PlayerActions.TurnOnLights);
-                else
+                else if (_cameraChanger.activeCamera is not ActiveCamera.FirstPerson)
                     _cameraChanger.SetFirstPersonCamera();
             }
         }
