@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
+[DefaultExecutionOrder(7)]
 public class EnemyPath : MonoBehaviour
 {
     [SerializeField] private List<Transform> nodes;
@@ -20,6 +22,7 @@ public class EnemyPath : MonoBehaviour
                 distances[i][j].y = -1;
                 if (i == j)
                 {
+                    distances[i][j].y = j;
                     distances[i][j].x = 0f;
                 }
                 else
@@ -61,8 +64,27 @@ public class EnemyPath : MonoBehaviour
         }
     }
 
+    public int GetNextNode(int currentNode, int TargetNode)
+    {
+        return (int)distances[currentNode][TargetNode].y;
+    }
 
-    public void Dijkstra(int nodeIni)
+    public int GetRandomNode()
+    {
+        return Random.Range(0, nodes.Count);
+    }
+
+    public int GetNumNodes()
+    {
+        return nodes.Count;
+    }
+
+    public Transform GetNodeTransform(int node)
+    {
+        return nodes[node];
+    }
+
+    private void Dijkstra(int nodeIni)
     {
         List<int> selectedNodes = new List<int>();
         selectedNodes.Add(nodeIni);
@@ -130,6 +152,72 @@ public class EnemyPath : MonoBehaviour
         }
 
         paths = newPaths;
+    }
+
+    public int GetClosestNode(Vector3 enemyPos, int oldIndex)
+    {
+        int minIndex = oldIndex;
+        float minDistance = Mathf.Infinity;
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            Vector3 nodePos = nodes[i].position;
+            float dist = Vector3.Distance(enemyPos, nodePos);
+            RaycastHit auxHit;
+            if (Physics.Raycast(nodePos, enemyPos - nodePos, out auxHit,
+                    dist))
+                if (auxHit.transform.gameObject.layer == 11)
+                {
+                    if (dist < minDistance)
+                    {
+                        minDistance = dist;
+                        minIndex = i;
+                    }
+                }
+        }
+
+        return minIndex;
+    }
+
+    public int GetClosestPlayerNode(Vector3 playerPos, int oldIndex)
+    {
+        int minIndex = oldIndex;
+        float minDistance = Mathf.Infinity;
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            Vector3 nodePos = nodes[i].position;
+            float dist = Vector3.Distance(playerPos, nodePos);
+            RaycastHit auxHit;
+            if (Physics.Raycast(nodePos, playerPos - nodePos, out auxHit,
+                    dist))
+                if (auxHit.transform.gameObject.layer == 9)
+                {
+                    if (dist < minDistance)
+                    {
+                        minDistance = dist;
+                        minIndex = i;
+                    }
+                }
+        }
+
+        return minIndex;
+    }
+
+    public int GetFurthestNode(Vector3 playerPos, int oldIndex)
+    {
+        int nodeIni = GetClosestPlayerNode(playerPos, oldIndex);
+        int maxIndex = nodeIni;
+        float maxDistance = -Mathf.Infinity;
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            float dist = distances[nodeIni][i].x;
+            if (dist > maxDistance)
+            {
+                maxDistance = dist;
+                maxIndex = i;
+            }
+        }
+
+        return maxIndex;
     }
 
     private void PrintDistances()

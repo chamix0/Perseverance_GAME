@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Codice.Client.BaseCommands;
 using UnityEngine;
@@ -11,15 +12,15 @@ public class DissolveMaterials : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private GameObject rootObject;
     private Dictionary<int, Material[]> materials, dissolveMaterials;
-    [SerializeField] private Shader shader;
+    [SerializeField] private Shader shader, hitShader;
     [SerializeField] private List<GameObject> exceptions;
     [SerializeField] private bool hideOnStart = false;
     [SerializeField] private float speed = 0.5f;
     private List<MeshRenderer> meshRenderers;
     private List<SkinnedMeshRenderer> skinnedMeshRenderers;
-
+    private Material hitMaterial;
     private bool updateValue;
-    private float currentVal, targetValue;
+    private float currentVal = 1, targetValue;
     private float _tA;
     private static readonly int TimeStep = Shader.PropertyToID("_Time_Step");
     private static readonly int Albedo = Shader.PropertyToID("_Albedo");
@@ -32,6 +33,8 @@ public class DissolveMaterials : MonoBehaviour
     private static readonly int HasEmission = Shader.PropertyToID("_HasEmission");
     private static readonly int Normal = Shader.PropertyToID("_Normal");
     private static readonly int BumpMap = Shader.PropertyToID("_BumpMap");
+    private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
+    private static readonly int Alpha = Shader.PropertyToID("_alpha");
 
 
     private void Awake()
@@ -40,7 +43,14 @@ public class DissolveMaterials : MonoBehaviour
         skinnedMeshRenderers = new List<SkinnedMeshRenderer>();
         materials = new Dictionary<int, Material[]>();
         dissolveMaterials = new Dictionary<int, Material[]>();
+        if (hitShader)
+        {
+            hitMaterial = new Material(hitShader);
+            hitMaterial.SetColor(BackgroundColor, Color.white);
+            hitMaterial.SetFloat(Alpha, 0.8f);
+        }
     }
+
 
     void Start()
     {
@@ -84,10 +94,13 @@ public class DissolveMaterials : MonoBehaviour
                 foreach (var oldMat in oldMats)
                 {
                     Material disMat = new Material(shader);
-                    disMat.SetTexture(Albedo, oldMat.GetTexture(BaseMap));
-                    disMat.SetTexture(Emission, oldMat.GetTexture(EmissionMap));
+                    if (oldMat.HasProperty(BaseMap))
+                        disMat.SetTexture(Albedo, oldMat.GetTexture(BaseMap));
+                    if (oldMat.HasProperty(Emission))
+                        disMat.SetTexture(Emission, oldMat.GetTexture(EmissionMap));
                     disMat.SetInt(HasEmission, 0);
-                    disMat.SetTexture(Metalic, oldMat.GetTexture(MetallicGlossMap));
+                    if (oldMat.HasProperty(MetallicGlossMap))
+                        disMat.SetTexture(Metalic, oldMat.GetTexture(MetallicGlossMap));
                     auxMats.Add(disMat);
                 }
 
@@ -158,10 +171,6 @@ public class DissolveMaterials : MonoBehaviour
             if (!exceptions.Contains(meshRenderer.gameObject))
             {
                 meshRenderer.sharedMaterials = dissolveMaterials[meshRenderer.GetInstanceID()];
-                foreach (var mat in dissolveMaterials[meshRenderer.GetInstanceID()])
-                {
-                    mat.SetFloat(TimeStep, 1);
-                }
             }
         }
 
@@ -176,19 +185,16 @@ public class DissolveMaterials : MonoBehaviour
                 }
             }
         }
-
-        _tA = 0.0f;
-        targetValue = 1;
     }
 
     public void DissolveIn()
     {
         int lastId = 0;
-        foreach (var skinnedMeshRenderer in meshRenderers)
+        foreach (var meshRenderer in meshRenderers)
         {
-            if (!exceptions.Contains(skinnedMeshRenderer.gameObject))
+            if (!exceptions.Contains(meshRenderer.gameObject))
             {
-                skinnedMeshRenderer.sharedMaterials = dissolveMaterials[skinnedMeshRenderer.GetInstanceID()];
+                meshRenderer.sharedMaterials = dissolveMaterials[meshRenderer.GetInstanceID()];
             }
         }
 
@@ -199,6 +205,8 @@ public class DissolveMaterials : MonoBehaviour
             {
                 meshRenderer.sharedMaterials = dissolveMaterials[meshRenderer.GetInstanceID()];
                 lastId = meshRenderer.GetInstanceID();
+                foreach (var mat in dissolveMaterials[meshRenderer.GetInstanceID()])
+                    mat.SetFloat(TimeStep, 1);
             }
         }
 
@@ -250,6 +258,34 @@ public class DissolveMaterials : MonoBehaviour
         updateValue = true;
     }
 
+    public void Hit()
+    {
+        foreach (var skinnedMeshRenderer in meshRenderers)
+        {
+            if (!exceptions.Contains(skinnedMeshRenderer.gameObject))
+            {
+                skinnedMeshRenderer.sharedMaterial = hitMaterial;
+            }
+        }
+
+        foreach (var meshRenderer in skinnedMeshRenderers)
+        {
+            if (dissolveMaterials.ContainsKey(meshRenderer.GetInstanceID()) &&
+                !exceptions.Contains(meshRenderer.gameObject))
+            {
+                meshRenderer.sharedMaterial = hitMaterial;
+            }
+        }
+
+        StartCoroutine(HitCoroutine());
+    }
+
+    IEnumerator HitCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        PutOriginalMaterials();
+    }
+
 
     private void Fade()
     {
@@ -265,13 +301,19 @@ public class DissolveMaterials : MonoBehaviour
             }
         }
 
-        if (targetValue == 0)
+
+        if (Mathf.Abs(targetValue - currentVal) < 0.1f)
         {
-            if (Mathf.Abs(targetValue - currentVal) < 0.1f)
+            if (targetValue == 0)
+            {
+                PutOriginalMaterials();
+                _tA = 1.0f;
+                updateValue = false;
+            }
+            else
             {
                 _tA = 1.0f;
                 updateValue = false;
-                PutOriginalMaterials();
             }
         }
     }

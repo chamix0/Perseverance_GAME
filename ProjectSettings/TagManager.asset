@@ -19,8 +19,8 @@ TagManager:
   - Bullet
   - Player
   - invisible wall
-  - 
-  - 
+  - Enemy
+  - EnemyBullets
   - 
   - 
   - 

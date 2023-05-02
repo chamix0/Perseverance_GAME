@@ -20,7 +20,9 @@ public class PlayerValues : Subject
 
     //stamina values
     public float stamina, maxStamina;
-    public int lives = 3;
+    public int lives;
+
+    public int MaxLives = 4;
 
     //stuck values
     private Stopwatch stuckTimer;
@@ -32,14 +34,17 @@ public class PlayerValues : Subject
     [Header("COMPONENTES")] [NonSerialized]
     public Rigidbody _rigidbody;
 
-    public GenericScreenUi genericScreenUi;
+    [SerializeField] private PlayerLives playerLives;
 
-    private PlayerLights _playerLights;
+    public GenericScreenUi genericScreenUi;
     [NonSerialized] public bool allStaminaUsed = false;
     [NonSerialized] public RigidbodyConstraints _originalRigidBodyConstraints;
-    private PlayerAnimations _playerAnimations;
-
     [SerializeField] private Transform isgroundedPos;
+
+    //observers
+    private PlayerAnimations _playerAnimations;
+    private PlayerLights _playerLights;
+    private PlayerSounds _playerSounds;
 
     //Inputs
     private CurrentInput _currentInput;
@@ -73,7 +78,6 @@ public class PlayerValues : Subject
 
     //animator parameters
     private static readonly int Gear = Animator.StringToHash("Gear");
-
     private DissolveMaterials dissolveMaterials;
 
     #endregion
@@ -82,11 +86,14 @@ public class PlayerValues : Subject
     {
         _currentInput = CurrentInput.Movement;
         _inputsEnabled = true;
-        _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _rigidbody = GetComponent<Rigidbody>();
         genericScreenUi = GetComponent<GenericScreenUi>();
-        _playerLights = FindObjectOfType<PlayerLights>();
+
         //observers
+        _playerSounds = FindObjectOfType<PlayerSounds>();
+        _playerLights = FindObjectOfType<PlayerLights>();
+        _playerAnimations = FindObjectOfType<PlayerAnimations>();
+        AddObserver(_playerSounds);
         AddObserver(_playerAnimations);
         AddObserver(_playerLights);
         //save data
@@ -100,6 +107,7 @@ public class PlayerValues : Subject
 
     private void Start()
     {
+        lives = MaxLives;
         SetCanMove(true);
     }
 
@@ -155,6 +163,30 @@ public class PlayerValues : Subject
         return gear;
     }
 
+    private void NotifyMovementAction()
+    {
+        if (gear == 0)
+        {
+            NotifyAction(PlayerActions.SlowWalking);
+        }
+        else if (gear == 2)
+        {
+            NotifyAction(PlayerActions.Walking);
+        }
+        else if (gear == 1)
+        {
+            NotifyAction(PlayerActions.Stop);
+        }
+        else if (gear == 3)
+        {
+            NotifyAction(PlayerActions.Runing);
+        }
+        else if (gear == 4)
+        {
+            NotifyAction(PlayerActions.Sprint);
+        }
+    }
+
     public void RiseGear()
     {
         if (isGrounded && canMove)
@@ -162,14 +194,26 @@ public class PlayerValues : Subject
             ResetRigidBodyConstraints();
             int old = gear;
             if (allStaminaUsed)
+            {
                 gear = Mathf.Min(gear + 1, 3);
+                if (old + 1 <= 3)
+                    NotifyObservers(PlayerActions.RiseGear);
+            }
             else
+            {
                 gear = Mathf.Min(gear + 1, 4);
+                if (old + 1 <= 4)
+                    NotifyObservers(PlayerActions.RiseGear);
+            }
+
             _playerAnimations.ChangeGearAnim(old, gear);
-            NotifyObservers(PlayerActions.RiseGear);
         }
         else
+        {
             SetGear(1);
+        }
+
+        NotifyMovementAction();
     }
 
     public void DecreaseGear()
@@ -180,12 +224,15 @@ public class PlayerValues : Subject
             int old = gear;
             gear = Mathf.Max(gear - 1, 0);
             _playerAnimations.ChangeGearAnim(old, gear);
-            NotifyObservers(PlayerActions.DecreaseGear);
+            if (old - 1 >= 0)
+                NotifyObservers(PlayerActions.DecreaseGear);
         }
         else
         {
             SetGear(1);
         }
+
+        NotifyMovementAction();
     }
 
     public void SetGear(int value)
@@ -202,6 +249,8 @@ public class PlayerValues : Subject
             gear = 1;
             _playerAnimations.ChangeGearAnim(old, gear);
         }
+
+        NotifyMovementAction();
     }
 
     #endregion
@@ -308,9 +357,42 @@ public class PlayerValues : Subject
         StartCoroutine(StandUpCoroutine(inputs, time));
     }
 
+    public void AddLive()
+    {
+        lives = Mathf.Min(lives + 1, MaxLives);
+    }
+
+    public void RecieveDamage(Vector3 spawnPos)
+    {
+        if (lives > 0)
+        {
+            lives--;
+            playerLives.Damage();
+            NotifyCameraLives();
+            if (lives <= 0)
+            {
+                Die(spawnPos);
+            }
+        }
+    }
+
+    public void NotifyCameraLives()
+    {
+        if (lives == 1)
+            NotifyAction(PlayerActions.HighDamage);
+        else if (lives == 2)
+            NotifyAction(PlayerActions.MediumDamage);
+        else if (lives == 3)
+            NotifyAction(PlayerActions.LowDamage);
+        else if (lives > 3)
+            NotifyAction(PlayerActions.NoDamage);
+    }
+
     public void Die(Vector3 spawnPos)
     {
         dead = true;
+        lives = MaxLives;
+        NotifyCameraLives();
         NotifyObservers(PlayerActions.Die);
         StopRigidBodyVelocity();
         // TpToLastCheckPoint(spawnPos);
@@ -323,7 +405,7 @@ public class PlayerValues : Subject
         yield return new WaitForSeconds(time);
         NotifyObservers(PlayerActions.StandUp);
         yield return new WaitForSeconds(2f);
-        if (_currentInput is not (CurrentInput.ShootMovement or  CurrentInput.StealthMovement
+        if (_currentInput is not (CurrentInput.ShootMovement or CurrentInput.StealthMovement
             or CurrentInput.RaceMovement))
             SetCurrentInput(CurrentInput.Movement);
         SetCanMove(true);
@@ -480,6 +562,12 @@ public class PlayerValues : Subject
     public bool GetLights()
     {
         return lightsOn;
+    }
+
+    public Vector3 GetPos()
+    {
+        Vector3 offset = new Vector3(0, 1, 0);
+        return transform.position + offset;
     }
 
     #endregion

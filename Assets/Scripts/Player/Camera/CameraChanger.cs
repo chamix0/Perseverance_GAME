@@ -123,6 +123,11 @@ public class CameraChanger : MonoBehaviour
         return cameras[(int)activeCamera];
     }
 
+    public Camera[] GetCameras()
+    {
+        return cameras.ToArray();
+    }
+
     private void ActivateOrbit()
     {
         _orbitCameraController.EnableCamera();

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Bullet : MonoBehaviour
 {
     private PlayerValues _playerValues;
@@ -15,7 +16,11 @@ public class Bullet : MonoBehaviour
     private float speed = 1;
     [SerializeField] private Rigidbody _rigidbody;
     private bool ready = true;
+
     public LayerMask collisionLayers;
+
+    //audio
+    [SerializeField] private AudioSource audioSource;
 
     private void Start()
     {
@@ -58,12 +63,14 @@ public class Bullet : MonoBehaviour
             {
                 if (!_playerValues.dead && collision.transform.CompareTag("Player"))
                 {
-                    _playerValues.Die(respawn);
+                    _playerValues.RecieveDamage(respawn);
                 }
             }
+
+            audioSource.Play();
+            hit.Play();
         }
 
-        hit.Play();
         if (MyUtils.IsInLayerMask(collision.gameObject, collisionLayers))
         {
             ready = true;

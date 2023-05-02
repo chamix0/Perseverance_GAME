@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Mechanics.General_Inputs;
+using Player.Observer_pattern;
 using UnityEngine;
 
 [DefaultExecutionOrder(4)]
@@ -50,6 +51,7 @@ public class MachinegunMovementInputs : MonoBehaviour
             bool changeCam = false;
             foreach (var machineGun in machineGuns)
             {
+                machineGun.ResetShootingMode ();
                 changeCam = machineGun.HideMachinegun();
             }
 
@@ -218,7 +220,7 @@ public class MachinegunMovementInputs : MonoBehaviour
                     _cameraChanger.SetFirstPersonCamera();
             }
         }
-        else if (move.face == FACES.D)
+        else if (move.face == FACES.F)
         {
             if (move.direction == 1)
                 foreach (var machineGun in machineGuns)
@@ -227,5 +229,10 @@ public class MachinegunMovementInputs : MonoBehaviour
                 foreach (var machineGun in machineGuns)
                     machineGun.PrevShootingMode();
         }
+    }
+
+    public void AddObservers(IObserver observer)
+    {
+        machineGuns[0].AddObserver(observer);
     }
 }

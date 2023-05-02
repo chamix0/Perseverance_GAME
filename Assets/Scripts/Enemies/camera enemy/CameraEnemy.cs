@@ -20,6 +20,7 @@ public class CameraEnemy : Enemy
     private List<Transform> _patrolPoints;
     private Stopwatch _timer;
     [SerializeField] private int timerCooldown = 5;
+
     private Vector3 _targetPoint;
     private bool _updateCamera;
     private int _currentPatrolPoint;
@@ -46,6 +47,8 @@ public class CameraEnemy : Enemy
     //light
     [SerializeField] private Light _light;
 
+    //sound
+    private EnemySounds enemySounds;
 
     //alerts
     [SerializeField] private Animator animator;
@@ -60,6 +63,7 @@ public class CameraEnemy : Enemy
 
     void Start()
     {
+        enemySounds = GetComponent<EnemySounds>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _targetDistraction = FindObjectOfType<Distraction>();
         coneMat = cone.sharedMaterials[0];
@@ -84,19 +88,6 @@ public class CameraEnemy : Enemy
         //special transitions
         if (lives > 0)
         {
-            //if player has the lights on and in sight
-            if (_playerValues.GetLights() && InSight())
-            {
-                ChangeState(States.Alert, Color.red, 2);
-            }
-
-            //if its moving too fast and in sight
-            if (_playerValues.GetGear() > 2 && InSight())
-            {
-                ChangeState(States.Alert, Color.red, 2);
-            }
-
-
             if (_state is States.Patrol)
                 Iddle();
             else if (_state is States.Searching)
@@ -135,9 +126,22 @@ public class CameraEnemy : Enemy
 
         //transition
 
+
         if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
         {
             ChangeState(States.DestroyDistraction, Color.red, 2);
+        }
+
+        //if player has the lights on and in sight
+        if (_playerValues.GetLights() && InSight())
+        {
+            ChangeState(States.Alert, Color.red, 2);
+        }
+
+        //if its moving too fast and in sight
+        if (_playerValues.GetGear() > 2 && InSight())
+        {
+            ChangeState(States.Alert, Color.red, 2);
         }
 
         if (CheckIsInCone())
@@ -156,13 +160,27 @@ public class CameraEnemy : Enemy
             ChangeState(States.DestroyDistraction, Color.red, 2);
         }
 
-        if (CheckIsInCone())
+        if (_timer.Elapsed.TotalSeconds > timerCooldown)
+        {
+            _timer.Restart();
+            ChangeState(States.Patrol, Color.blue, 0);
+        }
+
+        //if player has the lights on and in sight
+        if (_playerValues.GetLights() && InSight())
         {
             ChangeState(States.Alert, Color.red, 2);
         }
-        else if (_timer.Elapsed.TotalSeconds > timerCooldown)
+
+        //if its moving too fast and in sight
+        if (_playerValues.GetGear() > 2 && InSight())
         {
-            ChangeState(States.Patrol, Color.blue, 0);
+            ChangeState(States.Alert, Color.red, 2);
+        }
+
+        if (CheckIsInCone())
+        {
+            ChangeState(States.Alert, Color.red, 2);
         }
     }
 
@@ -186,22 +204,33 @@ public class CameraEnemy : Enemy
             _timer.Restart();
             ChangeState(States.Searching, Color.yellow, 1);
         }
+
+        //if player has the lights on and in sight
+        if (_playerValues.GetLights() && InSight())
+        {
+            ChangeState(States.Alert, Color.red, 2);
+        }
+
+        //if its moving too fast and in sight
+        if (_playerValues.GetGear() > 2 && InSight())
+        {
+            ChangeState(States.Alert, Color.red, 2);
+        }
     }
 
-    // ReSharper disable Unity.PerformanceAnalysis
     private void Alert()
     {
         FollowSmothly();
         // transform.LookAt(_playerValues.transform.position + new Vector3(0, offset, 0));
         //shoot
-        if (_timer.Elapsed.TotalSeconds > shootCooldown)
+        if (_timer.Elapsed.TotalSeconds > shootCooldown && !_playerValues.dead)
         {
             _timer.Restart();
-            Ray ray = new Ray(_playerValues.transform.position, _playerValues.transform.forward);
+            Ray ray = new Ray(_playerValues.GetPos(), _playerValues.transform.forward);
             int gear = _playerValues.GetGear();
             int dist = gear > 2 ? 1 : 0;
             var position = ray.GetPoint(dist);
-            _shootBullet.Shoot((position + new Vector3(0, offset, 0)) - transform.position, shootSpeed,
+            _shootBullet.Shoot(position - transform.position, shootSpeed,
                 respawn.position);
         }
 
@@ -230,7 +259,7 @@ public class CameraEnemy : Enemy
     private bool InSight()
     {
         RaycastHit auxHit;
-        if (Physics.Raycast(transform.position, _playerValues.transform.position - transform.position, out auxHit,
+        if (Physics.Raycast(transform.position, _playerValues.GetPos() - transform.position, out auxHit,
                 detectionDepth, collision))
             if (auxHit.transform.gameObject.CompareTag("Player"))
             {
@@ -268,7 +297,7 @@ public class CameraEnemy : Enemy
     {
         Vector3 newPoint;
 
-        var position = _playerValues.transform.position;
+        var position = _playerValues.GetPos();
         float auxSpeed = _state is States.Searching ? speed / 2 : speed;
         newPoint = Vector3.MoveTowards(hit.point, position, auxSpeed * Time.deltaTime);
         transform.LookAt(newPoint);
@@ -292,6 +321,10 @@ public class CameraEnemy : Enemy
         _state = s;
         SetConeColor(color);
         _light.color = color;
+        if (s is States.Alert)
+            enemySounds.PlayAlertSound();
+        else if (s is States.Searching)
+            enemySounds.PlaySearchingSound();
         animator.SetInteger(Index1, index);
     }
 
@@ -328,6 +361,8 @@ public class CameraEnemy : Enemy
         //sonidos
         //efecto de particulas
         cone.sharedMaterial.SetFloat(Alpha, 0);
+        animator.SetInteger(Index1, 0);
+        enemySounds.PlayDieSound();
         _light.enabled = false;
         StartCoroutine(DieCoroutine());
     }

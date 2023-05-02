@@ -6,7 +6,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-public class Distraction : MonoBehaviour
+public class Distraction : Subject
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;
@@ -43,6 +43,7 @@ public class Distraction : MonoBehaviour
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
+        AddObserver(_playerValues.GetComponent<PlayerSounds>());
         Physics.IgnoreCollision(_playerValues.GetComponent<BoxCollider>(), GetComponent<BoxCollider>());
 
         outlineWidth = _outline.OutlineWidth;
@@ -69,6 +70,7 @@ public class Distraction : MonoBehaviour
     {
         if (!beingUsed)
         {
+            NotifyObservers(PlayerActions.ThrowDistraction);
             beingUsed = true;
             _rigidbody.drag = throwDrag;
             _rigidbody.AddForce(cameraChanger.GetActiveCam().transform.forward * throwForce, ForceMode.Impulse);
@@ -92,6 +94,7 @@ public class Distraction : MonoBehaviour
                 }
             }
 
+            NotifyObservers(PlayerActions.RecuperateDistraction);
             _lockPos = false;
             beingUsed = false;
             _rigidbody.drag = recoverDrag;

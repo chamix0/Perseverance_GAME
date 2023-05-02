@@ -14,7 +14,7 @@ enum ShootingMode
 }
 
 [DefaultExecutionOrder(6)]
-public class MachineGun : MonoBehaviour
+public class MachineGun : Subject
 {
     [SerializeField] private LayerMask collisionLayers;
     RaycastHit hit;
@@ -32,10 +32,6 @@ public class MachineGun : MonoBehaviour
     private Vector3 laserEndPoint;
     [SerializeField] private Transform aimPoint;
     [SerializeField] private Transform aimSphere;
-
-    //particles
-    [SerializeField] private ParticleSystem flash;
-
 
     //drum
     [SerializeField] private Rigidbody drumRigidbody;
@@ -65,6 +61,9 @@ public class MachineGun : MonoBehaviour
     //materials
     private DissolveMaterials dissolveMaterials;
 
+    //observers
+    private MachineGunSounds machineGunSounds;
+    private MachineGunParticles machineGunParticles;
 
     //variables
     private bool aiming;
@@ -83,6 +82,12 @@ public class MachineGun : MonoBehaviour
         shooter = GetComponentInChildren<ShootBullet>();
         aimSphere.gameObject.SetActive(false);
 
+        machineGunParticles = GetComponent<MachineGunParticles>();
+        machineGunSounds = transform.parent.parent.GetComponent<MachineGunSounds>();
+
+        AddObserver(machineGunParticles);
+        AddObserver(machineGunSounds);
+
         Vector3[] initLaserPos = new Vector3[2] { Vector3.zero, Vector3.zero };
         // laserRay = GetComponent<LineRenderer>();
         laserRay.SetPositions(initLaserPos);
@@ -98,8 +103,6 @@ public class MachineGun : MonoBehaviour
         {
             if (_isAutomaticShooting)
                 automaticShooting();
-            // if (aiming)
-            //     Laser();
         }
 
         drumRigidbody.transform.localRotation = Quaternion.Euler(90, 0, drumRigidbody.transform
@@ -167,12 +170,14 @@ public class MachineGun : MonoBehaviour
     {
         _cameraController.Shake();
         shooter.Shoot(bulletSpeed);
-        flash.Play();
         recoil();
+        NotifyObservers(PlayerActions.Shoot);
     }
 
     public void Aim()
     {
+        if (!aiming)
+            NotifyObservers(PlayerActions.Aim);
         aiming = true;
         if (!aimSphere.gameObject.activeSelf)
             aimSphere.gameObject.SetActive(true);
@@ -182,6 +187,7 @@ public class MachineGun : MonoBehaviour
     {
         aiming = false;
         StopLaser();
+        NotifyObservers(PlayerActions.StopAim);
     }
 
     private void RotateDrum()
@@ -251,6 +257,14 @@ public class MachineGun : MonoBehaviour
         _isAutomaticShooting = false;
         modeIndex = (modeIndex + 1) % 3;
         shootingMode = (ShootingMode)modeIndex;
+        NotifyObservers(PlayerActions.ChangeShootingMode);
+    }
+
+    public void ResetShootingMode()
+    {
+        _isAutomaticShooting = false;
+        shootingMode = ShootingMode.Manual;
+        modeIndex = (int)shootingMode;
     }
 
     public void PrevShootingMode()
@@ -258,6 +272,7 @@ public class MachineGun : MonoBehaviour
         _isAutomaticShooting = false;
         modeIndex = modeIndex - 1 < 0 ? 2 : modeIndex - 1;
         shootingMode = (ShootingMode)modeIndex;
+        NotifyObservers(PlayerActions.ChangeShootingMode);
     }
 
     private void recoil()

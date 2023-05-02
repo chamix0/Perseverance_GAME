@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace Mechanics.Laberinth
@@ -11,13 +12,12 @@ namespace Mechanics.Laberinth
         private bool minigameFinished;
         private MinigameManager _minigameManager;
         private CameraChanger cameraChanger;
-        private PlayerAnimations _playerAnimations;
 
+        [SerializeField] private TMP_Text terminalText; 
         // Start is called before the first frame update
         void Start()
         {
             minigameFinished = false;
-            _playerAnimations = FindObjectOfType<PlayerAnimations>();
             cameraChanger = FindObjectOfType<CameraChanger>();
             _minigameManager = FindObjectOfType<MinigameManager>();
             _snapPos = transform.gameObject.transform.Find("snap pos").gameObject;
@@ -37,6 +37,7 @@ namespace Mechanics.Laberinth
                 minigameFinished = true;
                 _minigameManager.StartRandomMinigame();
                 cameraChanger.SetScreenCamera();
+                terminalText.SetText("Terminal operative");
             }
         }
 
