@@ -9,7 +9,7 @@ public class MiniBossBase : MonoBehaviour
     private GameObject _snapPos;
     private CameraChanger _cameraChanger;
     private OrbitCameraController _cameraController;
-    private GameObject _door;
+    [SerializeField] private GameObject _door;
     private RigidbodyConstraints _rigidbodyOriginalConstraints;
 
     //minigame
@@ -40,7 +40,6 @@ public class MiniBossBase : MonoBehaviour
         var parent = transform.parent;
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _snapPos = transform.gameObject.transform.Find("snap pos").gameObject;
-        _door = parent.Find("Door").gameObject;
         var position = _door.transform.position;
         _closeY = position.y;
         _openY = position.y + openHeight;
@@ -95,7 +94,8 @@ public class MiniBossBase : MonoBehaviour
             _playerValues.Sit();
             _cameraChanger.SetScreenCamera();
             //Empezar minijuego
-            miniBossManager.StartMinigame(bossName, bossSprite, bossTurnTime, gameTime, sequenceLength, gameDifficulty,bossMaxHealth,this);
+            miniBossManager.StartMinigame(bossName, bossSprite, bossTurnTime, gameTime, sequenceLength, gameDifficulty,
+                bossMaxHealth, this);
         }
     }
 

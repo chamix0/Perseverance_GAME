@@ -210,14 +210,15 @@ public class DissolveMaterials : MonoBehaviour
             }
         }
 
-        if (dissolveMaterials.ContainsKey(lastId))
-        {
-            foreach (var mat in dissolveMaterials[lastId])
-            {
-                currentVal = mat.GetFloat(TimeStep);
-            }
-        }
+        // if (dissolveMaterials.ContainsKey(lastId))
+        // {
+        //     foreach (var mat in dissolveMaterials[lastId])
+        //     {
+        //         currentVal = mat.GetFloat(TimeStep);
+        //     }
+        // }
 
+        currentVal = 1;
 
         targetValue = 0;
         _tA = 0.0f;
@@ -247,12 +248,13 @@ public class DissolveMaterials : MonoBehaviour
             }
         }
 
-        if (dissolveMaterials.ContainsKey(lastId))
-            foreach (var mat in dissolveMaterials[lastId])
-            {
-                currentVal = mat.GetFloat(TimeStep);
-            }
+        // if (dissolveMaterials.ContainsKey(lastId))
+        //     foreach (var mat in dissolveMaterials[lastId])
+        //     {
+        //         currentVal = mat.GetFloat(TimeStep);
+        //     }
 
+        currentVal = 0;
         targetValue = 1;
         _tA = 0.0f;
         updateValue = true;

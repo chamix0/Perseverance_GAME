@@ -30,7 +30,7 @@ public class TimeZoneManager : MonoBehaviour
     public void EndRun()
     {
         _stopwatch.Stop();
-        _gameData.setTime(zone, _stopwatch.Elapsed.TotalMilliseconds, MyUtils.GetTimeString(_stopwatch));
+        _gameData. setTime(zone, _stopwatch.Elapsed.TotalMilliseconds, MyUtils.GetTimeString(_stopwatch));
         _jsoNsaving.SaveTheData();
         SceneManager.LoadScene(1);
     }

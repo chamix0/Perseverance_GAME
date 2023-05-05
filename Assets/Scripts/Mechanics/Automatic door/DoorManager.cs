@@ -24,7 +24,7 @@ public class DoorManager : MonoBehaviour
         door = transform.Find("Door").gameObject;
         opened = false;
         _closeY = door.transform.position.y;
-        _openY = _closeY + 5;
+        _openY = _closeY + 8;
         closeTimer = new Stopwatch();
         closeTimer.Start();
     }

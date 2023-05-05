@@ -53,12 +53,13 @@ public class BasicCameraMovementInputs : MonoBehaviour
         if (move.face == FACES.R)
         {
             _playerValues.CheckIfStuck();
-
             if (move.direction == 1)
+            {
                 if (_playerValues.GetGear() < 3)
                     _playerValues.RiseGear();
-                else
-                    _playerValues.DecreaseGear();
+            }
+            else
+                _playerValues.DecreaseGear();
         }
         //turn camera in y axis
         else if (move.face == FACES.L)
@@ -78,8 +79,7 @@ public class BasicCameraMovementInputs : MonoBehaviour
             if (move.direction == 1)
                 if (_playerValues.GetLights())
                     _playerValues.NotifyAction(PlayerActions.TurnOffLights);
-            else
-                if (!_playerValues.GetLights())
+                else if (!_playerValues.GetLights())
                     _playerValues.NotifyAction(PlayerActions.TurnOnLights);
         }
     }

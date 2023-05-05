@@ -30,6 +30,13 @@ public class Distraction : Subject
     private bool _updateAlpha, _lockPos;
     private CameraChanger cameraChanger;
 
+    //ready sound
+    private AudioSource popSound;
+    [SerializeField] private GameObject popParticles;
+    private ParticleSystem particles;
+
+    private bool playedEffects;
+
     private void Awake()
     {
         _timer = new Stopwatch();
@@ -37,6 +44,7 @@ public class Distraction : Subject
         _renderer = GetComponent<Renderer>();
         _outline = GetComponent<Outline>();
         cameraChanger = FindObjectOfType<CameraChanger>();
+        popSound = GetComponent<AudioSource>();
     }
 
 
@@ -49,7 +57,6 @@ public class Distraction : Subject
         outlineWidth = _outline.OutlineWidth;
         _outline.OutlineWidth = 0;
         transform.parent = null;
-
         _renderer.material.SetFloat(Alpha, 0);
     }
 
@@ -57,6 +64,16 @@ public class Distraction : Subject
     {
         if (_updateAlpha)
             SmoothAlpha();
+
+        if (!playedEffects && _timer.Elapsed.TotalSeconds > distractionCooldown)
+        {
+            if (!particles)
+                particles = Instantiate(popParticles, transform).GetComponent<ParticleSystem>();
+            playedEffects = true;
+            _timer.Stop();
+            popSound.Play();
+            particles.Play();
+        }
     }
 
     private void FixedUpdate()
@@ -74,7 +91,7 @@ public class Distraction : Subject
             beingUsed = true;
             _rigidbody.drag = throwDrag;
             _rigidbody.AddForce(cameraChanger.GetActiveCam().transform.forward * throwForce, ForceMode.Impulse);
-            _timer.Start();
+            _timer.Restart();
         }
     }
 
@@ -98,6 +115,7 @@ public class Distraction : Subject
             _lockPos = false;
             beingUsed = false;
             _rigidbody.drag = recoverDrag;
+            playedEffects = false;
             _timer.Stop();
             _timer.Reset();
         }

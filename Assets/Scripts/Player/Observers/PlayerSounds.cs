@@ -59,7 +59,7 @@ public class PlayerSounds : MonoBehaviour, IObserver
         }
         else if (playerAction is PlayerActions.Sprint)
         {
-            audioSourceContinuousSounds.clip = audioClips[5];
+            audioSourceContinuousSounds.clip = audioClips[11];
             audioSourceContinuousSounds.Play();
         }
         else if (playerAction is PlayerActions.ThrowDistraction)

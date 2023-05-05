@@ -108,16 +108,12 @@ public class GameData
                 zonesPB[level] = timeString;
             }
         }
-    }
-
-    public void updateLevel(int level, long time, string timeS, int coins)
-    {
-        setTime(level, time, timeS);
+        enableNextLevel(level);
     }
 
     public void enableNextLevel(int levelIndex)
     {
-        zonesEnabled[levelIndex + 1] = true;
+        zonesEnabled[(levelIndex + 1) % zonesEnabled.Length] = true;
     }
 
     public bool checkEnabled(int index)
