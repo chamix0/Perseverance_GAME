@@ -120,7 +120,7 @@ public class MachinegunMovementInputs : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.D))
             {
                 if (_playerValues.GetLights())
                 {
@@ -132,7 +132,7 @@ public class MachinegunMovementInputs : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.A))
             {
                 if (_cameraChanger.activeCamera is not ActiveCamera.FirstPerson)
                     _cameraChanger.SetFirstPersonCamera();

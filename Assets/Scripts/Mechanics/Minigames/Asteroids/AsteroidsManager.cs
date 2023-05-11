@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mechanics.General_Inputs;
-using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.UI;
 
 [DefaultExecutionOrder(2)]
 public class AsteroidsManager : Minigame
@@ -15,21 +13,21 @@ public class AsteroidsManager : Minigame
 
     //text to show on screen before the game
     private readonly string _name = "asteroids",
-        _tutorial = "Click the corresponding color\n or \n turn the corresponding face.",
+        _tutorial = "Avoid the asteroids",
         endMessage = "WELL DONE!";
 
     //components
     [SerializeField] private GameObject uiObject;
     private float[] _arenaMeasures; //0 height 1 width
-    [SerializeField] private Shader shader;
     private PlayerValues _playerValues;
     private CameraChanger _cameraChanger;
     private MinigameManager _minigameManager;
-    private PlayerAnimations _playerAnimations;
     private GenericScreenUi _genericScreenUi;
     [SerializeField] private GameObject _player;
     [SerializeField] private GameObject _asteroidTemplate;
     [SerializeField] private GameObject _asteroidContainer;
+
+    private MinigameSoundManager minigameSoundManager;
 
     //variables
     public float _speed = 0.1f;
@@ -51,35 +49,78 @@ public class AsteroidsManager : Minigame
     {
         _asteroidBehaviors = new Stack<AsteroidBehavior>();
         _asteroidBehaviorsAlive = new List<AsteroidBehavior>();
+        minigameSoundManager = GetComponent<MinigameSoundManager>();
     }
 
     private void Update()
     {
         if (minigameStarted)
         {
+            Vector2 dir = Vector2.zero;
             if (verticaGear < 0)
             {
+                dir.y -= 1;
                 VerticalMovement(-1, _cubeSpeed);
             }
             else if (verticaGear > 0)
             {
+                dir.y += 1;
                 VerticalMovement(1, _cubeSpeed);
             }
 
             if (horizontalGear < 0)
             {
-                HorizontalMovement(1, _cubeSpeed);
+                dir.x -= 1;
+                HorizontalMovement(-1, _cubeSpeed);
             }
             else if (horizontalGear > 0)
             {
-                HorizontalMovement(-1, _cubeSpeed);
+                dir.x += 1;
+                HorizontalMovement(1, _cubeSpeed);
             }
+
+            SpriteRotation(dir);
+        }
+    }
+
+    private void RotatePlayer(float angle)
+    {
+        _player.transform.localRotation =
+            Quaternion.Slerp(_player.transform.localRotation, Quaternion.Euler(0, 0, MyUtils.Clamp0360(angle)),
+                Time.deltaTime * 10f);
+    }
+
+    public void SpriteRotation(Vector2 direction)
+    {
+        float x = direction.x;
+        float y = direction.y;
+        if (x > 0)
+        {
+            RotatePlayer(0);
+            if (y < 0)
+                RotatePlayer(-45);
+            else if (y > 0)
+                RotatePlayer(45);
+        }
+        else if (x == 0)
+        {
+            if (y < 0)
+                RotatePlayer(-90);
+            else if (y > 0)
+                RotatePlayer(90);
+        }
+        else if (x < 0)
+        {
+            RotatePlayer(180);
+            if (y < 0)
+                RotatePlayer(-135);
+            else if (y > 0)
+                RotatePlayer(135);
         }
     }
 
     void Start()
     {
-        _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
@@ -102,7 +143,7 @@ public class AsteroidsManager : Minigame
             else
             {
                 _player.transform.localPosition =
-                    new Vector3(_player.transform.localPosition.x,-_arenaMeasures[0] / 2 , 0);
+                    new Vector3(_player.transform.localPosition.x, -_arenaMeasures[0] / 2, 0);
                 horizontalGear = 0;
             }
         }
@@ -114,7 +155,7 @@ public class AsteroidsManager : Minigame
             else
             {
                 _player.transform.localPosition =
-                    new Vector3(_player.transform.localPosition.x,_arenaMeasures[0] / 2 , 0);
+                    new Vector3(_player.transform.localPosition.x, _arenaMeasures[0] / 2, 0);
                 horizontalGear = 0;
             }
         }
@@ -215,6 +256,7 @@ public class AsteroidsManager : Minigame
             round++;
             if (round < NUM_ROUNDS)
             {
+                minigameSoundManager.PlayCorrectSound();
                 _minigameManager.UpdateCounter(round);
                 StartRound();
             }
@@ -233,6 +275,7 @@ public class AsteroidsManager : Minigame
             _asteroidBehaviors.Push(asteroid);
         }
 
+        minigameSoundManager.PlayInCorrectSound();
         _asteroidBehaviorsAlive.Clear();
         round = 0;
         _minigameManager.UpdateCounter(round);
@@ -257,6 +300,7 @@ public class AsteroidsManager : Minigame
 
     private void EndMinigame()
     {
+        minigameSoundManager.PlayFinishedSound();
         _player.SetActive(false);
         _minigameManager.UpdateCounter(0);
         HideGameUi();
@@ -281,24 +325,50 @@ public class AsteroidsManager : Minigame
     private void ShowGameUi()
     {
         _minigameManager.SetCounterVisivility(true);
+        ShowCubeTutorial();
     }
 
     private void HideGameUi()
     {
         _minigameManager.SetCounterVisivility(false);
+        cubeTutorial.SetActive(false);
+        keyTutorial.SetActive(false);
     }
 
+    [SerializeField] private GameObject cubeTutorial, keyTutorial;
+
+    public void ShowCubeTutorial()
+    {
+        if (minigameStarted)
+        {
+            if (!cubeTutorial.activeSelf)
+                cubeTutorial.SetActive(true);
+            if (keyTutorial.activeSelf)
+                keyTutorial.SetActive(false);
+        }
+    }
+
+    public void ShowKeyTutorial()
+    {
+        if (minigameStarted)
+        {
+            if (cubeTutorial.activeSelf)
+                cubeTutorial.SetActive(false);
+            if (!keyTutorial.activeSelf)
+                keyTutorial.SetActive(true);
+        }
+    }
 
     IEnumerator StartGameCoroutine()
     {
         //enseñar nombre del minijuego
-        _genericScreenUi.SetText(_name);
+        _genericScreenUi.SetText(_name, 30);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         //enseñar tutorial del minijuego
-        _genericScreenUi.SetText(_tutorial);
+        _genericScreenUi.SetText(_tutorial, 20);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(4f);
         _genericScreenUi.FadeOutText();
@@ -311,7 +381,7 @@ public class AsteroidsManager : Minigame
 
     IEnumerator EndGameCoroutine()
     {
-        _genericScreenUi.SetText(endMessage);
+        _genericScreenUi.SetText(endMessage, 10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();

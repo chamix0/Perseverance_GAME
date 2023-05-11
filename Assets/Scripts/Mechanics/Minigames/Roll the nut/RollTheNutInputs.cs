@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Mechanics.General_Inputs;
 using UnityEngine;
 
 public class RollTheNutInputs : MonoBehaviour
@@ -16,9 +18,20 @@ public class RollTheNutInputs : MonoBehaviour
     }
 
     // Update is called once per frame
+    private void Update()
+    {
+        if (_playerValues.GetCurrentInput() == CurrentInput.RollTheNutMinigame && _playerValues.GetInputsEnabled())
+        {
+            if (Input.anyKey)
+            {
+                rollTheNutManager.ShowKeyTutorial();
+            }
+        }
+    }
 
     public void PerformAction(Move move)
     {
+        rollTheNutManager.ShowCubeTutorial();
         if (move.face == FACES.F)
         {
             if (move.direction == 1)

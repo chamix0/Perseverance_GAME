@@ -8,11 +8,13 @@ public class RunMovementInputs : MonoBehaviour
     // Start is called before the first frame update
     private PlayerValues _playerValues;
     private CameraController _cameraController;
+    private Stamina stamina;
     [SerializeField] private ParticleSystem turboParticles;
 
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
+        stamina = FindObjectOfType<Stamina>();
         _cameraController = FindObjectOfType<CameraController>();
     }
 
@@ -23,6 +25,10 @@ public class RunMovementInputs : MonoBehaviour
         //accelerate and decelerate
         if (_playerValues.GetCurrentInput() == CurrentInput.RaceMovement && _playerValues.GetInputsEnabled())
         {
+            if (!stamina.beingShown)
+                stamina.ShowStamina();
+            if (_playerValues.GetGear() < 4 && turboParticles.isPlaying)
+                turboParticles.Stop();
             if (Input.GetKeyDown(KeyCode.W))
             {
                 _playerValues.RiseGear();
@@ -48,6 +54,15 @@ public class RunMovementInputs : MonoBehaviour
                     _playerValues.NotifyAction(PlayerActions.TurnOnLights);
             }
         }
+        else
+        {
+            if (stamina.beingShown)
+                stamina.HideStamina();
+            if (turboParticles.isPlaying)
+                turboParticles.Stop();
+            if (_playerValues.GetGear() == 4)
+                _playerValues.DecreaseGear();
+        }
     }
 
     public void PerformAction(Move move)
@@ -61,7 +76,7 @@ public class RunMovementInputs : MonoBehaviour
                 _playerValues.RiseGear();
             else
                 _playerValues.DecreaseGear();
-            
+
             if (_playerValues.GetGear() == 4)
                 turboParticles.Play();
             else

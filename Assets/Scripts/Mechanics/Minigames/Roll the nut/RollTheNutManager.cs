@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+
 [DefaultExecutionOrder(3)]
 public class RollTheNutManager : Minigame
 {
@@ -17,7 +18,7 @@ public class RollTheNutManager : Minigame
 
     //text to show on screen before the game
     private readonly string _name = "Roll the nut",
-        _tutorial = "Click the corresponding color\n or \n turn the corresponding face.";
+        _tutorial = "Roll the nut clockwise with the mouse.";
 
     private const string endMessage = "WELL DONE!";
 
@@ -44,10 +45,11 @@ public class RollTheNutManager : Minigame
     private GenericScreenUi _genericScreenUi;
     private float _targetAngle;
     private bool _updateAngle;
+    private MinigameSoundManager soundManager;
 
     private readonly float angleStep = 90;
     //variables
-    
+
     //shader names
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
     private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
@@ -56,7 +58,7 @@ public class RollTheNutManager : Minigame
     {
         //Fetch the Event System from the Scene
         _mEventSystem = FindObjectOfType<EventSystem>();
-
+        soundManager = GetComponent<MinigameSoundManager>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
@@ -94,7 +96,7 @@ public class RollTheNutManager : Minigame
                     float ca = point.y;
                     float aux;
                     aux = Mathf.Acos(ca / h);
-                    if (point.x < 0)
+                    if (point.x > 0)
                         aux *= -1;
                     //turn 1 full time clockwise
                     float actualOffset = aux * Mathf.Rad2Deg;
@@ -129,7 +131,6 @@ public class RollTheNutManager : Minigame
                         _canTurn = false;
                     }
 
-                    print(offset);
                     _prevVal = actualVal;
                 }
             }
@@ -216,8 +217,33 @@ public class RollTheNutManager : Minigame
         uiObject.SetActive(false);
     }
 
+    [SerializeField] private GameObject cubeTutorial, keyTutorial;
+
+    public void ShowCubeTutorial()
+    {
+        if (_isEnabled)
+        {
+            if (!cubeTutorial.activeSelf)
+                cubeTutorial.SetActive(true);
+            if (keyTutorial.activeSelf)
+                keyTutorial.SetActive(false);
+        }
+    }
+
+    public void ShowKeyTutorial()
+    {
+        if (_isEnabled)
+        {
+            if (cubeTutorial.activeSelf)
+                cubeTutorial.SetActive(false);
+            if (!keyTutorial.activeSelf)
+                keyTutorial.SetActive(true);
+        }
+    }
+
     private void EndMinigame()
     {
+        soundManager.PlayFinishedSound();
         _isEnabled = false;
         HideUI();
         _minigameManager.UpdateCounter(0);
@@ -228,13 +254,13 @@ public class RollTheNutManager : Minigame
     IEnumerator StartGameCoroutine()
     {
         //enseñar nombre del minijuego
-        _genericScreenUi.SetText(_name);
+        _genericScreenUi.SetText(_name, 40);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         //enseñar tutorial del minijuego
-        _genericScreenUi.SetText(_tutorial);
+        _genericScreenUi.SetText(_tutorial, 10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(4f);
         _genericScreenUi.FadeOutText();
@@ -242,14 +268,12 @@ public class RollTheNutManager : Minigame
         ShowUI();
         _isEnabled = true;
         _playerValues.SetInputsEnabled(true);
-
-
-        //empezar minijuego
+        ShowKeyTutorial();
     }
 
     IEnumerator EndGameCoroutine()
     {
-        _genericScreenUi.SetText(endMessage);
+        _genericScreenUi.SetText(endMessage, 10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();

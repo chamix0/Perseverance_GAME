@@ -428,6 +428,10 @@ PrefabInstance:
       propertyPath: m_RenderPostProcessing
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5736981877296924713, guid: a396cc0f41ae02b4ebb098e9e8899ec8, type: 3}
+      propertyPath: near clip plane
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 6007415730647756220, guid: a396cc0f41ae02b4ebb098e9e8899ec8, type: 3}
       propertyPath: m_RootOrder
       value: 0

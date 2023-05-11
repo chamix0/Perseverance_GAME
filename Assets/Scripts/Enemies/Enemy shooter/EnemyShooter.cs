@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Enemies;
 using Player.Observer_pattern;
-using UnityEditor.XR;
 using UnityEngine;
 
 ///comportamineto de este enemigo

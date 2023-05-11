@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Mechanics.General_Inputs;
-using TreeEditor;
 using UnityEngine;
 
 public class StealthMovementInputs : MonoBehaviour

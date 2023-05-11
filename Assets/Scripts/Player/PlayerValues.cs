@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Codice.Client.BaseCommands.Differences;
 using Mechanics.General_Inputs;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -59,16 +58,9 @@ public class PlayerValues : Subject
     private bool _updateSnap, _updateLookAt, moveForward;
     public bool dead = false;
 
-    private float _snapPosX,
-        _snapPosY,
-        _snapPosZ,
-        _targetPosX,
-        _targetPosY,
-        _targetPosZ,
-        _tX,
-        _tY,
-        _tZ,
-        _targetAngle;
+    private float _targetAngle;
+
+    private Vector3 _targetPos;
 
 
     //is grounded
@@ -88,7 +80,6 @@ public class PlayerValues : Subject
         _inputsEnabled = true;
         _rigidbody = GetComponent<Rigidbody>();
         genericScreenUi = GetComponent<GenericScreenUi>();
-
         //observers
         _playerSounds = FindObjectOfType<PlayerSounds>();
         _playerLights = FindObjectOfType<PlayerLights>();
@@ -284,17 +275,13 @@ public class PlayerValues : Subject
 
     public void SnapPositionTo(Vector3 pos)
     {
-        _targetPosX = pos.x;
-        _targetPosY = pos.y;
-        _targetPosZ = pos.z;
-        _tX = 0.0f;
-        _tY = 0.0f;
-        _tZ = 0.0f;
+        _targetPos = pos;
         _updateSnap = true;
     }
 
     public void snapRotationTo(float angle)
     {
+        _rigidbody.useGravity = false;
         _targetAngle = angle;
         _updateLookAt = true;
     }
@@ -302,23 +289,15 @@ public class PlayerValues : Subject
     private Vector3 UpdateSnapPosition()
     {
         Vector3 position = transform.position;
-        _snapPosX = Mathf.Lerp(position.x, _targetPosX, _tX);
-        _snapPosY = Mathf.Lerp(position.y, _targetPosY, _tY);
-        _snapPosZ = Mathf.Lerp(position.z, _targetPosZ, _tZ);
+        Vector3 newPos = Vector3.MoveTowards(position, _targetPos, 1f * Time.deltaTime);
 
-        _tX += 0.5f * Time.deltaTime;
-        _tY += 0.5f * Time.deltaTime;
-        _tZ += 0.5f * Time.deltaTime;
-
-        if (_tX > 1.0f && _tY > 1.0f && _tZ > 1.0f)
+        if (Vector3.Distance(newPos, _targetPos) < 0.01f)
         {
-            _tX = 1.0f;
-            _tY = 1.0f;
-            _tZ = 1.0f;
+            _rigidbody.useGravity = true;
             _updateSnap = false;
         }
 
-        return new Vector3(_snapPosX, _snapPosY, _snapPosZ);
+        return newPos;
     }
 
     private void StopRigidBodyVelocity()
@@ -343,6 +322,21 @@ public class PlayerValues : Subject
 
 
     #region ACTIONS
+
+    public void StopAllMovement()
+    {
+        StopRigidBodyVelocity();
+        SetInputsEnabled(false);
+        SetCanMove(false);
+        NotifyObservers(PlayerActions.Stop);
+    }
+
+    public void ContinueAllMovement()
+    {
+        StopRigidBodyVelocity();
+        SetInputsEnabled(true);
+        SetCanMove(true);
+    }
 
     public void Sit()
     {

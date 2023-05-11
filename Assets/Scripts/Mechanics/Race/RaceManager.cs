@@ -10,6 +10,7 @@ public class RaceManager : MonoBehaviour
     [SerializeField] private int timeLimit = 60;
     [SerializeField] private Transform respawnPos;
     bool ended, exited = true;
+    private GuiManager guiManager;
 
     private void Awake()
     {
@@ -19,12 +20,13 @@ public class RaceManager : MonoBehaviour
     void Start()
     {
         playerValues = FindObjectOfType<PlayerValues>();
+        guiManager = FindObjectOfType<GuiManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (timer.Elapsed.TotalSeconds > timeLimit)
+        if (timer.Elapsed.TotalSeconds >= timeLimit)
         {
             if (!ended)
             {
@@ -32,6 +34,11 @@ public class RaceManager : MonoBehaviour
                 timer.Stop();
                 EndRace();
             }
+        }
+
+        if (!exited&&!ended)
+        {
+            guiManager.SetRaceTime(GetRemainingTime());
         }
     }
 
@@ -53,6 +60,7 @@ public class RaceManager : MonoBehaviour
 
     public void ExitRace()
     {
+        guiManager.DisableRace();
         exited = true;
         timer.Stop();
         timer.Reset();
@@ -60,7 +68,7 @@ public class RaceManager : MonoBehaviour
 
     public void EndRace()
     {
-        if (timer.Elapsed.TotalSeconds > timeLimit)
+        if (timer.Elapsed.TotalSeconds >= timeLimit)
         {
             StartOver();
         }
@@ -68,6 +76,7 @@ public class RaceManager : MonoBehaviour
         {
             //congratulations or something
             print("congratulations");
+            StartCoroutine(EndRaceCoroutiune());
         }
 
         exited = true;
@@ -78,5 +87,12 @@ public class RaceManager : MonoBehaviour
     private void StartOver()
     {
         playerValues.Die(respawnPos.position);
+    }
+
+    IEnumerator EndRaceCoroutiune()
+    {
+        guiManager.SetRaceTime("CONGRATULATIONS!");
+        yield return new WaitForSeconds(3f);
+        guiManager.DisableRace();
     }
 }

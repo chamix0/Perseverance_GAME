@@ -27,12 +27,12 @@ public class MachineGunSounds : MonoBehaviour, IObserver
         if (playerAction is PlayerActions.Aim)
 
         {
-            audioSource.clip = clips[1];
+            audioSource.clip = clips[0];
             audioSource.Play();
         }
         else if (playerAction is PlayerActions.ChangeShootingMode)
         {
-            audioSource.clip = clips[0];
+            audioSource.clip = clips[1];
             audioSource.Play();
         }
     }

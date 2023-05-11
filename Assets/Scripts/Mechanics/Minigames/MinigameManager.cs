@@ -13,12 +13,13 @@ public class MinigameManager : MonoBehaviour
     //components
     [SerializeField] private GameObject counterObject;
     [SerializeField] private Shader shader;
+    private GuiManager guiManager;
 
     //variables
     private int _lastMinigame = -1;
 
     //lists
-    private List<Image> _counterImages;
+    [SerializeField] private List<Image> _counterImages;
     private List<Minigame> minigames;
 
     //shader names
@@ -27,12 +28,12 @@ public class MinigameManager : MonoBehaviour
 
     private void Awake()
     {
-        _counterImages = new List<Image>();
         minigames = new List<Minigame>();
     }
 
     void Start()
     {
+        guiManager = FindObjectOfType<GuiManager>();
         //minigames 
         minigames.Add(GetComponent<ColorsManager>());
         minigames.Add(GetComponent<AsteroidsManager>());
@@ -43,8 +44,8 @@ public class MinigameManager : MonoBehaviour
         minigames.Add(GetComponent<MemoryMingameManager>());
 
 
-        _counterImages.AddRange(counterObject.GetComponentsInChildren<Image>());
         SetCounterImages();
+        UpdateCounter(0);
         SetCounterVisivility(false);
     }
 
@@ -59,16 +60,12 @@ public class MinigameManager : MonoBehaviour
     {
         for (int i = 0; i < _counterImages.Count; i++)
         {
+            _counterImages[i].material.SetColor(BackgroundColor, Color.green);
+
             if (i < correctCount)
-            {
                 _counterImages[i].material.SetFloat(MyAlpha, 1f);
-                _counterImages[i].material.SetColor(BackgroundColor, Color.magenta);
-            }
             else
-            {
-                _counterImages[i].material.SetColor(BackgroundColor, Color.green);
                 _counterImages[i].material.SetFloat(MyAlpha, 0.1f);
-            }
         }
     }
 
@@ -98,8 +95,16 @@ public class MinigameManager : MonoBehaviour
             {
                 index = Random.Range(0, minigames.Count);
             } while (index == _lastMinigame);
+
             _lastMinigame = index;
         }
-        minigames[index].StartMinigame();
+
+        minigames[4].StartMinigame();
+        guiManager.HideGui();
+    }
+
+    public void EndMinigame()
+    {
+        guiManager.ShowGui();
     }
 }

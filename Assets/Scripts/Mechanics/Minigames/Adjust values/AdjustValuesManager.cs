@@ -184,13 +184,13 @@ public class AdjustValuesManager : Minigame
     IEnumerator StartGameCoroutine()
     {
         //enseñar nombre del minijuego
-        _genericScreenUi.SetText(_name);
+        _genericScreenUi.SetText(_name,10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         //enseñar tutorial del minijuego
-        _genericScreenUi.SetText(_tutorial);
+        _genericScreenUi.SetText(_tutorial,10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(4f);
         _genericScreenUi.FadeOutText();
@@ -204,7 +204,7 @@ public class AdjustValuesManager : Minigame
 
     IEnumerator EndGameCoroutine()
     {
-        _genericScreenUi.SetText(EndMessage);
+        _genericScreenUi.SetText(EndMessage,10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();

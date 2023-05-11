@@ -8,6 +8,7 @@ public class PushFastInputs : MonoBehaviour
     private PushFastManager _pushFastManager;
     private PlayerValues _playerValues;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +21,11 @@ public class PushFastInputs : MonoBehaviour
     {
         if (_playerValues.GetCurrentInput() == CurrentInput.ClickFastMinigame && _playerValues.GetInputsEnabled())
         {
+            if (Input.anyKey)
+            {
+                _pushFastManager.ShowKeyTutorial();
+            }
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _pushFastManager.Click();
@@ -29,6 +35,7 @@ public class PushFastInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
+        _pushFastManager.ShowCubeTutorial();
         _pushFastManager.Click();
     }
 }

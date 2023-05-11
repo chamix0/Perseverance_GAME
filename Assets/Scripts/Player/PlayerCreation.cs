@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[DefaultExecutionOrder(2)]
 public class PlayerCreation : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -18,7 +18,6 @@ public class PlayerCreation : MonoBehaviour
         model = _playerValues.gameData.GetEddoModel();
         Material[] oldMaterials = modelObjects[0].GetComponent<Renderer>().materials;
         Material[] newMaterials = modelTextures[model].gameObject.GetComponent<Renderer>().sharedMaterials;
-
         SetMaterials(oldMaterials, newMaterials);
 
         oldMaterials = modelObjects[1].GetComponent<Renderer>().materials;

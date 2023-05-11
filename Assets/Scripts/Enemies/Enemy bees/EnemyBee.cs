@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using Enemies;
 using UnityEngine;
 
 public class EnemyBee : Enemy

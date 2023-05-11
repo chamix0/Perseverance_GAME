@@ -8,21 +8,31 @@ public class ShowCenterReference : MonoBehaviour
 {
     public Image _imageTop, _imageFront, _imageBottom, _imageRight, _imageBack, _imageLeft;
     [SerializeField] private CubeInputs _cubeInputs = null;
+    private bool updateColors;
 
     private void Start()
     {
         CubeInputs aux = FindObjectOfType<CubeInputs>();
         if (aux != null)
             _cubeInputs = aux;
+        _imageTop.color = Color.clear;
+        _imageFront.color = Color.clear;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_cubeInputs)
+        if (updateColors && _cubeInputs)
         {
-            _imageTop.color = _cubeInputs.GetTopColor();
-            _imageFront.color = _cubeInputs.GetFrontColor();
+            if (_imageTop.color != _cubeInputs.GetTopColor())
+                _imageTop.color = _cubeInputs.GetTopColor();
+            if (_imageTop.color != _cubeInputs.GetTopColor())
+                _imageFront.color = _cubeInputs.GetFrontColor();
         }
+    }
+
+    public void ShowColors()
+    {
+        updateColors = true;
     }
 }

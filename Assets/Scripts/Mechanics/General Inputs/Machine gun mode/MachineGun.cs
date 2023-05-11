@@ -1,10 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 enum ShootingMode
 {
@@ -62,11 +58,14 @@ public class MachineGun : Subject
     private DissolveMaterials dissolveMaterials;
 
     //observers
-    private MachineGunSounds machineGunSounds;
+    [SerializeField] private MachineGunSounds machineGunSounds;
     private MachineGunParticles machineGunParticles;
 
     //variables
     private bool aiming;
+
+    //gui
+    private GuiManager guiManager;
 
     private void Awake()
     {
@@ -79,11 +78,11 @@ public class MachineGun : Subject
         playerValues = FindObjectOfType<PlayerValues>();
         dissolveMaterials = GetComponentInChildren<DissolveMaterials>();
         _cameraController = FindObjectOfType<CameraController>();
+        guiManager = FindObjectOfType<GuiManager>();
         shooter = GetComponentInChildren<ShootBullet>();
         aimSphere.gameObject.SetActive(false);
 
         machineGunParticles = GetComponent<MachineGunParticles>();
-        machineGunSounds = transform.parent.parent.GetComponent<MachineGunSounds>();
 
         AddObserver(machineGunParticles);
         AddObserver(machineGunSounds);
@@ -179,6 +178,7 @@ public class MachineGun : Subject
         if (!aiming)
             NotifyObservers(PlayerActions.Aim);
         aiming = true;
+        Time.timeScale = 0.25f;
         if (!aimSphere.gameObject.activeSelf)
             aimSphere.gameObject.SetActive(true);
     }
@@ -186,6 +186,7 @@ public class MachineGun : Subject
     public void StopAim()
     {
         aiming = false;
+        Time.timeScale = 1f;
         StopLaser();
         NotifyObservers(PlayerActions.StopAim);
     }
@@ -237,6 +238,7 @@ public class MachineGun : Subject
         {
             dissolveMaterials.DissolveIn();
             isVisible = true;
+            guiManager.SetMachinegun((int)shootingMode);
         }
     }
 
@@ -247,6 +249,7 @@ public class MachineGun : Subject
         {
             dissolveMaterials.DissolveOut();
             isVisible = false;
+            guiManager.SetMachinegun(-1);
         }
 
         return aux;
@@ -257,14 +260,19 @@ public class MachineGun : Subject
         _isAutomaticShooting = false;
         modeIndex = (modeIndex + 1) % 3;
         shootingMode = (ShootingMode)modeIndex;
+        guiManager.SetMachinegun((int)shootingMode);
         NotifyObservers(PlayerActions.ChangeShootingMode);
     }
 
     public void ResetShootingMode()
     {
-        _isAutomaticShooting = false;
-        shootingMode = ShootingMode.Manual;
-        modeIndex = (int)shootingMode;
+        if (isVisible)
+        {
+            _isAutomaticShooting = false;
+            shootingMode = ShootingMode.Manual;
+            modeIndex = (int)shootingMode;
+            guiManager.SetMachinegun((int)shootingMode);
+        }
     }
 
     public void PrevShootingMode()
@@ -272,6 +280,7 @@ public class MachineGun : Subject
         _isAutomaticShooting = false;
         modeIndex = modeIndex - 1 < 0 ? 2 : modeIndex - 1;
         shootingMode = (ShootingMode)modeIndex;
+        guiManager.SetMachinegun((int)shootingMode);
         NotifyObservers(PlayerActions.ChangeShootingMode);
     }
 
@@ -294,7 +303,7 @@ public class MachineGun : Subject
             _rigidbody.AddForce(auxForce, ForceMode.Acceleration);
 
 
-        if (hookTimer.Elapsed.TotalSeconds > hookCooldown && magnitude < 0.1f)
+        if (hookTimer.Elapsed.TotalSeconds > hookCooldown && magnitude < 0.3f)
         {
             hookTimer.Stop();
             hookTimer.Reset();

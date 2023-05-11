@@ -250,7 +250,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 556
+  m_VersionIndex: 562
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -302,7 +302,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6726229b9a14f6144885ea29fa5ec221, type: 2}
+  - {fileID: 2100000, guid: 152e124530abec543b169bfe71437cc2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -358,7 +358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3b214303a5687b4888dfee848fcbae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raceState: 0
+  raceState: 2
 --- !u!114 &353478747444966730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,7 +621,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 553
+  m_VersionIndex: 559
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -790,7 +790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c251cb8749f56149a64061055dd8052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 5
+  timeLimit: 70
   respawnPos: {fileID: 8916155580567168407}
 --- !u!1 &8916155580567168406
 GameObject:
@@ -1073,7 +1073,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 553
+  m_VersionIndex: 559
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

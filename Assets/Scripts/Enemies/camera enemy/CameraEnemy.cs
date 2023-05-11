@@ -13,7 +13,6 @@ public class CameraEnemy : Enemy
 {
     [SerializeField] private States _state;
     private PlayerValues _playerValues;
-    [SerializeField] private float offset;
 
     //patrol points
     [SerializeField] private GameObject patrolPointContainer;
@@ -106,7 +105,7 @@ public class CameraEnemy : Enemy
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(hit.point, radius);
-        Gizmos.color = Color.white;
+        Gizmos.color = Color.black;
         Gizmos.DrawWireSphere(transform.position, detectionDepth);
         Gizmos.DrawRay(transform.position, hit.point - transform.position);
     }
@@ -125,7 +124,6 @@ public class CameraEnemy : Enemy
         }
 
         //transition
-
 
         if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
         {
@@ -332,8 +330,8 @@ public class CameraEnemy : Enemy
     {
         //transition
         RaycastHit[] auxHit = Physics.SphereCastAll(transform.position, radius,
-            transform.TransformDirection(Vector3.forward),
-            Vector3.Distance(transform.position, hit.point), collision);
+            transform.forward,
+            detectionDepth, collision);
         foreach (var h in auxHit)
         {
             if (h.transform.CompareTag("Player") && InSight()) return true;

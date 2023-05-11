@@ -22,7 +22,9 @@ public class GenericScreenUi : MonoBehaviour
     private bool _faceUpdated;
     private float faceAlpha = 1;
 
-    private const string NormalFace = "O.O";
+    private string normalFace = "O.O";
+    private const string NormalFace1 = "O.O";
+    private const string NormalFace2 = "0.0";
     private const string BlinkFace = "-.-";
     private const string ScaredFace = ">.<";
 
@@ -66,16 +68,17 @@ public class GenericScreenUi : MonoBehaviour
             _faceUpdated = false;
             _blinkCooldown = Random.Range(0, 11);
             StartCoroutine(BlinkCoroutine());
+            normalFace = _blinkCooldown <=4 ? NormalFace2 : NormalFace1;
         }
 
         if (!_faceUpdated)
         {
-            SetTextSize(0.46f);
-            if (!updateText)
-                SetTextAlpha(faceAlpha);
-            else
-                faceAlpha = genericText.alpha;
+            SetTextSize(95f);
+            if (genericText.alpha<1)
+                FadeInText();
+
             _faceUpdated = true;
+
             if (_blinking)
                 SetText(BlinkFace);
             else if (_playerValues.GetIsStucked() || !_playerValues.GetIsGrounded())
@@ -85,7 +88,7 @@ public class GenericScreenUi : MonoBehaviour
             }
             else
             {
-                SetText(NormalFace);
+                SetText(normalFace);
             }
         }
     }
@@ -109,7 +112,13 @@ public class GenericScreenUi : MonoBehaviour
         genericText.alpha = value;
     }
 
-    public void SetText(string cad)
+    public void SetText(string cad, float size)
+    {
+        genericText.text = cad;
+        SetTextSize(size);
+    }
+
+    private void SetText(string cad)
     {
         genericText.text = cad;
     }
@@ -131,7 +140,7 @@ public class GenericScreenUi : MonoBehaviour
     private void UpdateTextAlpha()
     {
         genericText.alpha = Mathf.Lerp(genericText.alpha, targetAlpha, _tA);
-        _tA += 0.05f * Time.deltaTime;
+        _tA += 0.1f * Time.deltaTime;
         if (_tA > 1.0f)
         {
             _tA = 1.0f;

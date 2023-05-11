@@ -97,12 +97,7 @@ public class LaberinthManager : MonoBehaviour
             var eulerAngles = _snapPos.transform.eulerAngles;
             _playerValues.snapRotationTo(eulerAngles.y);
             _playerValues.SnapPositionTo(_snapPos.transform.position);
-            // _cameraController.RotateXCustom(MyUtils.Clamp0360(eulerAngles.y+180));
-            // _cameraController.RotateYCustom(0.5f);
-            _cameraController.FreezeCamera();
-
             _playerValues.Sit();
-            cameraChanger.SetScreenCamera();
             //mostrar mensaje
             StartCoroutine(ShowMessageOpenDoor());
         }
@@ -115,18 +110,20 @@ public class LaberinthManager : MonoBehaviour
 
     IEnumerator ShowMessageOpenDoor()
     {
+        yield return new WaitForSeconds(2f);
+        cameraChanger.SetScreenCamera();
         string msg = "";
         if (GetMissingTerminals() > 0)
         {
             msg = "Terminals left:" + GetMissingTerminals();
-            _genericScreenUi.SetText(msg);
+            _genericScreenUi.SetText(msg,35);
         }
         else
         {
             msg = "All terminals fixed";
         }
 
-        _genericScreenUi.SetText(msg);
+        _genericScreenUi.SetText(msg,35);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(5f);
         _genericScreenUi.FadeOutText();

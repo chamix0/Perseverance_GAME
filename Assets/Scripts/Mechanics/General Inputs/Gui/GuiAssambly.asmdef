@@ -1,0 +1,18 @@
+{
+    "name": "GuiAssambly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3419401ee06995048afc9d3656d906fe",
+        "GUID:29c56dd2d5cc39343a802d21d054fe63",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

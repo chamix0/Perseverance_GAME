@@ -7,8 +7,8 @@ public class CursorManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
+        // Cursor.visible = false;
     }
 
     public void HideCursor()

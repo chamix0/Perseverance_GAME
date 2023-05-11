@@ -28,9 +28,9 @@ public class ColorsManager : Minigame
     private PlayerValues _playerValues;
     private CameraChanger _cameraChanger;
     private MinigameManager _minigameManager;
-    private PlayerAnimations _playerAnimations;
     private GenericScreenUi _genericScreenUi;
 
+    private MinigameSoundManager minigameSoundManager;
     //variables
 
     private Color targetColor;
@@ -57,11 +57,11 @@ public class ColorsManager : Minigame
 
     void Start()
     {
-        _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
+        minigameSoundManager = GetComponent<MinigameSoundManager>();
         buttons = uiObject.transform.Find("Buttons").gameObject;
         template = uiObject.transform.Find("color template").gameObject;
         _buttons.AddRange(buttons.GetComponentsInChildren<Button>());
@@ -103,11 +103,15 @@ public class ColorsManager : Minigame
         {
             correctCount++;
             ChangeTargetColor();
+            minigameSoundManager.PlayCorrectSound();
             if (correctCount >= NUM_ROUNDS)
                 EndMinigame();
         }
         else
+        {
+            minigameSoundManager.PlayInCorrectSound();
             correctCount = 0;
+        }
 
         _minigameManager.UpdateCounter(correctCount);
     }
@@ -119,11 +123,15 @@ public class ColorsManager : Minigame
         {
             correctCount++;
             ChangeTargetColor();
+            minigameSoundManager.PlayCorrectSound();
             if (correctCount >= NUM_ROUNDS)
                 EndMinigame();
         }
         else
+        {
+            minigameSoundManager.PlayInCorrectSound();
             correctCount = 0;
+        }
 
         _minigameManager.UpdateCounter(correctCount);
     }
@@ -155,6 +163,7 @@ public class ColorsManager : Minigame
 
     private void EndMinigame()
     {
+        minigameSoundManager.PlayFinishedSound();
         _minigameManager.UpdateCounter(0);
         HideGameUi();
         _playerValues.SetInputsEnabled(false);
@@ -192,13 +201,13 @@ public class ColorsManager : Minigame
     IEnumerator StartGameCoroutine()
     {
         //enseñar nombre del minijuego
-        _genericScreenUi.SetText(_name);
+        _genericScreenUi.SetText(_name, 50);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         //enseñar tutorial del minijuego
-        _genericScreenUi.SetText(_tutorial);
+        _genericScreenUi.SetText(_tutorial, 10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(4f);
         _genericScreenUi.FadeOutText();
@@ -209,7 +218,7 @@ public class ColorsManager : Minigame
 
     IEnumerator EndGameCoroutine()
     {
-        _genericScreenUi.SetText(endMessage);
+        _genericScreenUi.SetText(endMessage, 40);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
@@ -217,5 +226,6 @@ public class ColorsManager : Minigame
         _cameraChanger.SetOrbitCamera();
         yield return new WaitForSeconds(2f);
         _playerValues.StandUp(true, 3f);
+        _minigameManager.EndMinigame();
     }
 }

@@ -78,13 +78,6 @@ public class CubeInputs : MonoBehaviour
             }
             else
             {
-                //if the message is to old delete it 2 seconds of margin until there is a valid one ore there are no longer messages
-                while (move.time.TotalMilliseconds + 500 < DateTime.Now.TimeOfDay.TotalMilliseconds &&
-                       movesQueue.HasMessages())
-                {
-                    move = movesQueue.Dequeue();
-                }
-
                 //check movements
                 if (move.msg != "" && ValidateMoves(move.msg))
                 {
@@ -93,7 +86,6 @@ public class CubeInputs : MonoBehaviour
                     move.color = GetColor(move.face);
                     _moves.Enqueue(move);
                     _moves.lastMove = move;
-                    // print(move.face + " " + move.direction);
                 }
             }
         }

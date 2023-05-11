@@ -10,7 +10,7 @@ public class JustWaitManager : Minigame
 {
     //text to show on screen before the game
     private readonly string _name = "Just Wait",
-        _tutorial = "Click the corresponding color\n or \n turn the corresponding face.";
+        _tutorial = "Wait to the timer to end.";
 
     private const string EndMessage = "WELL DONE!";
 
@@ -23,7 +23,7 @@ public class JustWaitManager : Minigame
     private CameraChanger _cameraChanger;
     private MinigameManager _minigameManager;
     private GenericScreenUi _genericScreenUi;
-
+    private MinigameSoundManager soundManager;
     private Stopwatch _timer;
     [SerializeField] private Slider timeSlider;
 
@@ -41,6 +41,7 @@ public class JustWaitManager : Minigame
 
     void Start()
     {
+        soundManager = GetComponent<MinigameSoundManager>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
@@ -96,6 +97,7 @@ public class JustWaitManager : Minigame
 
     private void EndMinigame()
     {
+        soundManager.PlayFinishedSound();
         minigameActive = false;
         _timer.Stop();
         HideUI();
@@ -107,13 +109,13 @@ public class JustWaitManager : Minigame
     IEnumerator StartGameCoroutine()
     {
         //enseñar nombre del minijuego
-        _genericScreenUi.SetText(_name);
+        _genericScreenUi.SetText(_name, 35);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         //enseñar tutorial del minijuego
-        _genericScreenUi.SetText(_tutorial);
+        _genericScreenUi.SetText(_tutorial, 10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(4f);
         _genericScreenUi.FadeOutText();
@@ -126,7 +128,7 @@ public class JustWaitManager : Minigame
 
     IEnumerator EndGameCoroutine()
     {
-        _genericScreenUi.SetText(EndMessage);
+        _genericScreenUi.SetText(EndMessage, 10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();

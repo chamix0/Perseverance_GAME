@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[DefaultExecutionOrder(2)]
 public class SwitchInterruptor : MonoBehaviour
 {
     // Start is called before the first frame update

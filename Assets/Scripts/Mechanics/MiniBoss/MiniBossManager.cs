@@ -49,7 +49,7 @@ public class MiniBossManager : MonoBehaviour
 {
     //text to show on screen before the game
     private string _name = "Boss",
-        _tutorial = "Click the corresponding color\n or \n turn the corresponding face.",
+        _tutorial = "Defeat the boss.",
         endMessage = "WELL DONE!";
 
     //components
@@ -63,7 +63,7 @@ public class MiniBossManager : MonoBehaviour
     private GameObject gameScreen;
     private GameObject fightScreen;
     private MiniBossBase _miniBossBase;
-
+    private GuiManager guiManager;
 
     //timer
     private Stopwatch _timer;
@@ -209,6 +209,7 @@ public class MiniBossManager : MonoBehaviour
 
         _normalColor = _buttonsImages[0].material.GetColor(BackgroundColor);
         _playerValues = FindObjectOfType<PlayerValues>();
+        guiManager = FindObjectOfType<GuiManager>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         _genericScreenUi.SetTextAlpha(0);
@@ -422,10 +423,9 @@ public class MiniBossManager : MonoBehaviour
     {
         if (!usingCube)
         {
-             usingCube = true;
-             UpdatePiecesValues();
+            usingCube = true;
+            UpdatePiecesValues();
         }
-       
     }
 
     public void ChangeInputToKey()
@@ -435,7 +435,6 @@ public class MiniBossManager : MonoBehaviour
             usingCube = false;
             UpdatePiecesValues();
         }
-       
     }
 
     private void UpdatePiecesValues()
@@ -819,6 +818,7 @@ public class MiniBossManager : MonoBehaviour
         _bossHealth = _bossMaxHealth = bossHealth;
 
         //set inputs
+        guiManager.HideGui();
         _playerValues.SetCurrentInput(CurrentInput.MiniBoss);
         _playerValues.SetInputsEnabled(true);
         StartCoroutine(StartGameCoroutine());
@@ -846,24 +846,25 @@ public class MiniBossManager : MonoBehaviour
 
     IEnumerator ExitMinigameCoroutine()
     {
-        _genericScreenUi.SetText("You lost...");
+        _genericScreenUi.SetText("You lost...", 23);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         _miniBossBase.ExitBase();
+        guiManager.ShowGui();
     }
 
     IEnumerator StartGameCoroutine()
     {
         //enseñar nombre del minijuego
-        _genericScreenUi.SetText(_name);
+        _genericScreenUi.SetText(_name, 55);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         //enseñar tutorial del minijuego
-        _genericScreenUi.SetText(_tutorial);
+        _genericScreenUi.SetText(_tutorial, 20);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(4f);
         _genericScreenUi.FadeOutText();
@@ -873,7 +874,7 @@ public class MiniBossManager : MonoBehaviour
 
     IEnumerator EndGameCoroutine()
     {
-        _genericScreenUi.SetText(endMessage);
+        _genericScreenUi.SetText(endMessage, 32);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();

@@ -34,15 +34,18 @@ public class RunProcess : MonoBehaviour
         {
             process = new Process();
             process.EnableRaisingEvents = false;
+            process.StartInfo.WorkingDirectory = Application.dataPath;
             process.StartInfo.FileName =
-                Application.dataPath + "/CubeBluetooth/Executable/BluetoothCubo.exe"; //change the path to a consistent one
+                Application.dataPath+"/CubeBluetooth/Executable/BluetoothCubo.exe";
+            // process.StartInfo.FileName =
+            //     Application.dataPath+"/executable/BluetoothCubo.exe"; //change the path to a consistent one
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardInput = true;
             process.StartInfo.RedirectStandardError = true;
-            process.OutputDataReceived += new DataReceivedEventHandler(DataReceived);
-            process.ErrorDataReceived += new DataReceivedEventHandler(ErrorReceived);
+            process.OutputDataReceived += DataReceived;
+            process.ErrorDataReceived += ErrorReceived;
             process.Start();
             process.BeginOutputReadLine();
             messageStream = process.StandardInput;

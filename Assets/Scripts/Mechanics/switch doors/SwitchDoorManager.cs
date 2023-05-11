@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[DefaultExecutionOrder(1)]
 public class SwitchDoorManager : MonoBehaviour
 {
     // Start is called before the first frame update

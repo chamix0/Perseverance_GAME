@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Codice.CM.WorkspaceServer.DataStore;
 using Mechanics.General_Inputs;
 using TMPro;
 using UnityEngine;
@@ -180,13 +179,13 @@ public class LockerManager : MonoBehaviour
     IEnumerator StartGameCoroutine()
     {
         //enseñar nombre del minijuego
-        _genericScreenUi.SetText(_name);
+        _genericScreenUi.SetText(_name,55);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         //enseñar tutorial del minijuego
-        _genericScreenUi.SetText(_tutorial);
+        _genericScreenUi.SetText(_tutorial,20);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(4f);
         _genericScreenUi.FadeOutText();

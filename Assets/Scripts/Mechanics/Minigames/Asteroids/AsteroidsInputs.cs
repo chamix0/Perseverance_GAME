@@ -22,35 +22,45 @@ public class AsteroidsInputs : MonoBehaviour
     {
         if (_playerValues.GetCurrentInput() == CurrentInput.AsteroidMinigame && _playerValues.GetInputsEnabled())
         {
+            Vector2 dir = Vector2.zero;
             if (Input.anyKey)
             {
                 asteroidsManager.SetGearsZero();
+                asteroidsManager.ShowKeyTutorial();
             }
 
             if (Input.GetKey(KeyCode.W))
             {
+                dir.y += 1;
                 asteroidsManager.VerticalMovement(1, asteroidsManager._speed);
             }
 
             if (Input.GetKey(KeyCode.S))
             {
+                dir.y -= 1;
                 asteroidsManager.VerticalMovement(-1, asteroidsManager._speed);
             }
 
             if (Input.GetKey(KeyCode.A))
             {
+                dir.x -= 1;
                 asteroidsManager.HorizontalMovement(-1, asteroidsManager._speed);
             }
 
             if (Input.GetKey(KeyCode.D))
             {
+                dir.x += 1;
                 asteroidsManager.HorizontalMovement(1, asteroidsManager._speed);
             }
+
+            asteroidsManager.SpriteRotation(dir);
         }
     }
 
     public void PerformAction(Move move)
     {
+        asteroidsManager.ShowCubeTutorial();
+
         if (move.face == FACES.R)
             asteroidsManager.VerticalMovementCube(move.direction);
 

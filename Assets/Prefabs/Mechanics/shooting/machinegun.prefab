@@ -173,8 +173,8 @@ MonoBehaviour:
   aimPoint: {fileID: 847337044122427161}
   aimSphere: {fileID: 6386190641106624336}
   drumRigidbody: {fileID: 3884155240763154006}
-  drumSpeed: -50
-  bulletSpeed: 1.5
+  drumSpeed: 50
+  bulletSpeed: 4
   burstNumber: 3
   automaticShootCooldown: 1250
   _rigidbody: {fileID: 8639375874169672137}
@@ -196,8 +196,7 @@ MonoBehaviour:
   rootObject: {fileID: 7254162380308935409}
   shader: {fileID: -6465566751694194690, guid: 42353fbcd9bada348ba0151abf212b85, type: 3}
   hitShader: {fileID: 0}
-  exceptions:
-  - {fileID: 0}
+  exceptions: []
   hideOnStart: 1
   speed: 1
 --- !u!114 &7043597428136819862
@@ -40105,8 +40104,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 0.0015543079, y: 0.0046061324, z: 0.002174236}
-  m_Center: {x: 0.000000007458903, y: -0.00010536442, z: 0.00079710176}
+  m_Size: {x: 0.0015543079, y: 0.0055904896, z: 0.002174236}
+  m_Center: {x: 0.000000007529853, y: 0.0003868151, z: 0.000797102}
 --- !u!1 &7824466793772390599
 GameObject:
   m_ObjectHideFlags: 0

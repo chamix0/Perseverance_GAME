@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+using UnityEditor.Graphs;
 using UnityEngine;
 using UnityEngine.UI;
-using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 [DefaultExecutionOrder(3)]
@@ -18,19 +15,18 @@ public class AsteroidBehavior : MonoBehaviour
     private int maxBounces;
     private bool active = false;
     public Image _image;
-    public Shader shader;
-    private Material _material;
+    private Color initColor;
+    private AudioSource audioSource;
+    [SerializeField] private List<AudioClip> clips;
 
-    private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
-    private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
+    private static readonly int MainTex = Shader.PropertyToID("_MainTex");
 
 
     void Start()
     {
-        _material = new Material(shader);
-        _image.material = _material;
-        _material.SetColor(BackgroundColor, Color.red);
+        initColor = _image.color;
         _asteroidsManager = FindObjectOfType<AsteroidsManager>();
+        audioSource = GetComponent<AudioSource>();
         Spawn();
     }
 
@@ -46,7 +42,7 @@ public class AsteroidBehavior : MonoBehaviour
 
     public void resetAsteroid()
     {
-        _material.SetFloat(MyAlpha, 0);
+        _image.color = Color.clear;
         bounceCount = 0;
         active = false;
     }
@@ -55,7 +51,7 @@ public class AsteroidBehavior : MonoBehaviour
     {
         FindSpawnPos();
         direction = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-        _image.material.SetFloat(MyAlpha, 1);
+        _image.color = initColor;
         speed = Random.Range(0.1f, 0.3f);
         maxBounces = Random.Range(3, 8);
         bounceCount = 0;
@@ -83,6 +79,7 @@ public class AsteroidBehavior : MonoBehaviour
             AddBounce();
         }
 
+        SelfRotation();
         transform.localPosition +=
             new Vector3(speed * direction.x * Time.deltaTime, speed * direction.y * Time.deltaTime, 0);
     }
@@ -90,10 +87,17 @@ public class AsteroidBehavior : MonoBehaviour
     private void AddBounce()
     {
         bounceCount++;
-        {
-            if (bounceCount >= maxBounces)
-                Die();
-        }
+        audioSource.clip = clips[0];
+        audioSource.Play();
+        ColorIterpolation();
+        if (bounceCount >= maxBounces)
+            Die();
+    }
+
+
+    private void ColorIterpolation()
+    {
+        _image.color = Color.Lerp(_image.color, Color.red, (float)bounceCount / maxBounces);
     }
 
     private void FindSpawnPos()
@@ -104,8 +108,8 @@ public class AsteroidBehavior : MonoBehaviour
         Vector3 pos = Vector3.zero;
         while (!valid)
         {
-            pos = new Vector2(Random.Range(-width  / 2, width  / 2),
-                Random.Range(-height  / 2, height  / 2));
+            pos = new Vector2(Random.Range(-width / 2, width / 2),
+                Random.Range(-height / 2, height / 2));
             if (_asteroidsManager.DistanceToPlayer(pos) > 0.1f)
                 valid = true;
         }
@@ -136,10 +140,21 @@ public class AsteroidBehavior : MonoBehaviour
         }
     }
 
+    private void SelfRotation()
+    {
+        if (direction.x > 0)
+            transform.Rotate(0, 0, MyUtils.Clamp0360(-speed * 100 * Time.deltaTime));
+        else
+            transform.Rotate(0, 0, MyUtils.Clamp0360(speed * 100 * Time.deltaTime));
+    }
+
     public void Die()
     {
+        audioSource.clip = clips[1];
+        audioSource.Play();
         active = false;
-        _material.SetFloat(MyAlpha, 0);
+        _image.color = Color.clear;
+        bounceCount = 0;
         _asteroidsManager.TransferAsteroid(this);
         _asteroidsManager.EndRound();
     }
