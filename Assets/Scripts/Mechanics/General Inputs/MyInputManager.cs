@@ -22,6 +22,7 @@ namespace Mechanics.General_Inputs
         private StealthMovementInputs _stealthMovementInputs;
         private MachinegunMovementInputs _machinegunMovementInputs;
         private RunMovementInputs _runMovementInputs;
+        private DontTouchWallsInputs _dontTouchWallsInputs;
         private GuiManager gui;
 
         private void Awake()
@@ -49,12 +50,12 @@ namespace Mechanics.General_Inputs
             _stealthMovementInputs = FindObjectOfType<StealthMovementInputs>();
             _machinegunMovementInputs = FindObjectOfType<MachinegunMovementInputs>();
             _runMovementInputs = FindObjectOfType<RunMovementInputs>();
+            _dontTouchWallsInputs = FindObjectOfType<DontTouchWallsInputs>();
             gui = FindObjectOfType<GuiManager>();
         }
 
         private void Update()
         {
-            
             if (_inputsMoves && _inputsMoves.HasMessages() && _playerValues.GetInputsEnabled())
             {
                 Move move = _inputsMoves.Dequeue();
@@ -101,6 +102,9 @@ namespace Mechanics.General_Inputs
                         break;
                     case CurrentInput.RaceMovement:
                         _runMovementInputs.PerformAction(move);
+                        break;
+                    case CurrentInput.DontTouchTheWallsMinigame:
+                        _dontTouchWallsInputs.PerformAction(move);
                         break;
                     case CurrentInput.None:
                         break;

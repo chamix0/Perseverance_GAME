@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Mechanics.General_Inputs;
 using UnityEngine;
 using Slider = UnityEngine.UI.Slider;
+
 [DefaultExecutionOrder(3)]
 public class AdjustValuesManager : Minigame
 {
     //text to show on screen before the game
     private readonly string _name = "Adjust the values",
-        _tutorial = "Click the corresponding color\n or \n turn the corresponding face.";
+        _tutorial = "Adjust the sliders to get the right values";
 
     private const string EndMessage = "WELL DONE!";
 
@@ -24,15 +25,18 @@ public class AdjustValuesManager : Minigame
     private MinigameManager _minigameManager;
     private GenericScreenUi _genericScreenUi;
     private int _sliderIndex = 0;
+    private MinigameSoundManager soundManager;
 
     //variables
-    private float _targetValue;
+    private float[] _targetValuees;
     private float _targetValueSlider;
     private float _tX;
     private bool _updateValue;
 
+    private bool minigameStarted;
+
     //lists
-    [SerializeField] private List<Slider> _sliders;
+    private List<Slider> _sliders;
 
 
     //shader names
@@ -45,10 +49,14 @@ public class AdjustValuesManager : Minigame
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
+        soundManager = GetComponent<MinigameSoundManager>();
+        _sliders = new List<Slider>();
+        _sliders.AddRange(uiObject.GetComponentsInChildren<Slider>());
         foreach (var slider in _sliders)
         {
             slider.onValueChanged.AddListener(delegate(float arg0) { OnValueChanged(); });
         }
+
         _genericScreenUi.SetTextAlpha(0);
         HideUI();
     }
@@ -102,35 +110,36 @@ public class AdjustValuesManager : Minigame
     private void checkSol()
     {
         float sum = 0;
-        foreach (var slider in _sliders)
+        for (int i = 0; i < _sliders.Count; i++)
         {
-            sum += slider.value;
+            float value = _sliders[i].value;
+            float diff = Mathf.Abs(value - _targetValuees[i]);
+            if (diff < 0.1f)
+            {
+                sum += 1;
+            }
+            else if (diff < 0.3f)
+            {
+                sum += 0.5f;
+            }
         }
 
-        float diff = Mathf.Abs(_targetValue - sum);
-        if (diff < 0.01f)
+
+        int valueC = (int)(sum * 5 / 3);
+        if (valueC >= 5)
         {
             _minigameManager.UpdateCounter(5);
             EndMinigame();
         }
-        else if (diff < 0.20f)
-            _minigameManager.UpdateCounter(4);
-        else if (diff < 0.40f)
-            _minigameManager.UpdateCounter(3);
-        else if (diff < 0.60f)
-            _minigameManager.UpdateCounter(2);
-        else if (diff < 0.85f)
-            _minigameManager.UpdateCounter(1);
         else
-            _minigameManager.UpdateCounter(0);
+            _minigameManager.UpdateCounter(valueC);
     }
 
     public override void StartMinigame()
     {
         foreach (var slider in _sliders)
             slider.value = 0;
-
-        _targetValue = Random.Range(1f, 3f);
+        _targetValuees = new float[] { Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f) };
         _playerValues.SetCurrentInput(CurrentInput.AdjustValuesMinigame);
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(StartGameCoroutine());
@@ -148,18 +157,42 @@ public class AdjustValuesManager : Minigame
         uiObject.SetActive(false);
     }
 
+    [SerializeField] private GameObject cubeTutorial, keyTutorial;
+
+    public void ShowCubeTutorial()
+    {
+        if (minigameStarted)
+        {
+            if (!cubeTutorial.activeSelf)
+                cubeTutorial.SetActive(true);
+            if (keyTutorial.activeSelf)
+                keyTutorial.SetActive(false);
+        }
+    }
+
+    public void ShowKeyTutorial()
+    {
+        if (minigameStarted)
+        {
+            if (cubeTutorial.activeSelf)
+                cubeTutorial.SetActive(false);
+            if (!keyTutorial.activeSelf)
+                keyTutorial.SetActive(true);
+        }
+    }
+
     public void IncreaseValue()
     {
         _tX = 0f;
         _updateValue = true;
-        _targetValueSlider = Mathf.Min(1, _sliders[_sliderIndex].value + 0.1f);
+        _targetValueSlider = Mathf.Min(1, _sliders[_sliderIndex].value + 0.05f);
     }
 
     public void DecreaseValue()
     {
         _tX = 0f;
         _updateValue = true;
-        _targetValueSlider = Mathf.Max(0, _sliders[_sliderIndex].value - 0.1f);
+        _targetValueSlider = Mathf.Max(0, _sliders[_sliderIndex].value - 0.05f);
     }
 
     private void UpdatesliderValue()
@@ -175,6 +208,7 @@ public class AdjustValuesManager : Minigame
 
     private void EndMinigame()
     {
+        soundManager.PlayFinishedSound();
         _minigameManager.UpdateCounter(0);
         HideUI();
         _playerValues.SetInputsEnabled(false);
@@ -184,19 +218,21 @@ public class AdjustValuesManager : Minigame
     IEnumerator StartGameCoroutine()
     {
         //enseñar nombre del minijuego
-        _genericScreenUi.SetText(_name,10);
+        _genericScreenUi.SetText(_name, 35);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         //enseñar tutorial del minijuego
-        _genericScreenUi.SetText(_tutorial,10);
+        _genericScreenUi.SetText(_tutorial, 10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(4f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(1f);
         ShowUI();
         _playerValues.SetInputsEnabled(true);
+        minigameStarted = true;
+        ShowKeyTutorial();
 
 
         //empezar minijuego
@@ -204,7 +240,8 @@ public class AdjustValuesManager : Minigame
 
     IEnumerator EndGameCoroutine()
     {
-        _genericScreenUi.SetText(EndMessage,10);
+        minigameStarted = false;
+        _genericScreenUi.SetText(EndMessage, 10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
@@ -212,5 +249,6 @@ public class AdjustValuesManager : Minigame
         _cameraChanger.SetOrbitCamera();
         yield return new WaitForSeconds(2f);
         _playerValues.StandUp(true, 3);
+        _minigameManager.EndMinigame();
     }
 }

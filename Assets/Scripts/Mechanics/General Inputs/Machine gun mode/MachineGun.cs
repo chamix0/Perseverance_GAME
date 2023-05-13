@@ -67,8 +67,13 @@ public class MachineGun : Subject
     //gui
     private GuiManager guiManager;
 
+    //slow time 
+    [SerializeField] private float slowTime = 3f;
+    private Stopwatch slowTimer;
+
     private void Awake()
     {
+        slowTimer = new Stopwatch();
         automaticShootTimer = new Stopwatch();
         hookTimer = new Stopwatch();
     }
@@ -178,13 +183,30 @@ public class MachineGun : Subject
         if (!aiming)
             NotifyObservers(PlayerActions.Aim);
         aiming = true;
-        Time.timeScale = 0.25f;
+        SlowTime();
         if (!aimSphere.gameObject.activeSelf)
             aimSphere.gameObject.SetActive(true);
     }
 
+    private void SlowTime()
+    {
+        if (!slowTimer.IsRunning)
+            slowTimer.Restart();
+        
+
+        if (slowTimer.Elapsed.TotalSeconds < slowTime)
+            Time.timeScale = 0.25f;
+        
+        else
+            Time.timeScale = 1f;
+        
+    }
+
     public void StopAim()
     {
+        slowTimer.Stop();
+        slowTimer.Reset();
+        
         aiming = false;
         Time.timeScale = 1f;
         StopLaser();

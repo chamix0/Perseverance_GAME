@@ -11,6 +11,7 @@
         AsteroidMinigame,
         ClickFastMinigame,
         LockerMinigame,
+        DontTouchTheWallsMinigame,
         MiniBoss,
         StealthMovement,
         Conversation,

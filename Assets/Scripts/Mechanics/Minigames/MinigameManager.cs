@@ -42,7 +42,7 @@ public class MinigameManager : MonoBehaviour
         minigames.Add(GetComponent<RollTheNutManager>());
         minigames.Add(GetComponent<AdjustValuesManager>());
         minigames.Add(GetComponent<MemoryMingameManager>());
-
+        minigames.Add(GetComponent<DontTouchWallsManager>());
 
         SetCounterImages();
         UpdateCounter(0);
@@ -99,7 +99,7 @@ public class MinigameManager : MonoBehaviour
             _lastMinigame = index;
         }
 
-        minigames[4].StartMinigame();
+        minigames[7].StartMinigame();
         guiManager.HideGui();
     }
 

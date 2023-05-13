@@ -26,7 +26,6 @@ public class AsteroidsManager : Minigame
     [SerializeField] private GameObject _player;
     [SerializeField] private GameObject _asteroidTemplate;
     [SerializeField] private GameObject _asteroidContainer;
-
     private MinigameSoundManager minigameSoundManager;
 
     //variables
@@ -51,7 +50,19 @@ public class AsteroidsManager : Minigame
         _asteroidBehaviorsAlive = new List<AsteroidBehavior>();
         minigameSoundManager = GetComponent<MinigameSoundManager>();
     }
-
+ void Start()
+ {
+        _playerValues = FindObjectOfType<PlayerValues>();
+        _cameraChanger = FindObjectOfType<CameraChanger>();
+        _minigameManager = FindObjectOfType<MinigameManager>();
+        _genericScreenUi = FindObjectOfType<GenericScreenUi>();
+        _arenaMeasures = new[]
+            { uiObject.GetComponent<RectTransform>().rect.height, uiObject.GetComponent<RectTransform>().rect.width };
+        _player.SetActive(false);
+        _minigameManager.UpdateCounter(round);
+        _genericScreenUi.SetTextAlpha(0);
+        HideUI();
+    }
     private void Update()
     {
         if (minigameStarted)
@@ -119,19 +130,7 @@ public class AsteroidsManager : Minigame
         }
     }
 
-    void Start()
-    {
-        _playerValues = FindObjectOfType<PlayerValues>();
-        _cameraChanger = FindObjectOfType<CameraChanger>();
-        _minigameManager = FindObjectOfType<MinigameManager>();
-        _genericScreenUi = FindObjectOfType<GenericScreenUi>();
-        _arenaMeasures = new[]
-            { uiObject.GetComponent<RectTransform>().rect.height, uiObject.GetComponent<RectTransform>().rect.width };
-        _player.SetActive(false);
-        _minigameManager.UpdateCounter(round);
-        _genericScreenUi.SetTextAlpha(0);
-        HideUI();
-    }
+   
 
     public void VerticalMovement(int direction, float speed)
     {
@@ -389,5 +388,6 @@ public class AsteroidsManager : Minigame
         _cameraChanger.SetOrbitCamera();
         yield return new WaitForSeconds(2f);
         _playerValues.StandUp(true, 3f);
+        _minigameManager.EndMinigame();
     }
 }

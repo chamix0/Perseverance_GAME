@@ -7,12 +7,11 @@ public class Target : MonoBehaviour
 {
     public bool shot = false;
     public bool deployed = false;
-   [SerializeField] private MeshCollider collider;
-   [SerializeField] private DissolveMaterials dissolveMaterials;
+    [SerializeField] private MeshCollider collider;
+    [SerializeField] private DissolveMaterials dissolveMaterials;
 
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -24,7 +23,11 @@ public class Target : MonoBehaviour
     {
         collider.enabled = false;
         deployed = false;
-        dissolveMaterials.DissolveOut();
+        if (!shot)
+        {
+            dissolveMaterials.DissolveOut();
+        }
+
         if (shot)
             return 1;
         return 0;

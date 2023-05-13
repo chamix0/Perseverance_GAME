@@ -21,6 +21,11 @@ public class AdjustValuesInputs : MonoBehaviour
     {
         if (_playerValues.GetCurrentInput() == CurrentInput.AdjustValuesMinigame && _playerValues.GetInputsEnabled())
         {
+            if (Input.anyKey)
+            {
+                _adjustValuesManager.ShowKeyTutorial();
+            }
+
             if (Input.GetKeyDown(KeyCode.S))
             {
                 _adjustValuesManager.SelectNextSlider();
@@ -45,6 +50,7 @@ public class AdjustValuesInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
+        _adjustValuesManager.ShowCubeTutorial();
         if (move.face == FACES.R)
         {
             if (move.direction == 1)

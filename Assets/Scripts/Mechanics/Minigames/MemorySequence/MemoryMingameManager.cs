@@ -22,7 +22,7 @@ public class MemoryMingameManager : Minigame
     //text to show on screen before the game
     private readonly string _name = "Memorize the sequence",
         _tutorial =
-            "Click the colors in order of appearance \n or \n turn the corresponding face with the corresponding color in order of appearance.",
+            "Click the colors in order of appearance or turn the corresponding face with the corresponding color in order of appearance.",
         endMessage = "WELL DONE!";
 
     //components
@@ -35,6 +35,8 @@ public class MemoryMingameManager : Minigame
     private PlayerAnimations _playerAnimations;
     private GenericScreenUi _genericScreenUi;
     private MinigameManager _minigameManager;
+
+    private MinigameSoundManager soundManager;
 
     //Values
     private const int NUM_ROUNDS = 5;
@@ -75,6 +77,7 @@ public class MemoryMingameManager : Minigame
         numColorSequence = 1;
         correctCount = 0;
         correctSequenceCount = 0;
+        soundManager = GetComponent<MinigameSoundManager>();
         _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
@@ -120,11 +123,13 @@ public class MemoryMingameManager : Minigame
         if (inputColor.Equals(Sequence[correctSequenceCount]))
         {
             correctSequenceCount++;
+            soundManager.PlayClickSound();
             if (correctSequenceCount >= numColorSequence)
             {
                 numColorSequence++;
                 correctSequenceCount = 0;
                 correctCount++;
+                soundManager.PlayCorrectSound();
                 if (correctCount >= NUM_ROUNDS)
                     EndMinigame();
                 ChangeSequence();
@@ -132,6 +137,7 @@ public class MemoryMingameManager : Minigame
         }
         else
         {
+            soundManager.PlayInCorrectSound();
             numColorSequence = 1;
             correctCount = 0;
             correctSequenceCount = 0;
@@ -204,6 +210,7 @@ public class MemoryMingameManager : Minigame
 
     private void EndMinigame()
     {
+        soundManager.PlayFinishedSound();
         HideGameUi();
         _minigameManager.UpdateCounter(0);
         _playerValues.SetInputsEnabled(false);
@@ -241,13 +248,13 @@ public class MemoryMingameManager : Minigame
     IEnumerator StartGameCoroutine()
     {
         //enseñar nombre del minijuego
-        _genericScreenUi.SetText(_name,10);
+        _genericScreenUi.SetText(_name, 10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         //enseñar tutorial del minijuego
-        _genericScreenUi.SetText(_tutorial,10);
+        _genericScreenUi.SetText(_tutorial, 10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(4f);
         _genericScreenUi.FadeOutText();
@@ -258,13 +265,13 @@ public class MemoryMingameManager : Minigame
 
     IEnumerator EndGameCoroutine()
     {
-        _genericScreenUi.SetText(endMessage,10);
+        _genericScreenUi.SetText(endMessage, 10);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         _cameraChanger.SetOrbitCamera();
         yield return new WaitForSeconds(2f);
-        _playerValues.StandUp( true, 3f);
+        _playerValues.StandUp(true, 3f);
     }
 }

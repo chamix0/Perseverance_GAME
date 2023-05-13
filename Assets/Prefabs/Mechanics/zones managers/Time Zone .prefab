@@ -595,7 +595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1211680479443633593}
   m_Layer: 3
-  m_Name: snap pos (1)
+  m_Name: snap pos
   m_TagString: Untagged
   m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
