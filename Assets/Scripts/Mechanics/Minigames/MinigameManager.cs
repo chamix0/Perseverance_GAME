@@ -43,6 +43,7 @@ public class MinigameManager : MonoBehaviour
         minigames.Add(GetComponent<AdjustValuesManager>());
         minigames.Add(GetComponent<MemoryMingameManager>());
         minigames.Add(GetComponent<DontTouchWallsManager>());
+        minigames.Add(GetComponent<PuzzleManager>());
 
         SetCounterImages();
         UpdateCounter(0);
@@ -99,7 +100,7 @@ public class MinigameManager : MonoBehaviour
             _lastMinigame = index;
         }
 
-        minigames[7].StartMinigame();
+        minigames[8].StartMinigame();
         guiManager.HideGui();
     }
 

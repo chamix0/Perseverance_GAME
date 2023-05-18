@@ -9,7 +9,7 @@ public class LockerManager : MonoBehaviour
 {
     //text to show on screen before the game
     private readonly string _name = "code",
-        _tutorial = "Click the corresponding color\n or \n turn the corresponding face.";
+        _tutorial = "Introduce the access code";
 
     private const string EndMessage = "WELL DONE!";
 
@@ -24,11 +24,10 @@ public class LockerManager : MonoBehaviour
     private CameraChanger _cameraChanger;
     private GenericScreenUi _genericScreenUi;
     private LockerBase _lockerBase;
-    private int _sliderIndex = 0;
     [SerializeField] private Button checkButton;
     [SerializeField] private Button exitButton;
     [SerializeField] private TMP_Text statusText;
-
+    private MinigameSoundManager minigameSoundManager;
 
     //variables
     private float _targetValue;
@@ -38,17 +37,19 @@ public class LockerManager : MonoBehaviour
     private int[] _code = { 0, 0, 0, 0 };
 
     //lists
+    private int index = 0;
+    [SerializeField] private Color initColor, highlightColor;
     [SerializeField] private List<Button> upButtons;
     [SerializeField] private List<Button> downButtons;
     [SerializeField] private List<TMP_Text> digits;
 
 
     //shader names
-    private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
-    private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
+
 
     void Start()
     {
+        minigameSoundManager = FindObjectOfType<MinigameSoundManager>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
@@ -56,11 +57,21 @@ public class LockerManager : MonoBehaviour
         for (int i = 0; i < upButtons.Count; i++)
         {
             int aux = i;
-            upButtons[i].onClick.AddListener(delegate { IncreaseValue(aux); });
-            downButtons[i].onClick.AddListener(delegate { DecreaseValue(aux); });
+            upButtons[i].onClick.AddListener(delegate
+            {
+                IncreaseValue(aux);
+                KeyboardInputs();
+            });
+            downButtons[i].onClick.AddListener(delegate
+            {
+                DecreaseValue(aux);
+                KeyboardInputs();
+            });
             digits[i].text = "" + _code[i];
         }
 
+        cubeTutorial.SetActive(false);
+        keyTutorial.SetActive(false);
         checkButton.onClick.AddListener(CheckButton);
         exitButton.onClick.AddListener(ExitButton);
         statusText.text = "";
@@ -73,58 +84,67 @@ public class LockerManager : MonoBehaviour
         _lockerBase = compo;
     }
 
-
-    // float RoundValue(float input)
-    // {
-    //     return Mathf.Round(input / angleStep) * angleStep;
-    // }
+    private void KeyboardInputs()
+    {
+        ShowKeyTutorial();
+        UnHighlighlightNumber();
+    }
+    
 
     public void SelectNextNumber()
     {
-        // _sliderIndex = (_sliderIndex + 1) % _sliders.Count;
-        // HighlightSlider();
-        // print(_sliderIndex);
-        // _updateValue = false;
+        index = (index + 1) % digits.Count;
+        HighlightNumber();
     }
 
     public void SelectPrevNumber()
     {
-        // _sliderIndex = _sliderIndex - 1 < 0 ? _sliders.Count - 1 : _sliderIndex - 1;
-        // HighlightSlider();
-        // print(_sliderIndex);
-        // _updateValue = false;
+        index = index - 1 < 0 ? digits.Count - 1 : index - 1;
+        HighlightNumber();
     }
 
     private void HighlightNumber()
     {
-        // for (var i = 0; i < _sliders.Count; i++)
-        // {
-        //     var block = _sliders[i].colors;
-        //     if (i == _sliderIndex)
-        //         block.normalColor = Color.green;
-        //     else
-        //         block.normalColor = Color.white;
-        //     _sliders[i].colors = block;
-        // }
+        for (var i = 0; i < digits.Count; i++)
+        {
+            if (i == index)
+                digits[i].color = highlightColor;
+            else
+                digits[i].color = initColor;
+        }
     }
 
-    private void CheckButton()
+    private void UnHighlighlightNumber()
+    {
+        foreach (var digit in digits)
+        {
+            digit.color = initColor;
+        }
+    }
+
+    public void CheckButton()
     {
         if (checkSol())
         {
             //que ponga correct 
             statusText.text = "CORRECT CODE";
+            statusText.color = Color.green;
             EndMinigame();
+            minigameSoundManager.PlayFinishedSound();
         }
         else
         {
+            minigameSoundManager.PlayInCorrectSound();
+            statusText.color = Color.red;
             statusText.text = "INCORRECT CODE";
         }
     }
 
-    private void ExitButton()
+    public void ExitButton()
     {
-        EndMinigame();
+        minigameSoundManager.PlayClickSound();
+        _lockerBase.ExitBase();
+        HideUI();
     }
 
     private bool checkSol()
@@ -146,15 +166,19 @@ public class LockerManager : MonoBehaviour
     public void ShowUI()
     {
         uiObject.SetActive(true);
+        ShowKeyTutorial();
     }
 
     public void HideUI()
     {
         uiObject.SetActive(false);
+        cubeTutorial.SetActive(false);
+        keyTutorial.SetActive(false);
     }
 
     public void IncreaseValue(int index)
     {
+        minigameSoundManager.PlayClickSound();
         int oldVal = _code[index];
         _code[index] = oldVal + 1 > 9 ? 0 : oldVal + 1;
         digits[index].text = "" + _code[index];
@@ -162,43 +186,72 @@ public class LockerManager : MonoBehaviour
 
     public void DecreaseValue(int index)
     {
+        minigameSoundManager.PlayClickSound();
         int oldVal = _code[index];
         _code[index] = oldVal - 1 < 0 ? 9 : oldVal - 1;
         digits[index].text = "" + _code[index];
     }
 
+    public void IncreaseValueCube()
+    {
+        IncreaseValue(index);
+        HighlightNumber();
+    }
+
+    public void DecreaseValueCube()
+    {
+        DecreaseValue(index);
+        HighlightNumber();
+    }
+
+    [SerializeField] private GameObject cubeTutorial, keyTutorial;
+
+    public void ShowCubeTutorial()
+    {
+        if (!cubeTutorial.activeSelf)
+            cubeTutorial.SetActive(true);
+        if (keyTutorial.activeSelf)
+            keyTutorial.SetActive(false);
+    }
+
+    public void ShowKeyTutorial()
+    {
+        if (cubeTutorial.activeSelf)
+            cubeTutorial.SetActive(false);
+        if (!keyTutorial.activeSelf)
+            keyTutorial.SetActive(true);
+    }
 
     private void EndMinigame()
     {
+        StartCoroutine(EndMinigameCoroutine());
+    }
+
+    IEnumerator EndMinigameCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
         HideUI();
         _playerValues.SetInputsEnabled(false);
         _lockerBase.EndLocker();
-        StartCoroutine(EndGameCoroutine());
+        _cameraChanger.SetOrbitCamera();
+        _lockerBase.ExitBase();
     }
 
     IEnumerator StartGameCoroutine()
     {
         //enseñar nombre del minijuego
-        _genericScreenUi.SetText(_name,55);
+        _genericScreenUi.SetText(_name, 55);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(2f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         //enseñar tutorial del minijuego
-        _genericScreenUi.SetText(_tutorial,20);
+        _genericScreenUi.SetText(_tutorial, 20);
         _genericScreenUi.FadeInText();
         yield return new WaitForSeconds(4f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(1f);
         ShowUI();
         _playerValues.SetInputsEnabled(true);
-    }
-
-    IEnumerator EndGameCoroutine()
-    {
-        yield return new WaitForSeconds(2f);
-        _cameraChanger.SetOrbitCamera();
-        yield return new WaitForSeconds(2f);
-        _lockerBase.ExitBase();
     }
 }

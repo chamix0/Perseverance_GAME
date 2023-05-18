@@ -56,7 +56,6 @@ public class MiniBossManager : MonoBehaviour
     [SerializeField] private GameObject uiObject;
     private PlayerValues _playerValues;
     private GenericScreenUi _genericScreenUi;
-    private CameraChanger _cameraChanger;
     [SerializeField] private Image bossImage;
     [SerializeField] private Image livesImage;
     private GameObject bossScreen;
@@ -64,6 +63,7 @@ public class MiniBossManager : MonoBehaviour
     private GameObject fightScreen;
     private MiniBossBase _miniBossBase;
     private GuiManager guiManager;
+    private MinigameSoundManager soundManager;
 
     //timer
     private Stopwatch _timer;
@@ -210,9 +210,9 @@ public class MiniBossManager : MonoBehaviour
         _normalColor = _buttonsImages[0].material.GetColor(BackgroundColor);
         _playerValues = FindObjectOfType<PlayerValues>();
         guiManager = FindObjectOfType<GuiManager>();
-        _cameraChanger = FindObjectOfType<CameraChanger>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         _genericScreenUi.SetTextAlpha(0);
+        soundManager = FindObjectOfType<MinigameSoundManager>();
         SetLivesSprite();
         HideUI();
     }
@@ -342,6 +342,7 @@ public class MiniBossManager : MonoBehaviour
 
     private void HighlightButton()
     {
+        soundManager.PlayClickSound();
         for (int i = 0; i < 4; i++)
         {
             if (i == (int)selectedAction)
@@ -536,6 +537,7 @@ public class MiniBossManager : MonoBehaviour
                     _maxCombo = _currentCombo;
                 _pieces[auxIndexes[^(NumPieces - 4)]].SetColor(Color.green);
                 //play correct sound
+                soundManager.PlayTapSound();
             }
             else
             {
@@ -544,6 +546,7 @@ public class MiniBossManager : MonoBehaviour
                 _sequenceValueIndex++;
                 _pieces[auxIndexes[^(NumPieces - 4)]].SetColor(Color.red);
                 //play incorrect sound
+                soundManager.PlayInCorrectSound();
             }
 
             if (usingCube)
@@ -567,6 +570,7 @@ public class MiniBossManager : MonoBehaviour
                 //set the leter in green
                 _pieces[auxIndexes[^(NumPieces - 4)]].SetColor(Color.green);
                 //play correct sound
+                soundManager.PlayTapSound();
             }
             else
             {
@@ -576,6 +580,7 @@ public class MiniBossManager : MonoBehaviour
                 //sett the letter in red
                 _pieces[auxIndexes[^(NumPieces - 4)]].SetColor(Color.red);
                 //play incorrect sound
+                soundManager.PlayInCorrectSound();
             }
 
             if (!usingCube)
@@ -613,6 +618,7 @@ public class MiniBossManager : MonoBehaviour
                         _bossHealth = Mathf.Max(0, _bossHealth - attackDamage);
                         lives--;
                         PlayAnimation(5);
+                        soundManager.PlayHitSound();
                         StartCoroutine(livesCoroutine(4.5f));
                         break;
                     case BossAction.Defend:
@@ -621,9 +627,12 @@ public class MiniBossManager : MonoBehaviour
                             StartCoroutine(HealthBarCoroutine(4, _bossHealth, attackDamage));
                             _bossHealth = Mathf.Max(0, _bossHealth - attackDamage);
                             PlayAnimation(0);
+                            soundManager.PlayDefendSound();
                         }
                         else
+                        {
                             PlayAnimation(1);
+                        }
 
                         break;
                     case BossAction.Nothing:

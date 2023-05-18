@@ -21,26 +21,51 @@ public class LockerInputs : MonoBehaviour
     {
         if (_playerValues.GetCurrentInput() == CurrentInput.LockerMinigame && _playerValues.GetInputsEnabled())
         {
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.anyKey)
             {
-            }
-
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-            }
-
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-            }
-
-            if (Input.GetKeyDown(KeyCode.A))
-            {
+                lockerManager.ShowKeyTutorial();
             }
         }
     }
 
     public void PerformAction(Move move)
     {
-        
+        lockerManager.ShowCubeTutorial();
+        if (move.face == FACES.R)
+        {
+            if (move.direction > 0)
+            {
+                lockerManager.IncreaseValueCube();
+            }
+            else
+            {
+                lockerManager.DecreaseValueCube();
+            }
+        }
+        else if (move.face == FACES.F)
+        {
+            if (move.direction > 0)
+            {
+                lockerManager.SelectNextNumber();
+            }
+            else
+            {
+                lockerManager.SelectPrevNumber();
+            }
+        }
+        else if (move.face == FACES.L)
+        {
+            if (move.direction < 0)
+            {
+                lockerManager.CheckButton();
+            }
+        }
+        else if (move.face == FACES.B)
+        {
+            if (move.direction > 0)
+            {
+                lockerManager.ExitButton();
+            }
+        }
     }
 }

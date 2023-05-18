@@ -279,10 +279,13 @@ public class PlayerValues : Subject
         _updateSnap = true;
     }
 
+    Quaternion currentRotation;
+
     public void snapRotationTo(float angle)
     {
         _rigidbody.useGravity = false;
         _targetAngle = angle;
+        currentRotation = transform.rotation;
         _updateLookAt = true;
     }
 
@@ -308,12 +311,16 @@ public class PlayerValues : Subject
 
     private void UpdateSnapAngle()
     {
-        transform.rotation =
-            Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, MyUtils.Clamp0360(_targetAngle), 0),
+        currentRotation =
+            Quaternion.Slerp(currentRotation, Quaternion.Euler(0, MyUtils.Clamp0360(_targetAngle), 0),
                 Time.deltaTime * 5f);
 
-        if (Mathf.Abs(transform.eulerAngles.y - MyUtils.Clamp0360(_targetAngle)) < 0.01f)
+        print(Mathf.Abs(currentRotation.eulerAngles.y - MyUtils.Clamp0360(_targetAngle)) + "");
+        transform.rotation = currentRotation;
+        if (Mathf.Abs(MyUtils.Clamp0360(currentRotation.eulerAngles.y) - MyUtils.Clamp0360(_targetAngle)) < 0.1f)
         {
+            print("bbbbbbbbbbbbbb");
+
             _updateLookAt = false;
         }
     }

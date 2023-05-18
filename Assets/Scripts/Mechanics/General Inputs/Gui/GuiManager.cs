@@ -46,10 +46,12 @@ public class GuiManager : MonoBehaviour
     {
         canvasGroup.alpha = 1;
     }
+
     public void HideGui()
     {
         canvasGroup.alpha = 0;
     }
+
     public void SetLastMoveText(Move move)
     {
         lastMoveImage.enabled = true;

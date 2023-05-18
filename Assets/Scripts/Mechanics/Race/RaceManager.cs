@@ -36,7 +36,7 @@ public class RaceManager : MonoBehaviour
             }
         }
 
-        if (!exited&&!ended)
+        if (!exited && !ended)
         {
             guiManager.SetRaceTime(GetRemainingTime());
         }
@@ -94,5 +94,6 @@ public class RaceManager : MonoBehaviour
         guiManager.SetRaceTime("CONGRATULATIONS!");
         yield return new WaitForSeconds(3f);
         guiManager.DisableRace();
+        gameObject.SetActive(false);
     }
 }

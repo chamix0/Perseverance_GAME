@@ -12,6 +12,7 @@
         ClickFastMinigame,
         LockerMinigame,
         DontTouchTheWallsMinigame,
+        PuzzleMinigame,
         MiniBoss,
         StealthMovement,
         Conversation,

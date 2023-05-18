@@ -19,7 +19,8 @@ public class DontTouchWallsInputs : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (_playerValues.GetCurrentInput() == CurrentInput.DontTouchTheWallsMinigame && _playerValues.GetInputsEnabled())
+        if (_playerValues.GetCurrentInput() == CurrentInput.DontTouchTheWallsMinigame &&
+            _playerValues.GetInputsEnabled())
         {
             Vector2 dir = Vector2.zero;
             if (Input.anyKey)
@@ -64,7 +65,7 @@ public class DontTouchWallsInputs : MonoBehaviour
             dontTouchWallsManager.VerticalMovementCube(move.direction);
 
 
-        if (move.face == FACES.U)
+        else if (move.face == FACES.U)
             dontTouchWallsManager.HorizontalMovementCube(move.direction);
     }
 }

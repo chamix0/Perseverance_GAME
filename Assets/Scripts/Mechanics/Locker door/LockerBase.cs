@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class LockerBase : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class LockerBase : MonoBehaviour
     private OrbitCameraController _cameraController;
     private GameObject _door;
     private RigidbodyConstraints _rigidbodyOriginalConstraints;
+    private CameraChanger cameraChanger;
 
     //minigame
     private LockerManager _lockerManager;
@@ -25,6 +28,7 @@ public class LockerBase : MonoBehaviour
     //values
     private const float OpenY = 5;
     private List<int> _code;
+    private bool minigamePlaying;
 
     //lists
     [SerializeField] private List<TMP_Text> codeNumbersText;
@@ -39,7 +43,8 @@ public class LockerBase : MonoBehaviour
     {
         _lockerManager = FindObjectOfType<LockerManager>();
         _cameraController = FindObjectOfType<OrbitCameraController>();
-        SetCode();
+        cameraChanger = FindObjectOfType<CameraChanger>();
+        StartPhase();
         var parent = transform.parent;
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _snapPos = transform.gameObject.transform.Find("snap pos").gameObject;
@@ -103,6 +108,13 @@ public class LockerBase : MonoBehaviour
     }
 
 
+    IEnumerator ChangeCameraCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+        _lockerManager.StartMinigame();
+        cameraChanger.SetScreenCamera();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player") && !_minigameFinished && !_inside)
@@ -110,14 +122,19 @@ public class LockerBase : MonoBehaviour
             _inside = true;
             _playerValues.snapRotationTo(_snapPos.transform.eulerAngles.y);
             _playerValues.SnapPositionTo(_snapPos.transform.position);
-            // _cameraController.RotateXCustom(MyUtils.Clamp0360(-_snapPos.transform.eulerAngles.y));
-            // _cameraController.RotateYCustom(0.5f);
-            _cameraController.FreezeCamera();
             _playerValues.Sit();
-            _cameraChanger.SetScreenCamera();
             //Empezar minijuego
             _lockerManager.SetLockerBase(this);
-            _lockerManager.StartMinigame();
+            StartCoroutine(ChangeCameraCoroutine());
+            minigamePlaying = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && !minigamePlaying&& _inside)
+        {
+            _inside = false;
         }
     }
 
@@ -129,20 +146,8 @@ public class LockerBase : MonoBehaviour
 
     public void ExitBase()
     {
-        StartCoroutine(ExitBaseCoroutine());
-    }
-
-    IEnumerator ExitBaseCoroutine()
-    {
         _cameraChanger.SetOrbitCamera();
-        _playerValues.StandUp(false, 2.5f);
-        yield return new WaitForSeconds(2.5f);
-        _playerValues.SetGear(0);
-        yield return new WaitForSeconds(3f);
-        _playerValues.StopMovement();
-        _cameraController.UnFreezeCamera();
-        _playerValues.SetInputsEnabled(true);
-        _inside = false;
-        yield return new WaitForSeconds(2f);
+        _playerValues.StandUp(true, 2.5f);
+        minigamePlaying = false;
     }
 }

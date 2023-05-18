@@ -41,4 +41,33 @@ public class MinigameSoundManager : MonoBehaviour
         audioSource.clip = clips[3];
         audioSource.Play();
     }
+
+    public void PlayTapSound()
+    {
+        audioSource.clip = clips[4];
+        audioSource.Play();
+    }
+
+    public void PlayHitSound()
+    {
+        audioSource.clip = clips[5];
+        audioSource.Play();
+    }
+
+    public void PlayDefendSound()
+    {
+        audioSource.clip = clips[6];
+        audioSource.Play();
+    }
+
+    public void PlayHurtSound()
+    {
+        audioSource.clip = clips[7];
+        audioSource.Play();
+    }
+    public void PlayMissSound()
+    {
+        audioSource.clip = clips[8];
+        audioSource.Play();
+    }
 }

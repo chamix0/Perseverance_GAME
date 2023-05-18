@@ -34,7 +34,7 @@ public class DoorManager : MonoBehaviour
         if (_openDoor)
         {
             if (door.transform.position.y < _openY)
-                door.transform.position += new Vector3(0, 0.1f, 0);
+                door.transform.position += new Vector3(0, 0.2f, 0);
             else
                 _openDoor = false;
         }
@@ -42,7 +42,7 @@ public class DoorManager : MonoBehaviour
         if (_closeDoor)
         {
             if (door.transform.position.y > _closeY)
-                door.transform.position -= new Vector3(0, 0.1f, 0);
+                door.transform.position -= new Vector3(0, 0.2f, 0);
             else
                 _closeDoor = false;
         }

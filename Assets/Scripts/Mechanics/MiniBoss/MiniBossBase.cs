@@ -19,6 +19,7 @@ public class MiniBossBase : MonoBehaviour
     private bool _openDoor, _closeDoor;
     private float _closeY;
     private float _openY;
+    private bool minigamePlaying;
 
 
     //parameters
@@ -84,43 +85,41 @@ public class MiniBossBase : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && !_minigameFinished && !_inside)
         {
             _inside = true;
-            var eulerAngles = _snapPos.transform.eulerAngles;
-            _playerValues.snapRotationTo(eulerAngles.y);
+            _playerValues.snapRotationTo(_snapPos.transform.eulerAngles.y);
             _playerValues.SnapPositionTo(_snapPos.transform.position);
-            // _cameraController.RotateXCustom(MyUtils.Clamp0360(eulerAngles.y + 180));
-            // _cameraController.RotateYCustom(0.5f);
-            _cameraController.FreezeCamera();
             _playerValues.Sit();
-            _cameraChanger.SetScreenCamera();
-            //Empezar minijuego
-            miniBossManager.StartMinigame(bossName, bossSprite, bossTurnTime, gameTime, sequenceLength, gameDifficulty,
-                bossMaxHealth, this);
+            StartCoroutine(ChangeCameraCoroutine());
+            minigamePlaying = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && !minigamePlaying && _inside)
+        {
+            _inside = false;
         }
     }
 
     public void EndFight()
     {
         _minigameFinished = true;
-        StartCoroutine(ExitBaseCoroutine());
+        ExitBase();
         OpenDoor();
+    }
+
+    IEnumerator ChangeCameraCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+        miniBossManager.StartMinigame(bossName, bossSprite, bossTurnTime, gameTime, sequenceLength, gameDifficulty,
+            bossMaxHealth, this);
+        _cameraChanger.SetScreenCamera();
     }
 
     public void ExitBase()
     {
-        StartCoroutine(ExitBaseCoroutine());
-    }
-
-    IEnumerator ExitBaseCoroutine()
-    {
         _cameraChanger.SetOrbitCamera();
-        _playerValues.StandUp(false, 2.5f);
-        yield return new WaitForSeconds(2.5f);
-        _playerValues.SetGear(0);
-        yield return new WaitForSeconds(3f);
-        _playerValues.StopMovement();
-        _cameraController.UnFreezeCamera();
-        _playerValues.SetInputsEnabled(true);
-        _inside = false;
-        yield return new WaitForSeconds(2f);
+        _playerValues.StandUp(true, 2.5f);
+        minigamePlaying = false;
     }
 }

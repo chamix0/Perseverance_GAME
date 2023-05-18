@@ -880,7 +880,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 141
+  m_VersionIndex: 147
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1987,6 +1987,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 32f4f51811a43614781ac8827bade1b7, type: 3}
   m_PrefabInstance: {fileID: 2465601439606463839}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3384167751380787214 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 32f4f51811a43614781ac8827bade1b7, type: 3}
+  m_PrefabInstance: {fileID: 2465601439606463839}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &8448559026232539247
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3384167751380787214}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.01974764, y: 0.010411413, z: 0.009971618}
+  m_Center: {x: -0.00011947099, y: 0.0024439867, z: -0.0050141965}
 --- !u!1 &4532283511235080494 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7146521406498821007, guid: 32f4f51811a43614781ac8827bade1b7, type: 3}

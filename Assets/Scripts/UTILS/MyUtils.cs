@@ -17,6 +17,8 @@ public class MyUtils
         float result = eulerAngles - Mathf.CeilToInt(eulerAngles / 360f) * 360f;
         if (result < 0)
             result += 360f;
+        if (Math.Abs(result - 360) < 0.01f)
+            result = 0;
 
         return result;
     }
