@@ -63,10 +63,8 @@ public class GuiManager : MonoBehaviour
     {
         if (index == -1)
         {
-            machinegunImage = null;
             machinegunImage.color = Color.clear;
             machinegunText.text = "";
-
             return;
         }
 

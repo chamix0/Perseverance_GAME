@@ -49,8 +49,9 @@ public class GenericScreenUi : MonoBehaviour
             UpdateTextAlpha();
         }
 
-        if (_playerValues.GetCurrentInput() is CurrentInput.Movement or CurrentInput.StealthMovement
-            or CurrentInput.RotatingWall or CurrentInput.ShootMovement or CurrentInput.Conversation)
+        if (!_playerValues.GetIsStucked() && _playerValues.GetCurrentInput() is CurrentInput.Movement
+                or CurrentInput.StealthMovement
+                or CurrentInput.RotatingWall or CurrentInput.ShootMovement or CurrentInput.Conversation)
         {
             Face();
         }
@@ -68,13 +69,13 @@ public class GenericScreenUi : MonoBehaviour
             _faceUpdated = false;
             _blinkCooldown = Random.Range(0, 11);
             StartCoroutine(BlinkCoroutine());
-            normalFace = _blinkCooldown <=4 ? NormalFace2 : NormalFace1;
+            normalFace = _blinkCooldown <= 4 ? NormalFace2 : NormalFace1;
         }
 
         if (!_faceUpdated)
         {
             SetTextSize(95f);
-            if (genericText.alpha<1)
+            if (genericText.alpha < 1)
                 FadeInText();
 
             _faceUpdated = true;

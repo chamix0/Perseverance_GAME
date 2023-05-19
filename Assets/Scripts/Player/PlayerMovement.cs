@@ -85,7 +85,6 @@ public class PlayerMovement : MonoBehaviour
     {
         RaycastHit hit;
 
-
         if (Physics.Raycast(transform.position + new Vector3(0, rayOffset, 0),
                 transform.TransformDirection(Vector3.forward), out hit, stompUmbral, rayLayers))
         {

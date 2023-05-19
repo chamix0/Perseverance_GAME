@@ -100,7 +100,7 @@ public class MinigameManager : MonoBehaviour
             _lastMinigame = index;
         }
 
-        minigames[8].StartMinigame();
+        minigames[1].StartMinigame();
         guiManager.HideGui();
     }
 

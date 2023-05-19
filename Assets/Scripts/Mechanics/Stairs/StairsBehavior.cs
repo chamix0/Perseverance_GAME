@@ -5,7 +5,6 @@ public class StairsBehavior : MonoBehaviour
 {
     private PlayerValues _playerValues;
     private GameObject snapPos;
-    public float targetAngle;
     private Animator _animator;
     private PlayerAnimations _playerAnimations;
     private bool endAnimation, reset;
@@ -33,7 +32,6 @@ public class StairsBehavior : MonoBehaviour
         {
             if (AnimationFinished())
             {
-                // _playerValues.SetCanMove(true);
                 _playerValues.gameObject.transform.parent = null;
                 _playerValues._rigidbody.constraints = _rigidbodyOriginalConstraints;
                 _playerValues._rigidbody.isKinematic = false;
@@ -58,9 +56,11 @@ public class StairsBehavior : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !endAnimation)
         {
-            _playerValues.snapRotationTo(targetAngle);
+            _playerValues.transform.up = Vector3.up;
+            _playerValues.snapRotationTo(-snapPos.transform.rotation.eulerAngles.y);
             _playerValues.SnapPositionTo(snapPos.transform.position);
             _playerValues.Sit();
+            endAnimation = true;
             StartCoroutine(startAnimationCoroutine());
         }
     }
@@ -77,12 +77,10 @@ public class StairsBehavior : MonoBehaviour
 
     IEnumerator startAnimationCoroutine()
     {
-        _playerValues._rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-        _playerValues._rigidbody.isKinematic = true;
+        yield return new WaitForSeconds(3f);
         _playerValues._rigidbody.useGravity = false;
-        _playerValues.gameObject.transform.parent = this.transform;
+        _playerValues.gameObject.transform.parent = transform;
         _boxCollider.enabled = false;
-        yield return new WaitForSeconds(2f);
         _animator.SetTrigger(Move1);
         _animator.SetTrigger(Move1);
         endAnimation = true;

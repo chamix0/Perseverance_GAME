@@ -277,6 +277,7 @@ public class PlayerValues : Subject
     {
         _targetPos = pos;
         _updateSnap = true;
+        _rigidbody.useGravity = false;
     }
 
     Quaternion currentRotation;
@@ -292,9 +293,9 @@ public class PlayerValues : Subject
     private Vector3 UpdateSnapPosition()
     {
         Vector3 position = transform.position;
-        Vector3 newPos = Vector3.MoveTowards(position, _targetPos, 1f * Time.deltaTime);
+        Vector3 newPos = Vector3.MoveTowards(position, _targetPos, 2f * Time.deltaTime);
 
-        if (Vector3.Distance(newPos, _targetPos) < 0.01f)
+        if (Vector3.Distance(newPos, _targetPos) < 0.1f)
         {
             _rigidbody.useGravity = true;
             _updateSnap = false;
@@ -314,13 +315,9 @@ public class PlayerValues : Subject
         currentRotation =
             Quaternion.Slerp(currentRotation, Quaternion.Euler(0, MyUtils.Clamp0360(_targetAngle), 0),
                 Time.deltaTime * 5f);
-
-        print(Mathf.Abs(currentRotation.eulerAngles.y - MyUtils.Clamp0360(_targetAngle)) + "");
         transform.rotation = currentRotation;
         if (Mathf.Abs(MyUtils.Clamp0360(currentRotation.eulerAngles.y) - MyUtils.Clamp0360(_targetAngle)) < 0.1f)
         {
-            print("bbbbbbbbbbbbbb");
-
             _updateLookAt = false;
         }
     }
@@ -448,12 +445,12 @@ public class PlayerValues : Subject
         //añadir animación de respawn
         stuckTimer.Reset();
         SetGear(1);
-        stucked = false;
         RaycastHit hit;
         if (Physics.Raycast(transform.position,
                 Vector3.down, out hit, Single.PositiveInfinity))
         {
-            if (MyUtils.IsInLayerMask(hit.transform.gameObject, colisionLayers))
+            if (!hit.transform.gameObject.CompareTag("Stair") &&
+                MyUtils.IsInLayerMask(hit.transform.gameObject, colisionLayers))
             {
                 StartCoroutine(ResetPosCoroutine(hit.point));
             }
@@ -478,6 +475,7 @@ public class PlayerValues : Subject
         dissolveMaterials.DissolveIn();
         genericScreenUi.FadeInText();
         dead = false;
+        stucked = false;
         _currentInput = aux;
     }
 
@@ -512,8 +510,11 @@ public class PlayerValues : Subject
                         _rigidbody.constraints = _originalRigidBodyConstraints;
                 }
 
-                lastValidPos = transform.position;
-                stuckTimer.Restart();
+                if (!hit.transform.gameObject.CompareTag("Stair"))
+                {
+                    lastValidPos = transform.position;
+                    stuckTimer.Restart();
+                }
             }
             else
             {

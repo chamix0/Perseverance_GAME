@@ -17,6 +17,7 @@ public class OrbitCameraController : MonoBehaviour
     [SerializeField, Min(0f)] float alignDelay = 5f;
     [SerializeField, Range(0f, 90f)] float alignSmoothRange = 45f;
     [SerializeField] LayerMask CollisionLayers = -1;
+    [SerializeField] private float colOffset = 0.1f;
     public Camera regularCamera;
 
     //variables
@@ -66,25 +67,34 @@ public class OrbitCameraController : MonoBehaviour
         Vector3 lookDirection = lookRotation * Vector3.forward;
         Vector3 lookPosition = focusPoint - lookDirection * distance;
 
-        Vector3 rectOffset = lookDirection * regularCamera.nearClipPlane;
-        Vector3 rectPosition = lookPosition + rectOffset;
-        Vector3 castFrom = focus.position;
-        Vector3 castLine = rectPosition - castFrom;
-        float castDistance = castLine.magnitude;
-        Vector3 castDirection = castLine / castDistance;
 
-        if (Physics.BoxCast(
-                castFrom, CameraHalfExtends, castDirection, out RaycastHit hit,
-                lookRotation, castDistance, CollisionLayers
+        if (Physics.Raycast(
+                focusPoint, -lookDirection, out RaycastHit hit, distance,CollisionLayers
             ))
         {
-            rectPosition = castFrom + castDirection * hit.distance;
-            lookPosition = rectPosition - rectOffset;
+            lookPosition = focusPoint - lookDirection * (hit.distance - colOffset);
         }
+        
+        // Vector3 rectOffset = lookDirection * colOffset;
+        // Vector3 rectPosition = lookPosition + rectOffset;
+        // Vector3 castFrom = focus.position;
+        // Vector3 castLine = rectPosition - castFrom;
+        // float castDistance = castLine.magnitude;
+        // Vector3 castDirection = castLine / castDistance;
+        //
+        // if (Physics.BoxCast(
+        //         castFrom, CameraHalfExtends, castDirection, out RaycastHit hit,
+        //         lookRotation, castDistance, CollisionLayers
+        //     ))
+        // {
+        //     rectPosition = castFrom + castDirection * hit.distance;
+        //     lookPosition = rectPosition - rectOffset;
+        // }
 
         if (!freezed)
             transform.SetPositionAndRotation(lookPosition, lookRotation);
     }
+    
 
     void UpdateFocusPoint()
     {
@@ -276,7 +286,7 @@ public class OrbitCameraController : MonoBehaviour
     public void RotateCounterClockwise()
     {
         currentRotation = orbitAngles.y;
-        targetRotation = MyUtils.Clamp0360(SnapPosition(currentRotation- angleStep));
+        targetRotation = MyUtils.Clamp0360(SnapPosition(currentRotation - angleStep));
         updateRotation = true;
     }
 
@@ -312,12 +322,14 @@ public class OrbitCameraController : MonoBehaviour
     private float UpdateRotateCamera()
     {
         currentRotation = Quaternion
-            .Lerp(Quaternion.Euler(0,currentRotation , 0), Quaternion.Euler(0,targetRotation , 0), 5 * Time.deltaTime).eulerAngles.y;
+            .Lerp(Quaternion.Euler(0, currentRotation, 0), Quaternion.Euler(0, targetRotation, 0), 5 * Time.deltaTime)
+            .eulerAngles.y;
 
         if (Mathf.Abs(currentRotation - targetRotation) < 0.1f)
         {
             updateRotation = false;
         }
+
         return currentRotation;
     }
 
