@@ -71,19 +71,29 @@ public class StealthMovementInputs : MonoBehaviour
     public void PerformAction(Move move)
     {
         //accelerate deccelerate
-        if (move.face == FACES.R)
+        if (_playerValues.GetInputsEnabled())
         {
-            _playerValues.CheckIfStuck();
-            if (move.direction == 1)
+            if (move.face == FACES.R)
             {
-                if (_playerValues.GetGear() < 3)
-                    _playerValues.RiseGear();
+                _playerValues.CheckIfStuck();
+                if (move.direction == 1)
+                {
+                    if (_playerValues.GetGear() < 3)
+                        _playerValues.RiseGear();
+                }
+                else
+                    _playerValues.DecreaseGear();
             }
-            else
-                _playerValues.DecreaseGear();
+            else if (move.face == FACES.M)
+            {
+                if (move.direction == 1)
+                    _distraction.RecuperateDistraction();
+                else
+                    _distraction.ThrowDistraction();
+            }
         }
         //turn camera in y axis
-        else if (move.face == FACES.L)
+        if (move.face == FACES.L)
         {
             if (move.direction == 1)
                 _cameraController.RotateVerticalDown();
@@ -109,13 +119,6 @@ public class StealthMovementInputs : MonoBehaviour
                 if (!_playerValues.GetLights())
                     _playerValues.NotifyAction(PlayerActions.TurnOnLights);
             }
-        }
-        else if (move.face == FACES.M)
-        {
-            if (move.direction == 1)
-                _distraction.RecuperateDistraction();
-            else
-                _distraction.ThrowDistraction();
         }
     }
 }

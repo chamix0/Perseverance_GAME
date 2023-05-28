@@ -60,12 +60,14 @@ public class AsteroidsInputs : MonoBehaviour
     public void PerformAction(Move move)
     {
         asteroidsManager.ShowCubeTutorial();
+        if (_playerValues.GetInputsEnabled())
+        {
+            if (move.face == FACES.R)
+                asteroidsManager.VerticalMovementCube(move.direction);
 
-        if (move.face == FACES.R)
-            asteroidsManager.VerticalMovementCube(move.direction);
 
-
-        if (move.face == FACES.U)
-            asteroidsManager.HorizontalMovementCube(move.direction);
+            if (move.face == FACES.U)
+                asteroidsManager.HorizontalMovementCube(move.direction);
+        }
     }
 }

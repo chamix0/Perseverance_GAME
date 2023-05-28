@@ -446,7 +446,7 @@ public class PlayerValues : Subject
         stuckTimer.Reset();
         SetGear(1);
         RaycastHit hit;
-        if (Physics.Raycast(transform.position,
+        if (Physics.Raycast(GetPos(),
                 Vector3.down, out hit, Single.PositiveInfinity))
         {
             if (!hit.transform.gameObject.CompareTag("Stair") &&
@@ -498,10 +498,10 @@ public class PlayerValues : Subject
     {
         RaycastHit hit;
         if (Physics.Raycast(isgroundedPos.position + RayOffset,
-                transform.TransformDirection(Vector3.down), out hit, raySize))
+                transform.TransformDirection(Vector3.down), out hit, raySize, colisionLayers))
         {
-            if (MyUtils.IsInLayerMask(hit.transform.gameObject, colisionLayers))
-            {
+            // if (MyUtils.IsInLayerMask(hit.transform.gameObject, colisionLayers))
+            // {
                 if (!isGrounded)
                 {
                     SetCanMove(true);
@@ -515,24 +515,24 @@ public class PlayerValues : Subject
                     lastValidPos = transform.position;
                     stuckTimer.Restart();
                 }
-            }
-            else
-            {
-                if (isGrounded)
-                {
-                    SetGear(1);
-                    SetCanMove(false);
-                    _rigidbody.constraints = RigidbodyConstraints.None;
-                    isGrounded = false;
-                }
-
-                stuckedPos = transform.position;
-            }
+            // }
+        // else
+        // {
+        //     if (isGrounded)
+        //     {
+        //         SetGear(1);
+        //         SetCanMove(false);
+        //         _rigidbody.constraints = RigidbodyConstraints.None;
+        //         isGrounded = false;
+        //     }
+        //     stuckedPos = transform.position;
+        // }
         }
         else
         {
             if (isGrounded)
             {
+                SetGear(1);
                 SetCanMove(false);
                 _rigidbody.constraints = RigidbodyConstraints.None;
                 isGrounded = false;

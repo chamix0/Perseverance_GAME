@@ -20,6 +20,9 @@ public class MemoryMinigameInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
-        memoryMingame.Select(move.color);
+        if (_playerValues.GetInputsEnabled())
+        {
+            memoryMingame.Select(move.color);
+        }
     }
 }

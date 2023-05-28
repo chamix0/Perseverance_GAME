@@ -35,29 +35,32 @@ public class PuzzleInputs : MonoBehaviour
     public void PerformAction(Move move)
     {
         _puzzleManager.ShowCubeTutorial();
-        if (move.face == FACES.R)
+        if (_playerValues.GetInputsEnabled())
         {
-            if (move.direction == 1)
-                _puzzleManager.ShiftRightRow(1);
-            else _puzzleManager.ShiftRightRow(-1);
-        }
-        else if (move.face == FACES.L)
-        {
-            if (move.direction == 1)
-                _puzzleManager.ShiftLeftRow(1);
-            else _puzzleManager.ShiftLeftRow(-1);
-        }
-        else if (move.face == FACES.U)
-        {
-            if (move.direction == 1)
-                _puzzleManager.ShiftTopRow(1);
-            else _puzzleManager.ShiftTopRow(-1);
-        }
-        else if (move.face == FACES.D)
-        {
-            if (move.direction == 1)
-                _puzzleManager.ShiftBotRow(1);
-            else _puzzleManager.ShiftBotRow(-1);
+            if (move.face == FACES.R)
+            {
+                if (move.direction == 1)
+                    _puzzleManager.ShiftRightRow(1);
+                else _puzzleManager.ShiftRightRow(-1);
+            }
+            else if (move.face == FACES.L)
+            {
+                if (move.direction == 1)
+                    _puzzleManager.ShiftLeftRow(1);
+                else _puzzleManager.ShiftLeftRow(-1);
+            }
+            else if (move.face == FACES.U)
+            {
+                if (move.direction == 1)
+                    _puzzleManager.ShiftTopRow(1);
+                else _puzzleManager.ShiftTopRow(-1);
+            }
+            else if (move.face == FACES.D)
+            {
+                if (move.direction == 1)
+                    _puzzleManager.ShiftBotRow(1);
+                else _puzzleManager.ShiftBotRow(-1);
+            }
         }
     }
 }

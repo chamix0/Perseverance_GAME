@@ -68,8 +68,8 @@ public class RotatingWall : MonoBehaviour
 
     public bool CanExitRotatingWall()
     {
-        if (Mathf.Abs(baseTransform.eulerAngles.y - MyUtils.Clamp0360(exitAngle)) < 0.01f ||
-            Mathf.Abs(baseTransform.eulerAngles.y - MyUtils.Clamp0360(exitAngle + 180)) < 0.01f)
+        if (Mathf.Abs(MyUtils.Clamp0360(baseTransform.eulerAngles.y) - MyUtils.Clamp0360(exitAngle)) < 0.01f ||
+            Mathf.Abs(MyUtils.Clamp0360(baseTransform.eulerAngles.y) - MyUtils.Clamp0360(exitAngle + 180)) < 0.01f)
             return true;
         return false;
     }

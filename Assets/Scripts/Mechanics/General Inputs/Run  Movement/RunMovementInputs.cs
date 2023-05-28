@@ -68,22 +68,25 @@ public class RunMovementInputs : MonoBehaviour
     public void PerformAction(Move move)
     {
         //accelerate deccelerate
-        if (move.face == FACES.R)
+        if (_playerValues.GetInputsEnabled())
         {
-            _playerValues.CheckIfStuck();
+            if (move.face == FACES.R)
+            {
+                _playerValues.CheckIfStuck();
 
-            if (move.direction == 1)
-                _playerValues.RiseGear();
-            else
-                _playerValues.DecreaseGear();
+                if (move.direction == 1)
+                    _playerValues.RiseGear();
+                else
+                    _playerValues.DecreaseGear();
 
-            if (_playerValues.GetGear() == 4)
-                turboParticles.Play();
-            else
-                turboParticles.Stop();
+                if (_playerValues.GetGear() == 4)
+                    turboParticles.Play();
+                else
+                    turboParticles.Stop();
+            }
         }
         //turn camera in y axis
-        else if (move.face == FACES.L)
+        if (move.face == FACES.L)
         {
             if (move.direction == 1)
                 _cameraController.RotateVerticalDown();

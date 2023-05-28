@@ -54,7 +54,7 @@ public class StairsBehavior : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player") && !endAnimation)
+        if (collision.gameObject.CompareTag("Player") && _playerValues.GetIsGrounded() && !endAnimation)
         {
             _playerValues.transform.up = Vector3.up;
             _playerValues.snapRotationTo(-snapPos.transform.rotation.eulerAngles.y);

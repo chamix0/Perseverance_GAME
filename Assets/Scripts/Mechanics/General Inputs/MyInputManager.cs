@@ -58,7 +58,7 @@ namespace Mechanics.General_Inputs
 
         private void Update()
         {
-            if (_inputsMoves && _inputsMoves.HasMessages() && _playerValues.GetInputsEnabled())
+            if (_inputsMoves && _inputsMoves.HasMessages())
             {
                 Move move = _inputsMoves.Dequeue();
                 if (move.time.TotalMilliseconds + 500 < DateTime.Now.TimeOfDay.TotalMilliseconds) return;

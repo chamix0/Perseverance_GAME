@@ -8,9 +8,10 @@ public class DoorManager : MonoBehaviour
     private GameObject door;
 
     //variables
-    public bool _inside;
+    public bool closeAutomatically;
+
     private bool _openDoor, _closeDoor;
-    [NonSerialized] public bool opened;
+    [NonSerialized] public bool opened, _inside;
     private float _closeY, _openY;
 
     private Stopwatch closeTimer;
@@ -47,7 +48,8 @@ public class DoorManager : MonoBehaviour
                 _closeDoor = false;
         }
 
-        if (!_inside && opened && closeTimer.Elapsed.TotalSeconds > closeTime)
+
+        if (closeAutomatically && !_inside && opened && closeTimer.Elapsed.TotalSeconds > closeTime)
         {
             closeTimer.Stop();
             CloseDoor();

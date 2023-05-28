@@ -93,7 +93,6 @@ public class LaberinthManager : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && !_minigameFinished && !_inside)
         {
             _inside = true;
-            var rotation = transform.rotation;
             var eulerAngles = _snapPos.transform.eulerAngles;
             _playerValues.snapRotationTo(eulerAngles.y);
             _playerValues.SnapPositionTo(_snapPos.transform.position);
@@ -111,7 +110,6 @@ public class LaberinthManager : MonoBehaviour
     IEnumerator ShowMessageOpenDoor()
     {
         yield return new WaitForSeconds(2f);
-        cameraChanger.SetScreenCamera();
         string msg = "";
         if (GetMissingTerminals() > 0)
         {
@@ -122,21 +120,14 @@ public class LaberinthManager : MonoBehaviour
         {
             msg = "All terminals fixed";
         }
-
         _genericScreenUi.SetText(msg,35);
         _genericScreenUi.FadeInText();
+        
         yield return new WaitForSeconds(5f);
         _genericScreenUi.FadeOutText();
         cameraChanger.SetOrbitCamera();
-        _playerValues.StandUp(false, 2.5f);
-        yield return new WaitForSeconds(2.5f);
-        _playerValues.SetGear(0);
-        yield return new WaitForSeconds(3f);
-        _playerValues.StopMovement();
-        _cameraController.UnFreezeCamera();
-        _playerValues.SetInputsEnabled(true);
+        _playerValues.StandUp(true, 2.5f);
         _inside = false;
-        yield return new WaitForSeconds(2f);
         if (GetMissingTerminals() == 0)
         {
             //open door

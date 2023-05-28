@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 56774645897280685}
   - component: {fileID: 3992000887575524104}
   - component: {fileID: 1189681347823355842}
+  - component: {fileID: 4225630084006369972}
   m_Layer: 0
   m_Name: tall wall out corner
   m_TagString: Untagged
@@ -86,6 +87,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4225630084006369972
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829335858581923351}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.010016587, y: 0.14999999, z: 0.01051285}
+  m_Center: {x: -0.0050082407, y: 0.074999996, z: 0.0052563725}
 --- !u!1 &1726464877839360941
 GameObject:
   m_ObjectHideFlags: 0

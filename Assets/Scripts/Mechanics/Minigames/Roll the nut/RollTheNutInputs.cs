@@ -32,15 +32,18 @@ public class RollTheNutInputs : MonoBehaviour
     public void PerformAction(Move move)
     {
         rollTheNutManager.ShowCubeTutorial();
-        if (move.face == FACES.F)
+        if (_playerValues.GetInputsEnabled())
         {
-            if (move.direction == 1)
+            if (move.face == FACES.F)
             {
-                rollTheNutManager.RollClockWise();
-            }
-            else
-            {
-                rollTheNutManager.RollCounterClockWise();
+                if (move.direction == 1)
+                {
+                    rollTheNutManager.RollClockWise();
+                }
+                else
+                {
+                    rollTheNutManager.RollCounterClockWise();
+                }
             }
         }
     }

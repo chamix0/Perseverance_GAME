@@ -82,8 +82,13 @@ public class CameraEnemy : Enemy
     // Update is called once per frame
     void Update()
     {
+        Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit,
+            Single.PositiveInfinity, collision);
+        
+        print(InSight());
         if (_updateCamera)
             SmoothllylookAt();
+        
         //special transitions
         if (lives > 0)
         {
@@ -96,9 +101,6 @@ public class CameraEnemy : Enemy
             else if (_state is States.Alert)
                 Alert();
         }
-
-        Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit,
-            Single.PositiveInfinity, collision);
     }
 
     private void OnDrawGizmos()
@@ -106,8 +108,10 @@ public class CameraEnemy : Enemy
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(hit.point, radius);
         Gizmos.color = Color.black;
-        Gizmos.DrawWireSphere(transform.position, detectionDepth);
-        Gizmos.DrawRay(transform.position, hit.point - transform.position);
+        // Gizmos.DrawWireSphere(_shootBullet.transform.position, detectionDepth);
+        // Gizmos.DrawRay(_shootBullet.transform.position, hit.point - _shootBullet.transform.position);
+        // Gizmos.color = Color.blue;
+        // Gizmos.DrawRay(_shootBullet.transform.position, _playerValues.GetPos() - _shootBullet.transform.position);
     }
 
     #region states
@@ -131,6 +135,7 @@ public class CameraEnemy : Enemy
         }
 
         //if player has the lights on and in sight
+        print("lights: " + _playerValues.GetLights() + "in sight: " + InSight());
         if (_playerValues.GetLights() && InSight())
         {
             ChangeState(States.Alert, Color.red, 2);
@@ -176,7 +181,7 @@ public class CameraEnemy : Enemy
             ChangeState(States.Alert, Color.red, 2);
         }
 
-        if (CheckIsInCone())
+        if (CheckIsInCone() && InSight())
         {
             ChangeState(States.Alert, Color.red, 2);
         }
@@ -257,10 +262,12 @@ public class CameraEnemy : Enemy
     private bool InSight()
     {
         RaycastHit auxHit;
-        if (Physics.Raycast(transform.position, _playerValues.GetPos() - transform.position, out auxHit,
+        if (Physics.Raycast(_shootBullet.transform.position, _playerValues.GetPos() - _shootBullet.transform.position,
+                out auxHit,
                 detectionDepth, collision))
             if (auxHit.transform.gameObject.CompareTag("Player"))
             {
+                print("AAAAAAAAAAAAAAAAAAA");
                 return true;
             }
 
@@ -270,7 +277,8 @@ public class CameraEnemy : Enemy
     private bool InSight(Vector3 distractionPos, string tag)
     {
         RaycastHit auxHit;
-        if (Physics.Raycast(transform.position, distractionPos - transform.position, out auxHit,
+        if (Physics.Raycast(_shootBullet.transform.position, distractionPos - _shootBullet.transform.position,
+                out auxHit,
                 detectionDepth, collision))
             if (auxHit.transform.gameObject.CompareTag(tag))
             {
@@ -329,8 +337,8 @@ public class CameraEnemy : Enemy
     private bool CheckIsInCone()
     {
         //transition
-        RaycastHit[] auxHit = Physics.SphereCastAll(transform.position, radius,
-            transform.forward,
+        RaycastHit[] auxHit = Physics.SphereCastAll(_shootBullet.transform.position, radius,
+            _shootBullet.transform.forward,
             detectionDepth, collision);
         foreach (var h in auxHit)
         {

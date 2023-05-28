@@ -20,6 +20,9 @@ public class ColorsInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
-        colorsManager.MoveFace(move);
+        if (_playerValues.GetInputsEnabled())
+        {
+            colorsManager.MoveFace(move);
+        }
     }
 }

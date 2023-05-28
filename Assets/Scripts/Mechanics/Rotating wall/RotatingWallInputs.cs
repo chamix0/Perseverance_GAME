@@ -31,7 +31,7 @@ public class RotatingWallInputs : MonoBehaviour
                 _rotatingWall.RotateWallClockWise();
             }
 
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.W))
             {
                 if (_rotatingWall.CanExitRotatingWall())
                 {
@@ -44,19 +44,22 @@ public class RotatingWallInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
-        if (move.face == FACES.D)
+        if (_playerValues.GetInputsEnabled())
         {
-            if (move.direction == 1)
-                _rotatingWall.RotateWallClockWise();
-            else
-                _rotatingWall.RotateWallCounterClockWise();
-        }
-        //turn camera in y axis
-        else if (move.face == FACES.R)
-        {
-            if (move.direction == -1)
-                if (_rotatingWall.CanExitRotatingWall())
-                    _rotatingWall.ExitRotatingWall();
+            if (move.face == FACES.D)
+            {
+                if (move.direction == 1)
+                    _rotatingWall.RotateWallClockWise();
+                else
+                    _rotatingWall.RotateWallCounterClockWise();
+            }
+            //turn camera in y axis
+            else if (move.face == FACES.R)
+            {
+                if (move.direction == -1)
+                    if (_rotatingWall.CanExitRotatingWall())
+                        _rotatingWall.ExitRotatingWall();
+            }
         }
     }
 }

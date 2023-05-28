@@ -7,11 +7,13 @@ public class Target : MonoBehaviour
 {
     public bool shot = false;
     public bool deployed = false;
+    public bool startDisabled;
     [SerializeField] private MeshCollider collider;
     [SerializeField] private DissolveMaterials dissolveMaterials;
 
     void Start()
     {
+       
     }
 
     // Update is called once per frame

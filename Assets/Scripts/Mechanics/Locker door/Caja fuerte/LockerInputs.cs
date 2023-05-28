@@ -31,40 +31,43 @@ public class LockerInputs : MonoBehaviour
     public void PerformAction(Move move)
     {
         lockerManager.ShowCubeTutorial();
-        if (move.face == FACES.R)
+        if (_playerValues.GetInputsEnabled())
         {
-            if (move.direction > 0)
+            if (move.face == FACES.R)
             {
-                lockerManager.IncreaseValueCube();
+                if (move.direction > 0)
+                {
+                    lockerManager.IncreaseValueCube();
+                }
+                else
+                {
+                    lockerManager.DecreaseValueCube();
+                }
             }
-            else
+            else if (move.face == FACES.F)
             {
-                lockerManager.DecreaseValueCube();
+                if (move.direction > 0)
+                {
+                    lockerManager.SelectNextNumber();
+                }
+                else
+                {
+                    lockerManager.SelectPrevNumber();
+                }
             }
-        }
-        else if (move.face == FACES.F)
-        {
-            if (move.direction > 0)
+            else if (move.face == FACES.L)
             {
-                lockerManager.SelectNextNumber();
+                if (move.direction < 0)
+                {
+                    lockerManager.CheckButton();
+                }
             }
-            else
+            else if (move.face == FACES.B)
             {
-                lockerManager.SelectPrevNumber();
-            }
-        }
-        else if (move.face == FACES.L)
-        {
-            if (move.direction < 0)
-            {
-                lockerManager.CheckButton();
-            }
-        }
-        else if (move.face == FACES.B)
-        {
-            if (move.direction > 0)
-            {
-                lockerManager.ExitButton();
+                if (move.direction > 0)
+                {
+                    lockerManager.ExitButton();
+                }
             }
         }
     }

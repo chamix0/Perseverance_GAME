@@ -36,6 +36,9 @@ public class PushFastInputs : MonoBehaviour
     public void PerformAction(Move move)
     {
         _pushFastManager.ShowCubeTutorial();
-        _pushFastManager.Click();
+        if (_playerValues.GetInputsEnabled())
+        {
+            _pushFastManager.Click();
+        }
     }
 }

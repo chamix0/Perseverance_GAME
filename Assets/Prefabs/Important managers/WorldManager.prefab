@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2012273772902879446}
   - component: {fileID: 2012273772902879447}
   - component: {fileID: 9068664291935707892}
+  - component: {fileID: 1447924313}
   m_Layer: 0
   m_Name: WorldManager
   m_TagString: Untagged
@@ -57,3 +58,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cacc9b53649a95243b3fc4016e17481e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1447924313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012273772902879445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e5db76fd24d4c04bb846cc98c158ec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 20
+  colisionLayers:
+    serializedVersion: 2
+    m_Bits: 73

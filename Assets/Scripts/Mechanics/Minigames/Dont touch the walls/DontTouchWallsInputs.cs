@@ -60,12 +60,14 @@ public class DontTouchWallsInputs : MonoBehaviour
     public void PerformAction(Move move)
     {
         dontTouchWallsManager.ShowCubeTutorial();
+        if (_playerValues.GetInputsEnabled())
+        {
+            if (move.face == FACES.R)
+                dontTouchWallsManager.VerticalMovementCube(move.direction);
 
-        if (move.face == FACES.R)
-            dontTouchWallsManager.VerticalMovementCube(move.direction);
 
-
-        else if (move.face == FACES.U)
-            dontTouchWallsManager.HorizontalMovementCube(move.direction);
+            else if (move.face == FACES.U)
+                dontTouchWallsManager.HorizontalMovementCube(move.direction);
+        }
     }
 }

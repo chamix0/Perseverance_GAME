@@ -51,22 +51,25 @@ public class AdjustValuesInputs : MonoBehaviour
     public void PerformAction(Move move)
     {
         _adjustValuesManager.ShowCubeTutorial();
-        if (move.face == FACES.R)
+        if (_playerValues.GetInputsEnabled())
         {
-            if (move.direction == 1)
-                _adjustValuesManager.SelectPrevSlider();
+            if (move.face == FACES.R)
+            {
+                if (move.direction == 1)
+                    _adjustValuesManager.SelectPrevSlider();
 
-            else
-                _adjustValuesManager.SelectNextSlider();
-        }
+                else
+                    _adjustValuesManager.SelectNextSlider();
+            }
 
-        if (move.face == FACES.F)
-        {
-            if (move.direction == 1)
-                _adjustValuesManager.IncreaseValue();
+            if (move.face == FACES.F)
+            {
+                if (move.direction == 1)
+                    _adjustValuesManager.IncreaseValue();
 
-            else
-                _adjustValuesManager.DecreaseValue();
+                else
+                    _adjustValuesManager.DecreaseValue();
+            }
         }
     }
 }

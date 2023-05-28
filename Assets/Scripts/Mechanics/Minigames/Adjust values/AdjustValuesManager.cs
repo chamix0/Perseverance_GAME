@@ -142,6 +142,7 @@ public class AdjustValuesManager : Minigame
         _targetValuees = new float[] { Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f) };
         _playerValues.SetCurrentInput(CurrentInput.AdjustValuesMinigame);
         _playerValues.SetInputsEnabled(false);
+        _minigameManager.UpdateCounter(0);
         StartCoroutine(StartGameCoroutine());
     }
 
