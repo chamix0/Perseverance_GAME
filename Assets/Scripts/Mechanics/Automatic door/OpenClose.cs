@@ -23,7 +23,7 @@ public class OpenClose : MonoBehaviour
     // Update is called once per frame
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player")||other.gameObject.CompareTag("Enemy"))
         {
             switch (doorMode)
             {

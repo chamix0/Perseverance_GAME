@@ -8,6 +8,7 @@ TagManager:
   - Bullet
   - Distraction
   - Stair
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -297,12 +297,13 @@ public class EnemyShooter : Enemy, IObserver
 
     private void MoveToTarget()
     {
-        Vector3 dest = enemyPath.GetNodeTransform(nextNode).position;
-        Vector3 direction = dest - transform.position;
+        Vector3 dest = new Vector3(enemyPath.GetNodeTransform(nextNode).position.x,0,enemyPath.GetNodeTransform(nextNode).position.z) ;
+        Vector3 pos = new Vector3(transform.position.x, 0, transform.position.z);
+        Vector3 direction = dest - pos;
         rigidbody.AddForce(direction.normalized * force, forceMode);
         BodyRotation();
         // transform.forward = rigidbody.velocity.normalized;
-        if (Vector3.Distance(transform.position, dest) < 0.01f)
+        if (Vector3.Distance(pos, dest) < 0.01f)
         {
             if (nextNode == targetNode)
             {
