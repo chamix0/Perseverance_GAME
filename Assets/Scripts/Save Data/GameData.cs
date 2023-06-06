@@ -19,7 +19,7 @@ public class GameData
     [SerializeField] private int totalTimePlayed;
     [SerializeField] private int maxShootingRangeScore;
     [SerializeField] private string[] zonesPB;
-
+    [SerializeField] private bool newGame;
     private const int MAX_ZONES = 5;
 
     public GameData(int model, string name)
@@ -33,6 +33,7 @@ public class GameData
         lastTimePlayed = DateTime.Now.ToString();
         muted = false;
         GameStarted = true;
+        newGame = true;
         zonesEnabled = new bool[MAX_ZONES];
         zonestime = new Double[MAX_ZONES];
         zonesPB = new string[MAX_ZONES];
@@ -48,6 +49,7 @@ public class GameData
         maxShootingRangeScore = 0;
         muted = false;
         GameStarted = false;
+        newGame = true;
         zonesEnabled = new bool[MAX_ZONES];
         zonestime = new Double[MAX_ZONES];
         zonesPB = new string[MAX_ZONES];
@@ -62,6 +64,16 @@ public class GameData
     public bool getMuted()
     {
         return muted;
+    }
+
+    public bool GetIsNewGame()
+    {
+        return newGame;
+    }
+
+    public void SetNewGame()
+    {
+        newGame = false;
     }
 
     public void setMuted(bool mute)
@@ -81,11 +93,11 @@ public class GameData
 
     private void intializeLevels()
     {
-        zonesEnabled[0] = true;
-        zonestime[0] = -1;
-        zonesPB[0] = "--:--.--";
+        // zonesEnabled[0] = true;
+        // zonestime[0] = -1;
+        // zonesPB[0] = "--:--.--";
 
-        for (int i = 1; i < MAX_ZONES; i++)
+        for (int i = 0; i < MAX_ZONES; i++)
         {
             zonesEnabled[i] = false;
             zonestime[i] = -1;
@@ -108,12 +120,23 @@ public class GameData
                 zonesPB[level] = timeString;
             }
         }
+
         enableNextLevel(level);
+    }
+
+    public double GetZoneTime(int zone)
+    {
+        return zonestime[zone];
     }
 
     public void enableNextLevel(int levelIndex)
     {
         zonesEnabled[(levelIndex + 1) % zonesEnabled.Length] = true;
+    }
+
+    public void enableLevel(int levelIndex)
+    {
+        zonesEnabled[levelIndex] = true;
     }
 
     public bool checkEnabled(int index)

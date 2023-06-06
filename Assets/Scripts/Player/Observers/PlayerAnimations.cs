@@ -31,7 +31,7 @@ public class PlayerAnimations : MonoBehaviour, IObserver
     private float UpdateGearValAnim()
     {
         gearAnim = Mathf.Lerp(gearAnim, gearAnimTarget, _tG);
-        _tG += 0.5f * Time.deltaTime;
+        _tG += 0.5f * Time.unscaledDeltaTime;
 
         if (_tG > 1.0f)
         {

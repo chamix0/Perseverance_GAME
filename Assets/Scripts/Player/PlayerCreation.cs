@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 [DefaultExecutionOrder(2)]
 public class PlayerCreation : MonoBehaviour
 {
@@ -11,14 +12,14 @@ public class PlayerCreation : MonoBehaviour
     [SerializeField] private List<GameObject> modelObjects;
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
     private static readonly int FresnelColor = Shader.PropertyToID("_fresnel_color");
+    [SerializeField] private Transform newGamePos, startedGamePos;
 
     void Start()
     {
         //collisions
         Physics.IgnoreLayerCollision(9, 13);
-        
-        
-        
+
+
         _playerValues = FindObjectOfType<PlayerValues>();
         model = _playerValues.gameData.GetEddoModel();
         Material[] oldMaterials = modelObjects[0].GetComponent<Renderer>().materials;
@@ -39,21 +40,32 @@ public class PlayerCreation : MonoBehaviour
         newMaterials = modelTextures[model].transform.Find("Cube.012").gameObject.GetComponent<Renderer>()
             .sharedMaterials;
         SetMaterials(oldMaterials, newMaterials);
-        
+
         oldMaterials = modelObjects[4].GetComponent<Renderer>().materials;
         newMaterials = modelTextures[model].transform.Find("Cube.007").gameObject.GetComponent<Renderer>()
             .sharedMaterials;
         SetMaterials(oldMaterials, newMaterials);
-        
+
         oldMaterials = modelObjects[5].GetComponent<Renderer>().materials;
         newMaterials = modelTextures[model].transform.Find("Cube.001").gameObject.GetComponent<Renderer>()
             .sharedMaterials;
         SetMaterials(oldMaterials, newMaterials);
-        
+
         oldMaterials = modelObjects[6].GetComponent<Renderer>().materials;
         newMaterials = modelTextures[model].transform.Find("Cube.005").gameObject.GetComponent<Renderer>()
             .sharedMaterials;
         SetMaterials(oldMaterials, newMaterials);
+        
+        SpawnPoint();
+    }
+
+    private void SpawnPoint()
+    {
+        if (_playerValues.gameData.GetIsNewGame())
+
+            _playerValues.transform.position = newGamePos.position;
+        else
+            _playerValues.transform.position = startedGamePos.position;
     }
 
     private void SetMaterials(Material[] oldMaterials, Material[] newMaterials)

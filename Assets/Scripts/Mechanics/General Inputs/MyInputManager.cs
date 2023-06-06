@@ -24,6 +24,7 @@ namespace Mechanics.General_Inputs
         private RunMovementInputs _runMovementInputs;
         private DontTouchWallsInputs _dontTouchWallsInputs;
         private PuzzleInputs _puzzleInputs;
+        private ConversationInputs _conversationInputs;
         private GuiManager gui;
 
         private void Awake()
@@ -53,6 +54,7 @@ namespace Mechanics.General_Inputs
             _runMovementInputs = FindObjectOfType<RunMovementInputs>();
             _dontTouchWallsInputs = FindObjectOfType<DontTouchWallsInputs>();
             _puzzleInputs = FindObjectOfType<PuzzleInputs>();
+            _conversationInputs = FindObjectOfType<ConversationInputs>();
             gui = FindObjectOfType<GuiManager>();
         }
 
@@ -110,6 +112,9 @@ namespace Mechanics.General_Inputs
                         break;
                     case CurrentInput.PuzzleMinigame:
                         _puzzleInputs.PerformAction(move);
+                        break;
+                    case CurrentInput.Conversation:
+                        _conversationInputs.PerformAction(move);
                         break;
                     case CurrentInput.None:
                         break;

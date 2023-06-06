@@ -27,7 +27,9 @@ public class PlayerLights : MonoBehaviour, IObserver
             }
         }
 
+       
         EarLightsColor.SetColor(EmissionColor, offColor);
+         TurnOffLights();
     }
 
     public void TurnOnLights()
@@ -36,6 +38,7 @@ public class PlayerLights : MonoBehaviour, IObserver
         {
             light.intensity = onIntensity;
         }
+
         playerValues.TurnOnLights();
 
         EarLightsColor.SetColor(EmissionColor, onColor);

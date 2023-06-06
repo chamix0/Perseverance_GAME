@@ -62,7 +62,7 @@ public class GenericScreenUi : MonoBehaviour
 
     private void Face()
     {
-        if (_blinkTimer.Elapsed.TotalSeconds > _blinkCooldown)
+        if (_blinkTimer.Elapsed.TotalSeconds > _blinkCooldown && Time.timeScale > 0)
         {
             _blinkTimer.Stop();
             _blinkTimer.Reset();
@@ -142,7 +142,7 @@ public class GenericScreenUi : MonoBehaviour
     private void UpdateTextAlpha()
     {
         genericText.alpha = Mathf.Lerp(genericText.alpha, targetAlpha, _tA);
-        _tA += 0.1f * Time.deltaTime;
+        _tA += 0.1f * Time.unscaledDeltaTime;
         if (_tA > 1.0f)
         {
             _tA = 1.0f;

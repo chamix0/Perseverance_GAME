@@ -19,6 +19,10 @@ public class DoorManager : MonoBehaviour
     private float closeTime = 10f;
     //values
 
+    private void Awake()
+    {
+        closeTimer = new Stopwatch();
+    }
 
     void Start()
     {
@@ -26,7 +30,6 @@ public class DoorManager : MonoBehaviour
         opened = false;
         _closeY = door.transform.position.y;
         _openY = _closeY + 8;
-        closeTimer = new Stopwatch();
         closeTimer.Start();
     }
 

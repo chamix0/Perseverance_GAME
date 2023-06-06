@@ -290,7 +290,7 @@ public class DissolveMaterials : MonoBehaviour
     private void Fade()
     {
         // currentVal = Mathf.Lerp(currentVal, targetValue, _tA);
-        _tA = speed * Time.deltaTime;
+        _tA = speed * Time.unscaledDeltaTime;
 
         currentVal = Mathf.MoveTowards(currentVal, targetValue, _tA);
         foreach (var sharedMats in dissolveMaterials)

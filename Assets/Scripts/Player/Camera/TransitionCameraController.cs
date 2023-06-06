@@ -58,9 +58,9 @@ public class TransitionCameraController : MonoBehaviour
         float rateTiempo = 1f / transitionTime;
         float rateVelocity = 1f / Vector3.Distance(transform.position, target.position) * speed;
         if (timeOrSpeed)
-            _tP += Time.deltaTime * rateTiempo;
+            _tP += Time.unscaledDeltaTime * rateTiempo;
         else
-            _tP += Time.deltaTime * rateVelocity;
+            _tP += Time.unscaledDeltaTime  * rateVelocity;
         transform.position = Vector3.Lerp(transform.position, target.position, _tP);
         if (_tP >= 1f)
         {
@@ -71,12 +71,12 @@ public class TransitionCameraController : MonoBehaviour
     }
     private void UpdateFov()
     {
-        regularCamera.fieldOfView = Mathf.Lerp(regularCamera.fieldOfView, targetFov, Time.deltaTime * 2);
+        regularCamera.fieldOfView = Mathf.Lerp(regularCamera.fieldOfView, targetFov, Time.unscaledDeltaTime  * 2);
     }
 
     private void UpdateRotation()
     {
-        transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, rotSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, rotSpeed * Time.unscaledDeltaTime );
     }
 
     public void EnableCamera()

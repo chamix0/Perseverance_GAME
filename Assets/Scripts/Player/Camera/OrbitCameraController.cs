@@ -31,12 +31,20 @@ public class OrbitCameraController : MonoBehaviour
     private void Awake()
     {
         audioListener = GetComponent<AudioListener>();
-
         regularCamera = GetComponent<Camera>();
         focusPoint = focus.position;
         transform.localRotation = Quaternion.Euler(orbitAngles);
     }
 
+    public void ChangeFocus(Transform newFocus)
+    {
+        focus = newFocus;
+    }
+
+    public Transform GetFocus()
+    {
+        return focus;
+    }
 
     private void LateUpdate()
     {
@@ -69,12 +77,12 @@ public class OrbitCameraController : MonoBehaviour
 
 
         if (Physics.Raycast(
-                focusPoint, -lookDirection, out RaycastHit hit, distance,CollisionLayers
+                focusPoint, -lookDirection, out RaycastHit hit, distance, CollisionLayers
             ))
         {
             lookPosition = focusPoint - lookDirection * (hit.distance - colOffset);
         }
-        
+
         // Vector3 rectOffset = lookDirection * colOffset;
         // Vector3 rectPosition = lookPosition + rectOffset;
         // Vector3 castFrom = focus.position;
@@ -94,7 +102,7 @@ public class OrbitCameraController : MonoBehaviour
         if (!freezed)
             transform.SetPositionAndRotation(lookPosition, lookRotation);
     }
-    
+
 
     void UpdateFocusPoint()
     {
@@ -309,7 +317,7 @@ public class OrbitCameraController : MonoBehaviour
     private float UpdateRotateCameraVertical()
     {
         currentVerticalValue = Mathf.Lerp(currentVerticalValue, targetVerticalRotation, tV);
-        tV += 1f * Time.deltaTime;
+        tV += 1f * Time.unscaledDeltaTime;
         if (tV > 1.0f)
         {
             tV = 1.0f;
@@ -322,7 +330,7 @@ public class OrbitCameraController : MonoBehaviour
     private float UpdateRotateCamera()
     {
         currentRotation = Quaternion
-            .Lerp(Quaternion.Euler(0, currentRotation, 0), Quaternion.Euler(0, targetRotation, 0), 5 * Time.deltaTime)
+            .Lerp(Quaternion.Euler(0, currentRotation, 0), Quaternion.Euler(0, targetRotation, 0), 5 * Time.unscaledDeltaTime)
             .eulerAngles.y;
 
         if (Mathf.Abs(currentRotation - targetRotation) < 0.1f)

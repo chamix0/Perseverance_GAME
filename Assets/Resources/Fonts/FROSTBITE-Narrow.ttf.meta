@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 5e627659100536349acd6126420c38b3
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - FROSTBITE Narrow
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 1b939fdae8c16b047ad5957887d94314, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

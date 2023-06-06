@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +14,7 @@ public class TimeZoneManager : MonoBehaviour
     private PlayerValues _playerValues;
     private GameData _gameData;
     public int zone;
+    [SerializeField] private GameObject trigger;
 
     void Start()
     {
@@ -20,11 +22,17 @@ public class TimeZoneManager : MonoBehaviour
         _stopwatch = new Stopwatch();
         _playerValues = FindObjectOfType<PlayerValues>();
         _gameData = _playerValues.gameData;
+        
+        if (!_playerValues.gameData.checkEnabled(zone))
+            trigger.SetActive(false);  
+        
     }
+    
 
     public void StartRun()
     {
         _stopwatch.Start();
+        
     }
 
     public void EndRun()
@@ -34,4 +42,5 @@ public class TimeZoneManager : MonoBehaviour
         _jsoNsaving.SaveTheData();
         SceneManager.LoadScene(1);
     }
+    
 }

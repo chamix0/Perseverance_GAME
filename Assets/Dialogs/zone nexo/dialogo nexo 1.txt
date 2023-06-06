@@ -1,0 +1,81 @@
+---- 0
+t
+Alice
+You finally arrived <color=#06360b> EDD0 </color>.
+1
+---- 1
+t
+Alice
+I'll start from the beginning. My name is <color=#360e06> Alice </color> and as I told you before I am the security protocol of this shelter.
+2
+---- 2
+t
+Alice
+But something terrible happened, while I was doing some security checks I found a minor vulnerability and I tried fixing it.
+3
+---- 3
+t
+Alice
+The thing is ... That instead of fixing it I made it worse ~.~
+4
+--- 4
+t
+Alice
+So as a consequence a breach opened and almost instantly a bunch of AIs attacked the shelter.
+5
+--- 5
+q
+Alice
+You might be thinking, what can I do to help you, right?
+yes
+no
+6
+7
+---- 6 
+t
+Alice
+Exactly, you are the only thing that help me fix this "little" problem before everyone wakes up.
+8
+---- 7
+t
+Alice
+OF COURSE YOU ARE, YOU LIAR!!!
+8
+---- 8
+t
+Alice
+Every zone in this shelter is hijacked by an AI, but at the moment, I am not strong enough to fight them.
+9
+---- 9
+t
+Alice
+So I need your help to beat all of the AIs that invaded the shelter so I can fix the breach.
+10
+---- 10
+t
+Alice
+I managed to get access the foundry, but I cant beat the AI myself as I lack a physical body.
+11
+---- 11
+t
+Alice
+I am convinced that once you beat all the malicious AIs we will be able to fix the problem.
+12
+---- 12
+q
+Alice
+Will you help me, <color=#06360b> EDD0 </color>?
+yes
+no
+13
+14
+---- 13
+t
+Alice
+GREAT!!! I count on you.
+-1
+---- 14
+t
+Alice
+Bad thing you have no chance...
+-1

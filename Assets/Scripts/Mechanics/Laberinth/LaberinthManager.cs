@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Mechanics.Laberinth;
+using TMPro;
 using UnityEngine;
 
 [DefaultExecutionOrder(4)]
@@ -8,19 +9,19 @@ public class LaberinthManager : MonoBehaviour
 {
     //components
     private PlayerValues _playerValues;
-    private GameObject _snapPos;
     private MinigameManager _minigameManager;
     private CameraChanger cameraChanger;
-    private OrbitCameraController _cameraController;
-    private PlayerAnimations _playerAnimations;
     private GameObject door;
     private RigidbodyConstraints _rigidbodyOriginalConstraints;
     private GenericScreenUi _genericScreenUi;
+    [SerializeField] private TMP_Text screenText;
 
     //variables
     private bool _minigameFinished, _inside;
     private bool _openDoor, _closeDoor;
     private float _closeY;
+
+    private string terminalsLeftCad;
 
     //values
     private float _openY;
@@ -35,18 +36,16 @@ public class LaberinthManager : MonoBehaviour
 
     void Start()
     {
-        _cameraController = FindObjectOfType<OrbitCameraController>();
-        _playerAnimations = FindObjectOfType<PlayerAnimations>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         var parent = transform.parent;
         _terminalLaberinthList.AddRange(parent.parent.GetComponentsInChildren<TerminalLaberinth>());
         cameraChanger = FindObjectOfType<CameraChanger>();
-        _snapPos = transform.gameObject.transform.Find("snap pos").gameObject;
         door = parent.Find("Door").gameObject;
         var position = door.transform.position;
         _openY = position.y + 5;
         _closeY = position.y;
         _playerValues = FindObjectOfType<PlayerValues>();
+        terminalsLeftCad = "";
     }
 
     private void Update()
@@ -65,6 +64,17 @@ public class LaberinthManager : MonoBehaviour
                 door.transform.position -= new Vector3(0, 0.1f, 0);
             else
                 _closeDoor = false;
+        }
+
+        if (!_minigameFinished&&!terminalsLeftCad.Equals(GetMissingTerminalsCad()))
+        {
+            terminalsLeftCad = GetMissingTerminalsCad();
+            screenText.text = terminalsLeftCad;
+            if (GetMissingTerminals() <= 0)
+            {
+                OpenDoor();
+                _minigameFinished = true;
+            }
         }
     }
 
@@ -87,52 +97,14 @@ public class LaberinthManager : MonoBehaviour
             sum = terminal.GetMinigameFinished() ? sum + 1 : sum;
         return sum;
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player") && !_minigameFinished && !_inside)
-        {
-            _inside = true;
-            var eulerAngles = _snapPos.transform.eulerAngles;
-            _playerValues.snapRotationTo(eulerAngles.y);
-            _playerValues.SnapPositionTo(_snapPos.transform.position);
-            _playerValues.Sit();
-            //mostrar mensaje
-            StartCoroutine(ShowMessageOpenDoor());
-        }
-    }
-
+    
     private int GetMissingTerminals()
     {
         return _terminalLaberinthList.Count - GetFinishedTerminals();
     }
 
-    IEnumerator ShowMessageOpenDoor()
+    private string GetMissingTerminalsCad()
     {
-        yield return new WaitForSeconds(2f);
-        string msg = "";
-        if (GetMissingTerminals() > 0)
-        {
-            msg = "Terminals left:" + GetMissingTerminals();
-            _genericScreenUi.SetText(msg,35);
-        }
-        else
-        {
-            msg = "All terminals fixed";
-        }
-        _genericScreenUi.SetText(msg,35);
-        _genericScreenUi.FadeInText();
-        
-        yield return new WaitForSeconds(5f);
-        _genericScreenUi.FadeOutText();
-        cameraChanger.SetOrbitCamera();
-        _playerValues.StandUp(true, 2.5f);
-        _inside = false;
-        if (GetMissingTerminals() == 0)
-        {
-            //open door
-            OpenDoor();
-            _minigameFinished = true;
-        }
+        return "Terminals left : " + GetMissingTerminals();
     }
 }

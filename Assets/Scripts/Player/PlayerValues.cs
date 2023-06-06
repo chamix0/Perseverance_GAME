@@ -327,10 +327,10 @@ public class PlayerValues : Subject
 
     #region ACTIONS
 
-    public void StopAllMovement()
+    public void StopAllMovement(bool inputsEnabled)
     {
         StopRigidBodyVelocity();
-        SetInputsEnabled(false);
+        SetInputsEnabled(inputsEnabled);
         SetCanMove(false);
         NotifyObservers(PlayerActions.Stop);
     }
@@ -502,31 +502,31 @@ public class PlayerValues : Subject
         {
             // if (MyUtils.IsInLayerMask(hit.transform.gameObject, colisionLayers))
             // {
-                if (!isGrounded)
-                {
-                    SetCanMove(true);
-                    isGrounded = true;
-                    if (transform.up == Vector3.up)
-                        _rigidbody.constraints = _originalRigidBodyConstraints;
-                }
+            if (!isGrounded)
+            {
+                SetCanMove(true);
+                isGrounded = true;
+                if (transform.up == Vector3.up)
+                    _rigidbody.constraints = _originalRigidBodyConstraints;
+            }
 
-                if (!hit.transform.gameObject.CompareTag("Stair"))
-                {
-                    lastValidPos = transform.position;
-                    stuckTimer.Restart();
-                }
+            if (!hit.transform.gameObject.CompareTag("Stair"))
+            {
+                lastValidPos = transform.position;
+                stuckTimer.Restart();
+            }
             // }
-        // else
-        // {
-        //     if (isGrounded)
-        //     {
-        //         SetGear(1);
-        //         SetCanMove(false);
-        //         _rigidbody.constraints = RigidbodyConstraints.None;
-        //         isGrounded = false;
-        //     }
-        //     stuckedPos = transform.position;
-        // }
+            // else
+            // {
+            //     if (isGrounded)
+            //     {
+            //         SetGear(1);
+            //         SetCanMove(false);
+            //         _rigidbody.constraints = RigidbodyConstraints.None;
+            //         isGrounded = false;
+            //     }
+            //     stuckedPos = transform.position;
+            // }
         }
         else
         {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Diagnostics;
+using Mechanics.General_Inputs;
 using UnityEngine;
 
 enum ShootingMode
@@ -126,10 +127,13 @@ public class MachineGun : Subject
 
     private void LateUpdate()
     {
-        if (!playerValues.dead && isVisible && aiming)
-            Laser();
-        else
-            StopAim();
+        if (playerValues.GetCurrentInput() is CurrentInput.ShootMovement)
+        {
+            if (!playerValues.dead && isVisible && aiming)
+                Laser();
+            else
+                StopAim();
+        }
     }
 
 
@@ -192,21 +196,20 @@ public class MachineGun : Subject
     {
         if (!slowTimer.IsRunning)
             slowTimer.Restart();
-        
+
 
         if (slowTimer.Elapsed.TotalSeconds < slowTime)
             Time.timeScale = 0.25f;
-        
+
         else
             Time.timeScale = 1f;
-        
     }
 
     public void StopAim()
     {
         slowTimer.Stop();
         slowTimer.Reset();
-        
+
         aiming = false;
         Time.timeScale = 1f;
         StopLaser();

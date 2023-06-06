@@ -27,6 +27,17 @@ public class GuiManager : MonoBehaviour
     [Header("race")] [SerializeField] private Image raceImage;
     [SerializeField] private TMP_Text raceText;
 
+    //dialog
+    [Header("Dialog")] [SerializeField] private GameObject dialogObject;
+    [SerializeField] private TMP_Text name;
+    [SerializeField] private TMP_Text message;
+    [SerializeField] private List<TMP_Text> answers;
+    [SerializeField] private Image avatarImage;
+
+    //objetives
+    [Header("Dialog")] [SerializeField] private GameObject objetiveObject;
+    [SerializeField] private TMP_Text objetiveText;
+
 
     void Start()
     {
@@ -40,6 +51,8 @@ public class GuiManager : MonoBehaviour
         machinegunText.text = "";
         raceImage.color = Color.clear;
         raceText.text = "";
+        HideDialog();
+        HideObjetives();
     }
 
     public void ShowGui()
@@ -89,4 +102,75 @@ public class GuiManager : MonoBehaviour
     {
         showCenterReference.ShowColors();
     }
+
+    #region Dialog
+
+    public void ShowDialog()
+    {
+        dialogObject.SetActive(true);
+    }
+
+    public void HideDialog()
+    {
+        dialogObject.SetActive(false);
+    }
+
+    public void SetDialogName(string cad)
+    {
+        name.text = cad;
+    }
+
+    public void SetDialogMesasge(string cad)
+    {
+        message.text = cad;
+    }
+
+    public void SetDialogAnswers(string[] cad)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            answers[i].text = cad[i];
+        }
+    }
+
+    public void HighlightAnswer(int index)
+    {
+        for (int i = 0; i < answers.Count; i++)
+        {
+            if (i == index)
+            {
+                answers[i].color = Color.white;
+            }
+            else
+            {
+                answers[i].color = Color.grey;
+            }
+        }
+    }
+
+    public void SetAvatarImage(Sprite sprite)
+    {
+        avatarImage.sprite = sprite;
+    }
+
+    #endregion
+
+    #region Objetives
+
+    public void ShowObjetives()
+    {
+        objetiveObject.SetActive(true);
+    }
+
+    public void HideObjetives()
+    {
+        objetiveObject.SetActive(false);
+    }
+
+    public void SetObjetiveText(string text)
+    {
+        objetiveText.text = text;
+    }
+
+    #endregion
 }

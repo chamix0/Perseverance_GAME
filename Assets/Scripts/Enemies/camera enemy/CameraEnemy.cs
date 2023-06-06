@@ -85,7 +85,7 @@ public class CameraEnemy : Enemy
         Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit,
             Single.PositiveInfinity, collision);
         
-        print(InSight());
+        // print(InSight());
         if (_updateCamera)
             SmoothllylookAt();
         
@@ -135,7 +135,6 @@ public class CameraEnemy : Enemy
         }
 
         //if player has the lights on and in sight
-        print("lights: " + _playerValues.GetLights() + "in sight: " + InSight());
         if (_playerValues.GetLights() && InSight())
         {
             ChangeState(States.Alert, Color.red, 2);

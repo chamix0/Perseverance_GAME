@@ -1,0 +1,46 @@
+---- 0
+t
+Alice
+Hi <color=#06360b> EDD0 </color>, my name is <color=#360e06> Alice </color> and I am the protocol in charge of the security of this shelter.
+1
+---- 1
+t
+Alice
+I have awakened you because there is a breach in the security system and you, <color=#06360b> EDD0</color>, are the only thing that can seal it.
+2
+---- 2
+t
+Alice
+I will tell you everything you need to know at the "nexus".
+3
+---- 3
+q
+Alice
+You know were the "nexus" is right?
+Yes
+No
+4
+5
+---- 4
+t
+Alice
+Fine I'll wait for you there.
+-1
+---- 5
+t
+Alice
+You will find the "nexus" just up the stairs, there is no way you get lost.
+6
+---- 6
+q
+Alice
+Did you get everything?
+Yes
+No, could you repeat it please?
+4
+7
+---- 7
+t
+Alice
+Ahhgggg, fine, i'll repeat.
+1
