@@ -19,7 +19,7 @@ public class PushFastInputs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_playerValues.GetCurrentInput() == CurrentInput.ClickFastMinigame && _playerValues.GetInputsEnabled())
+        if (_playerValues.GetCurrentInput() == CurrentInput.ClickFastMinigame && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
         {
             if (Input.anyKey)
             {

@@ -9,9 +9,11 @@ public class ConversationInputs : MonoBehaviour
     private PlayerValues _playerValues;
     private CameraController _cameraController;
     private ConversationManager conversationManager;
+    private GuiManager guiManager;
 
     void Start()
     {
+        guiManager = FindObjectOfType<GuiManager>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraController = FindObjectOfType<CameraController>();
         conversationManager = FindObjectOfType<ConversationManager>();
@@ -22,8 +24,14 @@ public class ConversationInputs : MonoBehaviour
     {
         //keyboard inputs
         //accelerate and decelerate
-        if (_playerValues.GetCurrentInput() == CurrentInput.Conversation && _playerValues.GetInputsEnabled())
+        if (_playerValues.GetCurrentInput() == CurrentInput.Conversation && _playerValues.GetInputsEnabled() &&
+            !_playerValues.GetPaused())
         {
+            if (Input.anyKey)
+            {
+                guiManager.SetTutorial("SPACE - Select/Skip     WS - Change option");
+            }
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 conversationManager.NextDialog();
@@ -40,18 +48,17 @@ public class ConversationInputs : MonoBehaviour
     public void PerformAction(Move move)
     {
         //accelerate deccelerate
+        guiManager.SetTutorial("F - Select/Skip     R - Change option");
         if (_playerValues.GetInputsEnabled())
         {
-            if (move.face == FACES.R)
+            if (move.face == FACES.F)
             {
-                _playerValues.CheckIfStuck();
                 if (move.direction == 1)
-                {
-                    if (_playerValues.GetGear() < 3)
-                        _playerValues.RiseGear();
-                }
-                else
-                    _playerValues.DecreaseGear();
+                    conversationManager.NextDialog();
+            }
+            else if (move.face == FACES.R)
+            {
+                conversationManager.ChangeAnswer();
             }
         }
 

@@ -19,7 +19,7 @@ public class CubeConectionManager : MonoBehaviour
 
 
     [SerializeField] private TMP_Dropdown _dropdown;
-    [SerializeField] private Button _connectButton, _cancelButton, _refreshButton;
+    [SerializeField] private Button continueButton, _connectButton, _cancelButton, _refreshButton;
 
     // Start is called before the first frame update
     private void Awake()
@@ -38,6 +38,7 @@ public class CubeConectionManager : MonoBehaviour
         StartCoroutine(GetDevices());
         _cancelButton.interactable = false;
         _connectButton.interactable = false;
+        continueButton.interactable = false;
     }
 
     private void Update()
@@ -52,8 +53,17 @@ public class CubeConectionManager : MonoBehaviour
         if (connected)
         {
             connected = false;
-            _refreshButton.interactable = false;
-            _dropdown.interactable = false;
+            if (continueButton)
+                continueButton.interactable = true;
+            if (_refreshButton)
+                _refreshButton.interactable = false;
+            if (_cancelButton)
+                _cancelButton.interactable = false;
+            if (_dropdown)
+                _dropdown.interactable = false;
+            _cancelButton = null;
+            _refreshButton = null;
+            _dropdown = null;
         }
 
         if (refresh)
@@ -123,16 +133,23 @@ public class CubeConectionManager : MonoBehaviour
     /// <returns></returns>
     public IEnumerator RestablishComunicationRoutine()
     {
+        _process.EndProcess();
         _process.StartProcess();
         //show cancel button
-        _cancelButton.interactable = true;
-        yield return new WaitForSeconds(1);
+        if (_cancelButton)
+        {
+            _cancelButton.interactable = true;
+        }
+
+        yield return new WaitForSecondsRealtime(1);
         if (currentDevice != null)
             _process.SendMessageProcess(currentDevice);
         else
         {
-            _connectButton.interactable = true;
-            _cancelButton.interactable = false;
+            if (continueButton)
+                _connectButton.interactable = true;
+            if (_cancelButton)
+                _cancelButton.interactable = false;
         }
     }
 

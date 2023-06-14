@@ -1,14 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 
 [Serializable]
 public class GameData
 {
     [SerializeField] private string runName;
-    [SerializeField] private float volume;
-    [SerializeField] private bool muted;
+    [SerializeField] private float masterVolume, vfxVolume, musicVolume, uiVolume;
     [SerializeField] private float tiltSens;
     [SerializeField] private bool GameStarted;
     [SerializeField] private int eddoModel;
@@ -24,14 +24,16 @@ public class GameData
 
     public GameData(int model, string name)
     {
-        volume = 1;
+        masterVolume = 0.5f;
+        vfxVolume = 0.5f;
+        musicVolume = 0.5f;
+        uiVolume = 0.5f;
         runName = name;
         tiltSens = 75;
         eddoModel = model;
         totalTimePlayed = 0;
         maxShootingRangeScore = 0;
         lastTimePlayed = DateTime.Now.ToString();
-        muted = false;
         GameStarted = true;
         newGame = true;
         zonesEnabled = new bool[MAX_ZONES];
@@ -42,12 +44,14 @@ public class GameData
 
     public GameData()
     {
-        volume = 1;
+        masterVolume = 0.5f;
+        vfxVolume = 0.5f;
+        musicVolume = 0.5f;
+        uiVolume = 0.5f;
         runName = "------";
         tiltSens = 75;
         eddoModel = 1;
         maxShootingRangeScore = 0;
-        muted = false;
         GameStarted = false;
         newGame = true;
         zonesEnabled = new bool[MAX_ZONES];
@@ -61,10 +65,49 @@ public class GameData
         return eddoModel;
     }
 
-    public bool getMuted()
+    #region Sound
+
+    public void SetMasterVolume(float value)
     {
-        return muted;
+        masterVolume = value;
     }
+
+    public void SetVfxVolume(float value)
+    {
+        vfxVolume = value;
+    }
+
+    public void SetMusicVolume(float value)
+    {
+        musicVolume = value;
+    }
+
+    public float GetMasterVolume()
+    {
+        return masterVolume;
+    }
+
+    public void SetUiVolume(float value)
+    {
+        uiVolume = value;
+    }
+
+    public float GetUiVolume()
+    {
+        return uiVolume;
+    }
+
+    public float GetMusicVolume()
+    {
+        return musicVolume;
+    }
+
+    public float GetVfxVolume()
+    {
+        return vfxVolume;
+    }
+
+    #endregion
 
     public bool GetIsNewGame()
     {
@@ -76,10 +119,6 @@ public class GameData
         newGame = false;
     }
 
-    public void setMuted(bool mute)
-    {
-        muted = mute;
-    }
 
     public int GetMaxShootingScore()
     {
@@ -149,17 +188,6 @@ public class GameData
         return zonesPB[index];
     }
 
-
-    public void setVolume(float vol)
-    {
-        volume = vol;
-    }
-
-    public float getVolume()
-    {
-        return volume;
-    }
-
     public bool GetGameStarted()
     {
         return GameStarted;
@@ -185,10 +213,5 @@ public class GameData
     public string GetLastTimePlayed()
     {
         return lastTimePlayed;
-    }
-
-    public override string ToString()
-    {
-        return $"{volume}{tiltSens}";
     }
 }

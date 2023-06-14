@@ -10,7 +10,7 @@ namespace Mechanics.Laberinth
         private PlayerValues _playerValues;
         private GameObject _snapPos;
         private RigidbodyConstraints _rigidbodyOriginalConstraints;
-        private bool minigameFinished;
+        private bool minigameFinished,minigameActuallyFinished;
         private MinigameManager _minigameManager;
         private CameraChanger cameraChanger;
 
@@ -45,13 +45,18 @@ namespace Mechanics.Laberinth
         {
             yield return new WaitForSeconds(3f);
             _minigameManager.StartRandomMinigame();
+            StartCoroutine(FinisghMinigameCoroutine());
             cameraChanger.SetScreenCamera();
             terminalText.SetText("Terminal operative");
         }
-
+        IEnumerator FinisghMinigameCoroutine()
+        {
+            yield return new WaitUntil(_minigameManager.GetMinigameFinished);
+            minigameActuallyFinished = true;
+        }
         public bool GetMinigameFinished()
         {
-            return minigameFinished;
+            return minigameActuallyFinished;
         }
     }
 }

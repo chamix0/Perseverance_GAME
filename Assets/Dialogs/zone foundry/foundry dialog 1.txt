@@ -1,0 +1,23 @@
+-
+t
+Alice
+All control rooms are protected with a code
+1
+-
+t
+Alice
+You might want to note down somewhere in your memory the numbers you find on the way as ...
+2
+-
+t
+Alice
+If you miss a number I wont be able to help you, you will have to go back and find the number
+3
+-
+q
+name
+Did you understand?
+yes
+no
+-1
+0

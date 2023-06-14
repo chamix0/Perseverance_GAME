@@ -17,7 +17,8 @@ public class MinigameManager : MonoBehaviour
 
     //variables
     private int _lastMinigame = -1;
-
+    private bool currentMinigameFinished;
+    
     //lists
     [SerializeField] private List<Image> _counterImages;
     private List<Minigame> minigames;
@@ -101,11 +102,18 @@ public class MinigameManager : MonoBehaviour
         }
 
         minigames[index].StartMinigame();
-        guiManager.HideGui();
+        currentMinigameFinished = false;
+        // guiManager.HideGui();
     }
 
     public void EndMinigame()
     {
-        guiManager.ShowGui();
+        // guiManager.ShowGui();
+        currentMinigameFinished = true;
+    }
+
+    public bool GetMinigameFinished()
+    {
+        return currentMinigameFinished;
     }
 }

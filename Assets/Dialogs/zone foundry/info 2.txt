@@ -1,0 +1,38 @@
+-
+t
+Info
+This place is the foundry...
+1
+-
+t
+Info
+The purpose of this area is to obtain heat, energy and to obtain metals...
+2
+-
+t
+Info
+Teleport technology made this place safe as no living thing can fall into the lava...
+3
+-
+t
+Info
+But Teleport is not generally a good thing to experience, so anyone reading this log, avoid falling...
+4
+-
+t
+Info
+Please.
+5
+---
+q
+Info
+Is there anything else you want to know?
+Why are there pushing obstacles on the way?
+No
+6
+-1
+--
+t
+Info
+No data found...
+-1

@@ -20,7 +20,7 @@ public class RollTheNutInputs : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (_playerValues.GetCurrentInput() == CurrentInput.RollTheNutMinigame && _playerValues.GetInputsEnabled())
+        if (_playerValues.GetCurrentInput() == CurrentInput.RollTheNutMinigame && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
         {
             if (Input.anyKey)
             {

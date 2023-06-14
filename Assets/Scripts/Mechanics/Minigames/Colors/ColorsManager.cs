@@ -154,6 +154,7 @@ public class ColorsManager : Minigame
         correctCount = 0;
         DistributeColors();
         ChangeTargetColor();
+        _minigameManager.UpdateCounter(0);
         ShowUI();
         HideGameUi();
         _playerValues.SetCurrentInput(CurrentInput.ColorsMinigame);

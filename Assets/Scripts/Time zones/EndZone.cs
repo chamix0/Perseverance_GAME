@@ -9,6 +9,7 @@ public class EndZone : MonoBehaviour
     private GameObject _snapPos;
     private CameraChanger _cameraChanger;
     private TimeZoneManager _timeZoneManager;
+    
 
     // Start is called before the first frame update
     void Start()

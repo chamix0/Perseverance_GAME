@@ -20,7 +20,6 @@ public class IsUnderDoorTrigger : MonoBehaviour
         {
             _doorBase.OpenDoor();
             _doorBase._inside = true;
-            print("in");
         }
     }
 
@@ -29,7 +28,6 @@ public class IsUnderDoorTrigger : MonoBehaviour
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy"))
         {
             _doorBase._inside = false;
-            print("out");
         }
     }
 }

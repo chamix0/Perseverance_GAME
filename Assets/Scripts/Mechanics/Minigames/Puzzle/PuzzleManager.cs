@@ -289,6 +289,7 @@ public class PuzzleManager : Minigame
         SetSolution();
         _playerValues.SetCurrentInput(CurrentInput.AdjustValuesMinigame);
         _playerValues.SetInputsEnabled(false);
+        _minigameManager.UpdateCounter(0);
         StartCoroutine(StartGameCoroutine());
     }
 

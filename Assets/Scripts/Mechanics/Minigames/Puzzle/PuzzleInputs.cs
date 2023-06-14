@@ -19,7 +19,7 @@ public class PuzzleInputs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_playerValues.GetCurrentInput() == CurrentInput.PuzzleMinigame && _playerValues.GetInputsEnabled())
+        if (_playerValues.GetCurrentInput() == CurrentInput.PuzzleMinigame && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
         {
             if (Input.anyKey)
             {

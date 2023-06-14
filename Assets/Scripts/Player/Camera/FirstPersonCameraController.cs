@@ -36,31 +36,33 @@ public class FirstPersonCameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        ManualRotation();
-        if (updateVertical)
-        {
-            orbitAngles.x = UpdateRotateCameraVertical();
-        }
-
-        if (updateRotation)
-        {
-            orbitAngles.y = UpdateRotateCamera();
-        }
-
-        Quaternion lookRotation;
-        if (ManualRotation())
-        {
-            ConstrainAngles();
-            lookRotation = Quaternion.Euler(orbitAngles);
-        }
-        else
-        {
-            lookRotation = transform.localRotation;
-        }
-
-        Vector3 lookPosition = focus.position;
         if (!freezed)
+        {
+            ManualRotation();
+            if (updateVertical)
+            {
+                orbitAngles.x = UpdateRotateCameraVertical();
+            }
+
+            if (updateRotation)
+            {
+                orbitAngles.y = UpdateRotateCamera();
+            }
+
+            Quaternion lookRotation;
+            if (ManualRotation())
+            {
+                ConstrainAngles();
+                lookRotation = Quaternion.Euler(orbitAngles);
+            }
+            else
+            {
+                lookRotation = transform.localRotation;
+            }
+
+            Vector3 lookPosition = focus.position;
             transform.SetPositionAndRotation(lookPosition, lookRotation);
+        }
     }
 
 

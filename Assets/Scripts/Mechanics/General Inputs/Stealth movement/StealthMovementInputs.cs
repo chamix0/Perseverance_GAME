@@ -27,7 +27,7 @@ public class StealthMovementInputs : MonoBehaviour
                 _distraction.SetVisible(true);
         }
 
-        if (_playerValues.GetCurrentInput() == CurrentInput.StealthMovement && _playerValues.GetInputsEnabled())
+        if (_playerValues.GetCurrentInput() == CurrentInput.StealthMovement && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
         {
             if (Input.GetKeyDown(KeyCode.W))
             {

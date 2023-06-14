@@ -7,6 +7,7 @@ using Main_menu.New_game_screen;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [DefaultExecutionOrder(1)]
@@ -20,6 +21,7 @@ public class MainMenuManager : MonoBehaviour
     private SaveData _saveData;
     [SerializeField] private Shader buttonShader;
     private LoadGameManager _loadGameManager;
+    private LoadScreen loadScreen;
 
     //variables
     public Color _colorHighlighted;
@@ -46,6 +48,7 @@ public class MainMenuManager : MonoBehaviour
         _menuInputManager = FindObjectOfType<MyMenuInputManager>();
         _newGameManager = FindObjectOfType<NewGameManager>();
         _loadGameManager = FindObjectOfType<LoadGameManager>();
+        loadScreen = FindObjectOfType<LoadScreen>();
         _jsoNsaving = GetComponent<JSONsaving>();
         _materials = new List<Material>();
         _texts = new List<TMP_Text>();
@@ -54,6 +57,7 @@ public class MainMenuManager : MonoBehaviour
 
     void Start()
     {
+        
         selectedButton = 0;
         _colorSelected = _buttons[0].GetComponent<Image>().material.GetColor(BackgroundColor);
         SetButtons();
@@ -65,6 +69,9 @@ public class MainMenuManager : MonoBehaviour
 
     public void clicked(int button)
     {
+        _loadGameManager.HideUI();
+        _menuInputManager.SetCurrentInput(CurrentMenuInput.Menu);
+
         int aux = button;
         selectedButton = aux;
         UpdateColors();
@@ -134,7 +141,7 @@ public class MainMenuManager : MonoBehaviour
             //continue
             case 0:
                 print("continue with slot: " + _saveData.GetLastSessionSlotIndex());
-                //change scene to game
+                loadScreen.LoadLevels();
                 break;
             //new game
             case 1:

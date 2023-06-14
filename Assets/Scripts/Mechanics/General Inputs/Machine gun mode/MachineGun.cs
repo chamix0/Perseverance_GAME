@@ -187,7 +187,7 @@ public class MachineGun : Subject
         if (!aiming)
             NotifyObservers(PlayerActions.Aim);
         aiming = true;
-        SlowTime();
+        // SlowTime();
         if (!aimSphere.gameObject.activeSelf)
             aimSphere.gameObject.SetActive(true);
     }
@@ -211,7 +211,7 @@ public class MachineGun : Subject
         slowTimer.Reset();
 
         aiming = false;
-        Time.timeScale = 1f;
+        // Time.timeScale = 1f;
         StopLaser();
         NotifyObservers(PlayerActions.StopAim);
     }

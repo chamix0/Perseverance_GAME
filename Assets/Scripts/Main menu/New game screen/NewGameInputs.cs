@@ -12,9 +12,11 @@ namespace Main_menu.New_game_screen
         private JSONsaving _jsonSaving;
         private SaveData _saveData;
         private MainMenuManager _menuManager;
+        private LoadScreen loadScreen;
 
         void Start()
         {
+            loadScreen = FindObjectOfType<LoadScreen>();
             _myInputManager = FindObjectOfType<MyMenuInputManager>();
             _newGameManager = FindObjectOfType<NewGameManager>();
             _camerasController = FindObjectOfType<MenuCamerasController>();
@@ -41,7 +43,7 @@ namespace Main_menu.New_game_screen
                     _saveData.StartNewGame(_newGameManager.GetModelIndex(), _newGameManager.GetName());
                     _jsonSaving.SaveTheData();
                     Debug.Log("nueva partida creada en el  slot " + _saveData.GetLastSessionSlotIndex());
-                    //cambiar de escena
+                    loadScreen.LoadLevels();
                 }
                 //go back to menu
                 else if (Input.GetKeyDown(KeyCode.Escape))

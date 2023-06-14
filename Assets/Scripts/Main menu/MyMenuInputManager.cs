@@ -34,6 +34,14 @@ public class MyMenuInputManager : MonoBehaviour
         _menuInputs = GetComponent<MainMenuInputs>();
         _newGameInputs = FindObjectOfType<NewGameInputs>();
         _loadGameInputs = FindObjectOfType<LoadGameInputs>();
+        try
+        {
+            _inputsMoves = GameObject.FindGameObjectWithTag("UserCubeManager").GetComponent<MovesQueue>();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 
     private void Start()

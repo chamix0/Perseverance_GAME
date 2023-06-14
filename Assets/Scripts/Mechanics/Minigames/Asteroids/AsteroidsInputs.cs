@@ -20,7 +20,7 @@ public class AsteroidsInputs : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (_playerValues.GetCurrentInput() == CurrentInput.AsteroidMinigame && _playerValues.GetInputsEnabled())
+        if (_playerValues.GetCurrentInput() == CurrentInput.AsteroidMinigame && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
         {
             Vector2 dir = Vector2.zero;
             if (Input.anyKey)

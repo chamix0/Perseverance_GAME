@@ -19,7 +19,7 @@ public class LockerInputs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_playerValues.GetCurrentInput() == CurrentInput.LockerMinigame && _playerValues.GetInputsEnabled())
+        if (_playerValues.GetCurrentInput() == CurrentInput.LockerMinigame && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
         {
             if (Input.anyKey)
             {

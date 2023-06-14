@@ -82,7 +82,6 @@ public class AdjustValuesManager : Minigame
     {
         _sliderIndex = (_sliderIndex + 1) % _sliders.Count;
         HighlightSlider();
-        print(_sliderIndex);
         _updateValue = false;
     }
 
@@ -90,7 +89,6 @@ public class AdjustValuesManager : Minigame
     {
         _sliderIndex = _sliderIndex - 1 < 0 ? _sliders.Count - 1 : _sliderIndex - 1;
         HighlightSlider();
-        print(_sliderIndex);
         _updateValue = false;
     }
 

@@ -48,59 +48,62 @@ public class OrbitCameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        UpdateFocusPoint();
-        ManualRotation();
-
-        if (updateVertical)
-        {
-            orbitAngles.x = UpdateRotateCameraVertical();
-        }
-
-        if (updateRotation)
-        {
-            orbitAngles.y = UpdateRotateCamera();
-        }
-
-        Quaternion lookRotation;
-        if (ManualRotation() || AutomaticRotation())
-        {
-            ConstrainAngles();
-            lookRotation = Quaternion.Euler(orbitAngles);
-        }
-        else
-        {
-            lookRotation = transform.localRotation;
-        }
-
-        Vector3 lookDirection = lookRotation * Vector3.forward;
-        Vector3 lookPosition = focusPoint - lookDirection * distance;
-
-
-        if (Physics.Raycast(
-                focusPoint, -lookDirection, out RaycastHit hit, distance, CollisionLayers
-            ))
-        {
-            lookPosition = focusPoint - lookDirection * (hit.distance - colOffset);
-        }
-
-        // Vector3 rectOffset = lookDirection * colOffset;
-        // Vector3 rectPosition = lookPosition + rectOffset;
-        // Vector3 castFrom = focus.position;
-        // Vector3 castLine = rectPosition - castFrom;
-        // float castDistance = castLine.magnitude;
-        // Vector3 castDirection = castLine / castDistance;
-        //
-        // if (Physics.BoxCast(
-        //         castFrom, CameraHalfExtends, castDirection, out RaycastHit hit,
-        //         lookRotation, castDistance, CollisionLayers
-        //     ))
-        // {
-        //     rectPosition = castFrom + castDirection * hit.distance;
-        //     lookPosition = rectPosition - rectOffset;
-        // }
-
         if (!freezed)
+        {
+            UpdateFocusPoint();
+            ManualRotation();
+
+            if (updateVertical)
+            {
+                orbitAngles.x = UpdateRotateCameraVertical();
+            }
+
+            if (updateRotation)
+            {
+                orbitAngles.y = UpdateRotateCamera();
+            }
+
+            Quaternion lookRotation;
+            if (ManualRotation() || AutomaticRotation())
+            {
+                ConstrainAngles();
+                lookRotation = Quaternion.Euler(orbitAngles);
+            }
+            else
+            {
+                lookRotation = transform.localRotation;
+            }
+
+            Vector3 lookDirection = lookRotation * Vector3.forward;
+            Vector3 lookPosition = focusPoint - lookDirection * distance;
+
+
+            if (Physics.Raycast(
+                    focusPoint, -lookDirection, out RaycastHit hit, distance, CollisionLayers
+                ))
+            {
+                lookPosition = focusPoint - lookDirection * (hit.distance - colOffset);
+            }
+
+            // Vector3 rectOffset = lookDirection * colOffset;
+            // Vector3 rectPosition = lookPosition + rectOffset;
+            // Vector3 castFrom = focus.position;
+            // Vector3 castLine = rectPosition - castFrom;
+            // float castDistance = castLine.magnitude;
+            // Vector3 castDirection = castLine / castDistance;
+            //
+            // if (Physics.BoxCast(
+            //         castFrom, CameraHalfExtends, castDirection, out RaycastHit hit,
+            //         lookRotation, castDistance, CollisionLayers
+            //     ))
+            // {
+            //     rectPosition = castFrom + castDirection * hit.distance;
+            //     lookPosition = rectPosition - rectOffset;
+            // }
+
+
             transform.SetPositionAndRotation(lookPosition, lookRotation);
+        }
     }
 
 
@@ -330,7 +333,8 @@ public class OrbitCameraController : MonoBehaviour
     private float UpdateRotateCamera()
     {
         currentRotation = Quaternion
-            .Lerp(Quaternion.Euler(0, currentRotation, 0), Quaternion.Euler(0, targetRotation, 0), 5 * Time.unscaledDeltaTime)
+            .Lerp(Quaternion.Euler(0, currentRotation, 0), Quaternion.Euler(0, targetRotation, 0),
+                5 * Time.unscaledDeltaTime)
             .eulerAngles.y;
 
         if (Mathf.Abs(currentRotation - targetRotation) < 0.1f)

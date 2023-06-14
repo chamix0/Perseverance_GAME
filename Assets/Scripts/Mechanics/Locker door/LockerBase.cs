@@ -12,21 +12,18 @@ public class LockerBase : MonoBehaviour
     private GameObject _snapPos;
     private CameraChanger _cameraChanger;
     private OrbitCameraController _cameraController;
-    private GameObject _door;
     private RigidbodyConstraints _rigidbodyOriginalConstraints;
     private CameraChanger cameraChanger;
+   [SerializeField] private DoorManager doorManager;
 
     //minigame
     private LockerManager _lockerManager;
 
     //variables
     private bool _minigameFinished, _inside;
-    private bool _openDoor, _closeDoor;
-    private float _closeY;
 
 
     //values
-    private const float OpenY = 5;
     private List<int> _code;
     private bool minigamePlaying;
 
@@ -48,8 +45,6 @@ public class LockerBase : MonoBehaviour
         var parent = transform.parent;
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _snapPos = transform.gameObject.transform.Find("snap pos").gameObject;
-        _door = parent.Find("Door").gameObject;
-        _closeY = _door.transform.position.y;
         _playerValues = FindObjectOfType<PlayerValues>();
     }
 
@@ -74,39 +69,8 @@ public class LockerBase : MonoBehaviour
             codeNumbersText[i].text = val + "";
         }
     }
-
-    private void Update()
-    {
-        if (_openDoor)
-        {
-            if (_door.transform.position.y < OpenY)
-                _door.transform.position += new Vector3(0, 0.1f, 0);
-            else
-                _openDoor = false;
-        }
-
-        if (_closeDoor)
-        {
-            if (_door.transform.position.y > _closeY)
-                _door.transform.position -= new Vector3(0, 0.1f, 0);
-            else
-                _closeDoor = false;
-        }
-    }
-
-
-    private void OpenDoor()
-    {
-        _openDoor = true;
-        _closeDoor = false;
-    }
-
-    public void CloseDoor()
-    {
-        _openDoor = false;
-        _closeDoor = true;
-    }
-
+    
+    
 
     IEnumerator ChangeCameraCoroutine()
     {
@@ -141,7 +105,7 @@ public class LockerBase : MonoBehaviour
     public void EndLocker()
     {
         _minigameFinished = true;
-        OpenDoor();
+        doorManager.OpenDoor();
     }
 
     public void ExitBase()

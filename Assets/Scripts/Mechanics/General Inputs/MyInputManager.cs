@@ -1,4 +1,5 @@
 using System;
+using General_Inputs;
 using Mechanics.MiniBoss;
 using UnityEngine;
 
@@ -26,6 +27,9 @@ namespace Mechanics.General_Inputs
         private PuzzleInputs _puzzleInputs;
         private ConversationInputs _conversationInputs;
         private GuiManager gui;
+        private Generalnputs generalnputs;
+
+        private PauseInputs pauseInputs;
 
         private void Awake()
         {
@@ -56,6 +60,8 @@ namespace Mechanics.General_Inputs
             _puzzleInputs = FindObjectOfType<PuzzleInputs>();
             _conversationInputs = FindObjectOfType<ConversationInputs>();
             gui = FindObjectOfType<GuiManager>();
+            generalnputs = FindObjectOfType<Generalnputs>();
+            pauseInputs = FindObjectOfType<PauseInputs>();
         }
 
         private void Update()
@@ -65,61 +71,72 @@ namespace Mechanics.General_Inputs
                 Move move = _inputsMoves.Dequeue();
                 if (move.time.TotalMilliseconds + 500 < DateTime.Now.TimeOfDay.TotalMilliseconds) return;
 
-                gui.SetLastMoveText(move);
-                switch (_playerValues.GetCurrentInput())
+                if (_playerValues.GetCurrentInput() is not CurrentInput.None)
                 {
-                    case CurrentInput.Movement:
-                        _movementInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.RotatingWall:
-                        _rotatingWallInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.ColorsMinigame:
-                        _colorsInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.MemoryMinigame:
-                        _memoryMinigameInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.RollTheNutMinigame:
-                        _rollTheNutInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.AsteroidMinigame:
-                        _asteroidsInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.AdjustValuesMinigame:
-                        _adjustValuesInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.ClickFastMinigame:
-                        _pushFastInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.LockerMinigame:
-                        _lockerInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.MiniBoss:
-                        _miniBossInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.StealthMovement:
-                        _stealthMovementInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.ShootMovement:
-                        _machinegunMovementInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.RaceMovement:
-                        _runMovementInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.DontTouchTheWallsMinigame:
-                        _dontTouchWallsInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.PuzzleMinigame:
-                        _puzzleInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.Conversation:
-                        _conversationInputs.PerformAction(move);
-                        break;
-                    case CurrentInput.None:
-                        break;
+                    gui.SetLastMoveText(move);
+                    generalnputs.PerformAction(move);
                 }
 
+                if (!_playerValues.GetPaused())
+                {
+                    switch (_playerValues.GetCurrentInput())
+                    {
+                        case CurrentInput.Movement:
+                            _movementInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.RotatingWall:
+                            _rotatingWallInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.ColorsMinigame:
+                            _colorsInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.MemoryMinigame:
+                            _memoryMinigameInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.RollTheNutMinigame:
+                            _rollTheNutInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.AsteroidMinigame:
+                            _asteroidsInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.AdjustValuesMinigame:
+                            _adjustValuesInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.ClickFastMinigame:
+                            _pushFastInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.LockerMinigame:
+                            _lockerInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.MiniBoss:
+                            _miniBossInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.StealthMovement:
+                            _stealthMovementInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.ShootMovement:
+                            _machinegunMovementInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.RaceMovement:
+                            _runMovementInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.DontTouchTheWallsMinigame:
+                            _dontTouchWallsInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.PuzzleMinigame:
+                            _puzzleInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.Conversation:
+                            _conversationInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.None:
+                            break;
+                    }
+                }
+                else
+                {
+                    pauseInputs.PerformAction(move);
+                }
                 //depending on the action we will give control to a different input manager
             }
         }

@@ -20,7 +20,7 @@ public class DontTouchWallsInputs : MonoBehaviour
     private void Update()
     {
         if (_playerValues.GetCurrentInput() == CurrentInput.DontTouchTheWallsMinigame &&
-            _playerValues.GetInputsEnabled())
+            _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
         {
             Vector2 dir = Vector2.zero;
             if (Input.anyKey)

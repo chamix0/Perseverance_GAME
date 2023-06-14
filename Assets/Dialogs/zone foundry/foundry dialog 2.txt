@@ -1,0 +1,33 @@
+-
+t
+Alice
+It seems that this room is secured with terminals.
+1
+-
+t
+Alice
+This doors only open when all the terminals have been fixed.
+2
+-
+t
+Alice
+It seems that because of the breach, all of the terminals crashed so you need to fix them.
+3
+-
+t
+Alice
+You must fix all the terminals to open the door.
+4
+-
+q
+Alice
+Did you understand?
+Why does the information point at the nexus says nothing about you?
+yes
+5
+-1
+-
+t
+Alice
+...
+-1

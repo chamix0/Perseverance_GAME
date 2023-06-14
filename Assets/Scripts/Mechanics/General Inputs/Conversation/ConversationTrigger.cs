@@ -4,6 +4,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
+public enum ObetiveType
+{
+    Add,
+    Remove,
+    None
+}
+
 public class ConversationTrigger : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -15,6 +22,10 @@ public class ConversationTrigger : MonoBehaviour
     public bool destroyAfterUse = false;
     public bool showAlice = false;
     [SerializeField] private GameObject alice;
+    private PlayerValues playerValues;
+    private Objetives objetives;
+    [SerializeField] private ObetiveType objetiveType;
+    [SerializeField] private string text;
 
     private void Awake()
     {
@@ -23,7 +34,9 @@ public class ConversationTrigger : MonoBehaviour
 
     void Start()
     {
+        playerValues = FindObjectOfType<PlayerValues>();
         conversationManager = FindObjectOfType<ConversationManager>();
+        objetives = FindObjectOfType<Objetives>();
         alice.SetActive(false);
     }
 
@@ -38,6 +51,9 @@ public class ConversationTrigger : MonoBehaviour
                     alice.SetActive(true);
                 }
 
+                playerValues.transform.LookAt(new Vector3(focus.position.x, playerValues.transform.position.y,
+                    focus.position.z));
+
                 conversation.ResetConversation();
                 conversationManager.StartConversation(conversation, focus);
                 if (!stopwatch.IsRunning)
@@ -50,6 +66,11 @@ public class ConversationTrigger : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            if (objetiveType is ObetiveType.Add)
+                objetives.SetNewObjetive(text);
+            else if (objetiveType is ObetiveType.Remove)
+                objetives.RemoveObjetive();
+
             if (showAlice)
             {
                 alice.SetActive(false);

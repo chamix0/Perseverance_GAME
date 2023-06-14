@@ -136,5 +136,6 @@ public class JustWaitManager : Minigame
         _cameraChanger.SetOrbitCamera();
         yield return new WaitForSeconds(2f);
         _playerValues.StandUp(true, 3);
+        _minigameManager.EndMinigame();
     }
 }

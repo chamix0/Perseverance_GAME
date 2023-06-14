@@ -347,6 +347,7 @@ public class DontTouchWallsManager : Minigame
     {
         round = 0;
         SelectLaberinths();
+        _minigameManager.UpdateCounter(0);
         _playerValues.SetCurrentInput(CurrentInput.DontTouchTheWallsMinigame);
         _playerValues.SetInputsEnabled(true);
         StartCoroutine(StartGameCoroutine());

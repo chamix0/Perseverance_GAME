@@ -1,0 +1,25 @@
+-
+t
+Alice
+This is the door I talked you about!!
+1
+-
+t
+Alice
+I hope you remember the code, right...
+2
+-
+t
+Alice
+Right?
+3
+-
+t
+Alice
+Anyway after you open that door, you should find the first Ai...
+4
+-
+t
+Alice
+I am no sure whats behind that door or how does it look like but I am sure you will beat it with out any problem.
+-1

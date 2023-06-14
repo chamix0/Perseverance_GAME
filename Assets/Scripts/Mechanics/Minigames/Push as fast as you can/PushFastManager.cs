@@ -64,6 +64,7 @@ public class PushFastManager : Minigame
         {
             if (_timer.Elapsed.TotalSeconds > _maxTime)
             {
+                soundManager.PlayInCorrectSound();
                 ResetMinigame();
             }
 
@@ -113,6 +114,7 @@ public class PushFastManager : Minigame
         _maxTime = Random.Range(20, 40);
         _playerValues.SetCurrentInput(CurrentInput.ClickFastMinigame);
         _playerValues.SetInputsEnabled(false);
+        _minigameManager.UpdateCounter(0);
         StartCoroutine(StartGameCoroutine());
     }
 
@@ -195,5 +197,6 @@ public class PushFastManager : Minigame
         _cameraChanger.SetOrbitCamera();
         yield return new WaitForSeconds(2f);
         _playerValues.StandUp(true, 3);
+        _minigameManager.EndMinigame();
     }
 }

@@ -36,7 +36,7 @@ public class RunProcess : MonoBehaviour
             process.EnableRaisingEvents = false;
             process.StartInfo.WorkingDirectory = Application.dataPath;
             process.StartInfo.FileName =
-                Application.dataPath+"/CubeBluetooth/Executable/BluetoothCubo.exe";
+                Application.dataPath + "/CubeBluetooth/Executable/BluetoothCubo.exe";
             // process.StartInfo.FileName =
             //     Application.dataPath+"/executable/BluetoothCubo.exe"; //change the path to a consistent one
             process.StartInfo.UseShellExecute = false;
@@ -92,6 +92,11 @@ public class RunProcess : MonoBehaviour
     /// If the aplication quits, it will kill the process first
     /// </summary>
     void OnApplicationQuit()
+    {
+        EndProcess();
+    }
+
+    public void EndProcess()
     {
         if (process != null && !process.HasExited)
         {

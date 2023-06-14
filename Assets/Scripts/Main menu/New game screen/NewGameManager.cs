@@ -81,7 +81,7 @@ namespace Main_menu.New_game_screen
         private void OnValueChanged(string value) => _name = value;
 
         /// <summary>
-        /// avoids un wanted changes of model
+        /// avoids unwanted changes of model
         /// </summary>
         private void OnSelect() => _myMenuInputManager.SetInputsEnabled(false);
 

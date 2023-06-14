@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Mechanics.General_Inputs;
 using UnityEngine;
+using UnityEngine.Android;
 using Debug = UnityEngine.Debug;
 
 [DefaultExecutionOrder(1)]
@@ -25,7 +26,7 @@ public class PlayerValues : Subject
 
     //stuck values
     private Stopwatch stuckTimer;
-    private Vector3 stuckedPos;
+    private Vector3 stuckedPos, prevStuckedPos;
     private Vector3 lastValidPos;
     public float stuckTime = 3f;
 
@@ -57,11 +58,9 @@ public class PlayerValues : Subject
     //variables
     private bool _updateSnap, _updateLookAt, moveForward;
     public bool dead = false;
-
     private float _targetAngle;
-
     private Vector3 _targetPos;
-
+    private bool paused;
 
     //is grounded
     [Header("Grounded stuff")] public float raySize;
@@ -98,6 +97,7 @@ public class PlayerValues : Subject
 
     private void Start()
     {
+        prevStuckedPos = transform.position;
         lives = MaxLives;
         SetCanMove(true);
     }
@@ -422,13 +422,18 @@ public class PlayerValues : Subject
             stucked = false;
         }
 
-        if (!isGrounded && (transform.position - stuckedPos).magnitude < 0.01f)
+        if (!isGrounded && Vector3.Distance(stuckedPos, prevStuckedPos) < 0.01f)
         {
             if (stuckTimer.Elapsed.TotalSeconds > stuckTime)
             {
                 stucked = true;
                 ResetPos();
             }
+        }
+        else
+        {
+            prevStuckedPos = stuckedPos;
+            stuckTimer.Restart();
         }
     }
 
@@ -515,6 +520,7 @@ public class PlayerValues : Subject
                 lastValidPos = transform.position;
                 stuckTimer.Restart();
             }
+
             // }
             // else
             // {
@@ -570,6 +576,16 @@ public class PlayerValues : Subject
     {
         Vector3 offset = new Vector3(0, 1, 0);
         return transform.position + offset;
+    }
+
+    public void SetPaused(bool value)
+    {
+        paused = value;
+    }
+
+    public bool GetPaused()
+    {
+        return paused;
     }
 
     #endregion

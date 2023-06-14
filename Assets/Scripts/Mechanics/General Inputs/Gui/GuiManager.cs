@@ -12,8 +12,9 @@ public class GuiManager : MonoBehaviour
     private ShowCenterReference showCenterReference;
 
     //last move
-    [Header("last move")] [SerializeField] private Image lastMoveImage;
+    [Header("last move")] [SerializeField] private CanvasGroup lastMoveObject;
     [SerializeField] private TMP_Text lastMoveText;
+
 
     //machine gun
     [Header("machine gun")] [SerializeField]
@@ -28,15 +29,25 @@ public class GuiManager : MonoBehaviour
     [SerializeField] private TMP_Text raceText;
 
     //dialog
-    [Header("Dialog")] [SerializeField] private GameObject dialogObject;
+    [Header("Dialog")] [SerializeField] private CanvasGroup dialogObject;
     [SerializeField] private TMP_Text name;
     [SerializeField] private TMP_Text message;
     [SerializeField] private List<TMP_Text> answers;
     [SerializeField] private Image avatarImage;
 
     //objetives
-    [Header("Dialog")] [SerializeField] private GameObject objetiveObject;
+    [Header("objetives")] [SerializeField] private CanvasGroup objetiveObject;
     [SerializeField] private TMP_Text objetiveText;
+
+    //pause
+    [Header("Pause")] [SerializeField] private CanvasGroup pauseIndicator;
+    [SerializeField] private CanvasGroup pausePanel;
+    [SerializeField] private TMP_Text pauseMoveText;
+    [SerializeField] private Slider pauseProgressSlider;
+
+    //tutorial
+    [Header("Tutorial")] [SerializeField] private GameObject tutorialGameObject;
+    [SerializeField] private TMP_Text tutorialText;
 
 
     void Start()
@@ -45,29 +56,34 @@ public class GuiManager : MonoBehaviour
         canvasGroup = GetComponent<CanvasGroup>();
         showCenterReference = GetComponentInChildren<ShowCenterReference>();
         lastMoveText.text = "";
-        lastMoveImage.enabled = false;
+        lastMoveObject.alpha = 0;
         machinegunImage.sprite = null;
         machinegunImage.color = Color.clear;
         machinegunText.text = "";
         raceImage.color = Color.clear;
         raceText.text = "";
+
         HideDialog();
         HideObjetives();
+        HidePauseIndicator();
+        HidePausePanel();
     }
 
     public void ShowGui()
     {
         canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
     }
 
     public void HideGui()
     {
         canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
     }
 
     public void SetLastMoveText(Move move)
     {
-        lastMoveImage.enabled = true;
+        lastMoveObject.alpha = 1;
         lastMoveText.text = move.ToString();
         ShowCenters();
     }
@@ -86,6 +102,8 @@ public class GuiManager : MonoBehaviour
         machinegunText.text = shootingModeTexts[index];
     }
 
+    #region Race
+
     public void SetRaceTime(string time)
     {
         raceImage.color = Color.white;
@@ -98,6 +116,8 @@ public class GuiManager : MonoBehaviour
         raceText.text = "";
     }
 
+    #endregion
+
     private void ShowCenters()
     {
         showCenterReference.ShowColors();
@@ -107,12 +127,12 @@ public class GuiManager : MonoBehaviour
 
     public void ShowDialog()
     {
-        dialogObject.SetActive(true);
+        dialogObject.alpha = 1;
     }
 
     public void HideDialog()
     {
-        dialogObject.SetActive(false);
+        dialogObject.alpha = 0;
     }
 
     public void SetDialogName(string cad)
@@ -159,17 +179,74 @@ public class GuiManager : MonoBehaviour
 
     public void ShowObjetives()
     {
-        objetiveObject.SetActive(true);
+        objetiveObject.alpha = 1;
     }
 
     public void HideObjetives()
     {
-        objetiveObject.SetActive(false);
+        objetiveObject.alpha = 0;
     }
 
     public void SetObjetiveText(string text)
     {
         objetiveText.text = text;
+    }
+
+    #endregion
+
+    #region PAUSE
+
+    public void ShowPauseIndicator()
+    {
+        pauseIndicator.alpha = 1;
+    }
+
+    public void HidePauseIndicator()
+    {
+        pauseIndicator.alpha = 0;
+    }
+
+    public void ShowPausePanel()
+    {
+        canvasGroup.blocksRaycasts = true;
+        pausePanel.blocksRaycasts = true;
+        pausePanel.alpha = 1;
+        pausePanel.interactable = true;
+    }
+
+    public void HidePausePanel()
+    {
+        canvasGroup.blocksRaycasts = false;
+        pausePanel.blocksRaycasts = false;
+        pausePanel.alpha = 0;
+        pausePanel.interactable = false;
+    }
+
+    public void FillPauseSlider(float value)
+    {
+        pauseProgressSlider.value = Mathf.Clamp(value, 0, 1);
+    }
+
+    public void SetNextMoveText(string value)
+    {
+        pauseMoveText.text = value;
+    }
+
+    #endregion
+
+    #region Tutorial
+
+    public void SetTutorial(string cad)
+    {
+        tutorialText.text = cad;
+    }
+
+    public void ShowTutorial()
+    {
+    }
+
+    public void HideTutorial()
+    {
     }
 
     #endregion

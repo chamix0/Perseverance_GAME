@@ -19,7 +19,7 @@ public class RotatingWallInputs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_playerValues.GetCurrentInput() == CurrentInput.RotatingWall && _playerValues.GetInputsEnabled())
+        if (_playerValues.GetCurrentInput() == CurrentInput.RotatingWall && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
         {
             if (Input.GetKeyDown(KeyCode.E))
             {

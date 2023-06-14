@@ -203,6 +203,7 @@ public class MemoryMingameManager : Minigame
         DistributeColors();
         ShowUI();
         HideGameUi();
+        _minigameManager.UpdateCounter(0);
         _playerValues.SetCurrentInput(CurrentInput.MemoryMinigame);
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(StartGameCoroutine());
@@ -273,5 +274,6 @@ public class MemoryMingameManager : Minigame
         _cameraChanger.SetOrbitCamera();
         yield return new WaitForSeconds(2f);
         _playerValues.StandUp(true, 3f);
+        _minigameManager.EndMinigame();
     }
 }

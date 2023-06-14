@@ -20,12 +20,6 @@ public class Conversation : MonoBehaviour
     void Start()
     {
         ParseConversation();
-        foreach (var dialog in dialogs)
-        {
-            print(dialog.ToString());
-        }
-
-        print(txtConversation.text);
     }
 
     public void ResetConversation()
@@ -85,7 +79,6 @@ public class Conversation : MonoBehaviour
                     for (int i = 0; i < 2; i++)
                     {
                         line = reader.ReadLine();
-                        print(line);
                         nextDialog[i] = int.Parse(line ?? "-1");
                     }
 

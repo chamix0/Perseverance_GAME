@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: firing range mat
-  m_Shader: {fileID: -6465566751694194690, guid: bddeca859d501984b85a8ee19c638d3a, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 2d40fb6a3b916df4eb56282cce9a768d, type: 3}
   m_ValidKeywords:
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
@@ -136,12 +136,13 @@ Material:
     - _ZTest: 4
     - _ZWrite: 0
     - _ZWriteControl: 0
-    - _alpha: 0.34
-    - _alpha_clip: -0.6
+    - _alpha: 1
+    - _alpha_clip: 0.67
+    - _distorsion: 0.01
     - _fresnel_power: 17.4
     - _hardness: -2.53
-    - _multy: 0.75
-    - _offset: 0.32
+    - _multy: 0.85
+    - _offset: 0.57
     - _radius: -1.39
     m_Colors:
     - _Background_color: {r: 0, g: 1.2078432, b: 2, a: 1}
@@ -149,7 +150,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _pos: {r: -163.25, g: 7.8610783, b: -91.33, a: 0}
+    - _pos: {r: 29.185947, g: -0.13907439, b: -43.67246, a: 0}
     - _tiling_offset: {r: 0, g: 0, b: 0, a: 0}
     - _tiling_scale: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

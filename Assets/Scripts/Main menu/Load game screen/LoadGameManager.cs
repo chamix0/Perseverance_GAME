@@ -19,6 +19,8 @@ namespace Main_menu.Load_game_screen
         [SerializeField] private Toggle loadFileTogle;
         [SerializeField] private Toggle eraseFileTogle;
 
+        private LoadScreen loadScreen;
+
         //variables
         private bool _load = true; //to check wether it has to load a file or delete 
         private int _slotIndex;
@@ -33,6 +35,7 @@ namespace Main_menu.Load_game_screen
 
         private void Awake()
         {
+            loadScreen = FindObjectOfType<LoadScreen>();
             _jsoNsaving = FindObjectOfType<JSONsaving>();
             _menuManager = FindObjectOfType<MainMenuManager>();
             _saveData = _jsoNsaving._saveData;
@@ -90,7 +93,7 @@ namespace Main_menu.Load_game_screen
                 {
                     _saveData.SetLastSessionSlotIndex(_slotIndex);
                     //cambiar de escena
-                    print("cambio de escena");
+                    loadScreen.LoadLevels();
                 }
             }
             else

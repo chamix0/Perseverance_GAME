@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8279714859580772038}
   - component: {fileID: 134932150371698468}
   - component: {fileID: 2460970394822924021}
+  - component: {fileID: 3133120992460527751}
   m_Layer: 7
   m_Name: start timer trigger
   m_TagString: Untagged
@@ -351,6 +352,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f5e2706c25d0549a8d4f87de01e88b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3133120992460527751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11221052720800014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0bbb2741522642b999de3c5827e33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zoneIndex: 0
 --- !u!1 &6710533307484233282
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,7 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a080a24081b78274686c12f6682f17b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zone: 1
+  zone: 0
   trigger: {fileID: 2649520363772770052}
 --- !u!1 &7078461315855961254
 GameObject:
@@ -944,7 +958,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9071977101940039560}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0290985, y: 5.010383, z: 3.645732}

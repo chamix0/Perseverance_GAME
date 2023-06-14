@@ -11,24 +11,28 @@ public class Oscilate : MonoBehaviour
 // User Inputs
     public float amplitude = 0.5f;
     public float frequency = 1f;
+    [SerializeField] Vector3 dir;
+    [SerializeField] private float offset;
+    
 
 // Position Storage Variables
-    Vector3 posOffset = new Vector3();
-    Vector3 tempPos = new Vector3();
+    Vector3 posOffset;
+    Vector3 tempPos;
 
 // Use this for initialization
     void Start()
     {
 // Store the starting position & rotation of the object
         posOffset = transform.localPosition;
+        dir.Normalize();
     }
 
 // Update is called once per frame
     void Update()
     {
-// Float up/down with a Sin()
         tempPos = posOffset;
-        tempPos.y += Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude;
+        float value = Mathf.Sin((Time.fixedTime * Mathf.PI * frequency)+offset) * amplitude;
+        tempPos += dir * value;
         transform.localPosition = tempPos;
     }
 }

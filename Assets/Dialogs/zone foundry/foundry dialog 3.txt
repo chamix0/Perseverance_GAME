@@ -1,0 +1,15 @@
+-
+t
+Alice
+So this is the foundry...
+1
+-
+t
+Alice
+It seems to also be protected with terminals
+2
+-
+t
+Alice
+Try not to fall in the lava as im not exactly sure of what would happen if you do. 
+-1

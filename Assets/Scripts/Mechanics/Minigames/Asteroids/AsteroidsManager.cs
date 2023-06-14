@@ -292,6 +292,7 @@ public class AsteroidsManager : Minigame
         round = 0;
         ShowUI();
         HideGameUi();
+        _minigameManager.UpdateCounter(0);
         _playerValues.SetCurrentInput(CurrentInput.AsteroidMinigame);
         _playerValues.SetInputsEnabled(true);
         StartCoroutine(StartGameCoroutine());

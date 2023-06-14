@@ -6,13 +6,13 @@ namespace Main_menu.Load_game_screen
     {
         //components
         private MyMenuInputManager _myInputManager;
-        private JSONsaving _jsoNsaving;
         private LoadGameManager _loadGameManager;
+        private LoadScreen loadScreen;
 
         void Start()
         {
+            loadScreen = FindObjectOfType<LoadScreen>();
             _myInputManager = FindObjectOfType<MyMenuInputManager>();
-            _jsoNsaving = FindObjectOfType<JSONsaving>();
             _loadGameManager = FindObjectOfType<LoadGameManager>();
         }
 

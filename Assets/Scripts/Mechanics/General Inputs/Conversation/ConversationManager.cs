@@ -114,7 +114,10 @@ public class ConversationManager : MonoBehaviour
         answerIndex = 0;
         wordIndex = 0;
         writtenCad = "";
-        guiManager.SetDialogName(conversation.GetCurrentDialog().GetName());
+        string cName = conversation.GetCurrentDialog().GetName();
+        guiManager.SetDialogName(cName);
+        SetAvatarImage(cName);
+
         if (conversation.GetCurrentDialog().GetDialogType() is DialogType.Talk)
             guiManager.SetDialogAnswers(new[] { "", "" });
         soundDialogs.PlayTypeing();
@@ -128,6 +131,7 @@ public class ConversationManager : MonoBehaviour
         {
             if (conversation.GetCurrentDialog().GetDialogType() is DialogType.Question)
             {
+                soundDialogs.PlaySelect();
                 if (conversation.NextDialog(answerIndex) == null)
                     EndConversation();
                 else

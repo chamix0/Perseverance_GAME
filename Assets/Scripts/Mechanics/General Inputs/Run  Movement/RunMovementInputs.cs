@@ -23,7 +23,7 @@ public class RunMovementInputs : MonoBehaviour
     {
         //keyboard inputs
         //accelerate and decelerate
-        if (_playerValues.GetCurrentInput() == CurrentInput.RaceMovement && _playerValues.GetInputsEnabled())
+        if (_playerValues.GetCurrentInput() == CurrentInput.RaceMovement && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
         {
             if (!stamina.beingShown)
                 stamina.ShowStamina();

@@ -14,6 +14,7 @@ public class MachinegunMovementInputs : MonoBehaviour
     private CameraController _cameraController;
     private CameraChanger _cameraChanger;
     private List<MachineGun> machineGuns;
+    private GuiManager guiManager;
 
     private Stopwatch shootTimer;
     [SerializeField] private int shootCooldown = 250;
@@ -28,6 +29,7 @@ public class MachinegunMovementInputs : MonoBehaviour
 
     void Start()
     {
+        guiManager = FindObjectOfType<GuiManager>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraController = FindObjectOfType<CameraController>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
@@ -61,8 +63,16 @@ public class MachinegunMovementInputs : MonoBehaviour
             }
         }
 
-        if (_playerValues.GetCurrentInput() == CurrentInput.ShootMovement && _playerValues.GetInputsEnabled())
+        if (_playerValues.GetCurrentInput() == CurrentInput.ShootMovement && _playerValues.GetInputsEnabled() &&
+            !_playerValues.GetPaused())
         {
+            if (Input.anyKey)
+            {
+                guiManager.SetTutorial(
+                    "WS - Increase/Descrease gear    RCLICK - Aim    LCLICK - Shoot      EQ - Change shooting mode       D - Lights      " +
+                    "A - First person mode");
+            }
+
             if (Input.GetKeyDown(KeyCode.W))
             {
                 if (_playerValues.GetGear() < 3)
@@ -145,11 +155,19 @@ public class MachinegunMovementInputs : MonoBehaviour
     public void PerformAction(Move move)
     {
         //set camera height
+
         if (_cameraChanger.activeCamera is ActiveCamera.Orbit)
             _cameraController.RotateVerticalCustom(yAngle);
         _playerValues.CheckIfStuck();
         if (_playerValues.GetInputsEnabled())
         {
+            if (_cameraChanger.activeCamera is ActiveCamera.FirstPerson)
+                guiManager.SetTutorial(
+                    "R - Camera vertical axis   U - Camera horizonatal axis    L - Aim and load     L' - Shoot     B' - Lights      B'2 - First person mode       F - Change Shooting mode");
+            else
+                guiManager.SetTutorial(
+                    "R - Increase/Decrease Gear    U - Camera horizonatal axis    L - Aim and load     L' - Shoot     B' - Lights      B'2 - First person mode       F - Change Shooting mode");
+
             if (move.face == FACES.R)
             {
                 if (_cameraChanger.activeCamera is ActiveCamera.FirstPerson)

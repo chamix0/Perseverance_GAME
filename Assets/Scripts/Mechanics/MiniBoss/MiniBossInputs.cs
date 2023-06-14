@@ -35,7 +35,7 @@ namespace Mechanics.MiniBoss
 
         void Update()
         {
-            if (_playerValues.GetCurrentInput() == CurrentInput.MiniBoss && _playerValues.GetInputsEnabled())
+            if (_playerValues.GetCurrentInput() == CurrentInput.MiniBoss && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
             {
                 if (_miniBossManager._phase == ScreenPhase.Game)
                 {
