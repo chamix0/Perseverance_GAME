@@ -1,18 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+
 [DefaultExecutionOrder(1)]
 public class SwitchInterruptor : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] SwitchDoorManager switchDoorManager;
     private MeshRenderer renderer;
+    private Stopwatch timer;
+    private float cooldoown = 500;
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
 
     void Start()
     {
         renderer = GetComponent<MeshRenderer>();
+        timer = new Stopwatch();
+        timer.Start();
     }
 
     public void SetColor()
@@ -28,8 +34,11 @@ public class SwitchInterruptor : MonoBehaviour
     {
         if (collision.gameObject.layer == 8)
         {
-            switchDoorManager.FlickTheSwitch();
+            if (timer.Elapsed.TotalMilliseconds > cooldoown)
+            {
+                switchDoorManager.FlickTheSwitch();
+                timer.Restart();
+            }
         }
     }
-    
 }

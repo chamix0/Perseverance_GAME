@@ -110,6 +110,7 @@ public class MachineGun : Subject
                 automaticShooting();
         }
 
+        _rigidbody.transform.LookAt(aimPoint);
         drumRigidbody.transform.localRotation = Quaternion.Euler(90, 0, drumRigidbody.transform
             .rotation.eulerAngles.z);
     }

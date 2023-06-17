@@ -700,7 +700,7 @@ public class MiniBossManager : MonoBehaviour
                             StartCoroutine(HealthBarCoroutine(4, _bossHealth, attackDamage * 2));
                             _bossHealth = Mathf.Max(0, _bossHealth - attackDamage * 2);
                         }
-                        
+
                         PlayAnimation(0);
                         break;
                 }
@@ -850,6 +850,7 @@ public class MiniBossManager : MonoBehaviour
 
     private void EndMinigame()
     {
+        soundManager.PlayFinishedSound();
         StopMinigame();
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(EndGameCoroutine());
@@ -859,6 +860,7 @@ public class MiniBossManager : MonoBehaviour
     {
         StopMinigame();
         _playerValues.SetInputsEnabled(false);
+        soundManager.PlayInCorrectSound();
         StartCoroutine(ExitMinigameCoroutine());
     }
 

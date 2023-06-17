@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1699018784539127745}
-  - component: {fileID: 1699018784539127744}
   m_Layer: 0
   m_Name: Enemy door
   m_TagString: Untagged
@@ -34,19 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1699018784539127744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699018784539127751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3d39cb8507231f4a9e46c03d308471c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  screenText: {fileID: 8229434243921168196}
 --- !u!1001 &765956710399026438
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -354,7 +340,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8791485744770635391, guid: 02c05a07a7e699545a54e81d31a90058, type: 3}
   m_PrefabInstance: {fileID: 1699018785394484242}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 8851586148815012418}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9130e40826558cd409945707eeb8e4ee, type: 3}
@@ -365,6 +351,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7873143312390317651, guid: 02c05a07a7e699545a54e81d31a90058, type: 3}
   m_PrefabInstance: {fileID: 1699018785394484242}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8851586148815012418 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7873143312390317648, guid: 02c05a07a7e699545a54e81d31a90058, type: 3}
+  m_PrefabInstance: {fileID: 1699018785394484242}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6577450191113142863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8851586148815012418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b3e772d6b105a4384392cdf38407ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shooterZones: []
+  doorManager: {fileID: 7896359503666459245}
+  screenText: {fileID: 8229434243921168196}
 --- !u!1001 &4504310231952344980
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -372,6 +378,58 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1699018784539127745}
     m_Modifications:
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: nodes.Array.data[6]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[7].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[7].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[8].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[8].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[9].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[9].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[10].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[10].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[11].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[11].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[12].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190001051633715108, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
+      propertyPath: paths.Array.data[12].y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9190001051633715109, guid: 515206f83cbc4a5438be8f9ecd0160ca, type: 3}
       propertyPath: m_Name
       value: enemy shooters

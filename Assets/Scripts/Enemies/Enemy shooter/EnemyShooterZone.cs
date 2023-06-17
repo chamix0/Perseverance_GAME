@@ -10,16 +10,15 @@ public class EnemyShooterZone : MonoBehaviour
 {
     // Start is called before the first frame update
     private List<EnemyShooter> enemies;
+
     private EnemyPath enemyPath;
-    [SerializeField] private DoorManager doorManager;
-    private string enemiesLeftCad;
-    [SerializeField] private TMP_Text screenText;
+
+    // [SerializeField] private DoorManager doorManager;
     private bool _minigameFinished = false;
 
     private void Awake()
     {
         enemies = new List<EnemyShooter>();
-        enemiesLeftCad = "";
     }
 
     void Start()
@@ -27,7 +26,6 @@ public class EnemyShooterZone : MonoBehaviour
         enemies.AddRange(GetComponentsInChildren<EnemyShooter>());
         enemyPath = GetComponent<EnemyPath>();
         AssignInitialPositions();
-        StartCoroutine(WaitForEnemiesCoroutine());
     }
 
 
@@ -72,10 +70,8 @@ public class EnemyShooterZone : MonoBehaviour
 
     private void Update()
     {
-        if (!_minigameFinished && !enemiesLeftCad.Equals(GetMissingTargetsCad()))
+        if (!_minigameFinished)
         {
-            enemiesLeftCad = GetMissingTargetsCad();
-            screenText.text = enemiesLeftCad;
             if (GetMissingEnemies() <= 0)
                 _minigameFinished = true;
         }
@@ -93,14 +89,12 @@ public class EnemyShooterZone : MonoBehaviour
         return enemies.Count - count;
     }
 
-    string GetMissingTargetsCad()
+    public List<EnemyShooter> GetEnemies()
     {
-        return "Enemies Left : " + GetMissingEnemies();
+        return enemies;
     }
 
-    IEnumerator WaitForEnemiesCoroutine()
-    {
-        yield return new WaitUntil(() => AllEnemiesDead());
-        doorManager.OpenDoor();
-    }
+
+
+
 }

@@ -266,7 +266,6 @@ public class CameraEnemy : Enemy
                 detectionDepth, collision))
             if (auxHit.transform.gameObject.CompareTag("Player"))
             {
-                print("AAAAAAAAAAAAAAAAAAA");
                 return true;
             }
 

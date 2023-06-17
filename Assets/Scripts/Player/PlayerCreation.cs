@@ -55,7 +55,7 @@ public class PlayerCreation : MonoBehaviour
         newMaterials = modelTextures[model].transform.Find("Cube.005").gameObject.GetComponent<Renderer>()
             .sharedMaterials;
         SetMaterials(oldMaterials, newMaterials);
-        
+
         SpawnPoint();
     }
 
@@ -63,9 +63,19 @@ public class PlayerCreation : MonoBehaviour
     {
         if (_playerValues.gameData.GetIsNewGame())
 
-            _playerValues.transform.position = newGamePos.position;
+        {
+            if (newGamePos)
+            {
+                _playerValues.transform.position = newGamePos.position;
+            }
+        }
         else
-            _playerValues.transform.position = startedGamePos.position;
+        {
+            if (startedGamePos)
+            {
+                _playerValues.transform.position = startedGamePos.position;
+            }
+        }
     }
 
     private void SetMaterials(Material[] oldMaterials, Material[] newMaterials)

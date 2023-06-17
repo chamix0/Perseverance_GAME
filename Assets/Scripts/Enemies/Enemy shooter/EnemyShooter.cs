@@ -1,7 +1,9 @@
 using System.Diagnostics;
+using Codice.Client.Commands;
 using Enemies;
 using Player.Observer_pattern;
 using UnityEngine;
+using UnityEngine.UI;
 
 ///comportamineto de este enemigo
 ///
@@ -29,6 +31,8 @@ public class EnemyShooter : Enemy, IObserver
     [SerializeField] private States currentState = States.Patrol;
     [SerializeField] private ParticleSystem flash;
 
+    private int maxLives;
+
     //outline
     private Outline outline;
     private Stopwatch outlineTimer;
@@ -54,17 +58,20 @@ public class EnemyShooter : Enemy, IObserver
     private ShootBullet _shootBullet;
     [SerializeField] private float shootCooldown = 4;
     [SerializeField] private float shootSpeed = 10;
-    private Transform respawn;
+    [SerializeField] private Transform respawn;
     [SerializeField] private Vector3 shootOffset;
 
     [SerializeField] private bool isSearcher;
     private bool moveToPlayer;
     [SerializeField] private float minDistanceFromPlayer = 5;
-
     private bool isDead;
-    
+
     //sounds
     private EnemySounds enemySounds;
+
+    //health bar
+    [SerializeField] private CanvasGroup healthBarCanvas;
+    [SerializeField] private Slider healthBar;
 
     private void Awake()
     {
@@ -89,7 +96,7 @@ public class EnemyShooter : Enemy, IObserver
         _shootBullet = GetComponentInChildren<ShootBullet>();
         outline.OutlineColor = Color.clear;
         ChangeState(States.Patrol, 0);
-        respawn = transform.parent;
+        maxLives = lives;
     }
 
     private void Update()
@@ -269,6 +276,7 @@ public class EnemyShooter : Enemy, IObserver
         nextNode = node;
         rigidbody.MovePosition(enemyPath.GetNodeTransform(node).transform.position);
         dissolveMaterials.DissolveIn();
+        healthBar.value = 1;
     }
 
     private void StopWander()
@@ -298,7 +306,8 @@ public class EnemyShooter : Enemy, IObserver
 
     private void MoveToTarget()
     {
-        Vector3 dest = new Vector3(enemyPath.GetNodeTransform(nextNode).position.x,0,enemyPath.GetNodeTransform(nextNode).position.z) ;
+        Vector3 dest = new Vector3(enemyPath.GetNodeTransform(nextNode).position.x, 0,
+            enemyPath.GetNodeTransform(nextNode).position.z);
         Vector3 pos = new Vector3(transform.position.x, 0, transform.position.z);
         Vector3 direction = dest - pos;
         rigidbody.AddForce(direction.normalized * force, forceMode);
@@ -409,15 +418,18 @@ public class EnemyShooter : Enemy, IObserver
 
     public override void RecieveDamage()
     {
+        healthBar.value = (float)lives / maxLives;
         if (lives > 0)
         {
-            outlineTimer.Restart();
-            outline.OutlineColor = Color.red;
             lives--;
             if (lives <= 0)
+            {
                 Die();
+            }
             else
             {
+                outlineTimer.Restart();
+                outline.OutlineColor = Color.red;
                 _timer.Restart();
                 dissolveMaterials.Hit();
                 if (currentState != States.Alert)
@@ -430,16 +442,18 @@ public class EnemyShooter : Enemy, IObserver
     {
         return isDead;
     }
+
     private void Die()
     {
-
+        healthBarCanvas.alpha = 0;
         outlineTimer.Stop();
-        dissolveMaterials.DissolveOut();
+        outline.OutlineMode = Outline.Mode.OutlineHidden;
         flash.Stop();
-        animator.SetInteger(Index, 0);
+        ChangeState(States.Off, 0);
         enemySounds.PlayDieSound();
         rigidbody.detectCollisions = false;
         StopWander();
+        dissolveMaterials.DissolveOut();
         isDead = true;
     }
 }

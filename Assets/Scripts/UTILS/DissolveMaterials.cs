@@ -18,8 +18,10 @@ public class DissolveMaterials : MonoBehaviour
     private List<SkinnedMeshRenderer> skinnedMeshRenderers;
     private Material hitMaterial;
     private bool updateValue;
+
     private float currentVal = 1, targetValue;
-    private float _tA;
+
+    // private float _tA;
     private static readonly int TimeStep = Shader.PropertyToID("_Time_Step");
     private static readonly int Albedo = Shader.PropertyToID("_Albedo");
     private static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
@@ -219,7 +221,7 @@ public class DissolveMaterials : MonoBehaviour
         currentVal = 1;
 
         targetValue = 0;
-        _tA = 0.0f;
+        // _tA = 0.0f;
         updateValue = true;
     }
 
@@ -254,45 +256,52 @@ public class DissolveMaterials : MonoBehaviour
 
         currentVal = 0;
         targetValue = 1;
-        _tA = 0.0f;
+        // _tA = 0.0f;
         updateValue = true;
+        StopAllCoroutines();
     }
 
     public void Hit()
     {
-        foreach (var skinnedMeshRenderer in meshRenderers)
+        if (updateValue == false)
         {
-            if (!exceptions.Contains(skinnedMeshRenderer.gameObject))
+            foreach (var skinnedMeshRenderer in meshRenderers)
             {
-                skinnedMeshRenderer.sharedMaterial = hitMaterial;
+                if (!exceptions.Contains(skinnedMeshRenderer.gameObject))
+                {
+                    skinnedMeshRenderer.sharedMaterial = hitMaterial;
+                }
             }
-        }
 
-        foreach (var meshRenderer in skinnedMeshRenderers)
-        {
-            if (dissolveMaterials.ContainsKey(meshRenderer.GetInstanceID()) &&
-                !exceptions.Contains(meshRenderer.gameObject))
+            foreach (var meshRenderer in skinnedMeshRenderers)
             {
-                meshRenderer.sharedMaterial = hitMaterial;
+                if (dissolveMaterials.ContainsKey(meshRenderer.GetInstanceID()) &&
+                    !exceptions.Contains(meshRenderer.gameObject))
+                {
+                    meshRenderer.sharedMaterial = hitMaterial;
+                }
             }
-        }
 
-        StartCoroutine(HitCoroutine());
+            StartCoroutine(HitCoroutine());
+        }
     }
 
     IEnumerator HitCoroutine()
     {
         yield return new WaitForSeconds(0.1f);
-        PutOriginalMaterials();
+        if (updateValue == false)
+        {
+            PutOriginalMaterials();
+        }
     }
 
 
     private void Fade()
     {
         // currentVal = Mathf.Lerp(currentVal, targetValue, _tA);
-        _tA = speed * Time.unscaledDeltaTime;
+        float t = speed * Time.unscaledDeltaTime;
 
-        currentVal = Mathf.MoveTowards(currentVal, targetValue, _tA);
+        currentVal = Mathf.MoveTowards(currentVal, targetValue, t);
         foreach (var sharedMats in dissolveMaterials)
         {
             foreach (var mat in sharedMats.Value)
@@ -307,14 +316,9 @@ public class DissolveMaterials : MonoBehaviour
             if (targetValue == 0)
             {
                 PutOriginalMaterials();
-                _tA = 1.0f;
-                updateValue = false;
             }
-            else
-            {
-                _tA = 1.0f;
-                updateValue = false;
-            }
+
+            updateValue = false;
         }
     }
 }

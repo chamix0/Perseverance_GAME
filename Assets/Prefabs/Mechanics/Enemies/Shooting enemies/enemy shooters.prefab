@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6401402320364554749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6943624604321730162}
+  m_Layer: 0
+  m_Name: Respawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6943624604321730162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6401402320364554749}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9190001051633715111}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9190001051633715109
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,6 +63,7 @@ Transform:
   m_Children:
   - {fileID: 9190001053625567368}
   - {fileID: 9190001052348532797}
+  - {fileID: 6943624604321730162}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -47,6 +79,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322548cadc7ca7342b5be91cffd8b2e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorManager: {fileID: 0}
+  screenText: {fileID: 0}
 --- !u!114 &9190001051633715108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,7 +100,7 @@ MonoBehaviour:
   - {fileID: 9190001052176557009}
   - {fileID: 9190001053024481671}
   - {fileID: 9190001053300986078}
-  - {fileID: 9190001053026589442}
+  - {fileID: 0}
   paths:
   - {x: 0, y: 1}
   - {x: 0, y: 2}
@@ -75,12 +109,12 @@ MonoBehaviour:
   - {x: 4, y: 2}
   - {x: 2, y: 1}
   - {x: 1, y: 0}
-  - {x: 1, y: 3}
-  - {x: 1, y: 5}
-  - {x: 5, y: 3}
-  - {x: 5, y: 3}
-  - {x: 4, y: 6}
-  - {x: 6, y: 3}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
 --- !u!1 &9190001051691304581
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,6 +455,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4283280451267738826, guid: fcb93ae5af5abb8459714dd2a0ba2150, type: 3}
+      propertyPath: respawn
+      value: 
+      objectReference: {fileID: 6943624604321730162}
+    - target: {fileID: 4283280451267738826, guid: fcb93ae5af5abb8459714dd2a0ba2150, type: 3}
       propertyPath: enemyPath
       value: 
       objectReference: {fileID: 9190001051633715108}
@@ -494,6 +532,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4283280451267738826, guid: 2e31eaef01b41d243bdab04b901d354c, type: 3}
+      propertyPath: respawn
+      value: 
+      objectReference: {fileID: 6943624604321730162}
     - target: {fileID: 4283280451267738826, guid: 2e31eaef01b41d243bdab04b901d354c, type: 3}
       propertyPath: enemyPath
       value: 

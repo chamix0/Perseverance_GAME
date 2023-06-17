@@ -44,6 +44,7 @@ public class MachingunRotation : MonoBehaviour
             placeholder.rotation =
                 Quaternion.Euler(0, cameraChanger.GetActiveCam().transform.rotation.eulerAngles.y, 0);
         }
+        
     }
 
 
