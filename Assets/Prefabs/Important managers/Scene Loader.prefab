@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3302485230668024374}
   - component: {fileID: 1066257475791240734}
   - component: {fileID: 7511407122332841840}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 195975506026208693}
   - component: {fileID: 262920287574371332}
   - component: {fileID: 762021819860498716}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 5980165440272200727}
   - component: {fileID: 5059875368965394819}
   - component: {fileID: 5343982779476884504}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.000015258789, y: 0}
+  m_AnchoredPosition: {x: -5.0410004, y: 0}
   m_SizeDelta: {x: -0.000048161, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5059875368965394819
@@ -238,7 +238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3182782962859812523}
   - component: {fileID: 613379612358405867}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ GameObject:
   - component: {fileID: 1940058868870642877}
   - component: {fileID: 7878119552299340396}
   - component: {fileID: 6738460182317550156}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Loading text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -467,7 +467,7 @@ GameObject:
   - component: {fileID: 69373909491739852}
   - component: {fileID: 2979850994309357}
   - component: {fileID: 5591128697387657899}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Scene Loader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -596,7 +596,7 @@ GameObject:
   - component: {fileID: 4358149933075854240}
   - component: {fileID: 1713936175100942959}
   - component: {fileID: 3610298971134546905}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: tip text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -729,7 +729,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2497630495156759009}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -754,6 +754,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -0.000038146973, y: 0}
+  m_AnchoredPosition: {x: -7.500099, y: 0}
   m_SizeDelta: {x: 0.00010681, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

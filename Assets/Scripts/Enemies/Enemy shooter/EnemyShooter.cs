@@ -27,7 +27,6 @@ public class EnemyShooter : Enemy, IObserver
     public ForceMode forceMode;
     private DissolveMaterials dissolveMaterials;
     [SerializeField] private States currentState = States.Patrol;
-
     [SerializeField] private ParticleSystem flash;
 
     //outline
@@ -62,6 +61,8 @@ public class EnemyShooter : Enemy, IObserver
     private bool moveToPlayer;
     [SerializeField] private float minDistanceFromPlayer = 5;
 
+    private bool isDead;
+    
     //sounds
     private EnemySounds enemySounds;
 
@@ -425,10 +426,13 @@ public class EnemyShooter : Enemy, IObserver
         }
     }
 
+    public bool GetEnemyDead()
+    {
+        return isDead;
+    }
     private void Die()
     {
-        //sonidos
-        //efecto de particulas outline.OutlineWidth = 0;
+
         outlineTimer.Stop();
         dissolveMaterials.DissolveOut();
         flash.Stop();
@@ -436,5 +440,6 @@ public class EnemyShooter : Enemy, IObserver
         enemySounds.PlayDieSound();
         rigidbody.detectCollisions = false;
         StopWander();
+        isDead = true;
     }
 }

@@ -62,7 +62,6 @@ public class MiniBossManager : MonoBehaviour
     private GameObject gameScreen;
     private GameObject fightScreen;
     private MiniBossBase _miniBossBase;
-    private GuiManager guiManager;
     private MinigameSoundManager soundManager;
 
     //timer
@@ -209,7 +208,6 @@ public class MiniBossManager : MonoBehaviour
 
         _normalColor = _buttonsImages[0].material.GetColor(BackgroundColor);
         _playerValues = FindObjectOfType<PlayerValues>();
-        guiManager = FindObjectOfType<GuiManager>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         _genericScreenUi.SetTextAlpha(0);
         soundManager = FindObjectOfType<MinigameSoundManager>();
@@ -664,8 +662,17 @@ public class MiniBossManager : MonoBehaviour
                 switch (_bossAction)
                 {
                     case BossAction.Attack:
-                        StartCoroutine(HealthBarCoroutine(4, _bossHealth, maxAttackDamage * 2));
-                        _bossHealth = Mathf.Max(0, _bossHealth - attackDamage * 2);
+                        if (actionSuccesful)
+                        {
+                            StartCoroutine(HealthBarCoroutine(4, _bossHealth, maxAttackDamage * 2));
+                            _bossHealth = Mathf.Max(0, _bossHealth - maxAttackDamage * 2);
+                        }
+                        else
+                        {
+                            StartCoroutine(HealthBarCoroutine(4, _bossHealth, attackDamage * 2));
+                            _bossHealth = Mathf.Max(0, _bossHealth - attackDamage * 2);
+                        }
+
                         lives--;
                         PlayAnimation(5);
                         StartCoroutine(livesCoroutine(4.5f));
@@ -683,8 +690,17 @@ public class MiniBossManager : MonoBehaviour
 
                         break;
                     case BossAction.Nothing:
-                        StartCoroutine(HealthBarCoroutine(4, _bossHealth, maxAttackDamage * 2));
-                        _bossHealth = Mathf.Max(0, _bossHealth - attackDamage * 2);
+                        if (actionSuccesful)
+                        {
+                            StartCoroutine(HealthBarCoroutine(4, _bossHealth, maxAttackDamage * 2));
+                            _bossHealth = Mathf.Max(0, _bossHealth - maxAttackDamage * 2);
+                        }
+                        else
+                        {
+                            StartCoroutine(HealthBarCoroutine(4, _bossHealth, attackDamage * 2));
+                            _bossHealth = Mathf.Max(0, _bossHealth - attackDamage * 2);
+                        }
+                        
                         PlayAnimation(0);
                         break;
                 }
@@ -827,7 +843,6 @@ public class MiniBossManager : MonoBehaviour
         _bossHealth = _bossMaxHealth = bossHealth;
 
         //set inputs
-        guiManager.HideGui();
         _playerValues.SetCurrentInput(CurrentInput.MiniBoss);
         _playerValues.SetInputsEnabled(true);
         StartCoroutine(StartGameCoroutine());
@@ -861,7 +876,6 @@ public class MiniBossManager : MonoBehaviour
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(2f);
         _miniBossBase.ExitBase();
-        guiManager.ShowGui();
     }
 
     IEnumerator StartGameCoroutine()

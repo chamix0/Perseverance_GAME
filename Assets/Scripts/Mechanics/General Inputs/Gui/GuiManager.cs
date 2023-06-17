@@ -49,6 +49,10 @@ public class GuiManager : MonoBehaviour
     [Header("Tutorial")] [SerializeField] private GameObject tutorialGameObject;
     [SerializeField] private TMP_Text tutorialText;
 
+    //gears
+    [Header("Gears")] [SerializeField] private GameObject gearsGameObject;
+    [SerializeField] private List<Image> gearImages;
+    private int currentGear = 0;
 
     void Start()
     {
@@ -67,6 +71,16 @@ public class GuiManager : MonoBehaviour
         HideObjetives();
         HidePauseIndicator();
         HidePausePanel();
+    }
+
+    private void Update()
+    {
+        //gears
+        if (_playerValues.GetGear() != currentGear)
+        {
+            currentGear = _playerValues.GetGear();
+            HighlightGear(currentGear);
+        }
     }
 
     public void ShowGui()
@@ -247,6 +261,36 @@ public class GuiManager : MonoBehaviour
 
     public void HideTutorial()
     {
+    }
+
+    #endregion
+
+    #region Gears
+
+    public void HighlightGear(int gear)
+    {
+        if (gear == 0)
+        {
+            gearImages[0].color = CopyColorChangAlpha(gearImages[0].color, 1);
+            for (int j = 1; j < gearImages.Count; j++)
+                gearImages[j].color = CopyColorChangAlpha(gearImages[j].color, 0.05f);
+        }
+        else
+        {
+            gearImages[0].color = CopyColorChangAlpha(gearImages[0].color, 0.05f);
+            for (int i = 1; i < gearImages.Count; i++)
+            {
+                if (i <= gear)
+                    gearImages[i].color = CopyColorChangAlpha(gearImages[i].color, 1);
+                else
+                    gearImages[i].color = CopyColorChangAlpha(gearImages[i].color, 0.05f);
+            }
+        }
+    }
+
+    private Color CopyColorChangAlpha(Color inColor, float alpha)
+    {
+        return new Color(inColor.r, inColor.g, inColor.b, alpha);
     }
 
     #endregion

@@ -74,7 +74,6 @@ public class TargetDoor : MonoBehaviour
     IEnumerator WaitForTargetsCoroutine()
     {
         yield return new WaitUntil(() => AllTargetsShot());
-        print("AAAAAAAAA");
         door.OpenDoor();
     }
 }

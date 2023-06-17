@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -10,10 +11,15 @@ public class EnemyShooterZone : MonoBehaviour
     // Start is called before the first frame update
     private List<EnemyShooter> enemies;
     private EnemyPath enemyPath;
+    [SerializeField] private DoorManager doorManager;
+    private string enemiesLeftCad;
+    [SerializeField] private TMP_Text screenText;
+    private bool _minigameFinished = false;
 
     private void Awake()
     {
         enemies = new List<EnemyShooter>();
+        enemiesLeftCad = "";
     }
 
     void Start()
@@ -21,12 +27,9 @@ public class EnemyShooterZone : MonoBehaviour
         enemies.AddRange(GetComponentsInChildren<EnemyShooter>());
         enemyPath = GetComponent<EnemyPath>();
         AssignInitialPositions();
+        StartCoroutine(WaitForEnemiesCoroutine());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
 
     public int GetNewTarget(int currentNode)
     {
@@ -54,5 +57,50 @@ public class EnemyShooterZone : MonoBehaviour
 
             unusedNodes.Remove(index);
         }
+    }
+
+    bool AllEnemiesDead()
+    {
+        foreach (var enemy in enemies)
+        {
+            if (!enemy.GetEnemyDead())
+                return false;
+        }
+
+        return true;
+    }
+
+    private void Update()
+    {
+        if (!_minigameFinished && !enemiesLeftCad.Equals(GetMissingTargetsCad()))
+        {
+            enemiesLeftCad = GetMissingTargetsCad();
+            screenText.text = enemiesLeftCad;
+            if (GetMissingEnemies() <= 0)
+                _minigameFinished = true;
+        }
+    }
+
+    int GetMissingEnemies()
+    {
+        int count = 0;
+        foreach (var enemy in enemies)
+        {
+            if (enemy.GetEnemyDead())
+                count++;
+        }
+
+        return enemies.Count - count;
+    }
+
+    string GetMissingTargetsCad()
+    {
+        return "Enemies Left : " + GetMissingEnemies();
+    }
+
+    IEnumerator WaitForEnemiesCoroutine()
+    {
+        yield return new WaitUntil(() => AllEnemiesDead());
+        doorManager.OpenDoor();
     }
 }

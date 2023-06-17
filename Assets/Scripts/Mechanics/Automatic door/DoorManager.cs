@@ -13,7 +13,7 @@ public class DoorManager : MonoBehaviour
     private bool _openDoor, _closeDoor;
     [NonSerialized] public bool opened, _inside;
     private float _closeY, _openY;
-
+    [SerializeField] private float doorLiftHeight = 8;
     private Stopwatch closeTimer;
 
     private float closeTime = 10f;
@@ -29,7 +29,7 @@ public class DoorManager : MonoBehaviour
         door = transform.Find("Door").gameObject;
         opened = false;
         _closeY = door.transform.position.y;
-        _openY = _closeY + 8;
+        _openY = _closeY + doorLiftHeight;
         closeTimer.Start();
     }
 
