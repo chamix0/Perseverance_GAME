@@ -84,11 +84,11 @@ public class CameraEnemy : Enemy
     {
         Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit,
             Single.PositiveInfinity, collision);
-        
+
         // print(InSight());
         if (_updateCamera)
             SmoothllylookAt();
-        
+
         //special transitions
         if (lives > 0)
         {
@@ -154,7 +154,11 @@ public class CameraEnemy : Enemy
 
     private void Searching()
     {
-        FollowSmothly();
+        if (InSight())
+        {
+            FollowSmothly();
+        }
+
         //transition
 
         if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))

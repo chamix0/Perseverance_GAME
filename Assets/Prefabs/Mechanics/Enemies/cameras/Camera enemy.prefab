@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 3818997187774643223}
   - component: {fileID: 3400741944394553489}
   - component: {fileID: 7214869587854519490}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: camera filter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ GameObject:
   - component: {fileID: 6876214610722518708}
   - component: {fileID: 1470493047823444882}
   - component: {fileID: 3139399136778674255}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1060,7 +1060,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4932
+  m_VersionIndex: 4935
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1489,7 +1489,7 @@ GameObject:
   - component: {fileID: 6082898789570935558}
   - component: {fileID: 6158387223742180597}
   - component: {fileID: 5792695480237700642}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: camera cover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1655,7 +1655,7 @@ GameObject:
   - component: {fileID: 8889969463138556560}
   - component: {fileID: 3366705641248399247}
   - component: {fileID: 585187329189872592}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: camera lense
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1740,7 +1740,8 @@ GameObject:
   - component: {fileID: 6529869113023851796}
   - component: {fileID: 1403373078}
   - component: {fileID: 1403373079}
-  m_Layer: 0
+  - component: {fileID: 8269540026432185421}
+  m_Layer: 11
   m_Name: camera0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1825,7 +1826,7 @@ MeshCollider:
   m_GameObject: {fileID: 7577700190863890235}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -1842,6 +1843,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a4132cb54f53f647ada18d3ae25379c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &8269540026432185421
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7577700190863890235}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.022476567, y: 0.014527279, z: 0.013764795}
+  m_Center: {x: -0.0072092908, y: 0.00041386575, z: 0.0044684294}
 --- !u!1 &9146769702679946947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1853,7 +1867,7 @@ GameObject:
   - component: {fileID: 5676537535268526721}
   - component: {fileID: 5151169202654069548}
   - component: {fileID: 7934386694047362931}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: anthena
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1946,7 +1960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3609717316829815477, guid: bfcf2325a67f7a7488132fd73c737e29, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.856
+      value: 1.066
       objectReference: {fileID: 0}
     - target: {fileID: 3609717316829815477, guid: bfcf2325a67f7a7488132fd73c737e29, type: 3}
       propertyPath: m_LocalRotation.w
