@@ -14,6 +14,8 @@ public class CameraEnemy : Enemy
     [SerializeField] private States _state;
     private PlayerValues _playerValues;
 
+
+    private bool dead;
     //patrol points
     [SerializeField] private GameObject patrolPointContainer;
     private List<Transform> _patrolPoints;
@@ -362,6 +364,21 @@ public class CameraEnemy : Enemy
         }
     }
 
+    public override void Hide()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Spawn(int node)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override bool GetEnemyDead()
+    {
+        return dead;
+    }
+
     [SerializeField] private Transform deadPos;
 
     private void Die()
@@ -373,6 +390,8 @@ public class CameraEnemy : Enemy
         enemySounds.PlayDieSound();
         _light.enabled = false;
         StartCoroutine(DieCoroutine());
+
+        dead = true;
     }
 
     IEnumerator DieCoroutine()

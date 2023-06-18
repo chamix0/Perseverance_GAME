@@ -9,7 +9,8 @@ public class LookAtPlayer : MonoBehaviour
     public Vector3 offset;
     public bool lookingPlayer;
     private Transform target;
-    public float speed, slowSpeed, normalSpeed;
+    private float speed;
+    public float  slowSpeed, normalSpeed;
 
     void Start()
     {

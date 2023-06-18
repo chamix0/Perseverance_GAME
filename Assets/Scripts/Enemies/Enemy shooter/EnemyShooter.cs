@@ -13,7 +13,7 @@ using UnityEngine.UI;
 /// Estado busqueda: el enemigo ha perdido de vista al personaje y durante cierto tiempo intentará buscar al personaje
 /// Estado distraido: El enemigo destruirá el señuelo pasando totalmente del personaje hasta que lo haya destruido
 ///
-[DefaultExecutionOrder(5)]
+[DefaultExecutionOrder(11)]
 public class EnemyShooter : Enemy, IObserver
 {
     // Start is called before the first frame update
@@ -271,13 +271,6 @@ public class EnemyShooter : Enemy, IObserver
         rigidbody.MovePosition(pos);
     }
 
-    public void Spawn(int node)
-    {
-        nextNode = node;
-        rigidbody.MovePosition(enemyPath.GetNodeTransform(node).transform.position);
-        dissolveMaterials.DissolveIn();
-        healthBar.value = 1;
-    }
 
     private void StopWander()
     {
@@ -438,7 +431,33 @@ public class EnemyShooter : Enemy, IObserver
         }
     }
 
-    public bool GetEnemyDead()
+    public override void Hide()
+    {
+        healthBarCanvas.alpha = 0;
+        outlineTimer.Stop();
+        outline.OutlineMode = Outline.Mode.OutlineHidden;
+        flash.Stop();
+        ChangeState(States.Off, 0);
+        rigidbody.detectCollisions = false;
+        StopWander();
+        dissolveMaterials.DissolveOut();
+    }
+
+    public override void Spawn(int node)
+    {
+        healthBarCanvas.alpha = 1;
+        dissolveMaterials.DissolveIn();
+        outlineTimer.Start();
+        rigidbody.detectCollisions = true;
+        outline.OutlineMode = Outline.Mode.OutlineAll;
+        nextNode = node;
+        rigidbody.MovePosition(enemyPath.GetNodeTransform(node).transform.position);
+        healthBar.value = 1;
+        currentState = States.Patrol;
+    }
+
+
+    public override bool GetEnemyDead()
     {
         return isDead;
     }

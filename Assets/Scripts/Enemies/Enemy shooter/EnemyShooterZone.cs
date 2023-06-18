@@ -5,27 +5,30 @@ using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[DefaultExecutionOrder(6)]
+[DefaultExecutionOrder(12)]
 public class EnemyShooterZone : MonoBehaviour
 {
     // Start is called before the first frame update
-    private List<EnemyShooter> enemies;
-
+    private List<Enemy> enemies;
     private EnemyPath enemyPath;
 
     // [SerializeField] private DoorManager doorManager;
     private bool _minigameFinished = false;
+    [SerializeField] private bool startAutomatically=true;
 
     private void Awake()
     {
-        enemies = new List<EnemyShooter>();
+        enemies = new List<Enemy>();
     }
 
     void Start()
     {
-        enemies.AddRange(GetComponentsInChildren<EnemyShooter>());
+        enemies.AddRange(GetComponentsInChildren<Enemy>());
         enemyPath = GetComponent<EnemyPath>();
-        AssignInitialPositions();
+        
+        HideAll();
+        if (startAutomatically)
+            AssignInitialPositions();
     }
 
 
@@ -40,7 +43,7 @@ public class EnemyShooterZone : MonoBehaviour
         return target;
     }
 
-    private void AssignInitialPositions()
+    public void AssignInitialPositions()
     {
         int numNodes = enemyPath.GetNumNodes();
         List<int> unusedNodes = new List<int>();
@@ -54,6 +57,14 @@ public class EnemyShooterZone : MonoBehaviour
             enemy.Spawn(unusedNodes[index]);
 
             unusedNodes.Remove(index);
+        }
+    }
+
+    public void HideAll()
+    {
+        foreach (var enemy in enemies)
+        {
+            enemy.Hide();
         }
     }
 
@@ -89,12 +100,8 @@ public class EnemyShooterZone : MonoBehaviour
         return enemies.Count - count;
     }
 
-    public List<EnemyShooter> GetEnemies()
+    public List<Enemy> GetEnemies()
     {
         return enemies;
     }
-
-
-
-
 }

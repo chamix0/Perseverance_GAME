@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
-
+[DefaultExecutionOrder(11)]
 public class EnemyBee : Enemy
 {
     // Start is called before the first frame update
@@ -11,7 +11,7 @@ public class EnemyBee : Enemy
     private LookAtPlayer lookAtPlayer;
     private int targetNode = 0, nextNode = 0;
     public float turnSpeed = 1f;
-    [SerializeField] private float force = 10;
+    [SerializeField] private float force = 10, oldForce;
     public ForceMode forceMode;
     private DissolveMaterials dissolveMaterials;
 
@@ -21,7 +21,9 @@ public class EnemyBee : Enemy
     private Outline outline;
     private Stopwatch outlineTimer;
     private float outlineCooldown = 10f;
+    private bool dead;
 
+    private bool minigameStarted;
 
     //detecction
     [SerializeField] private LayerMask collision;
@@ -61,22 +63,27 @@ public class EnemyBee : Enemy
         _shootBullet = GetComponentInChildren<ShootBullet>();
         outline.OutlineColor = Color.clear;
         respawn = transform.parent;
+        oldForce = force;
+        
     }
 
     private void Update()
     {
-        if (outlineTimer.IsRunning)
+        if (minigameStarted && !dead)
         {
-            if (outlineTimer.Elapsed.TotalSeconds > outlineCooldown)
+            if (outlineTimer.IsRunning)
             {
-                outlineTimer.Stop();
-                outline.OutlineColor = Color.clear;
+                if (outlineTimer.Elapsed.TotalSeconds > outlineCooldown)
+                {
+                    outlineTimer.Stop();
+                    outline.OutlineColor = Color.clear;
+                }
             }
-        }
 
-        if (lives > 0)
-        {
-            Alert();
+            if (lives > 0)
+            {
+                Alert();
+            }
         }
     }
 
@@ -121,11 +128,21 @@ public class EnemyBee : Enemy
         }
     }
 
-    public void Spawn(int node)
+    public override void Spawn(int node)
     {
         nextNode = node;
         rigidbody.MovePosition(enemyPath.GetNodeTransform(node).transform.position);
         dissolveMaterials.DissolveIn();
+        rigidbody.detectCollisions = true;
+        force = oldForce;
+    }
+
+    public override void Hide()
+    {
+        outlineTimer.Stop();
+        dissolveMaterials.DissolveOut();
+        rigidbody.detectCollisions = false;
+        StopWander();
     }
 
     private void GoToFurtherPos()
@@ -183,7 +200,6 @@ public class EnemyBee : Enemy
 
     #endregion
 
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == 8)
@@ -218,5 +234,11 @@ public class EnemyBee : Enemy
         enemySounds.PlayDieSound();
         rigidbody.detectCollisions = false;
         StopWander();
+        dead = true;
+    }
+
+    public override bool GetEnemyDead()
+    {
+        return dead;
     }
 }
