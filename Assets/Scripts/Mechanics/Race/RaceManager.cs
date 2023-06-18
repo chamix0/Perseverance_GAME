@@ -38,8 +38,15 @@ public class RaceManager : MonoBehaviour
 
         if (!exited && !ended)
         {
-            guiManager.SetRaceTime(GetRemainingTime());
+            guiManager.SetRaceTime(GetRemainingTime(), 70.7f);
         }
+
+        if (playerValues.GetPaused() && timer.IsRunning)
+            timer.Stop();
+        
+        else if (!playerValues.GetPaused() && !timer.IsRunning && !ended && !exited)
+            timer.Start();
+        
     }
 
     public string GetRemainingTime()
@@ -70,6 +77,7 @@ public class RaceManager : MonoBehaviour
     {
         if (timer.Elapsed.TotalSeconds >= timeLimit)
         {
+            guiManager.DisableRace();
             StartOver();
         }
         else
@@ -91,7 +99,7 @@ public class RaceManager : MonoBehaviour
 
     IEnumerator EndRaceCoroutiune()
     {
-        guiManager.SetRaceTime("CONGRATULATIONS!");
+        guiManager.SetRaceTime("CONGRATULATIONS!", 30f);
         yield return new WaitForSeconds(3f);
         guiManager.DisableRace();
         gameObject.SetActive(false);

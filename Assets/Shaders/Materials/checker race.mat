@@ -115,7 +115,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _center: {r: 0, g: 0, b: 0, a: 0}
-    - _pos: {r: -121.814415, g: 0.86091816, b: -18.005056, a: 0}
+    - _pos: {r: -142.40338, g: 0.86091864, b: -37.16549, a: 0}
     - _tiling_offset: {r: 0, g: 0, b: 0, a: 0}
     - _tiling_scale: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

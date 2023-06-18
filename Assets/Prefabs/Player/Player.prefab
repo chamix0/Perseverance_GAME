@@ -29726,6 +29726,30 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1884883269, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884883269, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884883270, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_text
+      value: CONGRATULATIONS!
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884883270, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884883270, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884883270, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1929553456, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -29737,6 +29761,18 @@ PrefabInstance:
     - target: {fileID: 2033377115, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2033377116, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2033377116, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2033377117, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_Color.a
+      value: 0.19215687
       objectReference: {fileID: 0}
     - target: {fileID: 198237983205574465, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
       propertyPath: m_Color.b

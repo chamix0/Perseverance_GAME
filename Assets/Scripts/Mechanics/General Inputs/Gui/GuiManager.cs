@@ -81,6 +81,7 @@ public class GuiManager : MonoBehaviour
             currentGear = _playerValues.GetGear();
             HighlightGear(currentGear);
         }
+        
     }
 
     public void ShowGui()
@@ -118,9 +119,10 @@ public class GuiManager : MonoBehaviour
 
     #region Race
 
-    public void SetRaceTime(string time)
+    public void SetRaceTime(string time, float size)
     {
-        raceImage.color = Color.white;
+        raceText.fontSize = size;
+        raceImage.color = CopyColorChangAlpha(raceImage.color, 0.2f);
         raceText.text = time;
     }
 
