@@ -379,6 +379,11 @@ public class CameraEnemy : Enemy
         return dead;
     }
 
+    public override void ResetEnemy()
+    {
+        throw new NotImplementedException();
+    }
+
     [SerializeField] private Transform deadPos;
 
     private void Die()

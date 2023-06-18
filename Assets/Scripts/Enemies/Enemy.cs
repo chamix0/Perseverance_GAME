@@ -13,6 +13,7 @@ public abstract class Enemy : MonoBehaviour
     public abstract void Spawn(int node);
     
     public abstract bool GetEnemyDead();
+    public abstract void ResetEnemy();
 
 
 }

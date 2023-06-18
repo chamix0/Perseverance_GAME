@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using System.Diagnostics;
+using Player.Observer_pattern;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 [DefaultExecutionOrder(11)]
-public class EnemyBee : Enemy
+public class EnemyBee : Enemy, IObserver
 {
     // Start is called before the first frame update
     private PlayerValues playerValues;
@@ -15,7 +19,7 @@ public class EnemyBee : Enemy
     public ForceMode forceMode;
     private DissolveMaterials dissolveMaterials;
 
-    public int maxLives = 50;
+    public int maxLives = 10;
     //outline
 
     private Outline outline;
@@ -61,10 +65,10 @@ public class EnemyBee : Enemy
         rigidbody = GetComponent<Rigidbody>();
         lookAtPlayer = GetComponentInChildren<LookAtPlayer>();
         _shootBullet = GetComponentInChildren<ShootBullet>();
+        playerValues.AddObserver(this);
         outline.OutlineColor = Color.clear;
         respawn = transform.parent;
         oldForce = force;
-        
     }
 
     private void Update()
@@ -128,14 +132,6 @@ public class EnemyBee : Enemy
         }
     }
 
-    public override void Spawn(int node)
-    {
-        nextNode = node;
-        rigidbody.MovePosition(enemyPath.GetNodeTransform(node).transform.position);
-        dissolveMaterials.DissolveIn();
-        rigidbody.detectCollisions = true;
-        force = oldForce;
-    }
 
     public override void Hide()
     {
@@ -225,6 +221,16 @@ public class EnemyBee : Enemy
         }
     }
 
+    public override void Spawn(int node)
+    {
+        dissolveMaterials.DissolveIn();
+        nextNode = node;
+        outlineTimer.Start();
+        rigidbody.MovePosition(enemyPath.GetNodeTransform(node).transform.position);
+        rigidbody.detectCollisions = true;
+        force = oldForce;
+    }
+
     private void Die()
     {
         //sonidos
@@ -240,5 +246,22 @@ public class EnemyBee : Enemy
     public override bool GetEnemyDead()
     {
         return dead;
+    }
+
+    public override void ResetEnemy()
+    {
+        dissolveMaterials.DissolveIn();
+        outlineTimer.Start();
+        rigidbody.detectCollisions = true;
+        force = oldForce;
+        dead = false;
+    }
+
+    public void OnNotify(PlayerActions playerAction)
+    {
+        if (playerAction is PlayerActions.Die)
+        {
+            ResetEnemy();
+        }
     }
 }

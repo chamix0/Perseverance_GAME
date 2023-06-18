@@ -90,10 +90,12 @@ public class EnemyShooter : Enemy, IObserver
         playerValues = FindObjectOfType<PlayerValues>();
         machinegunMovementInputs = FindObjectOfType<MachinegunMovementInputs>();
         machinegunMovementInputs.AddObservers(this);
+        playerValues.AddObserver(this);
         rigidbody = GetComponent<Rigidbody>();
         lookAtPlayer = GetComponentInChildren<LookAtPlayer>();
         animator = GetComponentInChildren<Animator>();
         _shootBullet = GetComponentInChildren<ShootBullet>();
+
         outline.OutlineColor = Color.clear;
         ChangeState(States.Patrol, 0);
         maxLives = lives;
@@ -391,13 +393,21 @@ public class EnemyShooter : Enemy, IObserver
 
     public void OnNotify(PlayerActions playerAction)
     {
+        print(playerAction);
         if (playerAction is PlayerActions.Shoot)
         {
+            print("shoot");
             if (Vector3.Distance(playerValues.GetPos(), transform.position) < searchingDistance)
             {
                 if (currentState != States.Alert)
                     ChangeState(States.Alert, 2);
             }
+        }
+
+        if (playerAction is PlayerActions.Die)
+        {
+            ResetEnemy();
+            print("AAAAAAAAAAAAAAAAA he muerto");
         }
     }
 
@@ -411,7 +421,7 @@ public class EnemyShooter : Enemy, IObserver
 
     public override void RecieveDamage()
     {
-        healthBar.value = (float)lives / maxLives;
+        UpdateHealthBar();
         if (lives > 0)
         {
             lives--;
@@ -460,6 +470,23 @@ public class EnemyShooter : Enemy, IObserver
     public override bool GetEnemyDead()
     {
         return isDead;
+    }
+
+    public override void ResetEnemy()
+    {
+        healthBarCanvas.alpha = 1;
+        dissolveMaterials.DissolveIn();
+        outlineTimer.Start();
+        rigidbody.detectCollisions = true;
+        outline.OutlineMode = Outline.Mode.OutlineAll;
+        lives = maxLives;
+        UpdateHealthBar();
+        isDead = false;
+    }
+
+    private void UpdateHealthBar()
+    {
+        healthBar.value = (float)lives / maxLives;
     }
 
     private void Die()

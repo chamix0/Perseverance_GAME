@@ -391,7 +391,7 @@ public class PlayerValues : Subject
         dead = true;
         lives = MaxLives;
         NotifyCameraLives();
-        NotifyObservers(PlayerActions.Die);
+        NotifyAction(PlayerActions.Die);
         StopRigidBodyVelocity();
         // TpToLastCheckPoint(spawnPos);
         StartCoroutine(ResetPosCoroutine(spawnPos));
