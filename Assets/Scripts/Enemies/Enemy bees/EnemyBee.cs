@@ -18,7 +18,6 @@ public class EnemyBee : Enemy, IObserver
     [SerializeField] private float force = 10, oldForce;
     public ForceMode forceMode;
     private DissolveMaterials dissolveMaterials;
-
     public int maxLives = 10;
     //outline
 
@@ -39,7 +38,7 @@ public class EnemyBee : Enemy, IObserver
     private ShootBullet _shootBullet;
     [SerializeField] private float shootCooldown = 4;
     [SerializeField] private float shootSpeed = 10;
-    private Transform respawn;
+    [SerializeField]private Transform respawn;
     [SerializeField] private Vector3 shootOffset;
 
     private bool moveToPlayer;
@@ -58,6 +57,7 @@ public class EnemyBee : Enemy, IObserver
     void Start()
     {
         lives = maxLives;
+        totalLives = maxLives;
         outline = GetComponentInChildren<Outline>();
         enemySounds = GetComponent<EnemySounds>();
         dissolveMaterials = GetComponent<DissolveMaterials>();
@@ -67,7 +67,6 @@ public class EnemyBee : Enemy, IObserver
         _shootBullet = GetComponentInChildren<ShootBullet>();
         playerValues.AddObserver(this);
         outline.OutlineColor = Color.clear;
-        respawn = transform.parent;
         oldForce = force;
     }
 
@@ -139,11 +138,12 @@ public class EnemyBee : Enemy, IObserver
         dissolveMaterials.DissolveOut();
         rigidbody.detectCollisions = false;
         StopWander();
+        minigameStarted = false;
     }
 
     private void GoToFurtherPos()
     {
-        targetNode = enemyPath.GetFurthestNode(playerValues.GetPos(), targetNode);
+        targetNode = enemyPath.GetRandomNode();
         nextNode = targetNode;
     }
 
@@ -160,7 +160,7 @@ public class EnemyBee : Enemy, IObserver
         rigidbody.AddForce(direction.normalized * force, forceMode);
         BodyRotation();
         // transform.forward = rigidbody.velocity.normalized;
-        if (Vector3.Distance(transform.position, dest) < 0.01f)
+        if (Vector3.Distance(transform.position, dest) < 0.5f)
         {
             nextNode = enemyPath.GetNextNode(nextNode, targetNode);
         }
@@ -223,6 +223,7 @@ public class EnemyBee : Enemy, IObserver
 
     public override void Spawn(int node)
     {
+        minigameStarted = true;
         dissolveMaterials.DissolveIn();
         nextNode = node;
         outlineTimer.Start();

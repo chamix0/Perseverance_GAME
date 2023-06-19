@@ -275,6 +275,7 @@ public class MachineGun : Subject
         {
             dissolveMaterials.DissolveOut();
             isVisible = false;
+            StopLaser();
             guiManager.SetMachinegun(-1);
         }
 

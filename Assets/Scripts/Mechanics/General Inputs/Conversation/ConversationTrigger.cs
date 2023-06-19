@@ -78,7 +78,7 @@ public class ConversationTrigger : MonoBehaviour
 
             if (destroyAfterUse)
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
             else
             {

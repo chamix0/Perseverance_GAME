@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
-    public int lives;
+    public int lives,totalLives;
     
     public abstract void RecieveDamage();
 

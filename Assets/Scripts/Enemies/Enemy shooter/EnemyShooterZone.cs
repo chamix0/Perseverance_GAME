@@ -14,7 +14,7 @@ public class EnemyShooterZone : MonoBehaviour
 
     // [SerializeField] private DoorManager doorManager;
     private bool _minigameFinished = false;
-    [SerializeField] private bool startAutomatically=true;
+    [SerializeField] private bool startAutomatically = true;
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class EnemyShooterZone : MonoBehaviour
     {
         enemies.AddRange(GetComponentsInChildren<Enemy>());
         enemyPath = GetComponent<EnemyPath>();
-        
+
         HideAll();
         if (startAutomatically)
             AssignInitialPositions();
@@ -68,7 +68,7 @@ public class EnemyShooterZone : MonoBehaviour
         }
     }
 
-    bool AllEnemiesDead()
+    public bool AllEnemiesDead()
     {
         foreach (var enemy in enemies)
         {
@@ -88,7 +88,7 @@ public class EnemyShooterZone : MonoBehaviour
         }
     }
 
-    int GetMissingEnemies()
+    public int GetMissingEnemies()
     {
         int count = 0;
         foreach (var enemy in enemies)
@@ -100,6 +100,22 @@ public class EnemyShooterZone : MonoBehaviour
         return enemies.Count - count;
     }
 
+    public int GetTotalEnemies()
+    {
+        return enemies.Count;
+    }
+
+    public float GetLiveValue()
+    {
+        int maxLives = enemies[0].totalLives;
+        int count = 0;
+        foreach (var enemy in enemies)
+        {
+            count += enemy.lives;
+        }
+
+        return (float)count / (maxLives * enemies.Count);
+    }
     public List<Enemy> GetEnemies()
     {
         return enemies;

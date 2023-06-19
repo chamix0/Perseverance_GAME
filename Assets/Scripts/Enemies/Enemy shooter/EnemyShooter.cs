@@ -99,6 +99,7 @@ public class EnemyShooter : Enemy, IObserver
         outline.OutlineColor = Color.clear;
         ChangeState(States.Patrol, 0);
         maxLives = lives;
+        totalLives = lives;
     }
 
     private void Update()
@@ -308,7 +309,7 @@ public class EnemyShooter : Enemy, IObserver
         rigidbody.AddForce(direction.normalized * force, forceMode);
         BodyRotation();
         // transform.forward = rigidbody.velocity.normalized;
-        if (Vector3.Distance(pos, dest) < 0.01f)
+        if (Vector3.Distance(pos, dest) < 0.5f)
         {
             if (nextNode == targetNode)
             {
@@ -393,10 +394,9 @@ public class EnemyShooter : Enemy, IObserver
 
     public void OnNotify(PlayerActions playerAction)
     {
-        print(playerAction);
         if (playerAction is PlayerActions.Shoot)
         {
-            print("shoot");
+           
             if (Vector3.Distance(playerValues.GetPos(), transform.position) < searchingDistance)
             {
                 if (currentState != States.Alert)
@@ -407,7 +407,6 @@ public class EnemyShooter : Enemy, IObserver
         if (playerAction is PlayerActions.Die)
         {
             ResetEnemy();
-            print("AAAAAAAAAAAAAAAAA he muerto");
         }
     }
 
