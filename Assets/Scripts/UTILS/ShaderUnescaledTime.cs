@@ -24,8 +24,7 @@ public class ShaderUnescaledTime : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private void Update()
     {
         foreach (var material in _materials)
         {
@@ -34,5 +33,10 @@ public class ShaderUnescaledTime : MonoBehaviour
 
         if (image)
             image.material.SetFloat(UnescaledTime, Time.unscaledTime);
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
     }
 }
