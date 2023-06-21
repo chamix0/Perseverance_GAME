@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2012273772902879447}
   - component: {fileID: 9068664291935707892}
   - component: {fileID: 1447924313}
+  - component: {fileID: 4004670479686844708}
   m_Layer: 0
   m_Name: WorldManager
   m_TagString: Untagged
@@ -74,3 +75,22 @@ MonoBehaviour:
   colisionLayers:
     serializedVersion: 2
     m_Bits: 73
+  switchSpeed: 0.1
+--- !u!114 &4004670479686844708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012273772902879445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97d8dbfc694569c44b02a95a93b7f60b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materials:
+  - {fileID: 2100000, guid: bd2a22542528ecc47b9337499bee9683, type: 2}
+  - {fileID: 2100000, guid: 2115a0fe70962fe4d92dad10d5b78b38, type: 2}
+  - {fileID: 2100000, guid: 7ede930622ef7104a88f048d58a38dd5, type: 2}
+  - {fileID: 2100000, guid: f71708f0b3fcaba47bcffb037fba0e4e, type: 2}
+  - {fileID: 2100000, guid: 86450894e9d72ee43af8dfaf245362ce, type: 2}

@@ -7,7 +7,7 @@ public class LookAtPlayer : MonoBehaviour
 {
     private PlayerValues playerValues;
     public Vector3 offset;
-    public bool lookingPlayer;
+    public bool lookingPlayer,hardLookPlayer;
     private Transform target;
     private float speed;
     public float  slowSpeed, normalSpeed;
@@ -21,13 +21,17 @@ public class LookAtPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (hardLookPlayer)
+        {
+            speed = normalSpeed;
+        }
         Quaternion lookAtRotation = Quaternion.identity;
         if (lookingPlayer)
             lookAtRotation = Quaternion.LookRotation(transform.position - playerValues.transform.position);
         else
             lookAtRotation = Quaternion.LookRotation(transform.position - target.position);
         Quaternion LookAtRotationOnly_Y = Quaternion.Euler(offset.x, lookAtRotation.eulerAngles.y + offset.y, offset.z);
-        transform.rotation = Quaternion.Lerp(transform.rotation, LookAtRotationOnly_Y, Time.deltaTime * speed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, LookAtRotationOnly_Y, Time.unscaledDeltaTime * speed);
     }
 
     public void LookPlayer()
