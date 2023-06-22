@@ -432,7 +432,6 @@ public class EnemyShooter : Enemy, IObserver
             {
                 outlineTimer.Restart();
                 outline.OutlineColor = Color.red;
-                _timer.Restart();
                 dissolveMaterials.Hit();
                 if (currentState != States.Alert)
                     ChangeState(States.Alert, 2);

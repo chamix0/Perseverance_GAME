@@ -100,7 +100,7 @@ public class EnemyBee : Enemy, IObserver
 
     private void Alert()
     {
-        GoToFurtherPos();
+        GoToRandomPos();
         lookAtPlayer.LookPlayer();
 
         if (_timer.Elapsed.TotalSeconds > shootCooldown && !playerValues.dead)
@@ -141,7 +141,7 @@ public class EnemyBee : Enemy, IObserver
         minigameStarted = false;
     }
 
-    private void GoToFurtherPos()
+    private void GoToRandomPos()
     {
         targetNode = enemyPath.GetRandomNode();
         nextNode = targetNode;
@@ -215,7 +215,6 @@ public class EnemyBee : Enemy, IObserver
                 Die();
             else
             {
-                _timer.Restart();
                 dissolveMaterials.Hit();
             }
         }
@@ -230,6 +229,7 @@ public class EnemyBee : Enemy, IObserver
         rigidbody.MovePosition(enemyPath.GetNodeTransform(node).transform.position);
         rigidbody.detectCollisions = true;
         force = oldForce;
+        lives = maxLives;
     }
 
     private void Die()
@@ -256,6 +256,7 @@ public class EnemyBee : Enemy, IObserver
         rigidbody.detectCollisions = true;
         force = oldForce;
         dead = false;
+        lives = maxLives;
     }
 
     public void OnNotify(PlayerActions playerAction)
