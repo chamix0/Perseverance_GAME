@@ -26,7 +26,12 @@ public class FinalBoss : Enemy, IObserver
     [SerializeField] private int shootSpirNumShots = 50;
     [SerializeField] private List<ShootBullet> spiralShooters;
     [SerializeField] private List<ShootBullet> ArrowShooters;
+
     [SerializeField] private List<ShootBullet> BulletHellShooters;
+
+    //lasers
+    [SerializeField] private MoveTowardsPlayer moveTowardsPlayer;
+    [SerializeField] private List<LaserEnemy> laserEnemies;
 
     //sounds
     private EnemySounds enemySounds;
@@ -71,9 +76,19 @@ public class FinalBoss : Enemy, IObserver
             _timer.Stop();
             _timer.Reset();
             int shootingMode = Random.Range(0, 10);
+
+
+            if (lives < (maxLives / 2))
+            {
+                //mid conversation stuff
+                //asteroid attack
+                if (shootingMode % 2 == 0)
+                    StartCoroutine(LaserAttackCoroutine());
+            }
+
+
             if (shootingMode < 10)
             {
-                print("AAAAAAAAAAAAAAAA");
                 StartCoroutine(SpiralAttackCoroutine());
             }
         }
@@ -87,8 +102,7 @@ public class FinalBoss : Enemy, IObserver
         {
             foreach (var shooter in spiralShooters)
             {
-                print("AAAAAAAAAAAAAAAA");
-                shooter.Shoot(shootSpeed,respawn.position);
+                shooter.Shoot(shootSpeed, respawn.position);
                 yield return new WaitForSeconds(shootSpiralRate);
             }
         }
@@ -104,9 +118,40 @@ public class FinalBoss : Enemy, IObserver
     // {
     // }
     //
-    // IEnumerator AsteroidAttackCoroutine()
-    // {
-    // }
+    IEnumerator LaserAttackCoroutine()
+    {
+        moveTowardsPlayer.StartMoving();
+        foreach (var laser in laserEnemies)
+        {
+            laser.ShowBase();
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return new WaitForSeconds(5);
+        foreach (var laser in laserEnemies)
+        {
+            laser.TurnOnLaser();
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        moveTowardsPlayer.StopMoving();
+        yield return new WaitForSeconds(4);
+        foreach (var laser in laserEnemies)
+        {
+            laser.TurnOffLaser();
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return new WaitForSeconds(1);
+
+        foreach (var laser in laserEnemies)
+        {
+            laser.HideBase();
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        moveTowardsPlayer.StartMoving();
+    }
 
 
     public override void Hide()
