@@ -922,6 +922,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8689109742229021250, guid: b43c1003299435f419107cd1215929d8, type: 3}
+      propertyPath: m_margin.w
+      value: 0.9479052
+      objectReference: {fileID: 0}
+    - target: {fileID: 8689109742229021250, guid: b43c1003299435f419107cd1215929d8, type: 3}
+      propertyPath: m_margin.x
+      value: 7.570598
+      objectReference: {fileID: 0}
+    - target: {fileID: 8689109742229021250, guid: b43c1003299435f419107cd1215929d8, type: 3}
+      propertyPath: m_margin.y
+      value: 0.71806943
+      objectReference: {fileID: 0}
+    - target: {fileID: 8689109742229021250, guid: b43c1003299435f419107cd1215929d8, type: 3}
+      propertyPath: m_margin.z
+      value: 7.523596
+      objectReference: {fileID: 0}
     - target: {fileID: 9127494089266195275, guid: b43c1003299435f419107cd1215929d8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
