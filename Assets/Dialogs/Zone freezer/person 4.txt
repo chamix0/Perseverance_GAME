@@ -1,0 +1,28 @@
+----------------------------
+t
+Info
+Name: Grosvendor Haydn./Age 31./Born in Scotland, United Kingdom.
+1
+--------------------------------
+t
+Info
+Height: 179 cm./Weight: 50 kg./Blood type: 0-.
+2
+-----------------------------
+t
+Info
+Reason to be cryopreserved : Grosvendor is a great engineer capable of making anything withing his imagination
+3
+------------------------------
+t
+Info
+His inventions made possible to build giant shelters deep underground.
+4
+------------------------------
+q
+Info
+Read again?
+yes
+no
+0
+-1

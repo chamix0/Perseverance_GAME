@@ -11,7 +11,7 @@ public class BeeFight : MonoBehaviour, IObserver
     // Start is called before the first frame update
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Slider slider;
-    [SerializeField] private DoorManager doorManager;
+    [SerializeField] private List<DoorManager> doorManagers;
     [SerializeField] private GameObject conversation;
     private PlayerValues playerValues;
     [SerializeField] private EnemyShooterZone enemyShooterZone;
@@ -48,7 +48,10 @@ public class BeeFight : MonoBehaviour, IObserver
     public void EndFight()
     {
         canvasGroup.alpha = 0;
-        doorManager.OpenDoor();
+        foreach (var doorManager in doorManagers)
+        {
+            doorManager.OpenDoor();
+        }
     }
 
     public void ResetFight()

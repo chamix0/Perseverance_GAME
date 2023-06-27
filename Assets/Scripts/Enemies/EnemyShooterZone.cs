@@ -24,7 +24,16 @@ public class EnemyShooterZone : MonoBehaviour
     void Start()
     {
         enemies.AddRange(GetComponentsInChildren<Enemy>());
-        enemyPath = GetComponent<EnemyPath>();
+        try
+        {
+            enemyPath = GetComponent<EnemyPath>();
+        }
+        catch (Exception e)
+        {
+            enemyPath = null;
+            Console.WriteLine(e);
+            throw;
+        }
 
         HideAll();
         if (startAutomatically)
@@ -45,18 +54,25 @@ public class EnemyShooterZone : MonoBehaviour
 
     public void AssignInitialPositions()
     {
-        int numNodes = enemyPath.GetNumNodes();
-        List<int> unusedNodes = new List<int>();
-        for (int i = 0; i < numNodes; i++)
-            unusedNodes.Add(i);
-
-
-        foreach (var enemy in enemies)
+        if (enemyPath)
         {
-            int index = Random.Range(0, unusedNodes.Count);
-            enemy.Spawn(unusedNodes[index]);
-
-            unusedNodes.Remove(index);
+            int numNodes = enemyPath.GetNumNodes();
+            List<int> unusedNodes = new List<int>();
+            for (int i = 0; i < numNodes; i++)
+                unusedNodes.Add(i);
+            foreach (var enemy in enemies)
+            {
+                int index = Random.Range(0, unusedNodes.Count);
+                enemy.Spawn(unusedNodes[index]);
+                unusedNodes.Remove(index);
+            }
+        }
+        else
+        {
+            foreach (var enemy in enemies)
+            {
+                enemy.Spawn(0);
+            }
         }
     }
 
@@ -116,6 +132,7 @@ public class EnemyShooterZone : MonoBehaviour
 
         return (float)count / (maxLives * enemies.Count);
     }
+
     public List<Enemy> GetEnemies()
     {
         return enemies;

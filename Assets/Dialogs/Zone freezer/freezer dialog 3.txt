@@ -1,0 +1,46 @@
+----------------------------
+q
+Alice
+This is a switch, do you know how it works?
+yes
+no
+7
+1
+--------------------------------
+t
+Alice
+The switch opens the doors of its same color...
+2
+-----------------------------
+t
+Alice
+You might have noticed that the door you just crossed was purple and it was opened...
+3
+------------------------
+t
+Alice
+That is because it was the same color as the switch...
+4
+------------------------------
+t
+Alice
+To change the color just shoot at the door...
+5
+------------------------
+q
+Alice
+Did you understand how it works?
+yes
+no
+7
+6
+---------------
+t
+Alice
+Really?...
+1
+-----------------------------
+t
+Alice
+Fine!! , I have also notices there is a Door protected with terminals so have fun looking for them ^^
+-1

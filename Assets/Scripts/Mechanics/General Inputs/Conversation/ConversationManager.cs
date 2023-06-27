@@ -191,6 +191,12 @@ public class ConversationManager : MonoBehaviour
                     }
                 }
 
+                if (letters[wordIndex].Equals('/'))
+                {
+                    writtenCad += "\n";
+                    wordIndex++;
+                }
+
                 writtenCad += letters[wordIndex];
                 wordIndex++;
                 guiManager.SetDialogMesasge(writtenCad);

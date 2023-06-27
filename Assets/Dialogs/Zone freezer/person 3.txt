@@ -1,0 +1,23 @@
+----------------------------
+t
+Info
+Name: Mercie Efren./Age 15./Born in Paris, France.
+1
+--------------------------------
+t
+Info
+Height: 168 cm./Weight: 47 kg./Blood type: a-.
+2
+-----------------------------
+t
+Info
+Reason to be cryopreserved : Mercie Got a perfect score in school and in high school./ She is also from an aristocrat family.
+3
+------------------------------
+q
+Info
+Read again?
+yes
+no
+0
+-1

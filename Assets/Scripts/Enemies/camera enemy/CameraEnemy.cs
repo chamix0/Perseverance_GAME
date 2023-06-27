@@ -16,6 +16,7 @@ public class CameraEnemy : Enemy
 
 
     private bool dead;
+
     //patrol points
     [SerializeField] private GameObject patrolPointContainer;
     private List<Transform> _patrolPoints;
@@ -130,6 +131,10 @@ public class CameraEnemy : Enemy
         }
 
         //transition
+        if (CheckIsInCone())
+        {
+            ChangeState(States.Alert, Color.red, 2);
+        }
 
         if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
         {
@@ -144,11 +149,6 @@ public class CameraEnemy : Enemy
 
         //if its moving too fast and in sight
         if (_playerValues.GetGear() > 2 && InSight())
-        {
-            ChangeState(States.Alert, Color.red, 2);
-        }
-
-        if (CheckIsInCone())
         {
             ChangeState(States.Alert, Color.red, 2);
         }
@@ -163,15 +163,21 @@ public class CameraEnemy : Enemy
 
         //transition
 
-        if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
-        {
-            ChangeState(States.DestroyDistraction, Color.red, 2);
-        }
 
         if (_timer.Elapsed.TotalSeconds > timerCooldown)
         {
             _timer.Restart();
             ChangeState(States.Patrol, Color.blue, 0);
+        }
+
+        if (CheckIsInCone() && InSight())
+        {
+            ChangeState(States.Alert, Color.red, 2);
+        }
+
+        if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
+        {
+            ChangeState(States.DestroyDistraction, Color.red, 2);
         }
 
         //if player has the lights on and in sight
@@ -182,11 +188,6 @@ public class CameraEnemy : Enemy
 
         //if its moving too fast and in sight
         if (_playerValues.GetGear() > 2 && InSight())
-        {
-            ChangeState(States.Alert, Color.red, 2);
-        }
-
-        if (CheckIsInCone() && InSight())
         {
             ChangeState(States.Alert, Color.red, 2);
         }

@@ -1,0 +1,10 @@
+-
+t
+Alice
+Im completely sure that this zone AI is after these doors...
+1
+-
+t
+name
+You should explore the upper levels...
+-1

@@ -1,0 +1,28 @@
+----------------------------
+t
+Info
+Name: Rosie Nyah./Age 24./Born in New york, USA.
+1
+--------------------------------
+t
+Info
+Height: 162 cm./Weight: 69 kg./Blood type: A+.
+2
+-----------------------------
+t
+Info
+Reason to be cryopreserved : Rosie beat every athletic record that has ever existed, she has some extraordinary genes...
+3
+------------------------
+t
+Info
+That must be preserved in the new future.
+4
+------------------------------
+q
+Info
+Read again?
+yes
+no
+0
+-1

@@ -1,0 +1,28 @@
+-
+t
+Info
+This is the warehouse.
+1
+-
+t
+Info
+Everything that will ever be needed is here nicely packaged.
+2
+-
+t
+Info
+No one should enter the warehouse with out permission.
+3
+-
+t
+Info
+Any kind of plague is under control with our high tech camera system.
+4
+-
+q
+Info
+Do you want to read it again?
+yes
+no
+0
+-1

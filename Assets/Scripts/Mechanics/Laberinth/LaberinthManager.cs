@@ -8,18 +8,14 @@ using UnityEngine;
 public class LaberinthManager : MonoBehaviour
 {
     //components
-    private PlayerValues _playerValues;
     private MinigameManager _minigameManager;
-    private CameraChanger cameraChanger;
-    private GameObject door;
     private RigidbodyConstraints _rigidbodyOriginalConstraints;
-    private GenericScreenUi _genericScreenUi;
     [SerializeField] private TMP_Text screenText;
+    [SerializeField] private DoorManager doorManager;
+    [SerializeField] private GameObject terminalsObject;
 
     //variables
     private bool _minigameFinished, _inside;
-    private bool _openDoor, _closeDoor;
-    private float _closeY;
 
     private string terminalsLeftCad;
 
@@ -36,59 +32,25 @@ public class LaberinthManager : MonoBehaviour
 
     void Start()
     {
-        _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         var parent = transform.parent;
-        _terminalLaberinthList.AddRange(parent.parent.GetComponentsInChildren<TerminalLaberinth>());
-        cameraChanger = FindObjectOfType<CameraChanger>();
-        door = parent.Find("Door").gameObject;
-        var position = door.transform.position;
-        _openY = position.y + 5;
-        _closeY = position.y;
-        _playerValues = FindObjectOfType<PlayerValues>();
+        _terminalLaberinthList.AddRange(terminalsObject.GetComponentsInChildren<TerminalLaberinth>());
         terminalsLeftCad = "";
     }
 
     private void Update()
     {
-        if (_openDoor)
-        {
-            if (door.transform.position.y < _openY)
-                door.transform.position += new Vector3(0, 0.1f, 0);
-            else
-                _openDoor = false;
-        }
-
-        if (_closeDoor)
-        {
-            if (door.transform.position.y > _closeY)
-                door.transform.position -= new Vector3(0, 0.1f, 0);
-            else
-                _closeDoor = false;
-        }
-
-        if (!_minigameFinished&&!terminalsLeftCad.Equals(GetMissingTerminalsCad()))
+        if (!_minigameFinished && !terminalsLeftCad.Equals(GetMissingTerminalsCad()))
         {
             terminalsLeftCad = GetMissingTerminalsCad();
             screenText.text = terminalsLeftCad;
             if (GetMissingTerminals() <= 0)
             {
-                OpenDoor();
+                doorManager.OpenDoor();
                 _minigameFinished = true;
             }
         }
     }
 
-    private void OpenDoor()
-    {
-        _openDoor = true;
-        _closeDoor = false;
-    }
-
-    public void CloseDoor()
-    {
-        _openDoor = false;
-        _closeDoor = true;
-    }
 
     private int GetFinishedTerminals()
     {
@@ -97,8 +59,8 @@ public class LaberinthManager : MonoBehaviour
             sum = terminal.GetMinigameFinished() ? sum + 1 : sum;
         return sum;
     }
-    
-    private int GetMissingTerminals()
+
+    public int GetMissingTerminals()
     {
         return _terminalLaberinthList.Count - GetFinishedTerminals();
     }

@@ -1,0 +1,33 @@
+-
+t
+Info
+This is the garden...
+1
+-
+t
+Info
+Here all types of cactus are preserved...
+2
+-
+t
+Info
+Cactus are a good source of water storage...
+3
+-
+t
+Info
+This zone also helps to clean the shelter air...
+4
+-
+t
+Info
+Cactus stay alive thanks to solar lamps...
+5
+-
+q
+Info
+Do you want to read again?
+yes
+no
+0
+-1

@@ -15,6 +15,14 @@ public class FinalBoss : Enemy, IObserver
     private bool dead;
     private bool minigameStarted;
     private Stopwatch _timer;
+    [SerializeField] private BoxCollider boxCollider;
+
+    //mid live conversation
+    [SerializeField] private Conversation conversation;
+    private ConversationManager conversationManager;
+    private bool conversationShown;
+    [SerializeField] private Transform conversationFocus;
+    private Objetives objetives;
 
     //shooting
     [SerializeField] private float attackCooldown = 4;
@@ -22,8 +30,8 @@ public class FinalBoss : Enemy, IObserver
     [SerializeField] private Transform respawn;
 
     //attacks
-    [SerializeField] private float shootSpiralRate = 0.5f;
-    [SerializeField] private int shootSpirNumShots = 50;
+    [SerializeField] private float shootSpiralRate = 0.5f, bulletHellRate = 0.5f;
+    [SerializeField] private int shootSpirNumShots = 50, bulletHellShots = 10;
     [SerializeField] private List<ShootBullet> spiralShooters;
     [SerializeField] private List<ShootBullet> ArrowShooters;
 
@@ -49,9 +57,11 @@ public class FinalBoss : Enemy, IObserver
         enemySounds = GetComponent<EnemySounds>();
         dissolveMaterials = GetComponent<DissolveMaterials>();
         playerValues = FindObjectOfType<PlayerValues>();
+        conversationManager = FindObjectOfType<ConversationManager>();
         playerValues.AddObserver(this);
         _timer.Start();
         minigameStarted = true;
+        objetives = FindObjectOfType<Objetives>();
     }
 
     private void Update()
@@ -75,26 +85,37 @@ public class FinalBoss : Enemy, IObserver
             //final boss attcaks
             _timer.Stop();
             _timer.Reset();
-            int shootingMode = Random.Range(0, 10);
+            int shootingMode = Random.Range(0, 9);
 
 
             if (lives < (maxLives / 2))
             {
                 //mid conversation stuff
-                //asteroid attack
+                if (!conversationShown)
+                {
+                    conversationManager.StartConversation(conversation, conversationFocus);
+                    conversationShown = true;
+                }
+
                 if (shootingMode % 2 == 0)
                     StartCoroutine(LaserAttackCoroutine());
             }
 
 
-            if (shootingMode < 10)
-            {
+            if (shootingMode >= 6)
                 StartCoroutine(SpiralAttackCoroutine());
-            }
+
+            else if (shootingMode >= 3)
+                ArrowAttack();
+
+            else
+                StartCoroutine(BulletHellAttackCoroutine());
         }
     }
 
     #endregion
+
+    #region Attacks
 
     IEnumerator SpiralAttackCoroutine()
     {
@@ -110,14 +131,41 @@ public class FinalBoss : Enemy, IObserver
         _timer.Restart();
     }
 
-    // IEnumerator ArrowAttackCoroutine()
-    // {
-    // }
-    //
-    // IEnumerator BulletHellAttackCoroutine()
-    // {
-    // }
-    //
+    private void ArrowAttack()
+    {
+        foreach (var shooter in ArrowShooters)
+        {
+            shooter.Shoot(shootSpeed, respawn.position);
+        }
+
+
+        _timer.Restart();
+    }
+
+    IEnumerator BulletHellAttackCoroutine()
+    {
+        for (int i = 0; i < bulletHellShots; i++)
+        {
+            for (int j = 0; j < BulletHellShooters.Count; j++)
+            {
+                if (j % 2 == 0)
+                    BulletHellShooters[j].Shoot(shootSpeed, respawn.position);
+            }
+
+            yield return new WaitForSeconds(bulletHellRate);
+
+            for (int k = 0; k < BulletHellShooters.Count; k++)
+            {
+                if (k % 2 != 0)
+                    BulletHellShooters[k].Shoot(shootSpeed, respawn.position);
+            }
+
+            yield return new WaitForSeconds(bulletHellRate);
+        }
+
+        _timer.Restart();
+    }
+
     IEnumerator LaserAttackCoroutine()
     {
         moveTowardsPlayer.StartMoving();
@@ -153,11 +201,15 @@ public class FinalBoss : Enemy, IObserver
         moveTowardsPlayer.StartMoving();
     }
 
+    #endregion
+
 
     public override void Hide()
     {
-        dissolveMaterials.DissolveOut();
+        // dissolveMaterials.DissolveOut();
         minigameStarted = false;
+        conversationShown = false;
+        boxCollider.enabled = false;
     }
 
 
@@ -187,17 +239,21 @@ public class FinalBoss : Enemy, IObserver
     {
         minigameStarted = true;
         lives = maxLives;
-        dissolveMaterials.DissolveIn();
+        // dissolveMaterials.DissolveIn();
+        conversationShown = false;
+        boxCollider.enabled = true;
     }
 
     private void Die()
     {
         //sonidos
         //efecto de particulas outline.OutlineWidth = 0;
+        objetives.RemoveObjetive();
         dissolveMaterials.DissolveOut();
         enemySounds.PlayDieSound();
         dead = true;
-        //desactivar el collider
+        conversationShown = true;
+        boxCollider.enabled = false;
     }
 
     public override bool GetEnemyDead()
@@ -208,8 +264,9 @@ public class FinalBoss : Enemy, IObserver
     public override void ResetEnemy()
     {
         dissolveMaterials.DissolveIn();
-        dead = false;
         lives = maxLives;
+        minigameStarted = false;
+        conversationShown = false;
     }
 
     public void OnNotify(PlayerActions playerAction)

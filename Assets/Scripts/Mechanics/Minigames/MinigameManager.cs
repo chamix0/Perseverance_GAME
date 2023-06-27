@@ -13,7 +13,6 @@ public class MinigameManager : MonoBehaviour
     //components
     [SerializeField] private GameObject counterObject;
     [SerializeField] private Shader shader;
-    private GuiManager guiManager;
 
     //variables
     private int _lastMinigame = -1;
@@ -34,7 +33,6 @@ public class MinigameManager : MonoBehaviour
 
     void Start()
     {
-        guiManager = FindObjectOfType<GuiManager>();
         //minigames 
         minigames.Add(GetComponent<ColorsManager>());
         minigames.Add(GetComponent<AsteroidsManager>());

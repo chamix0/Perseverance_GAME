@@ -1,0 +1,25 @@
+-
+t
+ALice
+Oh, this is new, this door is locked with targets...
+1
+-
+t
+ALice
+You Know how to shoot, so open that door
+2
+-
+t
+Alice
+FAST!!!
+3
+-
+t
+ALice
+Also be careful, I feel some kind of hostility after that door.
+4
+-
+t
+ALice
+BUT GO FAST, WE DONT HAVE MUCH TIME!!!
+-1

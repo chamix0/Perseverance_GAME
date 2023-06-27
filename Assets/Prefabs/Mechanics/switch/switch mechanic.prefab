@@ -13061,6 +13061,10 @@ PrefabInstance:
       propertyPath: switchDoorManager
       value: 
       objectReference: {fileID: 275496813}
+    - target: {fileID: 7771612994492396976, guid: eafe89d05d318fd4284d47accb2b5dbc, type: 3}
+      propertyPath: switchDoorManager
+      value: 
+      objectReference: {fileID: 275496813}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eafe89d05d318fd4284d47accb2b5dbc, type: 3}
 --- !u!4 &5272263176142201661 stripped

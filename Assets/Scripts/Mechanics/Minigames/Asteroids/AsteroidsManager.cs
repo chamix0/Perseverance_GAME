@@ -41,8 +41,7 @@ public class AsteroidsManager : Minigame
     private List<AsteroidBehavior> _asteroidBehaviorsAlive;
 
     //shader names
-    private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
-    private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
+
 
     private void Awake()
     {

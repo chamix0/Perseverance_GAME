@@ -1,0 +1,20 @@
+----
+t
+Alice
+Mips is the guardian off this zone...
+1
+-----------------------------
+t
+Alice
+He must be a really clever creature if he is in charge of-
+2
+-----------------------------
+t
+MIPS
+GRRRAAAAAAAAAAAAAAARW!!!!!
+3
+-----------------------------
+t
+Alice
+Never mind...
+-1

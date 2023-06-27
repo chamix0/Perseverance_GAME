@@ -1,0 +1,30 @@
+-
+t
+Alice
+Hey, see that over there?
+1
+-
+t
+Alice
+That is a security camera. For some reason all the security cameras have suddenly become hostiile...
+2
+-
+t
+Alice
+They are very sensitive, so try not getting detected...
+3
+-
+t
+Alice
+They follow a fixed patrol so it should be easy to dodge them...
+4
+-
+t
+Alice
+But be careful because if you run or go with the lights on on their sight they will probably detect you...
+5
+-
+t
+Alice
+Ah, they also shoot bullets...
+-1

@@ -1,0 +1,43 @@
+----------------------------
+t
+Alice
+I want to test if you are really worth of the task...
+1
+--------------------------------
+t
+Alice
+I have just set up a countdown challenge...
+2
+-----------------------------
+t
+Alice
+After you cross the green invisible barrier, a timer will start...
+3
+------------------------
+t
+Alice
+your goal is to reach the other side before the time ends...
+4
+------------------------------
+t
+Alice
+If you dont make it on time you will have to start again...
+5
+------------------------
+q
+Alice
+What do you think, do you want to do it?
+yes
+not really...
+7
+6
+---------------
+t
+Alice
+HAHAHAHAHA, you have no choice, I just sealed the  door behind us, so there is only one possible way.
+-1
+-----------------------------
+t
+Alice
+LETS GOOO!!! I have also given you an extra gear just for this challenge, use it wisely.
+-1

@@ -1,13 +1,10 @@
 -
 t
-name
-jdlkjf dkfa´ñsd añ´lsdkfa lañksdjf
+Alice
+I expected something different than this, perhaps there is something we are missing...
 1
 -
-q
-name
-Did you understand?
-yes
-no
+t
+Alice
+Try standing on that platform
 -1
-0

@@ -854,7 +854,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 327206768}
   slider: {fileID: 650462920}
-  doorManager: {fileID: 8791485744391122954}
+  doorManagers: []
   conversation: {fileID: 8474889886188691910}
   enemyShooterZone: {fileID: 7638832912429668820}
 --- !u!1 &7638832912892786385
@@ -1195,17 +1195,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7873143312390317651, guid: 02c05a07a7e699545a54e81d31a90058, type: 3}
   m_PrefabInstance: {fileID: 715204213}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8791485744391122954 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8791485744770635391, guid: 02c05a07a7e699545a54e81d31a90058, type: 3}
-  m_PrefabInstance: {fileID: 715204213}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9130e40826558cd409945707eeb8e4ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1184972628764095046
 PrefabInstance:
   m_ObjectHideFlags: 0

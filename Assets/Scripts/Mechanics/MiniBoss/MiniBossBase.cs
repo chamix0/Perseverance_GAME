@@ -7,8 +7,6 @@ public class MiniBossBase : MonoBehaviour
     private PlayerValues _playerValues;
     private GameObject _snapPos;
     private CameraChanger _cameraChanger;
-    private OrbitCameraController _cameraController;
-    [SerializeField] private GameObject _door;
     private RigidbodyConstraints _rigidbodyOriginalConstraints;
 
     //minigame
@@ -16,67 +14,32 @@ public class MiniBossBase : MonoBehaviour
 
     //variables
     private bool _minigameFinished, _inside;
-    private bool _openDoor, _closeDoor;
-    private float _closeY;
-    private float _openY;
     private bool minigamePlaying;
 
 
     //parameters
     public string bossName;
     public Sprite bossSprite;
-    public int openHeight = 5;
     public int bossTurnTime = 10;
     public int gameTime = 20;
     public int sequenceLength = 50;
     public float bossMaxHealth = 100;
+    [SerializeField] private DoorManager _doorManager;
 
     [Range(0, 3)] public int gameDifficulty = 0;
 
     void Start()
     {
-        _cameraController = FindObjectOfType<OrbitCameraController>();
         miniBossManager = FindObjectOfType<MiniBossManager>();
         var parent = transform.parent;
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _snapPos = transform.gameObject.transform.Find("snap pos").gameObject;
-        var position = _door.transform.position;
-        _closeY = position.y;
-        _openY = position.y + openHeight;
         _playerValues = FindObjectOfType<PlayerValues>();
     }
 
 
     private void Update()
     {
-        if (_openDoor)
-        {
-            if (_door.transform.position.y < _openY)
-                _door.transform.position += new Vector3(0, 0.1f, 0);
-            else
-                _openDoor = false;
-        }
-
-        if (_closeDoor)
-        {
-            if (_door.transform.position.y > _closeY)
-                _door.transform.position -= new Vector3(0, 0.1f, 0);
-            else
-                _closeDoor = false;
-        }
-    }
-
-
-    private void OpenDoor()
-    {
-        _openDoor = true;
-        _closeDoor = false;
-    }
-
-    public void CloseDoor()
-    {
-        _openDoor = false;
-        _closeDoor = true;
     }
 
 
@@ -105,7 +68,7 @@ public class MiniBossBase : MonoBehaviour
     {
         _minigameFinished = true;
         ExitBase();
-        OpenDoor();
+        _doorManager.OpenDoor();
     }
 
     IEnumerator ChangeCameraCoroutine()

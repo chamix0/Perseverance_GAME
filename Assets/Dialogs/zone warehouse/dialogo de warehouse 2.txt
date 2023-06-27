@@ -1,0 +1,61 @@
+-
+t
+Alice
+I have unlocked for you a new toy...
+1
+-
+t
+Alice
+It is a distractor...
+2
+-
+q
+name
+Do you know how to use it?
+yes
+no
+3
+4
+-
+t
+Alice
+Sure...
+-1
+-
+t
+Alice
+It is really easy, you just have to throw it somewhere in sight of the camera...
+5
+-
+t
+Alice
+But it only works until  the camera Shoots it...
+6
+-
+t
+Alice
+Also remember to grab it when you hear a POP out from the distraction...
+7
+-
+t
+Alice
+That way you can use it again...
+8
+-
+q
+name
+Do you want me to  repeat it?
+yes, please
+no
+9
+10
+-
+t
+Alice
+Are you even listening???
+4
+-
+t
+Alice
+Have fun ^^
+-1

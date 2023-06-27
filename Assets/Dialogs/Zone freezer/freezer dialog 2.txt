@@ -1,0 +1,25 @@
+-
+t
+Alice
+It seems there was a whole new section under the freezer...
+1
+-
+t
+Alice
+What would this zone be used for?
+2
+-
+t
+Alice
+It has a sinister aure...
+3
+-
+t
+Alice
+Anyway, the control room should be somewhere around here.
+3
+-
+t
+Alice
+Try standing on that platform
+-1

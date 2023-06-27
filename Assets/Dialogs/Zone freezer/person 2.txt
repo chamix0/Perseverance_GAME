@@ -1,0 +1,28 @@
+----------------------------
+t
+Info
+Name: Evaristo Perez./Age 57./Born in Murcia, Spain.
+1
+--------------------------------
+t
+Info
+Height: 185 cm./Weight: 90 kg./Blood type: b-.
+2
+-----------------------------
+t
+Info
+Reason to be cryopreserved : Evaristo is the owner of Perseverance. He Managed to create this corporation all by himself...
+3
+------------------------
+t
+Info
+Risking everything he had.
+4
+------------------------------
+q
+Info
+Read again?
+yes
+no
+0
+-1
