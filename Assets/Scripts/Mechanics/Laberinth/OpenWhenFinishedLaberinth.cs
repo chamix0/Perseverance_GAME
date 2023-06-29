@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Codice.Client.BaseCommands;
 using UnityEngine;
-
+[DefaultExecutionOrder(10)]
 public class OpenWhenFinishedLaberinth : MonoBehaviour
 {
     // Start is called before the first frame update

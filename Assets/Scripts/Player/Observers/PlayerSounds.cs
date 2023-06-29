@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerSounds : MonoBehaviour, IObserver
 {
     // Start is called before the first frame update
-    [SerializeField] private AudioSource audioSourceInstantSounds,audioSourceContinuousSounds,audioSourceNoiseSounds;
+    [SerializeField] private AudioSource audioSourceInstantSounds, audioSourceContinuousSounds, audioSourceNoiseSounds;
     [SerializeField] private List<AudioClip> audioClips;
 
     void Start()
@@ -37,7 +37,7 @@ public class PlayerSounds : MonoBehaviour, IObserver
         {
             audioSourceContinuousSounds.Stop();
         }
-         else if (playerAction is PlayerActions.RecuperateDistraction)
+        else if (playerAction is PlayerActions.RecuperateDistraction)
         {
             audioSourceInstantSounds.clip = audioClips[7];
             audioSourceInstantSounds.Play();
@@ -85,6 +85,16 @@ public class PlayerSounds : MonoBehaviour, IObserver
         else if (playerAction is PlayerActions.NoDamage)
         {
             audioSourceNoiseSounds.Stop();
+        }
+        else if (playerAction is PlayerActions.Sit)
+        {
+            audioSourceInstantSounds.clip = audioClips[13];
+            audioSourceInstantSounds.Play();
+        }
+        else if (playerAction is PlayerActions.StandUp)
+        {
+            audioSourceInstantSounds.clip = audioClips[12];
+            audioSourceInstantSounds.Play();
         }
     }
 }

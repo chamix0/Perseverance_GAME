@@ -35,10 +35,6 @@ public class JustWaitManager : Minigame
     //lists
 
 
-    //shader names
-    private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
-    private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
-
     void Start()
     {
         soundManager = GetComponent<MinigameSoundManager>();
@@ -54,6 +50,15 @@ public class JustWaitManager : Minigame
 
     void Update()
     {
+        if (_playerValues.GetPaused() && _timer.IsRunning && minigameActive)
+        {
+            _timer.Stop();
+        }
+        else if (!_playerValues.GetPaused() && !_timer.IsRunning && minigameActive)
+        {
+            _timer.Start();
+        }
+
         if (minigameActive)
         {
             UpdateTimeSlider();
@@ -79,7 +84,6 @@ public class JustWaitManager : Minigame
     {
         minigameActive = true;
         _maxTime = Random.Range(40, 60);
-        _playerValues.SetCurrentInput(CurrentInput.None);
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(StartGameCoroutine());
     }
@@ -100,6 +104,7 @@ public class JustWaitManager : Minigame
         soundManager.PlayFinishedSound();
         minigameActive = false;
         _timer.Stop();
+        _timer.Reset();
         HideUI();
         _minigameManager.UpdateCounter(0);
         _playerValues.SetInputsEnabled(false);
@@ -121,7 +126,6 @@ public class JustWaitManager : Minigame
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(1f);
         ShowUI();
-        _playerValues.SetInputsEnabled(true);
         //empezar minijuego
         _timer.Restart();
     }

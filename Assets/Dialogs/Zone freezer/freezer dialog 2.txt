@@ -17,9 +17,4 @@ It has a sinister aure...
 t
 Alice
 Anyway, the control room should be somewhere around here.
-3
--
-t
-Alice
-Try standing on that platform
 -1

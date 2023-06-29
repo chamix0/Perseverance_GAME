@@ -41,19 +41,27 @@ public class Objetives : MonoBehaviour
 
     public void SetNewObjetive(string text)
     {
-        guiManager.ShowObjetives();
-        guiManager.SetObjetiveText(text);
-        audioSource.Play();
+        StartCoroutine(ShowNewObjetiveCoroutine(text));
     }
 
     public void RemoveObjetive()
     {
-        guiManager.SetObjetiveText("text");
+        guiManager.SetObjetiveText("");
         guiManager.HideObjetives();
     }
 
     // Update is called once per frame
     void Update()
     {
+    }
+
+    IEnumerator ShowNewObjetiveCoroutine(string text)
+    {
+        guiManager.ShowObjetives();
+        guiManager.SetObjetiveText(text);
+        audioSource.Play();
+        yield return new WaitForSeconds(3);
+        guiManager.HideObjetives();
+
     }
 }

@@ -57,7 +57,7 @@ public class PlayerValues : Subject
 
     //variables
     private bool _updateSnap, _updateLookAt, moveForward;
-    public bool dead = false;
+  [NonSerialized]  public bool dead = false;
     private float _targetAngle;
     private Vector3 _targetPos;
     private bool paused;

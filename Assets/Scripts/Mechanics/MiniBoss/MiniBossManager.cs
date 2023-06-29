@@ -894,6 +894,9 @@ public class MiniBossManager : MonoBehaviour
         yield return new WaitForSeconds(4f);
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(1f);
+        bossHealthSlider.value = 1;
+        bossHealthRecoverySlider.value = 1;
+        StartCoroutine(livesCoroutine(0));
         EnterBossPhase(); // StartRound();
     }
 

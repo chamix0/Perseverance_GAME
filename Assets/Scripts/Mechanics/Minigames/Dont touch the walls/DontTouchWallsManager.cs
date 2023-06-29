@@ -9,7 +9,7 @@ public class DontTouchWallsManager : Minigame
 {
     //text to show on screen before the game
     private readonly string _name = "Dont touch the walls",
-        _tutorial = "Reach the goal safely",
+        _tutorial = "Reach the goal safelly",
         endMessage = "WELL DONE!";
 
     private const int NUM_ROUNDS = 5;
@@ -122,6 +122,16 @@ public class DontTouchWallsManager : Minigame
         }
     }
 
+    private void HideAllLaberinths()
+    {
+        foreach (var laberinth in easyLaberinthWalls)
+            laberinth.DisableLaberinth();
+        foreach (var laberinth in mediumLaberinthWalls)
+            laberinth.DisableLaberinth();
+        foreach (var laberinth in hardLaberinthWalls)
+            laberinth.DisableLaberinth();
+    }
+
     private void SelectLaberinths()
     {
         int randomIndex;
@@ -159,6 +169,8 @@ public class DontTouchWallsManager : Minigame
         laberinthWallsList.Add(hardLaberinthWalls[randomIndex]);
     }
 
+    #region Movement
+
     private void RotatePlayer(float angle)
     {
         _player.transform.localRotation =
@@ -194,7 +206,6 @@ public class DontTouchWallsManager : Minigame
                 RotatePlayer(135);
         }
     }
-
 
     public void VerticalMovement(int direction, float speed)
     {
@@ -252,6 +263,26 @@ public class DontTouchWallsManager : Minigame
         }
     }
 
+    public void HorizontalMovementCube(int direction)
+    {
+        verticaGear = 0;
+        if (direction > 0)
+            horizontalGear = Math.Min(horizontalGear + 1, 1);
+        else
+            horizontalGear = Math.Max(horizontalGear - 1, -1);
+    }
+
+    public void VerticalMovementCube(int direction)
+    {
+        horizontalGear = 0;
+        if (direction > 0)
+            verticaGear = Math.Min(verticaGear + 1, 1);
+        else
+            verticaGear = Math.Max(verticaGear - 1, -1);
+    }
+
+    #endregion
+
     public float[] GetArenaTransform()
     {
         return _arenaMeasures;
@@ -278,23 +309,6 @@ public class DontTouchWallsManager : Minigame
         verticaGear = 0;
     }
 
-    public void HorizontalMovementCube(int direction)
-    {
-        verticaGear = 0;
-        if (direction > 0)
-            horizontalGear = Math.Min(horizontalGear + 1, 1);
-        else
-            horizontalGear = Math.Max(horizontalGear - 1, -1);
-    }
-
-    public void VerticalMovementCube(int direction)
-    {
-        horizontalGear = 0;
-        if (direction > 0)
-            verticaGear = Math.Min(verticaGear + 1, 1);
-        else
-            verticaGear = Math.Max(verticaGear - 1, -1);
-    }
 
     private void ShowCurrentLaberinth()
     {
@@ -358,6 +372,7 @@ public class DontTouchWallsManager : Minigame
         minigameSoundManager.PlayFinishedSound();
         _player.SetActive(false);
         _minigameManager.UpdateCounter(0);
+        HideAllLaberinths();
         HideUI();
         minigameStarted = false;
         _playerValues.SetInputsEnabled(false);
@@ -377,6 +392,7 @@ public class DontTouchWallsManager : Minigame
         uiObject.SetActive(false);
     }
 
+    #region tutorial
 
     [SerializeField] private GameObject cubeTutorial, keyTutorial;
 
@@ -401,6 +417,9 @@ public class DontTouchWallsManager : Minigame
                 keyTutorial.SetActive(true);
         }
     }
+
+    #endregion
+
 
     IEnumerator StartGameCoroutine()
     {

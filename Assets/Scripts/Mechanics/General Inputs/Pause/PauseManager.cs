@@ -122,6 +122,8 @@ public class PauseManager : MonoBehaviour
         {
             cameraController.FreezeCamera();
             guiManager.ShowPausePanel();
+            if (!guiManager.GetObjetiveText().Equals(""))
+                guiManager.ShowObjetives();
             Time.timeScale = 0;
             guiManager.SetTutorial(" ");
             soundManager.SetVfxVolume(0);
@@ -130,6 +132,7 @@ public class PauseManager : MonoBehaviour
         {
             cameraController.UnFreezeCamera();
             guiManager.HidePausePanel();
+            guiManager.HideObjetives();
             Time.timeScale = 1;
             soundManager.SetVfxVolume(playerValues.gameData.GetVfxVolume());
         }

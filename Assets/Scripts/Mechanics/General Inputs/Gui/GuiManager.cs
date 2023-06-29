@@ -207,6 +207,10 @@ public class GuiManager : MonoBehaviour
     {
         objetiveText.text = text;
     }
+    public string GetObjetiveText()
+    {
+      return  objetiveText.text;
+    }
 
     #endregion
 
