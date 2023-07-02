@@ -57,44 +57,51 @@ public class PuzzleManager : Minigame
 
     private void SetSolution()
     {
-        List<Color> usedColors = new List<Color>();
-        for (int i = 0; i < 9; i++)
+        do
         {
-            int index = Random.Range(0, usableColors.Length);
-            usedColors.Add(usableColors[index]);
-        }
-
-
-        for (int i = 0; i < 3; i++)
-        {
-            solution[i] = new Color[3];
-            for (int j = 0; j < 3; j++)
+            List<Color> usedColors = new List<Color>();
+            for (int i = 0; i < 9; i++)
             {
-                solution[i][j] = usedColors[3 * i + j];
-                solutionImages[3 * i + j].color = solution[i][j];
+                int index = Random.Range(0, usableColors.Length);
+                usedColors.Add(usableColors[index]);
             }
-        }
 
-        Color centerCol = usedColors[4];
-        usedColors.RemoveAt(4);
-        for (int i = 0; i < 3; i++)
-        {
-            puzzleColor[i] = new Color[3];
-            for (int j = 0; j < 3; j++)
+
+            for (int i = 0; i < 3; i++)
             {
-                if ((i == j) && i == 1)
-                    puzzleColor[i][j] = centerCol;
-                else
+                solution[i] = new Color[3];
+                for (int j = 0; j < 3; j++)
                 {
-                    int ranIndex = Random.Range(0, usedColors.Count);
-                    puzzleColor[i][j] = usedColors[ranIndex];
-                    usedColors.RemoveAt(ranIndex);
+                    solution[i][j] = usedColors[3 * i + j];
+                    solutionImages[3 * i + j].color = solution[i][j];
                 }
             }
-        }
+
+            Color centerCol = usedColors[4];
+            usedColors.RemoveAt(4);
+            for (int i = 0; i < 3; i++)
+            {
+                puzzleColor[i] = new Color[3];
+                for (int j = 0; j < 3; j++)
+                {
+                    if ((i == j) && i == 1)
+                        puzzleColor[i][j] = centerCol;
+                    else
+                    {
+                        int ranIndex = Random.Range(0, usedColors.Count);
+                        puzzleColor[i][j] = usedColors[ranIndex];
+                        usedColors.RemoveAt(ranIndex);
+                    }
+                }
+            }  
+        } while (checkSol());
+       
 
         SetPuzzleColors();
     }
+
+  
+    
 
     private void SetPuzzleColors()
     {
@@ -229,11 +236,7 @@ public class PuzzleManager : Minigame
             button.interactable = val;
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
+    
 
     private bool checkSol()
     {
@@ -260,30 +263,35 @@ public class PuzzleManager : Minigame
         uiObject.SetActive(false);
     }
 
-    [SerializeField] private GameObject cubeTutorial, keyTutorial;
+    #region Tutorial
 
-    public void ShowCubeTutorial()
-    {
-        if (minigameStarted)
+      [SerializeField] private GameObject cubeTutorial, keyTutorial;
+    
+        public void ShowCubeTutorial()
         {
-            if (!cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(true);
-            if (keyTutorial.activeSelf)
-                keyTutorial.SetActive(false);
+            if (minigameStarted)
+            {
+                if (!cubeTutorial.activeSelf)
+                    cubeTutorial.SetActive(true);
+                if (keyTutorial.activeSelf)
+                    keyTutorial.SetActive(false);
+            }
         }
-    }
-
-    public void ShowKeyTutorial()
-    {
-        if (minigameStarted)
+    
+        public void ShowKeyTutorial()
         {
-            if (cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(false);
-            if (!keyTutorial.activeSelf)
-                keyTutorial.SetActive(true);
+            if (minigameStarted)
+            {
+                if (cubeTutorial.activeSelf)
+                    cubeTutorial.SetActive(false);
+                if (!keyTutorial.activeSelf)
+                    keyTutorial.SetActive(true);
+            }
         }
-    }
 
+
+    #endregion
+  
     public override void StartMinigame()
     {
         SetSolution();
@@ -340,5 +348,6 @@ public class PuzzleManager : Minigame
         yield return new WaitForSeconds(2f);
         _playerValues.StandUp(true, 3);
         _minigameManager.EndMinigame();
+        // puzzleColor = null;
     }
 }

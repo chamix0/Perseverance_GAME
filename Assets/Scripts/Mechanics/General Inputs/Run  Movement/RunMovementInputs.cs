@@ -9,6 +9,7 @@ public class RunMovementInputs : MonoBehaviour
     private PlayerValues _playerValues;
     private CameraController _cameraController;
     private Stamina stamina;
+    private GuiManager _guiManager;
     [SerializeField] private ParticleSystem turboParticles;
 
     void Start()
@@ -16,6 +17,7 @@ public class RunMovementInputs : MonoBehaviour
         _playerValues = FindObjectOfType<PlayerValues>();
         stamina = FindObjectOfType<Stamina>();
         _cameraController = FindObjectOfType<CameraController>();
+        _guiManager = FindObjectOfType<GuiManager>();
     }
 
     // Update is called once per frame
@@ -25,6 +27,11 @@ public class RunMovementInputs : MonoBehaviour
         //accelerate and decelerate
         if (_playerValues.GetCurrentInput() == CurrentInput.RaceMovement && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
         {
+            if (Input.anyKey)
+            {
+                _guiManager.SetTutorial(
+                    "WS - Increase/Descrease gear    D - Lights");
+            }
             if (!stamina.beingShown)
                 stamina.ShowStamina();
             if (_playerValues.GetGear() < 4 && turboParticles.isPlaying)
@@ -67,6 +74,8 @@ public class RunMovementInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
+        _guiManager.SetTutorial(
+            "R - Increase/Decrease gear   U - Camera horizonatal axis    L - Camera Vertical Axis     B - Lights");
         //accelerate deccelerate
         if (_playerValues.GetInputsEnabled())
         {

@@ -20,6 +20,11 @@ public class PauseInputs : MonoBehaviour
     {
         if (playerValues.GetPaused())
         {
+            if (Input.anyKey)
+            {
+                guiManager.SetTutorial(
+                    "Esc - Exit pause ");
+            }
             if (Input.GetKeyDown(KeyCode.W))
             {
                 pauseManager.SelectPrev();

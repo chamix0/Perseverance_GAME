@@ -26,6 +26,7 @@ public class EnemyShooter : Enemy, IObserver
     private int targetNode, nextNode, actualNode;
     public float turnSpeed = 1f;
     private float force = 10, normalForce = 10, slowForce = 3;
+    [SerializeField] private float enemyCollisionForce = 1;
     public ForceMode forceMode;
     private DissolveMaterials dissolveMaterials;
     [SerializeField] private States currentState = States.Patrol;
@@ -309,7 +310,7 @@ public class EnemyShooter : Enemy, IObserver
         rigidbody.AddForce(direction.normalized * force, forceMode);
         BodyRotation();
         // transform.forward = rigidbody.velocity.normalized;
-        if (Vector3.Distance(pos, dest) < 0.5f)
+        if (Vector3.Distance(pos, dest) < 0.7f)
         {
             if (nextNode == targetNode)
             {
@@ -396,7 +397,6 @@ public class EnemyShooter : Enemy, IObserver
     {
         if (playerAction is PlayerActions.Shoot)
         {
-           
             if (Vector3.Distance(playerValues.GetPos(), transform.position) < searchingDistance)
             {
                 if (currentState != States.Alert)
@@ -415,6 +415,10 @@ public class EnemyShooter : Enemy, IObserver
         if (collision.gameObject.layer == 8)
         {
             RecieveDamage();
+        }
+        else if (collision.gameObject.layer == 11)
+        {
+            rigidbody.AddForce(rigidbody.transform.right * enemyCollisionForce, ForceMode.Impulse);
         }
     }
 

@@ -12,6 +12,7 @@ public class BeeFight : MonoBehaviour, IObserver
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Slider slider;
     [SerializeField] private List<DoorManager> doorManagers;
+    [SerializeField] private DoorManager optionalEnterDoor;
     [SerializeField] private GameObject conversation;
     private PlayerValues playerValues;
     [SerializeField] private EnemyShooterZone enemyShooterZone;
@@ -59,6 +60,10 @@ public class BeeFight : MonoBehaviour, IObserver
         canvasGroup.alpha = 0;
         enemyShooterZone.HideAll();
         conversation.SetActive(true);
+        if (optionalEnterDoor)
+        {
+            optionalEnterDoor.OpenDoor();
+        }
     }
 
     public void OnNotify(PlayerActions playerAction)

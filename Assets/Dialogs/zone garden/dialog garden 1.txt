@@ -1,11 +1,11 @@
 -
 t
-ALice
+Alice
 Oh, this is new, this door is locked with targets...
 1
 -
 t
-ALice
+Alice
 You Know how to shoot, so open that door
 2
 -
@@ -15,11 +15,11 @@ FAST!!!
 3
 -
 t
-ALice
+Alice
 Also be careful, I feel some kind of hostility after that door.
 4
 -
 t
-ALice
+Alice
 BUT GO FAST, WE DONT HAVE MUCH TIME!!!
 -1

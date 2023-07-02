@@ -38,7 +38,7 @@ public class StairsBehavior : MonoBehaviour
                 _playerValues._rigidbody.useGravity = true;
                 endAnimation = false;
                 reset = true;
-                _playerValues.StandUp(true, 4f);
+                _playerValues.StandUp(true, 1f);
             }
         }
 

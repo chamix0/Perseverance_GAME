@@ -10,7 +10,7 @@ It is a distractor...
 2
 -
 q
-name
+Alice
 Do you know how to use it?
 yes
 no
@@ -43,7 +43,7 @@ That way you can use it again...
 8
 -
 q
-name
+Alice
 Do you want me to  repeat it?
 yes, please
 no

@@ -328,9 +328,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11aab0e1452d0a4499a4bebd38f0bc86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magnitude: 1.8
-  roughness: 2
-  fadeInTime: 0.1
+  magnitude: 1
+  roughness: 0.93
+  fadeInTime: 0.2
   fadeOutTime: 1
 --- !u!114 &2015896335
 MonoBehaviour:
@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ab8353b5ebd32545867da143199a814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultPosInfluence: {x: 0.15, y: 0.15, z: 0.15}
+  DefaultPosInfluence: {x: 0.1, y: 0.1, z: 0.1}
   DefaultRotInfluence: {x: 1, y: 1, z: 1}
   RestPositionOffset: {x: 0, y: 0, z: 0}
   RestRotationOffset: {x: 0, y: 0, z: 0}
@@ -499,9 +499,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   focus: {fileID: 0}
-  rotationSpeed: 90
-  minVerticalAngle: -30
-  maxVerticalAngle: 80
+  rotationSpeed: 70
+  minVerticalAngle: -50
+  maxVerticalAngle: 70
   invertX: 0
   invertY: 1
   regularCamera: {fileID: 4942936172518384290}
@@ -548,6 +548,18 @@ PrefabInstance:
       propertyPath: m_Cameras.Array.data[0]
       value: 
       objectReference: {fileID: 2014433476}
+    - target: {fileID: 3480177455613897102, guid: a396cc0f41ae02b4ebb098e9e8899ec8, type: 3}
+      propertyPath: rotationSpeed
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480177455613897102, guid: a396cc0f41ae02b4ebb098e9e8899ec8, type: 3}
+      propertyPath: maxVerticalAngle
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480177455613897102, guid: a396cc0f41ae02b4ebb098e9e8899ec8, type: 3}
+      propertyPath: minVerticalAngle
+      value: -40
+      objectReference: {fileID: 0}
     - target: {fileID: 3480177455613897102, guid: a396cc0f41ae02b4ebb098e9e8899ec8, type: 3}
       propertyPath: CollisionLayers.m_Bits
       value: 24665

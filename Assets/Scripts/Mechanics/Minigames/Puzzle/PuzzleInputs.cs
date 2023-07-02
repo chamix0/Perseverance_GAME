@@ -26,9 +26,7 @@ public class PuzzleInputs : MonoBehaviour
                 _puzzleManager.ShowKeyTutorial();
             }
 
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-            }
+           
         }
     }
 

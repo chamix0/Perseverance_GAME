@@ -104,7 +104,7 @@ Material:
     - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Cull: 2
+    - _Cull: 0
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -126,7 +126,7 @@ Material:
     - _SrcBlend: 5
     - _Surface: 1
     - _UVSec: 0
-    - _UnescaledTime: 246.6537
+    - _UnescaledTime: 487.06973
     - _UnscaledTime: 0
     - _WorkflowMode: 1
     - _ZTest: 4

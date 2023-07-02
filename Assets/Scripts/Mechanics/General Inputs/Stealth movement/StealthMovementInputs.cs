@@ -7,10 +7,12 @@ public class StealthMovementInputs : MonoBehaviour
     private PlayerValues _playerValues;
     private CameraController _cameraController;
     private Distraction _distraction;
+    private GuiManager _guiManager;
 
 
     void Start()
     {
+        _guiManager = FindObjectOfType<GuiManager>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraController = FindObjectOfType<CameraController>();
         _distraction = FindObjectOfType<Distraction>();
@@ -29,6 +31,11 @@ public class StealthMovementInputs : MonoBehaviour
 
         if (_playerValues.GetCurrentInput() == CurrentInput.StealthMovement && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
         {
+            if (Input.anyKey)
+            {
+                _guiManager.SetTutorial(
+                    "WS - Increase/Descrease gear    D - Lights     E - Throw distraction       Q - Recuperate Distraction");
+            }
             if (Input.GetKeyDown(KeyCode.W))
             {
                 if (_playerValues.GetGear() < 3)
@@ -70,6 +77,8 @@ public class StealthMovementInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
+        _guiManager.SetTutorial(
+            "R - Increase/Decrease gear   U - Camera horizonatal axis    L - Camera Vertical Axis     B - Lights    M' - Throw distraction  M - Recuperate Distraction");
         //accelerate deccelerate
         if (_playerValues.GetInputsEnabled())
         {

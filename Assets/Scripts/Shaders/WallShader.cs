@@ -10,6 +10,7 @@ public class WallShader : MonoBehaviour
     private Material mat;
 
     private PlayerValues playerValues;
+    private static readonly int Pos = Shader.PropertyToID("_pos");
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,6 @@ public class WallShader : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        mat.SetVector("_pos", playerValues.transform.position);
+        mat.SetVector(Pos, playerValues.GetPos());
     }
 }

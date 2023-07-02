@@ -18,10 +18,15 @@ public class PlayerLives : MonoBehaviour
         timer.Start();
         playerValues = FindObjectOfType<PlayerValues>();
     }
-    
+
     // Update is called once per frame
     void Update()
     {
+        if (playerValues.GetPaused() && timer.IsRunning)
+            timer.Stop();
+        else if (!playerValues.GetPaused() && !timer.IsRunning)
+            timer.Start();
+
         if (timer.Elapsed.TotalSeconds > cooldown)
         {
             timer.Restart();

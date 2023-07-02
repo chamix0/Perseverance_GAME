@@ -29,7 +29,7 @@ public class BasicCameraMovementInputs : MonoBehaviour
             if (Input.anyKey)
             {
                 guiManager.SetTutorial(
-                    "WS - Increase/Descrease gear    D - Lights");
+                    "ESC - Pause    WS - Increase/Descrease gear    D - Lights");
             }
 
             if (Input.GetKeyDown(KeyCode.W))

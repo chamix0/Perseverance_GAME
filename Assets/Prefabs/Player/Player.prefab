@@ -11314,6 +11314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   avatarSprites:
   - {fileID: 21300000, guid: 4b4b55e301d41dd40b97967a5449677d, type: 3}
+  - {fileID: 21300000, guid: 1372b207744121048ab9b109b51d2dcd, type: 3}
   - {fileID: 21300000, guid: 150ba780dc515984990eb07e048c33ea, type: 3}
   cooldown: 100
 --- !u!82 &246219815
@@ -14518,7 +14519,6 @@ MonoBehaviour:
   playerLives: {fileID: 42483752}
   genericScreenUi: {fileID: 4643490919132883601}
   isgroundedPos: {fileID: 486544429012934803}
-  dead: 0
   raySize: 0.29
   RayOffset: {x: 0, y: 0.25, z: 0}
   colisionLayers:
@@ -29886,8 +29886,24 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1884883270, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884883270, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884883270, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884883270, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
       propertyPath: m_fontSizeBase
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884883270, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1884883270, guid: 6a446bbc35137c448aef4f2f067319ef, type: 3}
       propertyPath: m_HorizontalAlignment

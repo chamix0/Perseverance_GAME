@@ -33,9 +33,9 @@ public class AmbientSound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_audioSource.loop && GetRemeaningTimeOfClip() < 0.1f)
+        if (!_audioSource.loop && GetRemeaningTimeOfClip() < 0.1f)
         {
-            ChangeSound(currentClip);
+            _audioSource.clip = SelectClip(currentClip);
             _audioSource.loop = true;
             _audioSource.Play();
         }
@@ -61,6 +61,7 @@ public class AmbientSound : MonoBehaviour
         if (clip != currentClip)
         {
             currentClip = clip;
+            _audioSource.loop = true;
             StartCoroutine(ChangeClipCoroutine(SelectClip(clip)));
         }
     }

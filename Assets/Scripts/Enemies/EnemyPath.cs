@@ -35,10 +35,10 @@ public class EnemyPath : MonoBehaviour
     {
         Bidirectionalize();
         InitDistances();
-        PrintDistances();
+        // PrintDistances();
         for (int i = 0; i < nodes.Count; i++)
             Dijkstra(i);
-        PrintDistances();
+        // PrintDistances();
     }
 
     private void OnDrawGizmos()

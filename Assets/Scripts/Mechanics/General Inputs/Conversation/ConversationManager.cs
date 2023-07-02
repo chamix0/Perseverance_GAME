@@ -163,8 +163,20 @@ public class ConversationManager : MonoBehaviour
             case "evil alice":
                 guiManager.SetAvatarImage(avatarSprites[1]);
                 break;
+            case "malloc":
+                guiManager.SetAvatarImage(avatarSprites[2]);
+                break;
+            case "gizmos":
+                guiManager.SetAvatarImage(avatarSprites[3]);
+                break;
+            case "fov":
+                guiManager.SetAvatarImage(avatarSprites[4]);
+                break;
+            case "mips":
+                guiManager.SetAvatarImage(avatarSprites[5]);
+                break;
             default:
-                guiManager.SetAvatarImage(avatarSprites[0]);
+                guiManager.SetAvatarImage(avatarSprites[6]);
                 break;
         }
     }
@@ -190,8 +202,7 @@ public class ConversationManager : MonoBehaviour
                         wordIndex++;
                     }
                 }
-
-                if (letters[wordIndex].Equals('/'))
+                else if (letters[wordIndex].Equals('/'))
                 {
                     writtenCad += "\n";
                     wordIndex++;

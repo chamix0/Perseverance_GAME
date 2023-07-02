@@ -9,11 +9,13 @@ public class EndZone : MonoBehaviour
     private GameObject _snapPos;
     private CameraChanger _cameraChanger;
     private TimeZoneManager _timeZoneManager;
+    private BoxCollider _boxCollider;
     
 
     // Start is called before the first frame update
     void Start()
     {
+        _boxCollider = GetComponent<BoxCollider>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _snapPos = transform.gameObject.transform.Find("snap pos").gameObject;
         _playerValues = FindObjectOfType<PlayerValues>();
@@ -24,12 +26,11 @@ public class EndZone : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            _boxCollider.enabled = false;
             _playerValues.snapRotationTo(_snapPos.transform.eulerAngles.y);
             _playerValues.SnapPositionTo(_snapPos.transform.position);
             _playerValues.Sit();
             _cameraChanger.SetScreenCamera();
-            //do stuff
-            
             _timeZoneManager.EndRun();
         }
     }
