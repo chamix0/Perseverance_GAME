@@ -329,7 +329,7 @@ public class PuzzleManager : Minigame
         minigameStarted = true;
         ShowKeyTutorial();
         SetActiveButtons(true);
-
+        _playerValues.NotifyAction(PlayerActions.PuzzleMinigame);
 
         //empezar minijuego
     }

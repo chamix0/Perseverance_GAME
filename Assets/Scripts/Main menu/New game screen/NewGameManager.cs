@@ -19,8 +19,10 @@ namespace Main_menu.New_game_screen
         //lists
         private List<List<Renderer>> _renderers;
 
+        private MainMenuSounds _sounds;
         private void Awake()
         {
+            _sounds = FindObjectOfType<MainMenuSounds>();
             _myMenuInputManager = FindObjectOfType<MyMenuInputManager>();
             _inputField = uiObject.GetComponent<TMP_InputField>();
             _renderers = new List<List<Renderer>>();
@@ -44,6 +46,7 @@ namespace Main_menu.New_game_screen
         /// </summary>
         public void ShowNext()
         {
+            _sounds.SelectOptionSound();
             DeactivateModel(_modelIndex);
             _modelIndex = (_modelIndex + 1) % models.Count;
             ActivateModel(_modelIndex);
@@ -54,6 +57,7 @@ namespace Main_menu.New_game_screen
         /// </summary>
         public void ShowPrev()
         {
+            _sounds.SelectOptionSound();
             DeactivateModel(_modelIndex);
             _modelIndex = _modelIndex - 1 < 0 ? models.Count - 1 : _modelIndex - 1;
             ActivateModel(_modelIndex);

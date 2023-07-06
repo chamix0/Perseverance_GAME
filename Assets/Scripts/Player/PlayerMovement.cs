@@ -73,12 +73,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position + new Vector3(0, rayOffset, 0),
-            transform.TransformDirection(Vector3.forward) * stompUmbral);
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position + new Vector3(0, rayOffset, 0),
-            transform.TransformDirection(-Vector3.forward) * stompUmbral * 1.5f);
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawRay(transform.position + new Vector3(0, rayOffset, 0),
+        //     transform.TransformDirection(Vector3.forward) * stompUmbral);
+        // Gizmos.color = Color.green;
+        // Gizmos.DrawRay(transform.position + new Vector3(0, rayOffset, 0),
+        //     transform.TransformDirection(-Vector3.forward) * stompUmbral * 1.5f);
     }
 
     private bool CheckIfStopm()
@@ -88,6 +88,7 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(transform.position + new Vector3(0, rayOffset, 0),
                 transform.TransformDirection(Vector3.forward), out hit, stompUmbral, rayLayers))
         {
+            _playerValues.NotifyAction(PlayerActions.Stomp);
             return true;
         }
 

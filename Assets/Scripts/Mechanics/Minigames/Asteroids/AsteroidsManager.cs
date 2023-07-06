@@ -376,6 +376,7 @@ public class AsteroidsManager : Minigame
         minigameStarted = true;
         _player.SetActive(true);
         StartRound();
+        _playerValues.NotifyAction(PlayerActions.Asteroids);
     }
 
     IEnumerator EndGameCoroutine()

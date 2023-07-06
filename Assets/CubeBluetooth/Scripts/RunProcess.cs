@@ -19,7 +19,7 @@ public class RunProcess : MonoBehaviour
     {
         StartProcess();
         _messages = GetComponent<MovesQueue>();
-        _cubeInputs = FindObjectOfType<CubeInputs>().GetComponent<CubeInputs>();
+        _cubeInputs = FindObjectOfType<CubeInputs>();
     }
 
     /// <summary>

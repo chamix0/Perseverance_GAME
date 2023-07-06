@@ -25,6 +25,7 @@ public class PauseInputs : MonoBehaviour
                 guiManager.SetTutorial(
                     "Esc - Exit pause ");
             }
+
             if (Input.GetKeyDown(KeyCode.W))
             {
                 pauseManager.SelectPrev();
@@ -32,6 +33,18 @@ public class PauseInputs : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.S))
             {
                 pauseManager.SelectNext();
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                pauseManager.IncreaseValue();
+            }
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                pauseManager.DecreaseValue();
+            }
+            else if (Input.GetKeyDown(KeyCode.Return))
+            {
+                pauseManager.Confirm();
             }
         }
     }

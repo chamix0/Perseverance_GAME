@@ -14413,6 +14413,7 @@ GameObject:
   - component: {fileID: 1887302338}
   - component: {fileID: 4660126136332291716}
   - component: {fileID: 6649841563933408321}
+  - component: {fileID: 4126628742971071169}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -14921,6 +14922,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a679fbd0161e2984294bf6f4cac1bfe6, type: 3}
   - {fileID: 8300000, guid: bdb1a62f0cc5ae145886e8c0e3dfdc1e, type: 3}
   - {fileID: 8300000, guid: a24093f5ba4f99b47b67a4110713009f, type: 3}
+  - {fileID: 8300000, guid: 3fd98453c9fd51f439dd6be7fce985b5, type: 3}
 --- !u!114 &42483752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15064,6 +15066,18 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f913a923dd0bcb94da6772914355e8cb, type: 3}
   - {fileID: 8300000, guid: cdfe15b0e9d2fb445a161af9a1ae06f5, type: 3}
   fadeSpeed: 1
+--- !u!114 &4126628742971071169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4643490919132883590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 297f2e9f9204a2045bed8c97d1bcd623, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4643490919159732104
 GameObject:
   m_ObjectHideFlags: 0

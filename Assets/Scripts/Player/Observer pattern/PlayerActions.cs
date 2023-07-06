@@ -10,7 +10,8 @@
     Walking,
     Runing,
     Sprint,
-    
+    Stomp,
+
     //camera
     NoDamage,
     LowDamage,
@@ -26,11 +27,26 @@
     //stealth mode
     ThrowDistraction,
     RecuperateDistraction,
-    
+
     //lights
     TurnOnLights,
     TurnOffLights,
 
+    //LED MATRIX
+    NormalFace,
+    ScaredFace,
+    BlinkFace,
+    Asteroids,
+    ColorsMinigame,
+    MemorizeMinigame,
+    DontTouchTheWallsMinigame,
+    JustWaitMinigame,
+    PuzzleMinigame,
+    RollMinigame,
+    PushFastMinigame,
+    AdjustValuesMinigame,
+    MinigameFinished,
+    
 
     Die
 }

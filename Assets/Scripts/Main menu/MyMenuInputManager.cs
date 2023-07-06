@@ -13,6 +13,7 @@ public enum CurrentMenuInput
     Settings,
     Gallery,
     Credits,
+    Tutorial,
     None
 }
 
@@ -25,15 +26,24 @@ public class MyMenuInputManager : MonoBehaviour
     private MainMenuInputs _menuInputs;
     private NewGameInputs _newGameInputs;
     private LoadGameInputs _loadGameInputs;
+    private GalleryInputs _galleryInputs;
+    private TutorialInputs _tutorialInputs;
+    private SettingsInputs _settingsInputs;
+
+    private CreditsInputs _creditsInputs;
 
     //variables
     private bool _inputsEnabled = true;
 
     private void Awake()
     {
+        _galleryInputs = FindObjectOfType<GalleryInputs>();
         _menuInputs = GetComponent<MainMenuInputs>();
         _newGameInputs = FindObjectOfType<NewGameInputs>();
         _loadGameInputs = FindObjectOfType<LoadGameInputs>();
+        _tutorialInputs = FindObjectOfType<TutorialInputs>();
+        _settingsInputs = FindObjectOfType<SettingsInputs>();
+        _creditsInputs = FindObjectOfType<CreditsInputs>();
         try
         {
             _inputsMoves = GameObject.FindGameObjectWithTag("UserCubeManager").GetComponent<MovesQueue>();
@@ -65,9 +75,19 @@ public class MyMenuInputManager : MonoBehaviour
                 case CurrentMenuInput.LoadGame:
                     _loadGameInputs.PerformAction(move);
                     break;
+                case CurrentMenuInput.Gallery:
+                    _galleryInputs.PerformAction(move);
+                    break;
+                case CurrentMenuInput.Tutorial:
+                    _tutorialInputs.PerformAction(move);
+                    break;
+                case CurrentMenuInput.Settings:
+                    _settingsInputs.PerformAction(move);
+                    break;
+                case CurrentMenuInput.Credits:
+                    _creditsInputs.PerformAction(move);
+                    break;
             }
-
-            //depending on the action we will give control to a different input manager
         }
     }
 

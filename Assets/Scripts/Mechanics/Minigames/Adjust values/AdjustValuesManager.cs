@@ -232,7 +232,7 @@ public class AdjustValuesManager : Minigame
         _playerValues.SetInputsEnabled(true);
         minigameStarted = true;
         ShowKeyTutorial();
-
+        _playerValues.NotifyAction(PlayerActions.AdjustValuesMinigame);
 
         //empezar minijuego
     }

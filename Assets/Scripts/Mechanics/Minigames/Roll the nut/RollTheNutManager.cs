@@ -245,6 +245,8 @@ public class RollTheNutManager : Minigame
         _isEnabled = true;
         _playerValues.SetInputsEnabled(true);
         ShowKeyTutorial();
+        _playerValues.NotifyAction(PlayerActions.RollMinigame);
+
     }
 
     IEnumerator EndGameCoroutine()

@@ -49,7 +49,7 @@ public class CubeInputs : MonoBehaviour
 
     void Start()
     {
-        _conection = FindObjectOfType<CubeConectionManager>().GetComponent<CubeConectionManager>();
+        _conection = FindObjectOfType<CubeConectionManager>();
         _moves = GetComponent<MovesQueue>();
         topColor = centers[0, 0];
         FrontColor = centers[1, 0];

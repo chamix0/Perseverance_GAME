@@ -31,10 +31,13 @@ namespace Main_menu.Load_game_screen
         private List<List<TMP_Text>> _texts;
         private List<Image> _backgrounds;
 
+        private MainMenuSounds _sounds;
+
         #endregion
 
         private void Awake()
         {
+            _sounds = FindObjectOfType<MainMenuSounds>();
             loadScreen = FindObjectOfType<LoadScreen>();
             _jsoNsaving = FindObjectOfType<JSONsaving>();
             _menuManager = FindObjectOfType<MainMenuManager>();
@@ -63,15 +66,19 @@ namespace Main_menu.Load_game_screen
         {
             if (_load)
             {
+                _sounds.SelectOptionSound();
                 if (_saveData.GetGameData(index).GetGameStarted())
                 {
-                    _saveData.SetLastSessionSlotIndex(index);
-                    //cambiar de escena
-                    print("cambio de escena");
+                    _slotIndex = index;
+                    _saveData.SetLastSessionSlotIndex(_slotIndex);
+                    _jsoNsaving.SaveTheData();
+                    loadScreen.LoadLevels();
+                    print(index);
                 }
             }
             else
             {
+                _sounds.ReturnSound();
                 _saveData.EraseSlot(index);
                 _jsoNsaving.SaveTheData();
                 _menuManager.CheckForContinueAndNewGame();
@@ -89,15 +96,18 @@ namespace Main_menu.Load_game_screen
         {
             if (_load)
             {
+                _sounds.SelectOptionSound();
+
                 if (_saveData.GetGameData(_slotIndex).GetGameStarted())
                 {
                     _saveData.SetLastSessionSlotIndex(_slotIndex);
-                    //cambiar de escena
+                    _jsoNsaving.SaveTheData();
                     loadScreen.LoadLevels();
                 }
             }
             else
             {
+                _sounds.ReturnSound();
                 _saveData.EraseSlot(_slotIndex);
                 _jsoNsaving.SaveTheData();
                 _menuManager.CheckForContinueAndNewGame();
@@ -111,6 +121,7 @@ namespace Main_menu.Load_game_screen
         /// </summary>
         public void EnableLoad()
         {
+            _sounds.ChangeOptionSound();
             _load = true;
             eraseFileTogle.isOn = false;
             loadFileTogle.isOn = true;
@@ -123,6 +134,7 @@ namespace Main_menu.Load_game_screen
         /// </summary>
         public void EnableErase()
         {
+            _sounds.ChangeOptionSound();
             _load = false;
             eraseFileTogle.isOn = true;
             loadFileTogle.isOn = false;
@@ -172,6 +184,7 @@ namespace Main_menu.Load_game_screen
 
         public void SelectNextButton()
         {
+            _sounds.ChangeOptionSound();
             int aux = _slotIndex;
             aux = (aux + 1) % _buttons.Count;
             _slotIndex = aux;
@@ -180,6 +193,7 @@ namespace Main_menu.Load_game_screen
 
         public void SelectPrevButton()
         {
+            _sounds.ChangeOptionSound();
             int aux = _slotIndex;
             aux = aux - 1 < 0 ? _buttons.Count - 1 : aux - 1;
             _slotIndex = aux;
@@ -216,7 +230,7 @@ namespace Main_menu.Load_game_screen
             for (int i = 0; i < _buttons.Count; i++)
             {
                 int aux = i;
-                _buttons[i].onClick.AddListener(delegate { Click(aux); });
+                _buttons[aux].onClick.AddListener(delegate { Click(aux); });
             }
 
             loadFileTogle.onValueChanged.AddListener(delegate(bool arg0)

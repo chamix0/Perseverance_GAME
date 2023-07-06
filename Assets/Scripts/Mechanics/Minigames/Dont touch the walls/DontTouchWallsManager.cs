@@ -439,6 +439,8 @@ public class DontTouchWallsManager : Minigame
         minigameStarted = true;
         _player.SetActive(true);
         StartRound();
+        _playerValues.NotifyAction(PlayerActions.DontTouchTheWallsMinigame);
+
     }
 
     IEnumerator EndGameCoroutine()

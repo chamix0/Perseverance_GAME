@@ -214,7 +214,7 @@ public class ColorsManager : Minigame
         _genericScreenUi.FadeOutText();
         yield return new WaitForSeconds(1f);
         ShowGameUi();
-        //empezar minijuego
+        _playerValues.NotifyAction(PlayerActions.ColorsMinigame);
     }
 
     IEnumerator EndGameCoroutine()

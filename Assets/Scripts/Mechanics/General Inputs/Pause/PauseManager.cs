@@ -69,14 +69,17 @@ public class PauseManager : MonoBehaviour
 
         _sliders.AddRange(new[] { masterVolumeSlider, vfxVolumeSlider, musicVolumeSlider, uiVolumeSlider });
         //previus game sound values
-        masterVolumeSlider.value = playerValues.gameData.GetMasterVolume();
-        soundManager.SetMasterVolume(playerValues.gameData.GetMasterVolume());
-        vfxVolumeSlider.value = playerValues.gameData.GetVfxVolume();
-        soundManager.SetVfxVolume(playerValues.gameData.GetVfxVolume());
-        musicVolumeSlider.value = playerValues.gameData.GetMusicVolume();
-        soundManager.SetMusicVolume(playerValues.gameData.GetMusicVolume());
-        uiVolumeSlider.value = playerValues.gameData.GetUiVolume();
-        soundManager.SetUiVolume(playerValues.gameData.GetUiVolume());
+        if (!playerValues.gameData.GetIsNewGame())
+        {
+            masterVolumeSlider.value = playerValues.gameData.GetMasterVolume();
+            soundManager.SetMasterVolume(playerValues.gameData.GetMasterVolume());
+            vfxVolumeSlider.value = playerValues.gameData.GetVfxVolume();
+            soundManager.SetVfxVolume(playerValues.gameData.GetVfxVolume());
+            musicVolumeSlider.value = playerValues.gameData.GetMusicVolume();
+            soundManager.SetMusicVolume(playerValues.gameData.GetMusicVolume());
+            uiVolumeSlider.value = playerValues.gameData.GetUiVolume();
+            soundManager.SetUiVolume(playerValues.gameData.GetUiVolume());
+        }
 
         masterVolumeSlider.onValueChanged.AddListener(MasterSliderAction);
         vfxVolumeSlider.onValueChanged.AddListener(VfxSliderAction);
@@ -116,10 +119,10 @@ public class PauseManager : MonoBehaviour
     public void Pause()
     {
         playerValues.SetPaused(!playerValues.GetPaused());
-        pauseSounds.PlayChange();
 
         if (playerValues.GetPaused())
         {
+            pauseSounds.PlayChange();
             cameraController.FreezeCamera();
             guiManager.ShowPausePanel();
             if (!guiManager.GetObjetiveText().Equals(""))
@@ -185,7 +188,7 @@ public class PauseManager : MonoBehaviour
 
     private void VfxSliderAction(float value)
     {
-        // soundManager.SetVfxVolume(value);
+        soundManager.SetVfxVolume(value);
         playerValues.gameData.SetVfxVolume(value);
         playerValues.SaveGame();
     }
@@ -199,8 +202,8 @@ public class PauseManager : MonoBehaviour
 
     private void UiSliderAction(float value)
     {
-        soundManager.SetMusicVolume(value);
-        playerValues.gameData.SetMusicVolume(value);
+        soundManager.SetUiVolume(value);
+        playerValues.gameData.SetUiVolume(value);
         playerValues.SaveGame();
     }
 

@@ -85,11 +85,13 @@ public class GenericScreenUi : MonoBehaviour
                 SetText(BlinkFace);
             else if (_playerValues.GetIsStucked() || !_playerValues.GetIsGrounded())
             {
+                _playerValues.NotifyAction(PlayerActions.ScaredFace);
                 SetText(ScaredFace);
                 _faceUpdated = false;
             }
             else
             {
+                _playerValues.NotifyAction(PlayerActions.NormalFace);
                 SetText(normalFace);
             }
         }
@@ -97,6 +99,7 @@ public class GenericScreenUi : MonoBehaviour
 
     IEnumerator BlinkCoroutine()
     {
+        _playerValues.NotifyAction(PlayerActions.BlinkFace);
         float wait = Random.Range(0.01f, 1);
         yield return new WaitForSeconds(wait);
         _blinkTimer.Start();

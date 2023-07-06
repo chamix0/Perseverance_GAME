@@ -13,9 +13,11 @@ namespace Main_menu.New_game_screen
         private SaveData _saveData;
         private MainMenuManager _menuManager;
         private LoadScreen loadScreen;
+        private MainMenuSounds _sounds;
 
         void Start()
         {
+            _sounds = FindObjectOfType<MainMenuSounds>();
             loadScreen = FindObjectOfType<LoadScreen>();
             _myInputManager = FindObjectOfType<MyMenuInputManager>();
             _newGameManager = FindObjectOfType<NewGameManager>();
@@ -40,6 +42,7 @@ namespace Main_menu.New_game_screen
                 //confirm model
                 else if (Input.GetKeyDown(KeyCode.Return))
                 {
+                    _sounds.SelectOptionSound();
                     _saveData.StartNewGame(_newGameManager.GetModelIndex(), _newGameManager.GetName());
                     _jsonSaving.SaveTheData();
                     Debug.Log("nueva partida creada en el  slot " + _saveData.GetLastSessionSlotIndex());
@@ -48,8 +51,9 @@ namespace Main_menu.New_game_screen
                 //go back to menu
                 else if (Input.GetKeyDown(KeyCode.Escape))
                 {
+                    _sounds.ReturnSound();
                     _newGameManager.HideUI();
-                    _camerasController.SetCamera(0);
+                    _camerasController.SetCamera(MenuCameras.EDDO);
                     _menuManager.CheckForContinueAndNewGame();
                     _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
                 }
@@ -71,6 +75,7 @@ namespace Main_menu.New_game_screen
                 //confirm and start game
                 if (move.direction == 1)
                 {
+                    _sounds.SelectOptionSound();
                     _saveData.StartNewGame(_newGameManager.GetModelIndex(), _newGameManager.GetName());
                     _jsonSaving.SaveTheData();
                     Debug.Log("nueva partida creada en el  slot " + _saveData.GetLastSessionSlotIndex());
@@ -80,8 +85,9 @@ namespace Main_menu.New_game_screen
                 //go back to menu
                 else
                 {
+                    _sounds.ReturnSound();
                     _newGameManager.HideUI();
-                    _camerasController.SetCamera(0);
+                    _camerasController.SetCamera(MenuCameras.EDDO);
                     _menuManager.CheckForContinueAndNewGame();
                     _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
                 }

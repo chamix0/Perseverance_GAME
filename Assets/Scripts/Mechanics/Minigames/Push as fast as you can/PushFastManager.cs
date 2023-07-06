@@ -185,6 +185,8 @@ public class PushFastManager : Minigame
         _timer.Start();
         //empezar minijuego
         _timer.Restart();
+        _playerValues.NotifyAction(PlayerActions.PushFastMinigame);
+
     }
 
     IEnumerator EndGameCoroutine()

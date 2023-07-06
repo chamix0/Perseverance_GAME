@@ -110,6 +110,7 @@ public class EnemyShooter : Enemy, IObserver
             if (outlineTimer.Elapsed.TotalSeconds > outlineCooldown)
             {
                 outlineTimer.Stop();
+                outlineTimer.Reset();
                 outline.OutlineColor = Color.clear;
             }
         }
@@ -134,7 +135,9 @@ public class EnemyShooter : Enemy, IObserver
         }
         else
         {
-            animator.SetInteger(Index, 0);
+            if (animator.GetInteger(Index) != 0)
+                animator.SetInteger(Index, 0);
+            
         }
     }
 
@@ -142,13 +145,13 @@ public class EnemyShooter : Enemy, IObserver
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionDistance);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, searchingDistance);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, radius);
-        Gizmos.DrawRay(transform.position, -head.forward);
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawWireSphere(transform.position, detectionDistance);
+        // Gizmos.color = Color.yellow;
+        // Gizmos.DrawWireSphere(transform.position, searchingDistance);
+        // Gizmos.color = Color.blue;
+        // Gizmos.DrawWireSphere(transform.position, radius);
+        // Gizmos.DrawRay(transform.position, -head.forward);
     }
 
     // Update is called once per frame
@@ -402,11 +405,6 @@ public class EnemyShooter : Enemy, IObserver
                 if (currentState != States.Alert)
                     ChangeState(States.Alert, 2);
             }
-        }
-
-        if (playerAction is PlayerActions.Die)
-        {
-            ResetEnemy();
         }
     }
 

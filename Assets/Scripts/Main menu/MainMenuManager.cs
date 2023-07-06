@@ -41,9 +41,13 @@ public class MainMenuManager : MonoBehaviour
     private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
 
+    //sounds
+    private MainMenuSounds _sounds;
+
 
     private void Awake()
     {
+        _sounds = FindObjectOfType<MainMenuSounds>();
         _camerasController = FindObjectOfType<MenuCamerasController>();
         _menuInputManager = FindObjectOfType<MyMenuInputManager>();
         _newGameManager = FindObjectOfType<NewGameManager>();
@@ -57,7 +61,6 @@ public class MainMenuManager : MonoBehaviour
 
     void Start()
     {
-        
         selectedButton = 0;
         _colorSelected = _buttons[0].GetComponent<Image>().material.GetColor(BackgroundColor);
         SetButtons();
@@ -69,9 +72,10 @@ public class MainMenuManager : MonoBehaviour
 
     public void clicked(int button)
     {
+        _sounds.SelectOptionSound();
+
         _loadGameManager.HideUI();
         _menuInputManager.SetCurrentInput(CurrentMenuInput.Menu);
-
         int aux = button;
         selectedButton = aux;
         UpdateColors();
@@ -82,6 +86,9 @@ public class MainMenuManager : MonoBehaviour
 
     public void PressEnter()
     {
+        _sounds.SelectOptionSound();
+
+
         int aux = selectedButton;
         UpdateColors();
         _texts[aux].color = Color.white;
@@ -130,10 +137,21 @@ public class MainMenuManager : MonoBehaviour
     IEnumerator ActionForButtonCoroutine(int index)
     {
         CheckForContinueAndNewGame();
+
+        //cameras
         if (index != 2)
             _loadGameManager.HideUI();
         if (index == 1)
-            _camerasController.SetCamera(1);
+            _camerasController.SetCamera(MenuCameras.NewGame);
+        else if (index == 3)
+            _camerasController.SetCamera(MenuCameras.Tutorial);
+        else if (index == 4)
+            _camerasController.SetCamera(MenuCameras.Settings);
+        else if (index == 5)
+            _camerasController.SetCamera(MenuCameras.Gallery);
+        else if (index == 6)
+            _camerasController.SetCamera(MenuCameras.Credits);
+
 
         yield return new WaitForSeconds(0.25f);
         switch (index)
@@ -159,15 +177,23 @@ public class MainMenuManager : MonoBehaviour
                 break;
             //tutorial
             case 3:
+                _menuInputManager.SetCurrentInput(CurrentMenuInput.Tutorial);
+
                 break;
             //settings
             case 4:
+                _menuInputManager.SetCurrentInput(CurrentMenuInput.Settings);
+
                 break;
             //Gallery
             case 5:
+                _menuInputManager.SetCurrentInput(CurrentMenuInput.Gallery);
+
                 break;
             //credits
             case 6:
+                _menuInputManager.SetCurrentInput(CurrentMenuInput.Credits);
+
                 break;
             //Exit
             case 7:
@@ -182,6 +208,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void SelectNextButton()
     {
+        _sounds.ChangeOptionSound();
+
         int aux = selectedButton;
         aux = (aux + 1) % _buttons.Count;
 
@@ -195,6 +223,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void SelectPrevButton()
     {
+        _sounds.ChangeOptionSound();
+
         int aux = selectedButton;
         aux = aux - 1 < 0 ? _buttons.Count - 1 : aux - 1;
         if (aux == 1 && !NewGameInteractable)

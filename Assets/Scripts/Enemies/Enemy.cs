@@ -14,6 +14,4 @@ public abstract class Enemy : MonoBehaviour
     
     public abstract bool GetEnemyDead();
     public abstract void ResetEnemy();
-
-
 }

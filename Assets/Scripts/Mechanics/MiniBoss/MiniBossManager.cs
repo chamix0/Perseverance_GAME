@@ -497,6 +497,7 @@ public class MiniBossManager : MonoBehaviour
 
     private void CreateSequence(int dif, int max)
     {
+        _sequenceValues.Clear();
         _sequenceValueIndex = 0;
         for (int i = 0; i < max; i++)
         {

@@ -1,16 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Player.Observer_pattern;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 [DefaultExecutionOrder(12)]
-public class EnemyShooterZone : MonoBehaviour
+public class EnemyShooterZone : MonoBehaviour, IObserver
 {
     // Start is called before the first frame update
     private List<Enemy> enemies;
     private EnemyPath enemyPath;
+    private PlayerValues _playerValues;
 
     // [SerializeField] private DoorManager doorManager;
     private bool _minigameFinished = false;
@@ -24,6 +26,8 @@ public class EnemyShooterZone : MonoBehaviour
     void Start()
     {
         enemies.AddRange(GetComponentsInChildren<Enemy>());
+        _playerValues = FindObjectOfType<PlayerValues>();
+        _playerValues.AddObserver(this);
         try
         {
             enemyPath = GetComponent<EnemyPath>();
@@ -136,5 +140,21 @@ public class EnemyShooterZone : MonoBehaviour
     public List<Enemy> GetEnemies()
     {
         return enemies;
+    }
+
+    private void ResetEnemies()
+    {
+        foreach (var enemy in enemies)
+        {
+            enemy.ResetEnemy();
+        }
+    }
+
+    public void OnNotify(PlayerActions playerAction)
+    {
+        if (playerAction is PlayerActions.Die && !_minigameFinished)
+        {
+            ResetEnemies();
+        }
     }
 }

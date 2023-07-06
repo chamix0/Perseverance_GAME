@@ -796,6 +796,7 @@ MonoBehaviour:
   enemyShooterZone: {fileID: 0}
   enemyPath: {fileID: 0}
   turnSpeed: 1.5
+  enemyCollisionForce: 1
   forceMode: 5
   currentState: 1
   flash: {fileID: 4165506436101117626}
@@ -886,8 +887,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 50
+  MinDistance: 20.54
+  MaxDistance: 41.6
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -922,7 +923,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

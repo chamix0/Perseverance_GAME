@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,12 +10,11 @@ using UnityEngine.UI;
 public class LoadScreen : MonoBehaviour
 {
     [SerializeField] CanvasGroup loadingScreen;
-    [SerializeField] private Slider slider;
+    [SerializeField] private TMP_Text _text;
 
     private void Start()
     {
         loadingScreen.alpha = 0;
-        slider.value = 0;
     }
 
     public void LoadScene(int sceneIndex)
@@ -36,27 +36,62 @@ public class LoadScreen : MonoBehaviour
     {
         StartCoroutine(LoadScenAsync(3));
     }
+
     public void LoadCredits()
     {
         StartCoroutine(LoadScenAsync(4));
     }
+
     public void LoadKeyOrCube()
     {
         StartCoroutine(LoadScenAsync(0));
     }
 
+    public void LoadMovementTutorial()
+    {
+        StartCoroutine(LoadScenAsync(4));
+    }
+
+    public void LoadRaceTutorial()
+    {
+        StartCoroutine(LoadScenAsync(5));
+    }
+
+    public void LoadStealthTutorial()
+    {
+        StartCoroutine(LoadScenAsync(6));
+    }
+
+    public void LoadMinigamesTutorial()
+    {
+        StartCoroutine(LoadScenAsync(7));
+    }
+
+    public void LoadShootingTutorial()
+    {
+        StartCoroutine(LoadScenAsync(8));
+    }
+
+    public void LoadArduinoConnect()
+    {
+        StartCoroutine(LoadScenAsync(9));
+    }
+
+    public void LoadEnemiesTutorial()
+    {
+        StartCoroutine(LoadScenAsync(10));
+    }
+
+    public void SetLoadingText(string text)
+    {
+        _text.text = text;
+    }
+
     IEnumerator LoadScenAsync(int sceneIndex)
     {
         loadingScreen.alpha = 1;
-        
+
         yield return new WaitForSeconds(5);
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
-
-        while (!operation.isDone)
-        {
-            float progressValue = Mathf.Clamp01(operation.progress / 0.9f);
-            slider.value = progressValue;
-            yield return null;
-        }
     }
 }

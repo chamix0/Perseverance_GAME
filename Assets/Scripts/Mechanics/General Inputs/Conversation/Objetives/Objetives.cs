@@ -15,18 +15,19 @@ public class Objetives : MonoBehaviour
     {
         guiManager = FindObjectOfType<GuiManager>();
         playerValues = FindObjectOfType<PlayerValues>();
-        if (playerValues.gameData.GetGameStarted())
+        if (!playerValues.gameData.GetIsNewGame())
         {
             int lastZone = 0;
             for (int i = 0; i < 5; i++)
             {
                 lastZone = i;
-                if (!playerValues.gameData.checkEnabled(i)) break;
+                if (!playerValues.gameData.checkEnabled(i))
+                {
+                    break;
+                }
             }
 
-            lastZone--;
-
-            if (lastZone == 0)
+            if (lastZone == 0 )
                 SetNewObjetive("Explore the foundry");
             else if (lastZone == 1)
                 SetNewObjetive("Explore the freezer");
@@ -36,6 +37,11 @@ public class Objetives : MonoBehaviour
                 SetNewObjetive("Explore the garden");
             else if (lastZone == 4)
                 SetNewObjetive("Explore the residential zone");
+        }
+        else
+        {
+            SetNewObjetive("Explore");
+
         }
     }
 

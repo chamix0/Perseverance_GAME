@@ -7,12 +7,11 @@ namespace Main_menu.Load_game_screen
         //components
         private MyMenuInputManager _myInputManager;
         private LoadGameManager _loadGameManager;
-        private LoadScreen loadScreen;
-
+        private MainMenuSounds _sounds;
         void Start()
         {
-            loadScreen = FindObjectOfType<LoadScreen>();
-            _myInputManager = FindObjectOfType<MyMenuInputManager>();
+            _sounds = FindObjectOfType<MainMenuSounds>();
+    _myInputManager = FindObjectOfType<MyMenuInputManager>();
             _loadGameManager = FindObjectOfType<LoadGameManager>();
         }
 
@@ -45,6 +44,7 @@ namespace Main_menu.Load_game_screen
                 else if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.A) ||
                          Input.GetKeyDown(KeyCode.LeftArrow))
                 {
+                    _sounds.ReturnSound();
                     _loadGameManager.HideUI();
                     _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
                 }
@@ -70,6 +70,7 @@ namespace Main_menu.Load_game_screen
                 //go back to menu
                 else
                 {
+                    _sounds.ReturnSound();
                     _loadGameManager.HideUI();
                     _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
                 }

@@ -15,8 +15,8 @@ public class DoorManager : MonoBehaviour
     private float _closeY, _openY;
     [SerializeField] private float doorLiftHeight = 8;
     private Stopwatch closeTimer;
-
-    private float closeTime = 10f;
+    [SerializeField] private float openCloseSpeed = 0.5f;
+  [SerializeField]  private float closeTime = 10f;
     //values
 
     private void Awake()
@@ -40,11 +40,19 @@ public class DoorManager : MonoBehaviour
             if (door.transform.position.y < _openY)
                 door.transform.position += new Vector3(0, 0.2f, 0);
             else
+            {
                 _openDoor = false;
-        }
+                door.SetActive(false);
+                
+            }        }
 
         if (_closeDoor)
         {
+            if (!door.activeSelf)
+            {
+                door.SetActive(true);
+ 
+            }
             if (door.transform.position.y > _closeY)
                 door.transform.position -= new Vector3(0, 0.2f, 0);
             else

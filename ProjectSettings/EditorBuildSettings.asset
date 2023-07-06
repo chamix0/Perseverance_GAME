@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Game/Keyboard or cube.unity
     guid: 68589c058023ac047a17647e64e9b0d6
   - enabled: 1
-    path: Assets/Scenes/Game/Lobby 1.unity
+    path: Assets/Scenes/Game/connect cube.unity
     guid: 4124952769f9f7349ac7661396813982
   - enabled: 1
     path: Assets/Scenes/Game/Main menu.unity
@@ -23,4 +23,25 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Test/Movement.unity
     guid: cbec08ebe4617534784edca8168c2138
+  - enabled: 1
+    path: Assets/Scenes/Game/Tutorials/Door 1.unity
+    guid: e727dbf04e4a6ce4e8b06dc5eff9f45f
+  - enabled: 1
+    path: Assets/Scenes/Game/Tutorials/race 1.unity
+    guid: 1c5b0d98f81f67d48af47730507de402
+  - enabled: 1
+    path: Assets/Scenes/Game/Tutorials/camera enem 1.unity
+    guid: 374ac0e643bba994cb3fd4f0d76f3656
+  - enabled: 1
+    path: Assets/Scenes/Game/Tutorials/terminals 1.unity
+    guid: ba87ab609ad7002448c97b062d879ea6
+  - enabled: 1
+    path: Assets/Scenes/Game/Tutorials/target door 1.unity
+    guid: 5670079104b49e44aa67ad59523430da
+  - enabled: 1
+    path: Assets/Scenes/Game/Connect Arduino.unity
+    guid: 00c1bb658131f6d4895acb912f82cf05
+  - enabled: 1
+    path: Assets/Scenes/Game/Tutorials/enemies 1.unity
+    guid: 3d8ba39612f324d45af4d82779cb8383
   m_configObjects: {}

@@ -128,6 +128,8 @@ public class JustWaitManager : Minigame
         ShowUI();
         //empezar minijuego
         _timer.Restart();
+        _playerValues.NotifyAction(PlayerActions.JustWaitMinigame);
+
     }
 
     IEnumerator EndGameCoroutine()

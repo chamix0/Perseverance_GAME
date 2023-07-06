@@ -96,5 +96,10 @@ public class PlayerSounds : MonoBehaviour, IObserver
             audioSourceInstantSounds.clip = audioClips[12];
             audioSourceInstantSounds.Play();
         }
+        else if (playerAction is PlayerActions.TurnOnLights or PlayerActions.TurnOffLights)
+        {
+            audioSourceInstantSounds.clip = audioClips[14];
+            audioSourceInstantSounds.Play();
+        }
     }
 }

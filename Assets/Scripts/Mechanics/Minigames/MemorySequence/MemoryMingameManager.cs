@@ -262,6 +262,7 @@ public class MemoryMingameManager : Minigame
         yield return new WaitForSeconds(1f);
         ShowGameUi();
         ChangeSequence();
+        _playerValues.NotifyAction(PlayerActions.MemorizeMinigame);
     }
 
     IEnumerator EndGameCoroutine()

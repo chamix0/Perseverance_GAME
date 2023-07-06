@@ -14,10 +14,12 @@ public class MinigameManager : MonoBehaviour
     [SerializeField] private GameObject counterObject;
     [SerializeField] private Shader shader;
 
+    private PlayerValues _playerValues;
+
     //variables
     private int _lastMinigame = -1;
     private bool currentMinigameFinished;
-    
+
     //lists
     [SerializeField] private List<Image> _counterImages;
     private List<Minigame> minigames;
@@ -33,6 +35,7 @@ public class MinigameManager : MonoBehaviour
 
     void Start()
     {
+        _playerValues = FindObjectOfType<PlayerValues>();
         //minigames 
         minigames.Add(GetComponent<ColorsManager>());
         minigames.Add(GetComponent<AsteroidsManager>());
@@ -107,6 +110,7 @@ public class MinigameManager : MonoBehaviour
     public void EndMinigame()
     {
         // guiManager.ShowGui();
+        _playerValues.NotifyAction(PlayerActions.MinigameFinished);
         currentMinigameFinished = true;
     }
 

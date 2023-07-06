@@ -39,6 +39,7 @@ public class CubeConectionManager : MonoBehaviour
         _cancelButton.interactable = false;
         _connectButton.interactable = false;
         continueButton.interactable = false;
+        
     }
 
     private void Update()
@@ -49,7 +50,6 @@ public class CubeConectionManager : MonoBehaviour
             reEstablish = false;
             StartCoroutine(RestablishComunicationRoutine());
         }
-
         if (connected)
         {
             connected = false;
@@ -81,6 +81,11 @@ public class CubeConectionManager : MonoBehaviour
         _refreshButton.interactable = false;
     }
 
+    private void ShowDropdownLabel(int index)
+    {
+        _dropdown.itemText.text = _dropdown.options[index].text;
+    }
+
     /// <summary>
     /// reads from the messages queue the number of available devices and the devices
     /// </summary>
@@ -96,10 +101,11 @@ public class CubeConectionManager : MonoBehaviour
             msg = _movesQueue.Dequeue();
 
         int count = int.Parse(msg.msg); //the first message will always be the number of available devices to connect  
+        _dropdown.options.Add(new TMP_Dropdown.OptionData("..."));
         for (int i = 0; i < count; i++)
             _dropdown.options.Add(new TMP_Dropdown.OptionData(_movesQueue.Dequeue().msg));
-
-
+        
+        
         _cubeInputs.gameObject.SetActive(true);
         _cubeInputs.isActive = true;
         _refreshButton.interactable = true;
