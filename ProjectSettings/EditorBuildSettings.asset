@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game/Tutorials/enemies 1.unity
     guid: 3d8ba39612f324d45af4d82779cb8383
+  - enabled: 1
+    path: Assets/Scenes/Game/final credits.unity
+    guid: 1f9eee85e29306941afc7cb601da2ded
   m_configObjects: {}

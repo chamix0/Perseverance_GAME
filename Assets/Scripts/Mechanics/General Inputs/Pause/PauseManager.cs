@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Codice.Client.GameUI.Checkin;
-using Codice.CM.Client.Differences;
 using Mechanics.General_Inputs;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseManager : MonoBehaviour
@@ -130,6 +126,9 @@ public class PauseManager : MonoBehaviour
             Time.timeScale = 0;
             guiManager.SetTutorial(" ");
             soundManager.SetVfxVolume(0);
+
+            //cursor
+            CursorManager.ShowCursor();
         }
         else
         {
@@ -138,6 +137,7 @@ public class PauseManager : MonoBehaviour
             guiManager.HideObjetives();
             Time.timeScale = 1;
             soundManager.SetVfxVolume(playerValues.gameData.GetVfxVolume());
+            CursorManager.HideCursor();
         }
     }
 

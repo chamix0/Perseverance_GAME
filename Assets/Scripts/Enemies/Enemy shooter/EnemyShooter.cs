@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Codice.Client.Commands;
 using Enemies;
 using Player.Observer_pattern;
 using UnityEngine;
@@ -137,7 +136,6 @@ public class EnemyShooter : Enemy, IObserver
         {
             if (animator.GetInteger(Index) != 0)
                 animator.SetInteger(Index, 0);
-            
         }
     }
 
@@ -474,6 +472,7 @@ public class EnemyShooter : Enemy, IObserver
 
     public override void ResetEnemy()
     {
+        isDead = false;
         healthBarCanvas.alpha = 1;
         dissolveMaterials.DissolveIn();
         outlineTimer.Start();
@@ -481,7 +480,6 @@ public class EnemyShooter : Enemy, IObserver
         outline.OutlineMode = Outline.Mode.OutlineAll;
         lives = maxLives;
         UpdateHealthBar();
-        isDead = false;
     }
 
     private void UpdateHealthBar()

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Mechanics.General_Inputs;
 using UnityEngine;
-using UnityEngine.Android;
 using Debug = UnityEngine.Debug;
 
 [DefaultExecutionOrder(1)]

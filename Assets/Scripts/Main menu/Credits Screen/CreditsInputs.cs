@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Main_menu;
 using UnityEngine;
 
@@ -8,7 +6,6 @@ public class CreditsInputs : MonoBehaviour
     //components
     private MyMenuInputManager _myInputManager;
     private MenuCamerasController _camerasController;
-    private SaveData _saveData;
     private MainMenuManager _menuManager;
     private MainMenuSounds _sounds;
 
@@ -16,6 +13,8 @@ public class CreditsInputs : MonoBehaviour
     {
         _sounds = FindObjectOfType<MainMenuSounds>();
         _camerasController = FindObjectOfType<MenuCamerasController>();
+        _myInputManager = FindObjectOfType<MyMenuInputManager>();
+        _menuManager = FindObjectOfType<MainMenuManager>();
     }
 
     void Update()

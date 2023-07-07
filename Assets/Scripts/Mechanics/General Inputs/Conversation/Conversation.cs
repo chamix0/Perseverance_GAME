@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting.YamlDotNet.Core;
 using UnityEngine;
 [DefaultExecutionOrder(11)]
 public class Conversation : MonoBehaviour

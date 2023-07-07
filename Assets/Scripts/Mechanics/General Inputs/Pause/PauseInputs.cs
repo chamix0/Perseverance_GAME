@@ -1,4 +1,3 @@
-using Mechanics.General_Inputs;
 using UnityEngine;
 
 public class PauseInputs : MonoBehaviour

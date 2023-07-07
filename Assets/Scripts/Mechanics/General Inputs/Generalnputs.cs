@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 using Mechanics.General_Inputs;
 using UnityEngine;
 
@@ -32,9 +30,7 @@ namespace General_Inputs
         public void PerformAction(Move move)
         {
             if (pauseManager.CheckCubePause(move))
-            {
                 pauseManager.Pause();
-            }
         }
     }
 }

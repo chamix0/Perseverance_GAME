@@ -59,6 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cacc9b53649a95243b3fc4016e17481e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cursorTexture: {fileID: 2800000, guid: fd4b77ed5a0c4c84e8913592a04decf0, type: 3}
 --- !u!114 &1447924313
 MonoBehaviour:
   m_ObjectHideFlags: 0

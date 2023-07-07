@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
 /// This script is used to tell the game data file that the game has been started meaning that the nexus dialog has been readed

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Main_menu;
@@ -6,8 +5,6 @@ using Main_menu.Load_game_screen;
 using Main_menu.New_game_screen;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [DefaultExecutionOrder(1)]
@@ -193,7 +190,6 @@ public class MainMenuManager : MonoBehaviour
             //credits
             case 6:
                 _menuInputManager.SetCurrentInput(CurrentMenuInput.Credits);
-
                 break;
             //Exit
             case 7:

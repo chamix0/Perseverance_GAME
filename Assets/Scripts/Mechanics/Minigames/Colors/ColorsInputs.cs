@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Mechanics.General_Inputs;
 using UnityEngine;
 
@@ -16,8 +14,17 @@ public class ColorsInputs : MonoBehaviour
         colorsManager = FindObjectOfType<ColorsManager>();
     }
 
-    // Update is called once per frame
+    void Update()
+    {
+        if (_playerValues.GetCurrentInput() == CurrentInput.ColorsMinigame && _playerValues.GetInputsEnabled() &&
+            !_playerValues.GetPaused())
+        {
+            if (Input.anyKey)
+                CursorManager.ShowCursor();
+        }
+    }
 
+    // Update is called once per frame
     public void PerformAction(Move move)
     {
         if (_playerValues.GetInputsEnabled())

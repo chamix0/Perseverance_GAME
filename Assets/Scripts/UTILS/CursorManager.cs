@@ -1,24 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CursorManager : MonoBehaviour
 {
     // Start is called before the first frame update
+    [SerializeField] private Texture2D cursorTexture;
+    [SerializeField] private bool hideOnStart = false;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
-        // Cursor.visible = false;
+        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
+        if (hideOnStart)
+        {
+            Cursor.visible = false;
+        }
     }
 
-    public void HideCursor()
+    public static void HideCursor()
     {
-        Cursor.visible = false;
+        if (Cursor.visible)
+        {
+            Cursor.visible = false;
+        }
     }
 
-    public void ShowCursor()
+    public static void ShowCursor()
     {
-        Cursor.visible = true;
+        if (!Cursor.visible)
+        {
+            Cursor.visible = true;
+        }
     }
 
     // Update is called once per frame

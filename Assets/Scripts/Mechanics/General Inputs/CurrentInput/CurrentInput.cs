@@ -18,7 +18,6 @@
         Conversation,
         ShootMovement,
         RaceMovement,
-        PauseInputs,
         None
     }
 }

@@ -548,6 +548,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.000061035156
       objectReference: {fileID: 0}
+    - target: {fileID: 4358149933075854240, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7026184178439971440, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
       propertyPath: m_Name
       value: Scene Loader
@@ -26545,6 +26549,10 @@ PrefabInstance:
     - target: {fileID: 2012273772902879446, guid: cb908d1bbfb97654f99742b869080891, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9068664291935707892, guid: cb908d1bbfb97654f99742b869080891, type: 3}
+      propertyPath: hideOnStart
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb908d1bbfb97654f99742b869080891, type: 3}

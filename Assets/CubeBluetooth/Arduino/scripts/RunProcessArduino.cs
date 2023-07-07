@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using UnityEngine;
@@ -37,10 +35,10 @@ public class RunProcessArduino : MonoBehaviour
             process = new Process();
             process.EnableRaisingEvents = false;
             process.StartInfo.WorkingDirectory = Application.dataPath;
-            process.StartInfo.FileName =
-                Application.dataPath + "/CubeBluetooth/Executable/BluetoothArduino.exe";
             // process.StartInfo.FileName =
-            //     Application.dataPath+"/executable/BluetoothCubo.exe"; //change the path to a consistent one
+            //     Application.dataPath + "/CubeBluetooth/Executable/BluetoothArduino.exe";
+            process.StartInfo.FileName =
+                Application.dataPath + "/executable/BluetoothArduino.exe"; //change the path to a consistent one
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             process.StartInfo.RedirectStandardOutput = true;

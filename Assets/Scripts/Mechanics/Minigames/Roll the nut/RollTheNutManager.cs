@@ -1,14 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Codice.Client.BaseCommands;
 using Mechanics.General_Inputs;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 [DefaultExecutionOrder(3)]
 public class RollTheNutManager : Minigame

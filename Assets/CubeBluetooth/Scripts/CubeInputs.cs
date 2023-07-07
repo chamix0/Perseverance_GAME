@@ -62,20 +62,11 @@ public class CubeInputs : MonoBehaviour
             Move move = movesQueue.Dequeue();
             //check if connection lost
             if (move.msg == "connection failed")
-            {
-                print("connection has failed");
                 _conection.ReEstablish();
-            }
             else if (move.msg == "Device not found")
-            {
-                print("device not found");
                 _conection.Refresh();
-            }
             else if (move.msg == "connection successful")
-            {
-                print("connection successful");
                 _conection.Connected();
-            }
             else
             {
                 //check movements

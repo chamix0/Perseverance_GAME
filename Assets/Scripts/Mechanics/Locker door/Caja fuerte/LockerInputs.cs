@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Mechanics.General_Inputs;
 using UnityEngine;
 
@@ -19,10 +17,12 @@ public class LockerInputs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_playerValues.GetCurrentInput() == CurrentInput.LockerMinigame && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
+        if (_playerValues.GetCurrentInput() == CurrentInput.LockerMinigame && _playerValues.GetInputsEnabled() &&
+            !_playerValues.GetPaused())
         {
             if (Input.anyKey)
             {
+                CursorManager.ShowCursor();
                 lockerManager.ShowKeyTutorial();
             }
         }

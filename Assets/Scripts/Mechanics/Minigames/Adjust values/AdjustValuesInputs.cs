@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Mechanics.General_Inputs;
 using UnityEngine;
 
@@ -19,10 +17,12 @@ public class AdjustValuesInputs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_playerValues.GetCurrentInput() == CurrentInput.AdjustValuesMinigame && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
+        if (_playerValues.GetCurrentInput() == CurrentInput.AdjustValuesMinigame && _playerValues.GetInputsEnabled() &&
+            !_playerValues.GetPaused())
         {
             if (Input.anyKey)
             {
+                CursorManager.ShowCursor();
                 _adjustValuesManager.ShowKeyTutorial();
             }
 

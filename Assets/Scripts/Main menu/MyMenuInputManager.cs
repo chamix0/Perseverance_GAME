@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Main_menu.Load_game_screen;
 using Main_menu.New_game_screen;
 using UnityEngine;

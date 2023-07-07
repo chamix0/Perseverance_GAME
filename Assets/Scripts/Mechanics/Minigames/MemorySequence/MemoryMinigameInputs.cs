@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Mechanics.General_Inputs;
 using UnityEngine;
 
@@ -17,7 +15,15 @@ public class MemoryMinigameInputs : MonoBehaviour
     }
 
     // Update is called once per frame
-
+    void Update()
+    {
+        if (_playerValues.GetCurrentInput() == CurrentInput.MemoryMinigame && _playerValues.GetInputsEnabled() &&
+            !_playerValues.GetPaused())
+        {
+            if (Input.anyKey)
+                CursorManager.ShowCursor();
+        }
+    }
     public void PerformAction(Move move)
     {
         if (_playerValues.GetInputsEnabled())

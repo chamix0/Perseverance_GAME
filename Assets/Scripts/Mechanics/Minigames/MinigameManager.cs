@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -110,6 +106,7 @@ public class MinigameManager : MonoBehaviour
     public void EndMinigame()
     {
         // guiManager.ShowGui();
+        CursorManager.HideCursor();
         _playerValues.NotifyAction(PlayerActions.MinigameFinished);
         currentMinigameFinished = true;
     }

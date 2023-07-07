@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
@@ -9,11 +7,11 @@ public class JSONsaving : MonoBehaviour
     // Start is called before the first frame update
     public SaveData _saveData;
     private string path = "";
-    private string persistentPath = "";
 
     void Awake()
     {
-        SetPaths();
+       path= SetPaths();
+        
         if (File.Exists(path))
         {
             LoadData();
@@ -25,22 +23,21 @@ public class JSONsaving : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
+
 
     private void CreateData()
     {
         _saveData = new SaveData();
     }
 
-    private void SetPaths()
+    private string SetPaths()
     {
-        path = Application.dataPath + Path.AltDirectorySeparatorChar + "Savedata.json";
-        persistentPath =
+      string  localPath = Application.dataPath + Path.AltDirectorySeparatorChar + "Savedata.json";
+      string  persistentPath =
             Application.persistentDataPath + Path.AltDirectorySeparatorChar +
             "Savedata.json"; //here is where you actually store the info
+
+        return persistentPath;
     }
 
     public void SaveTheData()

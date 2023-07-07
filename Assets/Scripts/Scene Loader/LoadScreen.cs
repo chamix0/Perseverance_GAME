@@ -1,11 +1,7 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class LoadScreen : MonoBehaviour
 {
@@ -39,7 +35,7 @@ public class LoadScreen : MonoBehaviour
 
     public void LoadCredits()
     {
-        StartCoroutine(LoadScenAsync(4));
+        StartCoroutine(LoadScenAsync(11));
     }
 
     public void LoadKeyOrCube()

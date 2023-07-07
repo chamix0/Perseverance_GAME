@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Codice.Client.BaseCommands;
 using UnityEngine;
 [DefaultExecutionOrder(10)]
 public class OpenWhenFinishedLaberinth : MonoBehaviour

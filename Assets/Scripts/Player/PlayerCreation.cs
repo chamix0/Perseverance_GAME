@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,13 +12,11 @@ public class PlayerCreation : MonoBehaviour
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
     private static readonly int FresnelColor = Shader.PropertyToID("_fresnel_color");
     [SerializeField] private Transform newGamePos, startedGamePos;
-
+    
     void Start()
     {
         //collisions
         Physics.IgnoreLayerCollision(9, 13);
-
-
         _playerValues = FindObjectOfType<PlayerValues>();
         model = _playerValues.gameData.GetEddoModel();
         Material[] oldMaterials = modelObjects[0].GetComponent<Renderer>().materials;
@@ -57,6 +54,9 @@ public class PlayerCreation : MonoBehaviour
         SetMaterials(oldMaterials, newMaterials);
 
         SpawnPoint();
+        
+        //cursor
+        CursorManager.HideCursor();
     }
 
     private void SpawnPoint()
