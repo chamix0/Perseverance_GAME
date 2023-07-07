@@ -33,6 +33,8 @@ public class MainMenuManager : MonoBehaviour
     private List<TMP_Text> _texts;
     private List<Material> _materials;
 
+    //tutorial
+    [SerializeField] private TMP_Text tutorialText;
 
     //shader properties
     private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
@@ -155,7 +157,6 @@ public class MainMenuManager : MonoBehaviour
         {
             //continue
             case 0:
-                print("continue with slot: " + _saveData.GetLastSessionSlotIndex());
                 loadScreen.LoadLevels();
                 break;
             //new game
@@ -230,6 +231,11 @@ public class MainMenuManager : MonoBehaviour
 
         selectedButton = aux;
         UpdateColors();
+    }
+
+    public void SetTutortialText(string text)
+    {
+        tutorialText.text = text;
     }
 
     private void UpdateColors()

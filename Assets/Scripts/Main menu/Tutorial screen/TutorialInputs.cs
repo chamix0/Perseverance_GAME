@@ -24,6 +24,11 @@ public class TutorialInputs : MonoBehaviour
     {
         if (_myInputManager.GetCurrentInput() == CurrentMenuInput.Tutorial && _myInputManager.GetInputsEnabled())
         {
+            if (Input.anyKey)
+            {
+                _menuManager.SetTutortialText("A- prev  D - Next  Enter - select   esc - exit");  
+            }
+
             //next model
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
                 tutorialManager.ShowNext();

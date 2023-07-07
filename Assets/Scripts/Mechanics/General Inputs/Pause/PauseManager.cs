@@ -65,17 +65,16 @@ public class PauseManager : MonoBehaviour
 
         _sliders.AddRange(new[] { masterVolumeSlider, vfxVolumeSlider, musicVolumeSlider, uiVolumeSlider });
         //previus game sound values
-        if (!playerValues.gameData.GetIsNewGame())
-        {
-            masterVolumeSlider.value = playerValues.gameData.GetMasterVolume();
-            soundManager.SetMasterVolume(playerValues.gameData.GetMasterVolume());
-            vfxVolumeSlider.value = playerValues.gameData.GetVfxVolume();
-            soundManager.SetVfxVolume(playerValues.gameData.GetVfxVolume());
-            musicVolumeSlider.value = playerValues.gameData.GetMusicVolume();
-            soundManager.SetMusicVolume(playerValues.gameData.GetMusicVolume());
-            uiVolumeSlider.value = playerValues.gameData.GetUiVolume();
-            soundManager.SetUiVolume(playerValues.gameData.GetUiVolume());
-        }
+
+        masterVolumeSlider.value = playerValues.gameData.GetMasterVolume();
+        soundManager.SetMasterVolume(playerValues.gameData.GetMasterVolume());
+        vfxVolumeSlider.value = playerValues.gameData.GetVfxVolume();
+        soundManager.SetVfxVolume(playerValues.gameData.GetVfxVolume());
+        musicVolumeSlider.value = playerValues.gameData.GetMusicVolume();
+        soundManager.SetMusicVolume(playerValues.gameData.GetMusicVolume());
+        uiVolumeSlider.value = playerValues.gameData.GetUiVolume();
+        soundManager.SetUiVolume(playerValues.gameData.GetUiVolume());
+
 
         masterVolumeSlider.onValueChanged.AddListener(MasterSliderAction);
         vfxVolumeSlider.onValueChanged.AddListener(VfxSliderAction);

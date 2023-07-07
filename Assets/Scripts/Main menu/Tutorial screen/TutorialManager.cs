@@ -6,7 +6,6 @@ public class TutorialManager : MonoBehaviour
 {
     //components
     private MyMenuInputManager _myInputManager;
-    private GalleryManager galleryManager;
     private MenuCamerasController _camerasController;
     private SaveData _saveData;
     private MainMenuSounds _sounds;
@@ -18,7 +17,6 @@ public class TutorialManager : MonoBehaviour
     void Start()
     {
         _loadScreen = FindObjectOfType<LoadScreen>();
-        galleryManager = FindObjectOfType<GalleryManager>();
         _camerasController = FindObjectOfType<MenuCamerasController>();
         _sounds = FindObjectOfType<MainMenuSounds>();
     }

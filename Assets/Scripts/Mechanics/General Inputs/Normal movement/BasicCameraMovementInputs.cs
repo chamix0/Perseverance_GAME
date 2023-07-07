@@ -27,7 +27,7 @@ public class BasicCameraMovementInputs : MonoBehaviour
             if (Input.anyKey)
             {
                 guiManager.SetTutorial(
-                    "ESC - Pause    WS - Increase/Descrease gear    D - Lights");
+                    "SPAM SPACE IF STUCKED!   ESC - Pause    WS - Increase/Descrease gear    D - Lights");
             }
 
             if (Input.GetKeyDown(KeyCode.W))
@@ -35,13 +35,13 @@ public class BasicCameraMovementInputs : MonoBehaviour
                 if (_playerValues.GetGear() < 3)
                     _playerValues.RiseGear();
 
-                _playerValues.CheckIfStuck();
+                _playerValues.CheckIfStuck(true);
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
                 _playerValues.DecreaseGear();
-                _playerValues.CheckIfStuck();
+                _playerValues.CheckIfStuck(true);
             }
 
             if (Input.GetKeyDown(KeyCode.D))
@@ -60,11 +60,11 @@ public class BasicCameraMovementInputs : MonoBehaviour
         if (_playerValues.GetInputsEnabled())
         {
             guiManager.SetTutorial(
-                "R - Increase/Decrease gear   U - Camera horizonatal axis    L - Camera Vertical Axis     B - Lights");
+                "SPAM SPACE IF STUCKED!   R - Increase/Decrease gear   U - Camera horizonatal axis   L - Camera Vertical Axis     B - Lights");
 
             if (move.face == FACES.R)
             {
-                _playerValues.CheckIfStuck();
+                _playerValues.CheckIfStuck(true);
                 if (move.direction == 1)
                 {
                     if (_playerValues.GetGear() < 3)

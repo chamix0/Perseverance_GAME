@@ -8,10 +8,13 @@ namespace Main_menu.Load_game_screen
         private MyMenuInputManager _myInputManager;
         private LoadGameManager _loadGameManager;
         private MainMenuSounds _sounds;
+        private MainMenuManager _mainMenuManager;
+
         void Start()
         {
+            _mainMenuManager = FindObjectOfType<MainMenuManager>();
             _sounds = FindObjectOfType<MainMenuSounds>();
-    _myInputManager = FindObjectOfType<MyMenuInputManager>();
+            _myInputManager = FindObjectOfType<MyMenuInputManager>();
             _loadGameManager = FindObjectOfType<LoadGameManager>();
         }
 
@@ -20,6 +23,12 @@ namespace Main_menu.Load_game_screen
         {
             if (_myInputManager.GetCurrentInput() == CurrentMenuInput.LoadGame && _myInputManager.GetInputsEnabled())
             {
+                if (Input.anyKey)
+                {
+                    _mainMenuManager.SetTutortialText(
+                        "W - prev slot   S - nex slot   L - enable load   E - enable erase  Enter - confirm    ESC - return");
+                }
+
                 //next slot
                 if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
                     _loadGameManager.SelectNextButton();
@@ -54,6 +63,7 @@ namespace Main_menu.Load_game_screen
 
         public void PerformAction(Move move)
         {
+            _mainMenuManager.SetTutortialText("R - Next/prev Slot  F - select   B' - return   D - Enable load  D' - Enable Erase");
             //selecting button
             if (move.face == FACES.R)
             {
@@ -67,15 +77,17 @@ namespace Main_menu.Load_game_screen
                 //select
                 if (move.direction == 1)
                     _loadGameManager.PressEnter();
-                //go back to menu
-                else
+            }
+            else if (move.face == FACES.B)
+            {
+                if (move.direction != 1)
                 {
                     _sounds.ReturnSound();
                     _loadGameManager.HideUI();
                     _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
                 }
             }
-            else if (move.face == FACES.B)
+            else if (move.face == FACES.D)
             {
                 //select load
                 if (move.direction == 1)

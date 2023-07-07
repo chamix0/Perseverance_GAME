@@ -25,6 +25,11 @@ public class GalleryInputs : MonoBehaviour
     {
         if (_myInputManager.GetCurrentInput() == CurrentMenuInput.Gallery && _myInputManager.GetInputsEnabled())
         {
+            if (Input.anyKey)
+            {
+                _menuManager.SetTutortialText("A - prev  D - Next    esc - exit");  
+            }
+
             //next model
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
                 galleryManager.ShowNext();
@@ -46,6 +51,8 @@ public class GalleryInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
+        _menuManager.SetTutortialText("U - prev/Next  B' - exit");  
+
         //change model
         if (move.face == FACES.U)
         {

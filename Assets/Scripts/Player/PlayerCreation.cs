@@ -17,6 +17,9 @@ public class PlayerCreation : MonoBehaviour
     {
         //collisions
         Physics.IgnoreLayerCollision(9, 13);
+        Physics.IgnoreLayerCollision(8, 13);
+
+        
         _playerValues = FindObjectOfType<PlayerValues>();
         model = _playerValues.gameData.GetEddoModel();
         Material[] oldMaterials = modelObjects[0].GetComponent<Renderer>().materials;

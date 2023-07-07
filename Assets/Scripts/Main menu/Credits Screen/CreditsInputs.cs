@@ -21,6 +21,11 @@ public class CreditsInputs : MonoBehaviour
     {
         if (_myInputManager.GetCurrentInput() == CurrentMenuInput.Credits && _myInputManager.GetInputsEnabled())
         {
+            if (Input.anyKey)
+            {
+                _menuManager.SetTutortialText("esc - exit");
+            }
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 _sounds.ReturnSound();
@@ -33,6 +38,8 @@ public class CreditsInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
+        _menuManager.SetTutortialText("B' - exit");
+
         if (move.face == FACES.B)
         {
             if (move.direction != 1)

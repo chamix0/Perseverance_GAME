@@ -24,12 +24,14 @@ public class Objetives : MonoBehaviour
                 if (!playerValues.gameData.checkEnabled(i))
                 {
                     found = true;
+                    lastZone--;
                     break;
                 }
             }
 
             if (lastZone == 4 && !found)
                 lastZone = 5;
+
 
             if (lastZone == 0)
                 SetNewObjetive("Explore the foundry");

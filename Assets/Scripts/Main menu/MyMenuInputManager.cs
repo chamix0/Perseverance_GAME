@@ -1,6 +1,7 @@
 using System;
 using Main_menu.Load_game_screen;
 using Main_menu.New_game_screen;
+using TMPro;
 using UnityEngine;
 
 public enum CurrentMenuInput
@@ -27,7 +28,6 @@ public class MyMenuInputManager : MonoBehaviour
     private GalleryInputs _galleryInputs;
     private TutorialInputs _tutorialInputs;
     private SettingsInputs _settingsInputs;
-
     private CreditsInputs _creditsInputs;
 
     //variables
@@ -61,6 +61,8 @@ public class MyMenuInputManager : MonoBehaviour
     {
         if (_inputsMoves && _inputsMoves.HasMessages() && _inputsEnabled)
         {
+           
+            
             Move move = _inputsMoves.Dequeue();
             switch (_currentInput)
             {

@@ -413,7 +413,7 @@ public class PlayerValues : Subject
 
     #region Grounded and stuck
 
-    public void CheckIfStuck()
+    public void CheckIfStuck(bool resetPos)
     {
         if (!stuckTimer.IsRunning)
         {
@@ -426,7 +426,10 @@ public class PlayerValues : Subject
             if (stuckTimer.Elapsed.TotalSeconds > stuckTime)
             {
                 stucked = true;
-                ResetPos();
+                if (resetPos)
+                {
+                    ResetPos();
+                }
             }
         }
         else
@@ -510,6 +513,7 @@ public class PlayerValues : Subject
             {
                 SetCanMove(true);
                 isGrounded = true;
+                stucked = false;
                 if (transform.up == Vector3.up)
                     _rigidbody.constraints = _originalRigidBodyConstraints;
             }

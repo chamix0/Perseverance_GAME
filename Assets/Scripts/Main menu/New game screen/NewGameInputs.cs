@@ -31,6 +31,12 @@ namespace Main_menu.New_game_screen
         {
             if (_myInputManager.GetCurrentInput() == CurrentMenuInput.NewGame && _myInputManager.GetInputsEnabled())
             {
+                if (Input.anyKey)
+                {
+                    _menuManager.SetTutortialText(
+                        "D/A - change skin  Enter(click out of the text box) - select   esc - return");
+                }
+
                 //next model
                 if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
                     _newGameManager.ShowNext();
@@ -45,7 +51,6 @@ namespace Main_menu.New_game_screen
                     _sounds.SelectOptionSound();
                     _saveData.StartNewGame(_newGameManager.GetModelIndex(), _newGameManager.GetName());
                     _jsonSaving.SaveTheData();
-                    Debug.Log("nueva partida creada en el  slot " + _saveData.GetLastSessionSlotIndex());
                     loadScreen.LoadLevels();
                 }
                 //go back to menu
@@ -62,6 +67,8 @@ namespace Main_menu.New_game_screen
 
         public void PerformAction(Move move)
         {
+            _menuManager.SetTutortialText("U - change skin  F - select   B' - return");
+
             //change model
             if (move.face == FACES.U)
             {
@@ -78,12 +85,13 @@ namespace Main_menu.New_game_screen
                     _sounds.SelectOptionSound();
                     _saveData.StartNewGame(_newGameManager.GetModelIndex(), _newGameManager.GetName());
                     _jsonSaving.SaveTheData();
-                    Debug.Log("nueva partida creada en el  slot " + _saveData.GetLastSessionSlotIndex());
-                    //cambiar de escena  
-                    print("change scene");
+                    loadScreen.LoadLevels();
                 }
+            }
+            else if (move.face == FACES.B)
+            {
                 //go back to menu
-                else
+                if (move.direction != 1)
                 {
                     _sounds.ReturnSound();
                     _newGameManager.HideUI();

@@ -17,6 +17,11 @@ public class MainMenuInputs : MonoBehaviour
     {
         if (_myInputManager.GetCurrentInput() == CurrentMenuInput.Menu && _myInputManager.GetInputsEnabled())
         {
+            if (Input.anyKey)
+            {
+                _menuManager.SetTutortialText("W - up   S - down  Enter/D - Select");
+            }
+
             //select next button
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
                 _menuManager.SelectPrevButton();
@@ -33,6 +38,8 @@ public class MainMenuInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
+        _menuManager.SetTutortialText("R - up/down  F - Select");
+
         //move between buttons
         if (move.face == FACES.R)
         {

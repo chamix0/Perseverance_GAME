@@ -61,7 +61,12 @@ public class SaveData
 
     public GameData GetGameData(int index)
     {
-        return slots[index];
+        if (index != -1)
+        {
+            return slots[index];
+        }
+
+        return new GameData();
     }
 
     public int GetLastSessionSlotIndex()

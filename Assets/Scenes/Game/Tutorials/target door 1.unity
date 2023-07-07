@@ -9172,6 +9172,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.000061035156
       objectReference: {fileID: 0}
+    - target: {fileID: 4358149933075854240, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7026184178439971440, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
       propertyPath: m_Name
       value: Scene Loader
@@ -19931,6 +19935,10 @@ PrefabInstance:
     - target: {fileID: 4643490919132883590, guid: ad090d17cfcf6de4897e662bc229a725, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4643490919132883600, guid: ad090d17cfcf6de4897e662bc229a725, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4643490919132883611, guid: ad090d17cfcf6de4897e662bc229a725, type: 3}
       propertyPath: m_RootOrder

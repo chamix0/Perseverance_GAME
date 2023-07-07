@@ -41,14 +41,14 @@ public class RunMovementInputs : MonoBehaviour
                     turboParticles.Play();
                 else
                     turboParticles.Stop();
-                _playerValues.CheckIfStuck();
+                _playerValues.CheckIfStuck(true);
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
                 _playerValues.DecreaseGear();
                 turboParticles.Stop();
-                _playerValues.CheckIfStuck();
+                _playerValues.CheckIfStuck(true);
             }
 
             if (Input.GetKeyDown(KeyCode.D))
@@ -79,7 +79,7 @@ public class RunMovementInputs : MonoBehaviour
         {
             if (move.face == FACES.R)
             {
-                _playerValues.CheckIfStuck();
+                _playerValues.CheckIfStuck(true);
 
                 if (move.direction == 1)
                     _playerValues.RiseGear();

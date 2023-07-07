@@ -9,7 +9,7 @@ public class DontTouchWallsManager : Minigame
 {
     //text to show on screen before the game
     private readonly string _name = "Dont touch the walls",
-        _tutorial = "Reach the goal safelly",
+        _tutorial = "Reach the goal safely",
         endMessage = "WELL DONE!";
 
     private const int NUM_ROUNDS = 5;

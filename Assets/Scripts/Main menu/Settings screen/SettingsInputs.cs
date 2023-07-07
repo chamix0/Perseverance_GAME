@@ -24,6 +24,10 @@ public class SettingsInputs : MonoBehaviour
     {
         if (_myInputManager.GetCurrentInput() == CurrentMenuInput.Settings && _myInputManager.GetInputsEnabled())
         {
+            if (Input.anyKey)
+            {
+_menuManager.SetTutortialText("W - prev  S - Next  D - increase value   A - decrease value   esc - exit");  
+            }
             //next model
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
                 settingsManager.SelectPrev();
@@ -51,6 +55,8 @@ public class SettingsInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
+        _menuManager.SetTutortialText("R - next/prev F - increase/decrease value  B' - exit  ");  
+
         //change model
         if (move.face == FACES.R)
         {

@@ -75,13 +75,13 @@ public class MachinegunMovementInputs : MonoBehaviour
             {
                 if (_playerValues.GetGear() < 3)
                     _playerValues.RiseGear();
-                _playerValues.CheckIfStuck();
+                _playerValues.CheckIfStuck(true);
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
                 _playerValues.DecreaseGear();
-                _playerValues.CheckIfStuck();
+                _playerValues.CheckIfStuck(true);
             }
 
             if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -156,7 +156,7 @@ public class MachinegunMovementInputs : MonoBehaviour
 
         if (_cameraChanger.activeCamera is ActiveCamera.Orbit)
             _cameraController.RotateVerticalCustom(yAngle);
-        _playerValues.CheckIfStuck();
+        _playerValues.CheckIfStuck(true);
         if (_playerValues.GetInputsEnabled())
         {
             if (_cameraChanger.activeCamera is ActiveCamera.FirstPerson)

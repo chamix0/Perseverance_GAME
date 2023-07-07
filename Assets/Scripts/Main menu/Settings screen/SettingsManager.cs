@@ -33,17 +33,16 @@ public class SettingsManager : MonoBehaviour
 
         _sliders.AddRange(new[] { masterVolumeSlider, vfxVolumeSlider, musicVolumeSlider, uiVolumeSlider });
         //previus game sound values
-        if (GameDataExists())
-        {
-            masterVolumeSlider.value = GetGameDataSettings().GetMasterVolume();
-            soundManager.SetMasterVolume(GetGameDataSettings().GetMasterVolume());
-            vfxVolumeSlider.value = GetGameDataSettings().GetVfxVolume();
-            soundManager.SetVfxVolume(GetGameDataSettings().GetVfxVolume());
-            musicVolumeSlider.value = GetGameDataSettings().GetMusicVolume();
-            soundManager.SetMusicVolume(GetGameDataSettings().GetMusicVolume());
-            uiVolumeSlider.value = GetGameDataSettings().GetUiVolume();
-            soundManager.SetUiVolume(GetGameDataSettings().GetUiVolume());
-        }
+
+        masterVolumeSlider.value = GetGameDataSettings().GetMasterVolume();
+        soundManager.SetMasterVolume(GetGameDataSettings().GetMasterVolume());
+        vfxVolumeSlider.value = GetGameDataSettings().GetVfxVolume();
+        soundManager.SetVfxVolume(GetGameDataSettings().GetVfxVolume());
+        musicVolumeSlider.value = GetGameDataSettings().GetMusicVolume();
+        soundManager.SetMusicVolume(GetGameDataSettings().GetMusicVolume());
+        uiVolumeSlider.value = GetGameDataSettings().GetUiVolume();
+        soundManager.SetUiVolume(GetGameDataSettings().GetUiVolume());
+
 
         masterVolumeSlider.onValueChanged.AddListener(MasterSliderAction);
         vfxVolumeSlider.onValueChanged.AddListener(VfxSliderAction);
@@ -188,9 +187,7 @@ public class SettingsManager : MonoBehaviour
 
     private GameData GetGameDataSettings()
     {
-        if (GameDataExists())
-            return _jsoNsaving._saveData.GetGameData(_jsoNsaving._saveData.GetLastSessionSlotIndex());
-
-        return null;
+        return _jsoNsaving._saveData.GetGameData(_jsoNsaving._saveData.GetLastSessionSlotIndex());
+        
     }
 }

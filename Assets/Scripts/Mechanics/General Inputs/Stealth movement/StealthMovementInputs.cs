@@ -41,13 +41,13 @@ public class StealthMovementInputs : MonoBehaviour
                 if (_playerValues.GetGear() < 3)
                     _playerValues.RiseGear();
 
-                _playerValues.CheckIfStuck();
+                _playerValues.CheckIfStuck(true);
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
                 _playerValues.DecreaseGear();
-                _playerValues.CheckIfStuck();
+                _playerValues.CheckIfStuck(true);
             }
 
             if (Input.GetKeyDown(KeyCode.D))
@@ -84,7 +84,7 @@ public class StealthMovementInputs : MonoBehaviour
         {
             if (move.face == FACES.R)
             {
-                _playerValues.CheckIfStuck();
+                _playerValues.CheckIfStuck(true);
                 if (move.direction == 1)
                 {
                     if (_playerValues.GetGear() < 3)
