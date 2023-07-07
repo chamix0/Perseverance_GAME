@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-struct LightValue
+public struct LightValue
 {
     private readonly Light light;
     private readonly float intensity;

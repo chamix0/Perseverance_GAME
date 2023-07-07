@@ -47,4 +47,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game/final credits.unity
     guid: 1f9eee85e29306941afc7cb601da2ded
+  - enabled: 0
+    path: Assets/Scenes/Game/map for renders/Levels 1.unity
+    guid: 832ac18ef6ea0c743b9a3bce767d71ca
   m_configObjects: {}

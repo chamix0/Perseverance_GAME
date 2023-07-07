@@ -68,7 +68,7 @@ public class MachinegunMovementInputs : MonoBehaviour
             {
                 guiManager.SetTutorial(
                     "WS - Increase/Descrease gear    RCLICK - Aim    LCLICK - Shoot      EQ - Change shooting mode       D - Lights      " +
-                    "A - First person mode");
+                    "V - First person mode");
             }
 
             if (Input.GetKeyDown(KeyCode.W))
@@ -140,7 +140,7 @@ public class MachinegunMovementInputs : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.V))
             {
                 if (_cameraChanger.activeCamera is not ActiveCamera.FirstPerson)
                     _cameraChanger.SetFirstPersonCamera();

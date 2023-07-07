@@ -4,6 +4,8 @@ public class IsUnderDoorTrigger : MonoBehaviour
 {
     //components
     private DoorManager _doorBase;
+    private bool playerIn;
+    private bool enemyIn;
 
     void Start()
     {
@@ -13,7 +15,14 @@ public class IsUnderDoorTrigger : MonoBehaviour
     // Update is called once per frame
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Player"))
+        {
+            _doorBase.OpenDoor();
+            _doorBase._inside = true;
+            playerIn = true;
+        }
+
+        if (other.gameObject.CompareTag("Enemy"))
         {
             _doorBase.OpenDoor();
             _doorBase._inside = true;
@@ -22,9 +31,22 @@ public class IsUnderDoorTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            _doorBase._inside = false;
+            playerIn = false;
+            if (!enemyIn)
+            {
+                _doorBase._inside = false;
+            }
+        }
+
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            enemyIn = false;
+            if (!playerIn)
+            {
+                _doorBase._inside = false;
+            }
         }
     }
 }

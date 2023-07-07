@@ -26,6 +26,10 @@ public class PlayerMovement : MonoBehaviour
             _playerValues.StopMovement();
             //play animation
         }
+
+        if (_playerValues.GetPos().y < -100)
+            _playerValues.ResetPos();
+        
     }
 
     private void FixedUpdate()

@@ -4274,6 +4274,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   closeAutomatically: 0
   doorLiftHeight: 8
+  openCloseSpeed: 0.5
+  closeTime: 10
 --- !u!1 &7873143314120247426
 GameObject:
   m_ObjectHideFlags: 0

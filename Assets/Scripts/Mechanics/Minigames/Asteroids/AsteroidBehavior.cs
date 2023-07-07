@@ -49,9 +49,9 @@ public class AsteroidBehavior : MonoBehaviour
     public void Spawn()
     {
         FindSpawnPos();
-        direction = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+        direction = -_asteroidsManager.VectorTowardsPlayer(transform.localPosition).normalized;
         _image.color = initColor;
-        speed = Random.Range(0.1f, 0.3f);
+        speed = Random.Range(0.25f, 0.3f);
         maxBounces = Random.Range(3, 8);
         bounceCount = 0;
         active = true;
