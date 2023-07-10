@@ -21,6 +21,15 @@ public class LightsManagerFreeCam : MonoBehaviour
     void Start()
     {
         playerValues = FindObjectOfType<PlayerValues>();
+        foreach (var light in FindObjectsOfType<LightUnit>())
+        {
+            if (light.GetLightValue().GetLight().type is LightType.Spot or LightType.Point)
+            {
+                lights.Add(light._lightValue);
+                light.GetLightValue().GetLight().enabled = false;
+                light.GetLightValue().SetMatsVal(0);
+            }
+        }
         foreach (var light in FindObjectsOfType<Light>())
         {
             if (light.type is LightType.Spot or LightType.Point)
@@ -106,6 +115,7 @@ public class LightsManagerFreeCam : MonoBehaviour
             }
 
             light.GetLight().intensity += switchSpeed;
+            light.IncreaseMat();
             if (light.GetLight().intensity >= light.GetIntensity())
             {
                 turnOnLights.Remove(light);
@@ -119,6 +129,7 @@ public class LightsManagerFreeCam : MonoBehaviour
         foreach (var light in aux)
         {
             light.GetLight().intensity = Mathf.Max(0f, light.GetLight().intensity - switchSpeed);
+            light.DecreaseMat();
             if (light.GetLight().intensity == 0)
             {
                 turnOffLights.Remove(light);

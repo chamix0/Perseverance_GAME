@@ -1,7 +1,7 @@
 ---0
 t
 Info
-This is the Shooting range, Here you can train your skills with the shooting mode.
+This is the Shooting range, here you can train your skills with the shooting mode.
 1
 ----1
 t
@@ -16,24 +16,19 @@ Further away on this same wall you can see your record on the shooting range.
 ---3
 t
 Info
-You might have also noticed a<color=#ffffff> WHITE </color> and a <color=#34ebc0> RED </color> invisible wall.
+You might have also noticed a<color=#aaaeb5> WHITE </color> and a <color=#34ebc0> RED </color> invisible wall.
 4
 ---4
 t
 Info
-You might have also noticed a<color=#ffffff> WHITE </color> and a <color=#34ebc0> RED </color> invisible wall.
+These walls are "Triggers" as the name says, they trigger mechanisms  on the <color=#ad731c> Guardian's </color> body.
 5
 ---5
 t
 Info
-These walls are "Triggers" as the name says, they trigger mechanisims on the <color=#34ebc0> Guardian's </color> body.
+The<color=#aaaeb5> WHITE TRIGGER </color>disables any mechanism on the guardian's body and the <color=#b01f0c> RED TRIGGER </color> enables the machinegun mode. 
 6
 ---6
-t
-Info
-The<color=#ffffff> WHITE TRIGGER </color>disables any mechanism on the guardian's body and the <color=#34ebc0> RED TRIGGER </color> enables the machinegun mode. 
-7
----7
 q
 Info
 Do you want to read the info again?

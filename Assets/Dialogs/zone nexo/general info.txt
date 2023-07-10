@@ -14,7 +14,7 @@ Exit
 ---2
 t
 Info
-This is the Shelter 50 built by PERSEVERNCE .Inc a place were "humanity" waits asleep patiently to rise again.
+This is Shelter 50 built by PERSEVERNCE a place where "humanity" waits asleep patiently to rise again.
 3
 ---3
 q
@@ -27,7 +27,7 @@ Exit
 ---4
 t
 Info
-In the year 2050 climatic change was a major problem making life for humans almost imposible due to the destruction of ...
+In the year 2050 climatic change was a major problem making life for humans almost impossible due to the destruction of ...
 5
 ---5
 t
@@ -37,12 +37,12 @@ Info
 ---6
 t
 Info
-Because of this, the greatests corporations around the world decided to cryogenize the most important people on the world.
+Because of this, the greatest corporations around the world decided to cryogenine the most important people on the world.
 7
 ---7
 t
 Info
-So one day, when all the trace made by human-kind will bee erased and nature covers the earth, Humanity will awaken to start all over again.
+So one day, when all the traces made by humankind will be erased and nature covers the earth, Humanity will awaken to start all over again.
 8
 ---8
 t
@@ -60,17 +60,17 @@ Exit
 ---10
 t
 Info
-On the last decade of humanity, AIs were overdeveloped, and energy was no problem due to the improvements on renovable energy.
+On the last decade of humanity, AIs were overdeveloped, and energy was no problem due to the improvements on renewable  energy.
 11
 ---11
 t
 Info
-So when the humanity vanished from earth AIs remained unsupervised and started interacting between them.
+So when humanity vanished from earth AIs remained unsupervised and started interacting between them.
 12
 ---12
 t
 Info
-This is something engieneers feared, so they protected the shelters in case AIs started to see humans as a future threat.
+This is something engineers feared, so they protected the shelters in case AIs started to see humans as a future threat.
 13
 ---- 13 
 q
@@ -83,7 +83,7 @@ Exit
 ---14
 t
 Info
-This Shelter is located in Extremadura, Spain 1km under the ground. This location was the chosen point for Spain due to its lack of comunication.
+This Shelter is in Extremadura, Spain 1km under the ground. This location was the chosen point for Spain due to its lack of communication.
 15
 ---15
 q
@@ -96,7 +96,7 @@ Exit
 ---16
 t
 Info
-You are a guardian model: <color=#06360b> EDD0 </color>, the first prototype of the serie EDD, (Estructural Defense Daemon). You are an experimental prototype. 
+You are a guardian model: <color=#ad731c> EDD0 </color>, the first prototype of the series EDD, (Especial Defense Daemon). You are an experimental prototype. 
 17
 ---17
 t
@@ -112,14 +112,14 @@ You are the only one of your kind as this prototype was marked as unethical.
 q
 Info
 Is there anything else you want to know?
-What about <color=#360e06> Alice </color>?
+What about <color=#b00e26> Alice </color>?
 Exit
 20
 21
 ---20
 t
 Info
-No data found about <color=#360e06> Alice </color>.
+No data found about <color=#b00e26> Alice </color>.
 -1
 ---21
 t

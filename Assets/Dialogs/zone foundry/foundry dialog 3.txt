@@ -1,7 +1,7 @@
 -
 t
 Alice
-So this is the foundry...
+So, this is the foundry...
 1
 -
 t
@@ -11,5 +11,5 @@ It seems to also be protected with terminals
 -
 t
 Alice
-Try not to fall in the lava as im not exactly sure of what would happen if you do. 
+Try not to fall in the lava as I'm not exactly sure of what would happen if you did. 
 -1

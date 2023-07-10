@@ -6,12 +6,12 @@ It seems that this room is secured with terminals.
 -
 t
 Alice
-This doors only open when all the terminals have been fixed.
+These doors only open when all the terminals have been fixed.
 2
 -
 t
 Alice
-It seems that because of the breach, all of the terminals crashed so you need to fix them.
+It seems that because of the breach, all the terminals crashed so you need to fix them.
 3
 -
 t
@@ -22,7 +22,7 @@ You must fix all the terminals to open the door.
 q
 Alice
 Did you understand?
-Why does the information point at the nexus says nothing about you?
+Why does the information point at the nexus say nothing about you?
 yes
 5
 -1

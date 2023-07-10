@@ -1024,6 +1024,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: conversation (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8745342463833157822, guid: d32d4de2550726444a541791b32ee3bf, type: 3}
+      propertyPath: txtConversation
+      value: 
+      objectReference: {fileID: 4900000, guid: 30e53f3e011c4df43ac94f59899803b1, type: 3}
     - target: {fileID: 8745342463833157823, guid: d32d4de2550726444a541791b32ee3bf, type: 3}
       propertyPath: m_RootOrder
       value: 6

@@ -6,12 +6,12 @@ This is the warehouse.
 -
 t
 Info
-Everything that will ever be needed is here nicely packaged.
+Everything that will ever be needed is nicely packaged here.
 2
 -
 t
 Info
-No one should enter the warehouse with out permission.
+No one should enter the warehouse without permission.
 3
 -
 t

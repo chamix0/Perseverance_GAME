@@ -1,12 +1,12 @@
 ---- 0
 t
 Alice
-Hi <color=#06360b> EDD0 </color>, my name is <color=#360e06> Alice </color> and I am the protocol in charge of the security of this shelter.
+Hi <color=#ad731c> EDD0 </color>, my name is <color=#b00e26> Alice </color> and I am the protocol in charge of the security of this shelter.
 1
 ---- 1
 t
 Alice
-I have awakened you because there is a breach in the security system and you, <color=#06360b> EDD0</color>, are the only thing that can seal it.
+I have awakened you because there is a breach in the security system and you, <color=#ad731c> EDD0</color>, are the only thing that can seal it.
 2
 ---- 2
 t
@@ -16,7 +16,7 @@ I will tell you everything you need to know at the "nexus".
 ---- 3
 q
 Alice
-You know were the "nexus" is right?
+You know where the "nexus" is right?
 Yes
 No
 4
@@ -42,5 +42,5 @@ No, could you repeat it please?
 ---- 7
 t
 Alice
-Ahhgggg, fine, i'll repeat.
+Ahhgggg, fine, I'll repeat.
 1

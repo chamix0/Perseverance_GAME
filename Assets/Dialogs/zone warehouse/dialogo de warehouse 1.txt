@@ -6,7 +6,7 @@ Hey, see that over there?
 -
 t
 Alice
-That is a security camera. For some reason all the security cameras have suddenly become hostiile...
+That is a security camera. For some reason all the security cameras have suddenly become hostile...
 2
 -
 t
@@ -21,7 +21,7 @@ They follow a fixed patrol so it should be easy to dodge them...
 -
 t
 Alice
-But be careful because if you run or go with the lights on on their sight they will probably detect you...
+But be careful because if you run or go with the lights in their sight, they will probably detect you...
 5
 -
 t

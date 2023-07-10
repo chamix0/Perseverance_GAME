@@ -1,7 +1,7 @@
 ----------------------------
 t
 Alice
-I want to test if you are really worth of the task...
+I want to test if you are worth the task...
 1
 --------------------------------
 t
@@ -21,7 +21,7 @@ your goal is to reach the other side before the time ends...
 ------------------------------
 t
 Alice
-If you dont make it on time you will have to start again...
+If you don't make it on time you will have to start again...
 5
 ------------------------
 q
@@ -39,5 +39,5 @@ HAHAHAHAHA, you have no choice, I just sealed the  door behind us, so there is o
 -----------------------------
 t
 Alice
-LETS GOOO!!! I have also given you an extra gear just for this challenge, use it wisely.
+LET'S GOOO!!! I have also given you extra gear just for this challenge, use it wisely.
 -1

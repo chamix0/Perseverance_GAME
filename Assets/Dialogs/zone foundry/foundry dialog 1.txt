@@ -11,11 +11,11 @@ You might want to note down somewhere in your memory the numbers you find on the
 -
 t
 Alice
-If you miss a number I wont be able to help you, you will have to go back and find the number
+If you miss a number, I won't be able to help you, you will have to go back and find the number
 3
 -
 q
-name
+Alice
 Did you understand?
 yes
 no

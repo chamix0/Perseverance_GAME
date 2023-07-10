@@ -6,7 +6,7 @@ This is the garden...
 -
 t
 Info
-Here all types of cactus are preserved...
+Here all types of cactuses are preserved...
 2
 -
 t
@@ -21,12 +21,12 @@ This zone also helps to clean the shelter air...
 -
 t
 Info
-Cactus stay alive thanks to solar lamps...
+Cactuses stay alive thanks to solar lamps...
 5
 -
 q
 Info
-Do you want to read again?
+Do you want to read it again?
 yes
 no
 0

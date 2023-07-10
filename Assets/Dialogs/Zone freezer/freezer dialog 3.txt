@@ -1,7 +1,7 @@
 ----------------------------
 q
 Alice
-This is a switch, do you know how it works?
+This is a switch; do you know how it works?
 yes
 no
 7
@@ -42,5 +42,5 @@ Really?...
 -----------------------------
 t
 Alice
-Fine!! , I have also notices there is a Door protected with terminals so have fun looking for them ^^
+Fine!! , I have also noticed there is a Door protected with terminals so have fun looking for them ^^
 -1

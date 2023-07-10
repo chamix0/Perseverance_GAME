@@ -1,15 +1,26 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public struct LightValue
 {
     private readonly Light light;
     private readonly float intensity;
+    private readonly Material[] mats;
+    private static readonly int Alpha = Shader.PropertyToID("_alpha");
 
     public LightValue(Light light, float intensity)
     {
         this.light = light;
         this.intensity = intensity;
+        mats = null;
+    }
+
+    public LightValue(Light light, float intensity, Material[] coneMats)
+    {
+        this.light = light;
+        this.intensity = intensity;
+        mats = coneMats;
     }
 
     public Light GetLight()
@@ -21,8 +32,41 @@ public struct LightValue
     {
         return intensity;
     }
+    
+
+    public void SetMatsVal(float val)
+    {
+        foreach (var mat in mats)
+        {
+            mat.SetFloat(Alpha, val);
+        }
+    }
+
+    public void DecreaseMat()
+    {
+        if (mats!=null)
+        {
+            foreach (var mat in mats)
+            {
+                mat.SetFloat(Alpha, Mathf.Max(0, mat.GetFloat(Alpha) - 0.1f));
+            }
+        }
+    }
+
+    public void IncreaseMat()
+    {
+        if (mats!=null)
+        {
+            foreach (var mat in mats)
+            {
+                mat.SetFloat(Alpha, Mathf.Min(0.8f, mat.GetFloat(Alpha) + 0.1f));
+            } 
+        }
+        
+    }
 }
 
+[DefaultExecutionOrder(10)]
 public class LightsManager : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -42,6 +86,16 @@ public class LightsManager : MonoBehaviour
     void Start()
     {
         playerValues = FindObjectOfType<PlayerValues>();
+        foreach (var light in FindObjectsOfType<LightUnit>())
+        {
+            if (light.GetLightValue().GetLight().type is LightType.Spot or LightType.Point)
+            {
+                lights.Add(light._lightValue);
+                light.GetLightValue().GetLight().enabled = false;
+                light.GetLightValue().SetMatsVal(0);
+            }
+        }
+
         foreach (var light in FindObjectsOfType<Light>())
         {
             if (light.type is LightType.Spot or LightType.Point)
@@ -51,11 +105,6 @@ public class LightsManager : MonoBehaviour
             }
         }
     }
-
-    // private void OnDrawGizmos()
-    // {
-    //     Gizmos.DrawWireSphere(playerValues.GetPos(), distance);
-    // }
 
 
     private void Update()
@@ -127,6 +176,7 @@ public class LightsManager : MonoBehaviour
             }
 
             light.GetLight().intensity += switchSpeed;
+            light.IncreaseMat();
             if (light.GetLight().intensity >= light.GetIntensity())
             {
                 turnOnLights.Remove(light);
@@ -140,6 +190,7 @@ public class LightsManager : MonoBehaviour
         foreach (var light in aux)
         {
             light.GetLight().intensity = Mathf.Max(0f, light.GetLight().intensity - switchSpeed);
+            light.DecreaseMat();
             if (light.GetLight().intensity == 0)
             {
                 turnOffLights.Remove(light);
