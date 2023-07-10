@@ -161,7 +161,7 @@ public class MachinegunMovementInputs : MonoBehaviour
         {
             if (_cameraChanger.activeCamera is ActiveCamera.FirstPerson)
                 guiManager.SetTutorial(
-                    "R - Camera vertical axis   U - Camera horizonatal axis    L - Aim and load     L' - Shoot     B' - Lights      B'2 - First person mode       F - Change Shooting mode");
+                    "R - Camera vertical axis   U - Camera horizonatal axis    L - Aim and load     L' - Shoot     B' - Lights      B2 - Third person mode       F - Change Shooting mode");
             else
                 guiManager.SetTutorial(
                     "R - Increase/Decrease Gear    U - Camera horizonatal axis    L - Aim and load     L' - Shoot     B' - Lights      B'2 - First person mode       F - Change Shooting mode");
