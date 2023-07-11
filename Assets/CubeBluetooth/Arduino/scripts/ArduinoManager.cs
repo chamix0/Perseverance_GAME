@@ -14,7 +14,7 @@ public class ArduinoManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
     void Start()
@@ -23,11 +23,6 @@ public class ArduinoManager : MonoBehaviour
         _processArduino = FindObjectOfType<RunProcessArduino>();
         shakeTimer = new Stopwatch();
         shakeTimer.Start();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
     public void ProcessMessages(MovesQueue movesQueue)

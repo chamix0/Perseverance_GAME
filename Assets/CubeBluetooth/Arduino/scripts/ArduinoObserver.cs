@@ -33,7 +33,7 @@ public class ArduinoObserver : MonoBehaviour, IObserver
         }
         else
         {
-            this.enabled = false;
+            enabled = false;
         }
     }
 
