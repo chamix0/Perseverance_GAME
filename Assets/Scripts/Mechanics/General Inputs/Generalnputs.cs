@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace General_Inputs
 {
-    public class Generalnputs : MonoBehaviour
+    public class Generalnputs : MonoBehaviour,InputInterface
     {
         private PauseManager pauseManager;
         private PlayerValues playerValues;

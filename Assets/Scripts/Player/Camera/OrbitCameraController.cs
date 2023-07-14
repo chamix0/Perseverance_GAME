@@ -75,28 +75,8 @@ public class OrbitCameraController : MonoBehaviour
             Vector3 lookPosition = focusPoint - lookDirection * distance;
 
 
-            if (Physics.Raycast(
-                    focusPoint, -lookDirection, out RaycastHit hit, distance, CollisionLayers
-                ))
-            {
+            if (Physics.Raycast(focusPoint, -lookDirection, out RaycastHit hit, distance, CollisionLayers))
                 lookPosition = focusPoint - lookDirection * (hit.distance - colOffset);
-            }
-
-            // Vector3 rectOffset = lookDirection * colOffset;
-            // Vector3 rectPosition = lookPosition + rectOffset;
-            // Vector3 castFrom = focus.position;
-            // Vector3 castLine = rectPosition - castFrom;
-            // float castDistance = castLine.magnitude;
-            // Vector3 castDirection = castLine / castDistance;
-            //
-            // if (Physics.BoxCast(
-            //         castFrom, CameraHalfExtends, castDirection, out RaycastHit hit,
-            //         lookRotation, castDistance, CollisionLayers
-            //     ))
-            // {
-            //     rectPosition = castFrom + castDirection * hit.distance;
-            //     lookPosition = rectPosition - rectOffset;
-            // }
 
 
             transform.SetPositionAndRotation(lookPosition, lookRotation);
@@ -113,22 +93,15 @@ public class OrbitCameraController : MonoBehaviour
             float distance = Vector3.Distance(targetPoint, focusPoint);
             float t = 1f;
             if (distance > 0.01f && focusCentering > 0f)
-            {
                 t = Mathf.Pow(1f - focusCentering, Time.unscaledDeltaTime);
-                // t = Mathf.Pow(1f - focusCentering, Time.deltaTime);
-            }
 
             if (distance > focusRadius)
-            {
                 t = Mathf.Min(t, focusRadius / distance);
-            }
 
             focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
         }
         else
-        {
             focusPoint = targetPoint;
-        }
     }
 
     #region INPUT
@@ -140,8 +113,6 @@ public class OrbitCameraController : MonoBehaviour
             xMod = -1;
         if (invertY)
             yMod = -1;
-
-
         Vector2 input = new Vector2(
             Input.GetAxis("Mouse Y") * yMod,
             Input.GetAxis("Mouse X") * xMod
@@ -223,23 +194,6 @@ public class OrbitCameraController : MonoBehaviour
         return direction.x < 0f ? 360f - angle : angle;
     }
 
-    #region camera collision
-
-    Vector3 CameraHalfExtends
-    {
-        get
-        {
-            Vector3 halfExtends;
-            halfExtends.y =
-                regularCamera.nearClipPlane *
-                Mathf.Tan(0.5f * Mathf.Deg2Rad * regularCamera.fieldOfView);
-            halfExtends.x = halfExtends.y * regularCamera.aspect;
-            halfExtends.z = 0f;
-            return halfExtends;
-        }
-    }
-
-    #endregion
 
     #region My stuff
 
@@ -335,9 +289,7 @@ public class OrbitCameraController : MonoBehaviour
             .eulerAngles.y;
 
         if (Mathf.Abs(currentRotation - targetRotation) < 0.1f)
-        {
             updateRotation = false;
-        }
 
         return currentRotation;
     }

@@ -2,7 +2,7 @@ using Mechanics.General_Inputs;
 using UnityEngine;
 
 [DefaultExecutionOrder(2)]
-public class BasicCameraMovementInputs : MonoBehaviour
+public class BasicCameraMovementInputs : MonoBehaviour,InputInterface
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;

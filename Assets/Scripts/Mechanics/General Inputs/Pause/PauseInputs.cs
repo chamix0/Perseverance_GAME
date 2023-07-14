@@ -1,6 +1,7 @@
+using Mechanics.General_Inputs;
 using UnityEngine;
 
-public class PauseInputs : MonoBehaviour
+public class PauseInputs : MonoBehaviour,InputInterface
 {
     // Start is called before the first frame update
     private PauseManager pauseManager;

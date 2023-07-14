@@ -24,7 +24,6 @@ public class PlayerMovement : MonoBehaviour
         if (_playerValues.GetGear() > 1 && CheckIfStopm() || _playerValues.GetGear() == 0 && CheckIfBackStopm())
         {
             _playerValues.StopMovement();
-            //play animation
         }
 
         if (_playerValues.GetPos().y < -100)
@@ -70,16 +69,6 @@ public class PlayerMovement : MonoBehaviour
         {
             _playerValues.stamina = Mathf.Min(_playerValues.stamina + staminaRecovery, _playerValues.maxStamina);
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        // Gizmos.color = Color.red;
-        // Gizmos.DrawRay(transform.position + new Vector3(0, rayOffset, 0),
-        //     transform.TransformDirection(Vector3.forward) * stompUmbral);
-        // Gizmos.color = Color.green;
-        // Gizmos.DrawRay(transform.position + new Vector3(0, rayOffset, 0),
-        //     transform.TransformDirection(-Vector3.forward) * stompUmbral * 1.5f);
     }
 
     private bool CheckIfStopm()

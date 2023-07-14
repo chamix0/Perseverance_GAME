@@ -20,8 +20,7 @@ public class EnemyShooter : Enemy, IObserver
     private MachinegunMovementInputs machinegunMovementInputs;
     private Rigidbody rigidbody;
     [SerializeField] private EnemyShooterZone enemyShooterZone;
-    [SerializeField] private EnemyPath enemyPath;
-    private LookAtPlayer lookAtPlayer;
+    private LookAtPlayer lookAtPlayer; 
     private int targetNode, nextNode, actualNode;
     public float turnSpeed = 1f;
     private float force = 10, normalForce = 10, slowForce = 3;
@@ -141,16 +140,7 @@ public class EnemyShooter : Enemy, IObserver
 
     [SerializeField] Transform head;
 
-    private void OnDrawGizmos()
-    {
-        // Gizmos.color = Color.red;
-        // Gizmos.DrawWireSphere(transform.position, detectionDistance);
-        // Gizmos.color = Color.yellow;
-        // Gizmos.DrawWireSphere(transform.position, searchingDistance);
-        // Gizmos.color = Color.blue;
-        // Gizmos.DrawWireSphere(transform.position, radius);
-        // Gizmos.DrawRay(transform.position, -head.forward);
-    }
+
 
     // Update is called once per frame
     void FixedUpdate()
@@ -165,7 +155,7 @@ public class EnemyShooter : Enemy, IObserver
     private void Patrol()
     {
         Wander();
-        lookAtPlayer.LookNode(enemyPath.GetNodeTransform(nextNode));
+        lookAtPlayer.LookNode(enemyShooterZone.GetEnemyPath().GetNodeTransform(nextNode));
 
 
         if (CheckIsInCone())
@@ -219,7 +209,7 @@ public class EnemyShooter : Enemy, IObserver
                 shootSpeed);
         }
 
-        if (!InSight(_targetDistraction.transform.position, "Distraction") ||
+        if (!InSight(_targetDistraction.transform.position, "Distraction") ||!_targetDistraction.GetBeingUsed() ||
             Vector3.Distance(_targetDistraction.transform.position, transform.position) > searchingDistance)
         {
             _timer.Restart();
@@ -247,7 +237,7 @@ public class EnemyShooter : Enemy, IObserver
             if (moveToPlayer)
             {
                 moveToPlayer = false;
-                nextNode = enemyPath.GetClosestNode(transform.position, nextNode);
+                nextNode = enemyShooterZone.GetEnemyPath().GetClosestNode(transform.position, nextNode);
             }
 
             _timer.Restart();
@@ -259,7 +249,7 @@ public class EnemyShooter : Enemy, IObserver
             if (moveToPlayer)
             {
                 moveToPlayer = false;
-                nextNode = enemyPath.GetClosestNode(transform.position, nextNode);
+                nextNode = enemyShooterZone.GetEnemyPath().GetClosestNode(transform.position, nextNode);
             }
 
             moveToPlayer = false;
@@ -304,8 +294,8 @@ public class EnemyShooter : Enemy, IObserver
 
     private void MoveToTarget()
     {
-        Vector3 dest = new Vector3(enemyPath.GetNodeTransform(nextNode).position.x, 0,
-            enemyPath.GetNodeTransform(nextNode).position.z);
+        Vector3 dest = new Vector3(enemyShooterZone.GetEnemyPath().GetNodeTransform(nextNode).position.x, 0,
+            enemyShooterZone.GetEnemyPath().GetNodeTransform(nextNode).position.z);
         Vector3 pos = new Vector3(transform.position.x, 0, transform.position.z);
         Vector3 direction = dest - pos;
         rigidbody.AddForce(direction.normalized * force, forceMode);
@@ -317,11 +307,11 @@ public class EnemyShooter : Enemy, IObserver
             {
                 //assign new target
                 targetNode = enemyShooterZone.GetNewTarget(targetNode);
-                nextNode = enemyPath.GetNextNode(nextNode, targetNode);
+                nextNode = enemyShooterZone.GetEnemyPath().GetNextNode(nextNode, targetNode);
             }
             else
             {
-                nextNode = enemyPath.GetNextNode(nextNode, targetNode);
+                nextNode = enemyShooterZone.GetEnemyPath().GetNextNode(nextNode, targetNode);
             }
         }
     }
@@ -342,7 +332,7 @@ public class EnemyShooter : Enemy, IObserver
     {
         Quaternion lookAtRotation = Quaternion.identity;
 
-        lookAtRotation = Quaternion.LookRotation(transform.position - enemyPath.GetNodeTransform(nextNode).position);
+        lookAtRotation = Quaternion.LookRotation(transform.position - enemyShooterZone.GetEnemyPath().GetNodeTransform(nextNode).position);
         Quaternion LookAtRotationOnly_Y = Quaternion.Euler(0, lookAtRotation.eulerAngles.y, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, LookAtRotationOnly_Y, Time.deltaTime * turnSpeed);
     }
@@ -459,7 +449,7 @@ public class EnemyShooter : Enemy, IObserver
         rigidbody.detectCollisions = true;
         outline.OutlineMode = Outline.Mode.OutlineAll;
         nextNode = node;
-        rigidbody.MovePosition(enemyPath.GetNodeTransform(node).transform.position);
+        rigidbody.MovePosition(enemyShooterZone.GetEnemyPath().GetNodeTransform(node).transform.position);
         healthBar.value = 1;
         currentState = States.Patrol;
     }

@@ -25828,6 +25828,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.000061035156
       objectReference: {fileID: 0}
+    - target: {fileID: 4358149933075854240, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7026184178439971440, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
       propertyPath: m_Name
       value: Scene Loader
@@ -29441,6 +29445,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1397858693, guid: ad090d17cfcf6de4897e662bc229a725, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1397858693, guid: ad090d17cfcf6de4897e662bc229a725, type: 3}
+      propertyPath: m_Cameras.Array.data[0]
+      value: 
+      objectReference: {fileID: 454139721}
     - target: {fileID: 1971676181, guid: ad090d17cfcf6de4897e662bc229a725, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

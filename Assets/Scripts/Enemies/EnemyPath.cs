@@ -82,76 +82,81 @@ public class EnemyPath : MonoBehaviour
         return nodes[node];
     }
 
-    private void Dijkstra(int nodeIni)
-    {
-        List<int> selectedNodes = new List<int>();
-        selectedNodes.Add(nodeIni);
-        List<int> pendNodes = InitPendNodes(nodeIni);
-        while (pendNodes.Count > 0)
-        {
-            int candidate = SelectCandidate(pendNodes.ToArray(), nodeIni);
-            selectedNodes.Add(candidate);
-            pendNodes.Remove(candidate);
-            UpdateDistances(candidate, nodeIni);
-        }
-    }
+    #region Dijkstra
 
-    private void UpdateDistances(int candidate, int nodeIni)
-    {
-        float distToCandidate = distances[nodeIni][candidate].x;
-        for (int i = 0; i < nodes.Count; i++)
+       private void Dijkstra(int nodeIni)
         {
-            float distActual = distances[nodeIni][i].x;
-            float distFromCandidate = distToCandidate + distances[candidate][i].x;
-            distances[nodeIni][i].x = Mathf.Min(distActual, distFromCandidate);
-            distances[nodeIni][i].y =
-                distActual < distFromCandidate ? distances[nodeIni][i].y : distances[nodeIni][candidate].y;
-        }
-    }
-
-    private int SelectCandidate(int[] penNodes, int nodeIni)
-    {
-        float minVAl = Mathf.Infinity;
-        int nodeDest = nodeIni;
-        foreach (var node in penNodes)
-        {
-            if (distances[nodeIni][node].x < minVAl)
+            List<int> selectedNodes = new List<int>();
+            selectedNodes.Add(nodeIni);
+            List<int> pendNodes = InitPendNodes(nodeIni);
+            while (pendNodes.Count > 0)
             {
-                nodeDest = node;
-                minVAl = distances[nodeIni][node].x;
+                int candidate = SelectCandidate(pendNodes.ToArray(), nodeIni);
+                selectedNodes.Add(candidate);
+                pendNodes.Remove(candidate);
+                UpdateDistances(candidate, nodeIni);
             }
         }
-
-        if (nodeDest == nodeIni)
+    
+        private void UpdateDistances(int candidate, int nodeIni)
         {
-            nodeDest = penNodes[0];
-        }
-
-        return nodeDest;
-    }
-
-    private void Bidirectionalize()
-    {
-        List<Vector2> newPaths = new List<Vector2>();
-
-        foreach (var path in paths)
-        {
-            int node1 = (int)path.x;
-            int node2 = (int)path.y;
-
-            if (node1 != node2)
+            float distToCandidate = distances[nodeIni][candidate].x;
+            for (int i = 0; i < nodes.Count; i++)
             {
-                Vector2 invPath = new Vector2(node2, node1);
-                if (!newPaths.Contains(path))
-                    newPaths.Add(path);
-                if (!newPaths.Contains(invPath))
-                    newPaths.Add(invPath);
+                float distActual = distances[nodeIni][i].x;
+                float distFromCandidate = distToCandidate + distances[candidate][i].x;
+                distances[nodeIni][i].x = Mathf.Min(distActual, distFromCandidate);
+                distances[nodeIni][i].y =
+                    distActual < distFromCandidate ? distances[nodeIni][i].y : distances[nodeIni][candidate].y;
             }
         }
+    
+        private int SelectCandidate(int[] penNodes, int nodeIni)
+        {
+            float minVAl = Mathf.Infinity;
+            int nodeDest = nodeIni;
+            foreach (var node in penNodes)
+            {
+                if (distances[nodeIni][node].x < minVAl)
+                {
+                    nodeDest = node;
+                    minVAl = distances[nodeIni][node].x;
+                }
+            }
+    
+            if (nodeDest == nodeIni)
+            {
+                nodeDest = penNodes[0];
+            }
+    
+            return nodeDest;
+        }
+    
+        private void Bidirectionalize()
+        {
+            List<Vector2> newPaths = new List<Vector2>();
+    
+            foreach (var path in paths)
+            {
+                int node1 = (int)path.x;
+                int node2 = (int)path.y;
+    
+                if (node1 != node2)
+                {
+                    Vector2 invPath = new Vector2(node2, node1);
+                    if (!newPaths.Contains(path))
+                        newPaths.Add(path);
+                    if (!newPaths.Contains(invPath))
+                        newPaths.Add(invPath);
+                }
+            }
+    
+            paths = newPaths;
+        }
 
-        paths = newPaths;
-    }
 
+    #endregion
+ 
     public int GetClosestNode(Vector3 enemyPos, int oldIndex)
     {
         int minIndex = oldIndex;

@@ -16,11 +16,14 @@ public class MachingunRotation : MonoBehaviour
         cameraChanger = FindObjectOfType<CameraChanger>();
         playerValues = FindObjectOfType<PlayerValues>();
     }
-    
+
 
     private void Update()
     {
-        if (!(FrontCol() || RightCol() || LeftCol() || diagRCol() || diagLCol()))
+        if (!(Col(playerValues.transform.forward) || Col(playerValues.transform.right) ||
+              Col(-playerValues.transform.right) ||
+              Col((playerValues.transform.right + playerValues.transform.forward).normalized) ||
+              Col((-playerValues.transform.right + playerValues.transform.forward).normalized)))
         {
             if (Vector3.Distance(placeholder.position, transform.parent.position) > 0.1f)
                 placeholder.position = Vector3.MoveTowards(placeholder.position, transform.parent.position, factor);
@@ -41,7 +44,24 @@ public class MachingunRotation : MonoBehaviour
             placeholder.rotation =
                 Quaternion.Euler(0, cameraChanger.GetActiveCam().transform.rotation.eulerAngles.y, 0);
         }
-        
+    }
+
+    private bool Col(Vector3 dir)
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(playerValues.GetPos(), dir, out hit, radius, collisionLayer))
+        {
+            float distanceToHit = Vector3.Distance(placeholder.position, hit.point);
+            if (distanceToHit < radius)
+            {
+                placeholder.position += hit.normal * factor;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
 

@@ -178,14 +178,8 @@ public class CameraEnemy : Enemy
             ChangeState(States.DestroyDistraction, Color.red, 2);
         }
 
-        //if player has the lights on and in sight
-        if (_playerValues.GetLights() && InSight())
-        {
-            ChangeState(States.Alert, Color.red, 2);
-        }
-
-        //if its moving too fast and in sight
-        if (_playerValues.GetGear() > 2 && InSight())
+        //if player has the lights on and in sight or if its moving too fast and in sight
+        if (_playerValues.GetLights() && InSight() || _playerValues.GetGear() > 2 && InSight())
         {
             ChangeState(States.Alert, Color.red, 2);
         }
@@ -206,20 +200,15 @@ public class CameraEnemy : Enemy
         }
 
         if (!InSight(_targetDistraction.transform.position, "Distraction") ||
-            Vector3.Distance(_targetDistraction.transform.position, transform.position) > detectionDepth)
+            Vector3.Distance(_targetDistraction.transform.position, transform.position) > detectionDepth ||
+            !_targetDistraction.beingUsed)
         {
             _timer.Restart();
             ChangeState(States.Searching, Color.yellow, 1);
         }
 
-        //if player has the lights on and in sight
-        if (_playerValues.GetLights() && InSight())
-        {
-            ChangeState(States.Alert, Color.red, 2);
-        }
-
-        //if its moving too fast and in sight
-        if (_playerValues.GetGear() > 2 && InSight())
+        //if player has the lights on and in sight or if its moving too fast and in sight
+        if (_playerValues.GetLights() && InSight() || _playerValues.GetGear() > 2 && InSight())
         {
             ChangeState(States.Alert, Color.red, 2);
         }
@@ -237,8 +226,7 @@ public class CameraEnemy : Enemy
             int gear = _playerValues.GetGear();
             int dist = gear > 2 ? 1 : 0;
             var position = ray.GetPoint(dist);
-            _shootBullet.Shoot(position - transform.position, shootSpeed,
-                respawn.position);
+            StartCoroutine(ShootCoroutine(position));
         }
 
         if (!InSight() || hit.distance > detectionDepth)
@@ -256,6 +244,16 @@ public class CameraEnemy : Enemy
     }
 
     #region UTILS
+
+    IEnumerator ShootCoroutine(Vector3 position)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            _shootBullet.Shoot(position - transform.position, shootSpeed,
+                respawn.position);
+            yield return new WaitForSeconds(0.25f);
+        }
+    }
 
     private void MoveCamera(Vector3 target)
     {

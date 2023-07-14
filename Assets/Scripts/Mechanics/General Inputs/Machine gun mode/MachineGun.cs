@@ -192,19 +192,7 @@ public class MachineGun : Subject
         if (!aimSphere.gameObject.activeSelf)
             aimSphere.gameObject.SetActive(true);
     }
-
-    private void SlowTime()
-    {
-        if (!slowTimer.IsRunning)
-            slowTimer.Restart();
-
-
-        if (slowTimer.Elapsed.TotalSeconds < slowTime)
-            Time.timeScale = 0.25f;
-
-        else
-            Time.timeScale = 1f;
-    }
+    
 
     public void StopAim()
     {
@@ -315,7 +303,7 @@ public class MachineGun : Subject
     {
         _rigidbody.isKinematic = false;
         hookTimer.Start();
-        _rigidbody.AddRelativeForce(Vector3.up * force, ForceMode.Impulse);
+        _rigidbody.AddRelativeForce(-Vector3.forward * force, ForceMode.Impulse);
         updateHook = true;
     }
 
@@ -328,7 +316,6 @@ public class MachineGun : Subject
 
         if (!float.IsNaN(auxForce.x) || !float.IsNaN(auxForce.y) || !float.IsNaN(auxForce.z))
             _rigidbody.AddForce(auxForce, ForceMode.Acceleration);
-
 
         if (hookTimer.Elapsed.TotalSeconds > hookCooldown && magnitude < 0.3f)
         {

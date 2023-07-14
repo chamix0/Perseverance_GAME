@@ -1,8 +1,9 @@
 using System.Diagnostics;
+using Player.Observer_pattern;
 using UnityEngine;
 
 [DefaultExecutionOrder(2)]
-public class PlayerLives : MonoBehaviour
+public class PlayerLives : MonoBehaviour,IObserver
 {
     // Start is called before the first frame update
     public float cooldown = 5;
@@ -14,6 +15,8 @@ public class PlayerLives : MonoBehaviour
         timer = new Stopwatch();
         timer.Start();
         playerValues = FindObjectOfType<PlayerValues>();
+        playerValues.AddObserver(this);
+
     }
 
     // Update is called once per frame
@@ -32,8 +35,13 @@ public class PlayerLives : MonoBehaviour
         }
     }
 
-    public void Damage()
+   
+
+    public void OnNotify(PlayerActions playerAction)
     {
-        timer.Restart();
+        if (playerAction is PlayerActions.MediumDamage or PlayerActions.LowDamage or PlayerActions.HighDamage)
+        {
+            timer.Restart();
+        }
     }
 }

@@ -7,7 +7,6 @@ public class LoadScreen : MonoBehaviour
 {
     [SerializeField] CanvasGroup loadingScreen;
     [SerializeField] private TMP_Text _text;
-
     private void Start()
     {
         loadingScreen.alpha = 0;
@@ -85,6 +84,7 @@ public class LoadScreen : MonoBehaviour
 
     IEnumerator LoadScenAsync(int sceneIndex)
     {
+        
         loadingScreen.alpha = 1;
 
         yield return new WaitForSeconds(5);

@@ -126,8 +126,7 @@ public class FinalBoss : Enemy, IObserver
         {
             shooter.Shoot(shootSpeed, respawn.position);
         }
-
-
+        
         _timer.Restart();
     }
 
@@ -223,6 +222,7 @@ public class FinalBoss : Enemy, IObserver
                 {
                     conversationManager.StartConversation(conversation, conversationFocus);
                     conversationShown = true;
+                    attackCooldown /= 2;
                 }
 
                 int shootingMode = Random.Range(0, 9);

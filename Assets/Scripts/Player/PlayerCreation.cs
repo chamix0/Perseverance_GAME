@@ -12,7 +12,7 @@ public class PlayerCreation : MonoBehaviour
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
     private static readonly int FresnelColor = Shader.PropertyToID("_fresnel_color");
     [SerializeField] private Transform newGamePos, startedGamePos;
-    
+    private string[] bodyParts = { "Cylinder.001", "Cylinder.015", "Cube.012", "Cube.007", "Cube.001", "Cube.005" };
     void Start()
     {
         //collisions
@@ -26,35 +26,15 @@ public class PlayerCreation : MonoBehaviour
         Material[] newMaterials = modelTextures[model].gameObject.GetComponent<Renderer>().sharedMaterials;
         SetMaterials(oldMaterials, newMaterials);
 
-        oldMaterials = modelObjects[1].GetComponent<Renderer>().materials;
-        newMaterials = modelTextures[model].transform.Find("Cylinder.001").gameObject.GetComponent<Renderer>()
-            .sharedMaterials;
-        SetMaterials(oldMaterials, newMaterials);
-
-        oldMaterials = modelObjects[2].GetComponent<Renderer>().materials;
-        newMaterials = modelTextures[model].transform.Find("Cylinder.015").gameObject.GetComponent<Renderer>()
-            .sharedMaterials;
-        SetMaterials(oldMaterials, newMaterials);
-
-        oldMaterials = modelObjects[3].GetComponent<Renderer>().materials;
-        newMaterials = modelTextures[model].transform.Find("Cube.012").gameObject.GetComponent<Renderer>()
-            .sharedMaterials;
-        SetMaterials(oldMaterials, newMaterials);
-
-        oldMaterials = modelObjects[4].GetComponent<Renderer>().materials;
-        newMaterials = modelTextures[model].transform.Find("Cube.007").gameObject.GetComponent<Renderer>()
-            .sharedMaterials;
-        SetMaterials(oldMaterials, newMaterials);
-
-        oldMaterials = modelObjects[5].GetComponent<Renderer>().materials;
-        newMaterials = modelTextures[model].transform.Find("Cube.001").gameObject.GetComponent<Renderer>()
-            .sharedMaterials;
-        SetMaterials(oldMaterials, newMaterials);
-
-        oldMaterials = modelObjects[6].GetComponent<Renderer>().materials;
-        newMaterials = modelTextures[model].transform.Find("Cube.005").gameObject.GetComponent<Renderer>()
-            .sharedMaterials;
-        SetMaterials(oldMaterials, newMaterials);
+        for (int i = 1; i < 7; i++)
+        {
+              
+            oldMaterials = modelObjects[i].GetComponent<Renderer>().materials;
+            newMaterials = modelTextures[model].transform.Find(bodyParts[i-1]).gameObject.GetComponent<Renderer>()
+                .sharedMaterials;
+            SetMaterials(oldMaterials, newMaterials);
+        }
+        
 
         SpawnPoint();
         
@@ -65,19 +45,15 @@ public class PlayerCreation : MonoBehaviour
     private void SpawnPoint()
     {
         if (_playerValues.gameData.GetIsNewGame())
-
         {
             if (newGamePos)
-            {
                 _playerValues.transform.position = newGamePos.position;
-            }
         }
         else
         {
             if (startedGamePos)
-            {
                 _playerValues.transform.position = startedGamePos.position;
-            }
+            
         }
     }
 

@@ -20,7 +20,6 @@ public class PlayerValues : Subject
     //stamina values
     public float stamina, maxStamina;
     public int lives;
-
     public int MaxLives = 4;
 
     //stuck values
@@ -32,9 +31,6 @@ public class PlayerValues : Subject
     //compontes
     [Header("COMPONENTES")] [NonSerialized]
     public Rigidbody _rigidbody;
-
-    [SerializeField] private PlayerLives playerLives;
-
     public GenericScreenUi genericScreenUi;
     [NonSerialized] public bool allStaminaUsed = false;
     [NonSerialized] public RigidbodyConstraints _originalRigidBodyConstraints;
@@ -56,7 +52,7 @@ public class PlayerValues : Subject
 
     //variables
     private bool _updateSnap, _updateLookAt, moveForward;
-  [NonSerialized]  public bool dead = false;
+    [NonSerialized] public bool dead = false;
     private float _targetAngle;
     private Vector3 _targetPos;
     private bool paused;
@@ -364,12 +360,10 @@ public class PlayerValues : Subject
         if (lives > 0)
         {
             lives--;
-            playerLives.Damage();
             NotifyCameraLives();
             if (lives <= 0)
-            {
                 Die(spawnPos);
-            }
+            
         }
     }
 
@@ -396,7 +390,6 @@ public class PlayerValues : Subject
         StartCoroutine(ResetPosCoroutine(spawnPos));
     }
 
-
     IEnumerator StandUpCoroutine(bool inputs, float time)
     {
         yield return new WaitForSeconds(time);
@@ -420,16 +413,13 @@ public class PlayerValues : Subject
             stuckTimer.Start();
             stucked = false;
         }
-
         if (!isGrounded && Vector3.Distance(stuckedPos, prevStuckedPos) < 0.01f)
         {
             if (stuckTimer.Elapsed.TotalSeconds > stuckTime)
             {
                 stucked = true;
                 if (resetPos)
-                {
                     ResetPos();
-                }
             }
         }
         else
@@ -507,8 +497,6 @@ public class PlayerValues : Subject
         if (Physics.Raycast(isgroundedPos.position + RayOffset,
                 transform.TransformDirection(Vector3.down), out hit, raySize, colisionLayers))
         {
-            // if (MyUtils.IsInLayerMask(hit.transform.gameObject, colisionLayers))
-            // {
             if (!isGrounded)
             {
                 SetCanMove(true);
@@ -523,19 +511,6 @@ public class PlayerValues : Subject
                 lastValidPos = transform.position;
                 stuckTimer.Restart();
             }
-
-            // }
-            // else
-            // {
-            //     if (isGrounded)
-            //     {
-            //         SetGear(1);
-            //         SetCanMove(false);
-            //         _rigidbody.constraints = RigidbodyConstraints.None;
-            //         isGrounded = false;
-            //     }
-            //     stuckedPos = transform.position;
-            // }
         }
         else
         {

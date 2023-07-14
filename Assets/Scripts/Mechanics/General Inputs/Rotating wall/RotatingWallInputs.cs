@@ -2,7 +2,7 @@ using System;
 using Mechanics.General_Inputs;
 using UnityEngine;
 
-public class RotatingWallInputs : MonoBehaviour
+public class RotatingWallInputs : MonoBehaviour,InputInterface
 {
     // Start is called before the first frame update
     // Start is called before the first frame update

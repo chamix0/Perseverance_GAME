@@ -65,7 +65,6 @@ public class SaveData
         {
             return slots[index];
         }
-
         return new GameData();
     }
 

@@ -42,6 +42,7 @@ public class EnemyShooterZone : MonoBehaviour, IObserver
             AssignInitialPositions();
     }
 
+    #region Routs
 
     public int GetNewTarget(int currentNode)
     {
@@ -52,6 +53,11 @@ public class EnemyShooterZone : MonoBehaviour, IObserver
         }
 
         return target;
+    }
+
+    public EnemyPath GetEnemyPath()
+    {
+        return enemyPath;
     }
 
     public void AssignInitialPositions()
@@ -77,6 +83,9 @@ public class EnemyShooterZone : MonoBehaviour, IObserver
             }
         }
     }
+
+    #endregion
+
 
     public void HideAll()
     {

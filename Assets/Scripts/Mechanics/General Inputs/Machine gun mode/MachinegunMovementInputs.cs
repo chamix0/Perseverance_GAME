@@ -5,7 +5,7 @@ using Player.Observer_pattern;
 using UnityEngine;
 
 [DefaultExecutionOrder(4)]
-public class MachinegunMovementInputs : MonoBehaviour
+public class MachinegunMovementInputs : MonoBehaviour,InputInterface
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;

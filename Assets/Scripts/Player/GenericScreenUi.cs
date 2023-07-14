@@ -16,7 +16,7 @@ public class GenericScreenUi : MonoBehaviour
     //face
     private Stopwatch _blinkTimer;
     private float _blinkCooldown;
-    private bool _blinking;
+    private bool _blinking, scared;
     private bool _faceUpdated;
     private float faceAlpha = 1;
 
@@ -60,11 +60,20 @@ public class GenericScreenUi : MonoBehaviour
 
     private void Face()
     {
-        if (_blinkTimer.Elapsed.TotalSeconds > _blinkCooldown && Time.timeScale > 0)
+        if (_playerValues.GetIsStucked() || !_playerValues.GetIsGrounded())
+        {
+            if (!scared)
+            {
+                scared = true;
+                _faceUpdated = false;
+            }
+        }
+        else if (_blinkTimer.Elapsed.TotalSeconds > _blinkCooldown && Time.timeScale > 0)
         {
             _blinkTimer.Stop();
             _blinkTimer.Reset();
             _blinking = true;
+            scared = false;
             _faceUpdated = false;
             _blinkCooldown = Random.Range(0, 11);
             StartCoroutine(BlinkCoroutine());
@@ -80,12 +89,13 @@ public class GenericScreenUi : MonoBehaviour
             _faceUpdated = true;
 
             if (_blinking)
+            {
                 SetText(BlinkFace);
-            else if (_playerValues.GetIsStucked() || !_playerValues.GetIsGrounded())
+            }
+            else if (scared)
             {
                 _playerValues.NotifyAction(PlayerActions.ScaredFace);
                 SetText(ScaredFace);
-                _faceUpdated = false;
             }
             else
             {

@@ -43,20 +43,13 @@ public class JSONsaving : MonoBehaviour
     public void SaveTheData()
     {
         string savePath = path;
-        Debug.Log("Saving Data at " + savePath);
+        // Debug.Log("Saving Data at " + savePath);
         string json = JsonUtility.ToJson(_saveData);
         Debug.Log(json);
         using StreamWriter writer = new StreamWriter(savePath);
         writer.Write(json);
     }
-
-    public void dumpData()
-    {
-        string savePath = path;
-        File.Delete(savePath);
-    }
-
-    public void LoadData()
+  public void LoadData()
     {
         using StreamReader reader = new StreamReader(path);
         string json = reader.ReadToEnd();
@@ -64,4 +57,11 @@ public class JSONsaving : MonoBehaviour
         _saveData = data;
         Debug.Log(data.ToString());
     }
+    public void dumpData()
+    {
+        string savePath = path;
+        File.Delete(savePath);
+    }
+
+  
 }
