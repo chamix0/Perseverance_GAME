@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Enemies;
 using Player.Observer_pattern;
@@ -338,6 +339,14 @@ public class EnemyShooter : Enemy, IObserver
     }
 
     #region Detection
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color=Color.yellow;
+        Gizmos.DrawWireSphere(transform.position,searchingDistance);
+        Gizmos.color=Color.red;
+        Gizmos.DrawWireSphere(transform.position,detectionDistance);
+    }
 
     private bool CheckIsInCone()
     {

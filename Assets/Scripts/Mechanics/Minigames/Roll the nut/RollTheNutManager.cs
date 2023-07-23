@@ -216,10 +216,10 @@ public class RollTheNutManager : Minigame
     {
         soundManager.PlayFinishedSound();
         _isEnabled = false;
-        HideUI();
         _minigameManager.UpdateCounter(0);
         _playerValues.SetInputsEnabled(false);
-        StartCoroutine(EndGameCoroutine());
+        HideUI();
+        StartCoroutine(_minigameManager.EndMinigame());
     }
 
     IEnumerator StartGameCoroutine()
@@ -241,19 +241,5 @@ public class RollTheNutManager : Minigame
         _playerValues.SetInputsEnabled(true);
         ShowKeyTutorial();
         _playerValues.NotifyAction(PlayerActions.RollMinigame);
-
-    }
-
-    IEnumerator EndGameCoroutine()
-    {
-        _genericScreenUi.SetText(endMessage, 10);
-        _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
-        _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
-        _cameraChanger.SetOrbitCamera();
-        yield return new WaitForSeconds(2f);
-        _playerValues.StandUp(true, 3);
-        _minigameManager.EndMinigame();
     }
 }

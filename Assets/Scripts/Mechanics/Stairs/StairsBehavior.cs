@@ -38,7 +38,7 @@ public class StairsBehavior : MonoBehaviour
                 _playerValues._rigidbody.useGravity = true;
                 endAnimation = false;
                 reset = true;
-                _playerValues.StandUp(true, 1f);
+                _playerValues.StandUp(true, 0f);
             }
         }
 
@@ -77,7 +77,7 @@ public class StairsBehavior : MonoBehaviour
 
     IEnumerator startAnimationCoroutine()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         _playerValues._rigidbody.useGravity = false;
         _playerValues.gameObject.transform.parent = transform;
         _boxCollider.enabled = false;

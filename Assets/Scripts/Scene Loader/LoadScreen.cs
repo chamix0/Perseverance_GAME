@@ -77,6 +77,11 @@ public class LoadScreen : MonoBehaviour
         StartCoroutine(LoadScenAsync(10));
     }
 
+    public void QuitGame()
+    {
+       Application.Quit(); 
+    }
+
     public void SetLoadingText(string text)
     {
         _text.text = text;

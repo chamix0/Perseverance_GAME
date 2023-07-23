@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(10)]
 public class LightsManagerFreeCam : MonoBehaviour
 {
  // Start is called before the first frame update
     [SerializeField] private float distance = 10;
     private List<LightValue> lights, turnOnLights, turnOffLights;
-    private PlayerValues playerValues;
     [SerializeField] private LayerMask colisionLayers;
     [SerializeField] private float switchSpeed = 0.1f;
 
@@ -20,8 +20,8 @@ public class LightsManagerFreeCam : MonoBehaviour
 
     void Start()
     {
-        playerValues = FindObjectOfType<PlayerValues>();
-        foreach (var light in FindObjectsOfType<LightUnit>())
+        LightUnit[] aux = FindObjectsOfType<LightUnit>();
+        foreach (var light in aux)
         {
             if (light.GetLightValue().GetLight().type is LightType.Spot or LightType.Point)
             {

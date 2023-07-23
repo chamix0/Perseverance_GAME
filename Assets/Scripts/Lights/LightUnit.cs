@@ -14,10 +14,6 @@ public class LightUnit : MonoBehaviour
     void Start()
     {
         _materials = new List<Material>(_meshRenderer.materials);
-        foreach (var material in _materials)
-        {
-            print(material.name);
-        }
         _lightValue = new LightValue(_light, _light.intensity, _materials.ToArray());
     }
 

@@ -373,11 +373,11 @@ public class DontTouchWallsManager : Minigame
         _player.SetActive(false);
         _minigameManager.UpdateCounter(0);
         HideAllLaberinths();
-        HideUI();
         minigameStarted = false;
         _playerValues.SetInputsEnabled(false);
         laberinthWallsList.Clear();
-        StartCoroutine(EndGameCoroutine());
+        HideUI();
+        StartCoroutine(_minigameManager.EndMinigame());
     }
 
     public override void ShowUI()
@@ -440,19 +440,5 @@ public class DontTouchWallsManager : Minigame
         _player.SetActive(true);
         StartRound();
         _playerValues.NotifyAction(PlayerActions.DontTouchTheWallsMinigame);
-
-    }
-
-    IEnumerator EndGameCoroutine()
-    {
-        _genericScreenUi.SetText(endMessage, 10);
-        _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
-        _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
-        _cameraChanger.SetOrbitCamera();
-        yield return new WaitForSeconds(2f);
-        _playerValues.StandUp(true, 3f);
-        _minigameManager.EndMinigame();
     }
 }

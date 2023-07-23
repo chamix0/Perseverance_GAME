@@ -209,9 +209,9 @@ public class AdjustValuesManager : Minigame
     {
         soundManager.PlayFinishedSound();
         _minigameManager.UpdateCounter(0);
-        HideUI();
         _playerValues.SetInputsEnabled(false);
-        StartCoroutine(EndGameCoroutine());
+         HideUI();
+        StartCoroutine(_minigameManager.EndMinigame());
     }
 
     IEnumerator StartGameCoroutine()
@@ -235,19 +235,5 @@ public class AdjustValuesManager : Minigame
         _playerValues.NotifyAction(PlayerActions.AdjustValuesMinigame);
 
         //empezar minijuego
-    }
-
-    IEnumerator EndGameCoroutine()
-    {
-        minigameStarted = false;
-        _genericScreenUi.SetText(EndMessage, 10);
-        _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
-        _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
-        _cameraChanger.SetOrbitCamera();
-        yield return new WaitForSeconds(2f);
-        _playerValues.StandUp(true, 3);
-        _minigameManager.EndMinigame();
     }
 }

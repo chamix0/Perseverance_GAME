@@ -93,15 +93,13 @@ public class PuzzleManager : Minigame
                         usedColors.RemoveAt(ranIndex);
                     }
                 }
-            }  
+            }
         } while (checkSol());
-       
+
 
         SetPuzzleColors();
     }
 
-  
-    
 
     private void SetPuzzleColors()
     {
@@ -236,7 +234,7 @@ public class PuzzleManager : Minigame
             button.interactable = val;
         }
     }
-    
+
 
     private bool checkSol()
     {
@@ -265,37 +263,36 @@ public class PuzzleManager : Minigame
 
     #region Tutorial
 
-      [SerializeField] private GameObject cubeTutorial, keyTutorial;
-    
-        public void ShowCubeTutorial()
-        {
-            if (minigameStarted)
-            {
-                if (!cubeTutorial.activeSelf)
-                    cubeTutorial.SetActive(true);
-                if (keyTutorial.activeSelf)
-                    keyTutorial.SetActive(false);
-            }
-        }
-    
-        public void ShowKeyTutorial()
-        {
-            if (minigameStarted)
-            {
-                if (cubeTutorial.activeSelf)
-                    cubeTutorial.SetActive(false);
-                if (!keyTutorial.activeSelf)
-                    keyTutorial.SetActive(true);
-            }
-        }
+    [SerializeField] private GameObject cubeTutorial, keyTutorial;
 
+    public void ShowCubeTutorial()
+    {
+        if (minigameStarted)
+        {
+            if (!cubeTutorial.activeSelf)
+                cubeTutorial.SetActive(true);
+            if (keyTutorial.activeSelf)
+                keyTutorial.SetActive(false);
+        }
+    }
+
+    public void ShowKeyTutorial()
+    {
+        if (minigameStarted)
+        {
+            if (cubeTutorial.activeSelf)
+                cubeTutorial.SetActive(false);
+            if (!keyTutorial.activeSelf)
+                keyTutorial.SetActive(true);
+        }
+    }
 
     #endregion
-  
+
     public override void StartMinigame()
     {
         SetSolution();
-        _playerValues.SetCurrentInput(CurrentInput.AdjustValuesMinigame);
+        _playerValues.SetCurrentInput(CurrentInput.PuzzleMinigame);
         _playerValues.SetInputsEnabled(false);
         _minigameManager.UpdateCounter(0);
         StartCoroutine(StartGameCoroutine());
@@ -306,8 +303,8 @@ public class PuzzleManager : Minigame
         soundManager.PlayFinishedSound();
         SetActiveButtons(false);
         _playerValues.SetInputsEnabled(false);
-        StartCoroutine(EndGameCoroutine());
-        //i hided this because i want to add a delay for the player to notice he has won
+        HideUI();
+        StartCoroutine(_minigameManager.EndMinigame());
     }
 
     IEnumerator StartGameCoroutine()
@@ -332,22 +329,5 @@ public class PuzzleManager : Minigame
         _playerValues.NotifyAction(PlayerActions.PuzzleMinigame);
 
         //empezar minijuego
-    }
-
-    IEnumerator EndGameCoroutine()
-    {
-        yield return new WaitForSeconds(1f);
-        HideUI();
-        minigameStarted = false;
-        _genericScreenUi.SetText(EndMessage, 10);
-        _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
-        _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
-        _cameraChanger.SetOrbitCamera();
-        yield return new WaitForSeconds(2f);
-        _playerValues.StandUp(true, 3);
-        _minigameManager.EndMinigame();
-        // puzzleColor = null;
     }
 }

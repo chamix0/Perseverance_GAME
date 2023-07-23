@@ -211,10 +211,12 @@ public class MemoryMingameManager : Minigame
     private void EndMinigame()
     {
         soundManager.PlayFinishedSound();
-        HideGameUi();
+        
         _minigameManager.UpdateCounter(0);
         _playerValues.SetInputsEnabled(false);
-        StartCoroutine(EndGameCoroutine());
+        HideGameUi();
+        HideUI();
+        StartCoroutine(_minigameManager.EndMinigame());
     }
 
     public override void ShowUI()
@@ -262,18 +264,5 @@ public class MemoryMingameManager : Minigame
         ShowGameUi();
         ChangeSequence();
         _playerValues.NotifyAction(PlayerActions.MemorizeMinigame);
-    }
-
-    IEnumerator EndGameCoroutine()
-    {
-        _genericScreenUi.SetText(endMessage, 10);
-        _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
-        _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
-        _cameraChanger.SetOrbitCamera();
-        yield return new WaitForSeconds(2f);
-        _playerValues.StandUp(true, 3f);
-        _minigameManager.EndMinigame();
     }
 }

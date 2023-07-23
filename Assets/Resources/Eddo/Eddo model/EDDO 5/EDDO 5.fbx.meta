@@ -23,7 +23,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BUTTON 2
-    second: {fileID: 2100000, guid: d79b6b5082b40ba4ebee049585c406e7, type: 2}
+    second: {fileID: 2100000, guid: 7798ffddacb00c24386ece6b82f070b0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -43,7 +43,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: LEFT SCREWS
-    second: {fileID: 2100000, guid: 0572c803b85397b478e1be80a9877724, type: 2}
+    second: {fileID: 2100000, guid: 2fb73d264469de14ea3f35aac94f3e79, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -93,7 +93,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: bUTTON 1
-    second: {fileID: 2100000, guid: 22b9aaba5efbcba46b60dc2d55509a74, type: 2}
+    second: {fileID: 2100000, guid: aef655a561894f84b9c69048ea15b511, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -126,7 +126,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
+    meshCompression: 1
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1

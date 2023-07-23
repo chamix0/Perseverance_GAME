@@ -12,32 +12,33 @@ public class PlayerCreation : MonoBehaviour
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
     private static readonly int FresnelColor = Shader.PropertyToID("_fresnel_color");
     [SerializeField] private Transform newGamePos, startedGamePos;
-    private string[] bodyParts = { "Cylinder.001", "Cylinder.015", "Cube.012", "Cube.007", "Cube.001", "Cube.005" };
+    private string[] bodyParts = { "", "Cylinder.001", "Cylinder.015", "Cube.012", "Cube.007", "Cube.001", "Cube.005" };
+    private static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
+
     void Start()
     {
         //collisions
         Physics.IgnoreLayerCollision(9, 13);
         Physics.IgnoreLayerCollision(8, 13);
-
         
         _playerValues = FindObjectOfType<PlayerValues>();
         model = _playerValues.gameData.GetEddoModel();
-        Material[] oldMaterials = modelObjects[0].GetComponent<Renderer>().materials;
-        Material[] newMaterials = modelTextures[model].gameObject.GetComponent<Renderer>().sharedMaterials;
-        SetMaterials(oldMaterials, newMaterials);
 
-        for (int i = 1; i < 7; i++)
+        for (int i = 0; i < modelObjects.Count; i++)
         {
-              
-            oldMaterials = modelObjects[i].GetComponent<Renderer>().materials;
-            newMaterials = modelTextures[model].transform.Find(bodyParts[i-1]).gameObject.GetComponent<Renderer>()
-                .sharedMaterials;
+            var oldMaterials = modelObjects[i].GetComponent<Renderer>().materials;
+            Material[] newMaterials;
+            if (i == 0)
+                newMaterials = modelTextures[model].GetComponent<Renderer>().sharedMaterials;
+            else
+                newMaterials = modelTextures[model].transform.Find(bodyParts[i]).GetComponent<Renderer>()
+                    .sharedMaterials;
             SetMaterials(oldMaterials, newMaterials);
         }
-        
+
 
         SpawnPoint();
-        
+
         //cursor
         CursorManager.HideCursor();
     }
@@ -53,7 +54,6 @@ public class PlayerCreation : MonoBehaviour
         {
             if (startedGamePos)
                 _playerValues.transform.position = startedGamePos.position;
-            
         }
     }
 
@@ -61,8 +61,8 @@ public class PlayerCreation : MonoBehaviour
     {
         for (int i = 0; i < oldMaterials.Length; i++)
         {
-            Texture texture = newMaterials[i].GetTexture("_BaseMap");
-            oldMaterials[i].SetTexture("_BaseMap", texture);
+            Texture texture = newMaterials[i].GetTexture(BaseMap);
+            oldMaterials[i].SetTexture(BaseMap, texture);
             if (newMaterials[i].name == "SCREEN")
             {
                 oldMaterials[i].SetColor(BackgroundColor, newMaterials[i].GetColor(BackgroundColor));

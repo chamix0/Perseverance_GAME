@@ -7,8 +7,8 @@ public class ArduinoManager : MonoBehaviour
     private RunProcessArduino _processArduino;
     public bool isActive = false;
     private Stopwatch shakeTimer;
-    [SerializeField] float minShakes = 50;
-    [SerializeField] float minTime = 2;
+     float minShakes = 5;
+    float minTime = 20;
     private int shakeCount = 0;
     private bool Shaked = false;
 

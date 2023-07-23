@@ -3,52 +3,7 @@ guid: 20604cffcf7beca4389ec5fe71f2f634
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: branch
-    second: {fileID: 2100000, guid: 47e15fa4240c2fb45938f61d792b72a1, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: dirt
-    second: {fileID: 2100000, guid: 87b4ab71eed12ef41a1dbd5d0b2e68f6, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: glass
-    second: {fileID: 2100000, guid: 4ba496bfe41c28845bc0250e0e51f100, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: leafs
-    second: {fileID: 2100000, guid: 05c13cf2cb6491a40bfa92b579b15223, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: leds
-    second: {fileID: 2100000, guid: b7a5dcdecc581a3418f43852a0728b9c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: metal borders .001
-    second: {fileID: 2100000, guid: 6fba79b7e968f4f47893808cf77f8bfb, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: metal borders_
-    second: {fileID: 2100000, guid: 0895317eafd955948b4dbad2089386a5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shelf
-    second: {fileID: 2100000, guid: 1a97199300d3e91439c9ab143ef10c0a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shelf light
-    second: {fileID: 2100000, guid: 0388ab072fe5ca54d8e3c16788c47956, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -92,7 +47,7 @@ ModelImporter:
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1

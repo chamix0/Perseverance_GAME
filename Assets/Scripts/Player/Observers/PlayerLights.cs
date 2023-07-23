@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using Player.Observer_pattern;
 using UnityEngine;
-
+[DefaultExecutionOrder(4)]
 public class PlayerLights : MonoBehaviour, IObserver
 {
     // Start is called before the first frame update
     [SerializeField] List<Light> _lights;
-    public Material EarLightsColor;
+    Material EarLightsColor;
     private PlayerValues playerValues;
 
     private Color offColor = new Color(0.172549024f, 3.24705887f, 0.188235298f, 0f);

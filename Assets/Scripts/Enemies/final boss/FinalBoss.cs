@@ -89,7 +89,9 @@ public class FinalBoss : Enemy, IObserver
             _timer.Stop();
             _timer.Reset();
             int shootingMode = Random.Range(0, 9);
-
+            
+            if (lives < (maxLives / 2))
+                StartCoroutine(LaserAttackCoroutine());
 
             if (shootingMode >= 6)
                 StartCoroutine(SpiralAttackCoroutine());
@@ -224,11 +226,6 @@ public class FinalBoss : Enemy, IObserver
                     conversationShown = true;
                     attackCooldown /= 2;
                 }
-
-                int shootingMode = Random.Range(0, 9);
-
-                if (shootingMode % 2 == 0)
-                    StartCoroutine(LaserAttackCoroutine());
             }
 
             if (lives <= 0)

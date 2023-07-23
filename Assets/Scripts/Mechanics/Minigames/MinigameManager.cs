@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,8 +10,9 @@ public class MinigameManager : MonoBehaviour
     //components
     [SerializeField] private GameObject counterObject;
     [SerializeField] private Shader shader;
-
+    private GenericScreenUi _genericScreenUi;
     private PlayerValues _playerValues;
+    private CameraChanger _cameraChanger;
 
     //variables
     private int _lastMinigame = -1;
@@ -19,6 +21,7 @@ public class MinigameManager : MonoBehaviour
     //lists
     [SerializeField] private List<Image> _counterImages;
     private List<Minigame> minigames;
+    private List<Minigame> _minigamesNotPlayed;
 
     //shader names
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
@@ -26,12 +29,15 @@ public class MinigameManager : MonoBehaviour
 
     private void Awake()
     {
+        _minigamesNotPlayed = new List<Minigame>();
         minigames = new List<Minigame>();
     }
 
     void Start()
     {
+        _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         _playerValues = FindObjectOfType<PlayerValues>();
+        _cameraChanger = FindObjectOfType<CameraChanger>();
         //minigames 
         minigames.Add(GetComponent<ColorsManager>());
         minigames.Add(GetComponent<AsteroidsManager>());
@@ -42,7 +48,7 @@ public class MinigameManager : MonoBehaviour
         minigames.Add(GetComponent<MemoryMingameManager>());
         minigames.Add(GetComponent<DontTouchWallsManager>());
         minigames.Add(GetComponent<PuzzleManager>());
-
+        _minigamesNotPlayed.AddRange(minigames.ToArray());
         SetCounterImages();
         UpdateCounter(0);
         SetCounterVisivility(false);
@@ -82,30 +88,25 @@ public class MinigameManager : MonoBehaviour
 
     public void StartRandomMinigame()
     {
-        int index;
-        if (_lastMinigame == -1)
-        {
-            index = Random.Range(0, minigames.Count);
-            _lastMinigame = index;
-        }
-        else
-        {
-            do
-            {
-                index = Random.Range(0, minigames.Count);
-            } while (index == _lastMinigame);
-
-            _lastMinigame = index;
-        }
-
-        minigames[index].StartMinigame();
+        int index = Random.Range(0, _minigamesNotPlayed.Count);
+        Minigame currentMinigame = _minigamesNotPlayed[index];
+        _minigamesNotPlayed.RemoveAt(index);
+        if (_minigamesNotPlayed.Count <= 0)
+            _minigamesNotPlayed.AddRange(minigames.ToArray());
+        
+        currentMinigame.StartMinigame();
         currentMinigameFinished = false;
-        // guiManager.HideGui();
     }
 
-    public void EndMinigame()
+    public IEnumerator EndMinigame()
     {
-        // guiManager.ShowGui();
+        _genericScreenUi.SetText("WELL DONE!", 10);
+        _genericScreenUi.FadeInText();
+        yield return new WaitForSeconds(2f);
+        _genericScreenUi.FadeOutText();
+        yield return new WaitForSeconds(2f);
+        _cameraChanger.SetOrbitCamera();
+        _playerValues.StandUp(true, 0f);
         CursorManager.HideCursor();
         _playerValues.NotifyAction(PlayerActions.MinigameFinished);
         currentMinigameFinished = true;

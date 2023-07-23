@@ -3,32 +3,7 @@ guid: 1c99305d45c96ba4a850372f069b8fde
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: branch
-    second: {fileID: 2100000, guid: 47e15fa4240c2fb45938f61d792b72a1, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: dirt
-    second: {fileID: 2100000, guid: 87b4ab71eed12ef41a1dbd5d0b2e68f6, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: glass
-    second: {fileID: 2100000, guid: 4ba496bfe41c28845bc0250e0e51f100, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: leafs
-    second: {fileID: 2100000, guid: 05c13cf2cb6491a40bfa92b579b15223, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shelf
-    second: {fileID: 2100000, guid: 1a97199300d3e91439c9ab143ef10c0a, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

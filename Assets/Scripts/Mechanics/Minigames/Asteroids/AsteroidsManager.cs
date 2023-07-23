@@ -49,8 +49,9 @@ public class AsteroidsManager : Minigame
         _asteroidBehaviorsAlive = new List<AsteroidBehavior>();
         minigameSoundManager = GetComponent<MinigameSoundManager>();
     }
- void Start()
- {
+
+    void Start()
+    {
         _playerValues = FindObjectOfType<PlayerValues>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
@@ -62,6 +63,7 @@ public class AsteroidsManager : Minigame
         _genericScreenUi.SetTextAlpha(0);
         HideUI();
     }
+
     private void Update()
     {
         if (minigameStarted)
@@ -129,7 +131,6 @@ public class AsteroidsManager : Minigame
         }
     }
 
-   
 
     public void VerticalMovement(int direction, float speed)
     {
@@ -302,10 +303,11 @@ public class AsteroidsManager : Minigame
         minigameSoundManager.PlayFinishedSound();
         _player.SetActive(false);
         _minigameManager.UpdateCounter(0);
-        HideGameUi();
         minigameStarted = false;
         _playerValues.SetInputsEnabled(false);
-        StartCoroutine(EndGameCoroutine());
+        HideGameUi();
+        HideUI();
+        StartCoroutine(_minigameManager.EndMinigame());
     }
 
     public override void ShowUI()
@@ -377,18 +379,5 @@ public class AsteroidsManager : Minigame
         _player.SetActive(true);
         StartRound();
         _playerValues.NotifyAction(PlayerActions.Asteroids);
-    }
-
-    IEnumerator EndGameCoroutine()
-    {
-        _genericScreenUi.SetText(endMessage, 10);
-        _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
-        _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
-        _cameraChanger.SetOrbitCamera();
-        yield return new WaitForSeconds(2f);
-        _playerValues.StandUp(true, 3f);
-        _minigameManager.EndMinigame();
     }
 }

@@ -288,7 +288,7 @@ public class PlayerValues : Subject
     private Vector3 UpdateSnapPosition()
     {
         Vector3 position = transform.position;
-        Vector3 newPos = Vector3.MoveTowards(position, _targetPos, 2f * Time.deltaTime);
+        Vector3 newPos = Vector3.MoveTowards(position, _targetPos, 4f * Time.deltaTime);
 
         if (Vector3.Distance(newPos, _targetPos) < 0.1f)
         {

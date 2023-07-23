@@ -158,10 +158,10 @@ public class PushFastManager : Minigame
         soundManager.PlayFinishedSound();
         minigameActive = false;
         _timer.Stop();
-        HideUI();
         _minigameManager.UpdateCounter(0);
         _playerValues.SetInputsEnabled(false);
-        StartCoroutine(EndGameCoroutine());
+        HideUI();
+        StartCoroutine(_minigameManager.EndMinigame());
     }
 
     IEnumerator StartGameCoroutine()
@@ -184,19 +184,5 @@ public class PushFastManager : Minigame
         //empezar minijuego
         _timer.Restart();
         _playerValues.NotifyAction(PlayerActions.PushFastMinigame);
-
-    }
-
-    IEnumerator EndGameCoroutine()
-    {
-        _genericScreenUi.SetText(EndMessage, 10);
-        _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
-        _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
-        _cameraChanger.SetOrbitCamera();
-        yield return new WaitForSeconds(2f);
-        _playerValues.StandUp(true, 3);
-        _minigameManager.EndMinigame();
     }
 }

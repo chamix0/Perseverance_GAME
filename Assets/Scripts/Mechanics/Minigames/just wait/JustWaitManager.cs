@@ -10,7 +10,6 @@ public class JustWaitManager : Minigame
     private readonly string _name = "Just Wait",
         _tutorial = "Wait to the timer to end.";
 
-    private const string EndMessage = "WELL DONE!";
 
     //values
 
@@ -103,10 +102,10 @@ public class JustWaitManager : Minigame
         minigameActive = false;
         _timer.Stop();
         _timer.Reset();
-        HideUI();
         _minigameManager.UpdateCounter(0);
         _playerValues.SetInputsEnabled(false);
-        StartCoroutine(EndGameCoroutine());
+        HideUI();
+        StartCoroutine(_minigameManager.EndMinigame());
     }
 
     IEnumerator StartGameCoroutine()
@@ -128,18 +127,5 @@ public class JustWaitManager : Minigame
         _timer.Restart();
         _playerValues.NotifyAction(PlayerActions.JustWaitMinigame);
 
-    }
-
-    IEnumerator EndGameCoroutine()
-    {
-        _genericScreenUi.SetText(EndMessage, 10);
-        _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
-        _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
-        _cameraChanger.SetOrbitCamera();
-        yield return new WaitForSeconds(2f);
-        _playerValues.StandUp(true, 3);
-        _minigameManager.EndMinigame();
     }
 }
