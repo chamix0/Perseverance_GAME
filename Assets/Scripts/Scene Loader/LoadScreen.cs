@@ -80,6 +80,10 @@ public class LoadScreen : MonoBehaviour
     }
 
     #region Load levels async
+    public void LoadFoundry()
+    {
+        SceneManager.LoadScene(12, LoadSceneMode.Additive);
+    }
 
     public void LoadFreezer()
     {

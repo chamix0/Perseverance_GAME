@@ -45,7 +45,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Game/final credits.unity
     guid: 1f9eee85e29306941afc7cb601da2ded
   - enabled: 1
-    path: Assets/Scenes/Game/separated levels/freezer.unity
+    path: Assets/Scenes/Game/separated levels/Foundry.unity
+    guid: 5d5e317a393f55447966c0f6e07a6881
+  - enabled: 1
+    path: Assets/Scenes/Game/separated levels/Freezer.unity
     guid: 84ff28ed50395d84da65674c619dc517
   - enabled: 0
     path: Assets/Scenes/Game/map for renders/Levels 1.unity

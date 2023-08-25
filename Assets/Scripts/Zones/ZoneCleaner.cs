@@ -15,6 +15,7 @@ public class ZoneCleaner : Subject
     
     private void LoadAllZones()
     {
+        _loadScreen.LoadFoundry();
         _loadScreen.LoadFreezer();
     }
 
