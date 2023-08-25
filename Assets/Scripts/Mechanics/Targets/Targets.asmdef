@@ -1,0 +1,18 @@
+{
+    "name": "Targets",
+    "rootNamespace": "",
+    "references": [
+        "GUID:949c73f3b268c5043af00f8cb0c1310e",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:0a51caf06592c784d8cc4bef2314a5f1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

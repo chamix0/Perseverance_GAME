@@ -25,6 +25,7 @@ public class PuzzleManager : Minigame
 
     //variables
     private bool minigameStarted;
+    private int correctCount = 0;
 
     //lists
     [SerializeField] private List<Image> puzzleImages, solutionImages;
@@ -54,6 +55,7 @@ public class PuzzleManager : Minigame
         HideUI();
     }
 
+    #region Set Up Puzzle
 
     private void SetSolution()
     {
@@ -100,7 +102,6 @@ public class PuzzleManager : Minigame
         SetPuzzleColors();
     }
 
-
     private void SetPuzzleColors()
     {
         for (int i = 0; i < 3; i++)
@@ -110,96 +111,6 @@ public class PuzzleManager : Minigame
                 puzzleImages[3 * i + j].color = puzzleColor[i][j];
             }
         }
-    }
-
-    public void ShiftTopRow(int dir)
-    {
-        Color[] aux = new Color[3];
-        Array.Copy(puzzleColor[0], aux, 3);
-        if (dir < 0)
-        {
-            for (int i = 0; i < 3; i++)
-                puzzleColor[0][i] = aux[(i + 1) % 3];
-        }
-        else
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                int index = i - 1 < 0 ? 2 : i - 1;
-                puzzleColor[0][i] = aux[index];
-            }
-        }
-
-        SetPuzzleColors();
-        if (checkSol())
-            EndMinigame();
-    }
-
-    public void ShiftBotRow(int dir)
-    {
-        Color[] aux = new Color[3];
-        Array.Copy(puzzleColor[2], aux, 3);
-        if (dir < 0)
-        {
-            for (int i = 0; i < 3; i++)
-                puzzleColor[2][i] = aux[(i + 1) % 3];
-        }
-        else
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                int index = i - 1 < 0 ? 2 : i - 1;
-                puzzleColor[2][i] = aux[index];
-            }
-        }
-
-        SetPuzzleColors();
-        if (checkSol())
-            EndMinigame();
-    }
-
-    public void ShiftLeftRow(int dir)
-    {
-        Color[] aux = { puzzleColor[0][0], puzzleColor[1][0], puzzleColor[2][0] };
-        if (dir < 0)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                int index = i - 1 < 0 ? 2 : i - 1;
-                puzzleColor[i][0] = aux[index];
-            }
-        }
-        else
-        {
-            for (int i = 0; i < 3; i++)
-                puzzleColor[i][0] = aux[(i + 1) % 3];
-        }
-
-        SetPuzzleColors();
-        if (checkSol())
-            EndMinigame();
-    }
-
-    public void ShiftRightRow(int dir)
-    {
-        Color[] aux = { puzzleColor[0][2], puzzleColor[1][2], puzzleColor[2][2] };
-        if (dir < 0)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                int index = i - 1 < 0 ? 2 : i - 1;
-                puzzleColor[i][2] = aux[index];
-            }
-        }
-        else
-        {
-            for (int i = 0; i < 3; i++)
-                puzzleColor[i][2] = aux[(i + 1) % 3];
-        }
-
-        SetPuzzleColors();
-        if (checkSol())
-            EndMinigame();
     }
 
     private void SetButtons()
@@ -227,16 +138,99 @@ public class PuzzleManager : Minigame
         buttons.AddRange(aux);
     }
 
-    private void SetActiveButtons(bool val)
+    #endregion
+
+    #region Puzzle mechanics
+
+    public void ShiftTopRow(int dir)
     {
-        foreach (var button in buttons)
+        Color[] aux = new Color[3];
+        Array.Copy(puzzleColor[0], aux, 3);
+        if (dir < 0)
         {
-            button.interactable = val;
+            for (int i = 0; i < 3; i++)
+                puzzleColor[0][i] = aux[(i + 1) % 3];
         }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                int index = i - 1 < 0 ? 2 : i - 1;
+                puzzleColor[0][i] = aux[index];
+            }
+        }
+
+        SetPuzzleColors();
+        CheckEndMinigame();
+
     }
 
+    public void ShiftBotRow(int dir)
+    {
+        Color[] aux = new Color[3];
+        Array.Copy(puzzleColor[2], aux, 3);
+        if (dir < 0)
+        {
+            for (int i = 0; i < 3; i++)
+                puzzleColor[2][i] = aux[(i + 1) % 3];
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                int index = i - 1 < 0 ? 2 : i - 1;
+                puzzleColor[2][i] = aux[index];
+            }
+        }
 
-    private bool checkSol()
+        SetPuzzleColors();
+        CheckEndMinigame();
+
+    }
+
+    public void ShiftLeftRow(int dir)
+    {
+        Color[] aux = { puzzleColor[0][0], puzzleColor[1][0], puzzleColor[2][0] };
+        if (dir < 0)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                int index = i - 1 < 0 ? 2 : i - 1;
+                puzzleColor[i][0] = aux[index];
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+                puzzleColor[i][0] = aux[(i + 1) % 3];
+        }
+
+        SetPuzzleColors();
+        CheckEndMinigame();
+
+    }
+
+    public void ShiftRightRow(int dir)
+    {
+        Color[] aux = { puzzleColor[0][2], puzzleColor[1][2], puzzleColor[2][2] };
+        if (dir < 0)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                int index = i - 1 < 0 ? 2 : i - 1;
+                puzzleColor[i][2] = aux[index];
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+                puzzleColor[i][2] = aux[(i + 1) % 3];
+        }
+
+        SetPuzzleColors();
+        CheckEndMinigame();
+    }
+private bool checkSol()
     {
         soundManager.PlayClickSound();
         for (int i = 0; i < 3; i++)
@@ -250,14 +244,47 @@ public class PuzzleManager : Minigame
 
         return true;
     }
+    private void CheckEndMinigame()
+    {
+        if (checkSol())
+        {
+            correctCount++;
+            _minigameManager.UpdateCounter(correctCount);
+            if (correctCount >= 5)
+            {
+                EndMinigame();
+            }
+            else
+            {
+                SetSolution();
+                SetPuzzleColors();
+            }
+        }
+    }
+
+    #endregion
+
+
+    private void SetActiveButtons(bool val)
+    {
+        foreach (var button in buttons)
+        {
+            button.interactable = val;
+        }
+    }
+
+
+    
 
     public override void ShowUI()
     {
         uiObject.SetActive(true);
+        _minigameManager.SetCounterVisivility(true);
     }
 
     public override void HideUI()
     {
+        _minigameManager.SetCounterVisivility(false);
         uiObject.SetActive(false);
     }
 

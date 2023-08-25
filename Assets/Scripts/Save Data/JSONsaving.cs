@@ -37,7 +37,7 @@ public class JSONsaving : MonoBehaviour
             Application.persistentDataPath + Path.AltDirectorySeparatorChar +
             "Savedata.json"; //here is where you actually store the info
 
-        return localPath;
+        return persistentPath;
     }
 
     public void SaveTheData()

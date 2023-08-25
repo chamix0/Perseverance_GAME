@@ -1,0 +1,20 @@
+{
+    "name": "NexusAssembly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3419401ee06995048afc9d3656d906fe",
+        "GUID:a861baac44076134d9e7324b90b7c79a",
+        "GUID:f68d05adba3b75145b9d807d5bfe71a6",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:577ff88af2b0d754dac875cd6cb60e81"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

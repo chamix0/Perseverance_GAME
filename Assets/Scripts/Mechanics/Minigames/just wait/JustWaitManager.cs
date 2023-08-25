@@ -80,7 +80,7 @@ public class JustWaitManager : Minigame
     public override void StartMinigame()
     {
         minigameActive = true;
-        _maxTime = Random.Range(40, 60);
+        _maxTime = Random.Range(10, 20);
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(StartGameCoroutine());
     }

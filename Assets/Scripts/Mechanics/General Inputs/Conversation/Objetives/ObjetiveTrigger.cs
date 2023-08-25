@@ -22,7 +22,7 @@ public class ObjetiveTrigger : MonoBehaviour
             else if (objetiveType is ObetiveType.Remove)
                 objetives.RemoveObjetive();
 
-            Destroy(gameObject);
+            Destroy(this);
         }
     }
 }

@@ -93,8 +93,9 @@ public class MinigameManager : MonoBehaviour
         _minigamesNotPlayed.RemoveAt(index);
         if (_minigamesNotPlayed.Count <= 0)
             _minigamesNotPlayed.AddRange(minigames.ToArray());
-        
+
         currentMinigame.StartMinigame();
+        // minigames[8].StartMinigame();
         currentMinigameFinished = false;
     }
 

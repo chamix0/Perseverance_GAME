@@ -9,6 +9,7 @@ TagManager:
   - Distraction
   - Stair
   - Enemy
+  - FreezerZone
   layers:
   - Default
   - TransparentFX

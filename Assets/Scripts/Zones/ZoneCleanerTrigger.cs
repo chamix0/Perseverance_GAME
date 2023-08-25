@@ -15,7 +15,7 @@ public class ZoneCleanerTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            zoneCleaner.DisableZonesNotUsed(zoneIndex);
+            // zoneCleaner.DisableZonesNotUsed(zoneIndex);
         }
     }
 }

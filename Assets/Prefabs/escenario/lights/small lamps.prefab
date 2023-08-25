@@ -521,7 +521,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6378508666099844217}
   m_LocalRotation: {x: -0.50845, y: -0.4916028, z: 0.4910243, w: 0.50862616}
-  m_LocalPosition: {x: -1.24, y: 0.049238205, z: 0.11}
+  m_LocalPosition: {x: -0.245, y: 0.049238205, z: 0.11}
   m_LocalScale: {x: -169.4436, y: 199.99997, z: 130.55638}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -537,10 +537,10 @@ Light:
   m_GameObject: {fileID: 6378508666099844217}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 2
+  m_Type: 3
   m_Shape: 0
   m_Color: {r: 1, g: 0.9548, b: 0.88699996, a: 1}
-  m_Intensity: 4.54
+  m_Intensity: 15
   m_Range: 20
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -579,7 +579,7 @@ Light:
     serializedVersion: 2
     m_Bits: 19017
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 0.6842218, y: 3.0388567}
   m_BounceIntensity: 1

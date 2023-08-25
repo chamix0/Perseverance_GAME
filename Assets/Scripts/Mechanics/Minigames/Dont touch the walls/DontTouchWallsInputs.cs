@@ -18,37 +18,43 @@ public class DontTouchWallsInputs : MonoBehaviour
     private void Update()
     {
         if (_playerValues.GetCurrentInput() == CurrentInput.DontTouchTheWallsMinigame &&
-            _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
+            _playerValues.GetInputsEnabled() && !_playerValues.GetPaused())
         {
             Vector2 dir = Vector2.zero;
+            float speed = dontTouchWallsManager._speed;
+
             if (Input.anyKey)
             {
                 dontTouchWallsManager.SetGearsZero();
                 dontTouchWallsManager.ShowKeyTutorial();
             }
 
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+                speed *= 1.25f;
+
+
             if (Input.GetKey(KeyCode.W))
             {
                 dir.y += 1;
-                dontTouchWallsManager.VerticalMovement(1, dontTouchWallsManager._speed);
+                dontTouchWallsManager.VerticalMovement(1, speed);
             }
 
             if (Input.GetKey(KeyCode.S))
             {
                 dir.y -= 1;
-                dontTouchWallsManager.VerticalMovement(-1, dontTouchWallsManager._speed);
+                dontTouchWallsManager.VerticalMovement(-1, speed);
             }
 
             if (Input.GetKey(KeyCode.A))
             {
                 dir.x -= 1;
-                dontTouchWallsManager.HorizontalMovement(-1, dontTouchWallsManager._speed);
+                dontTouchWallsManager.HorizontalMovement(-1, speed);
             }
 
             if (Input.GetKey(KeyCode.D))
             {
                 dir.x += 1;
-                dontTouchWallsManager.HorizontalMovement(1, dontTouchWallsManager._speed);
+                dontTouchWallsManager.HorizontalMovement(1, speed);
             }
 
             dontTouchWallsManager.SpriteRotation(dir);

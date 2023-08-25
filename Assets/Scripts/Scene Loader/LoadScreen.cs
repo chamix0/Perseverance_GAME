@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +8,7 @@ public class LoadScreen : MonoBehaviour
 {
     [SerializeField] CanvasGroup loadingScreen;
     [SerializeField] private TMP_Text _text;
+
     private void Start()
     {
         loadingScreen.alpha = 0;
@@ -77,9 +79,18 @@ public class LoadScreen : MonoBehaviour
         StartCoroutine(LoadScenAsync(10));
     }
 
+    #region Load levels async
+
+    public void LoadFreezer()
+    {
+        SceneManager.LoadScene(12, LoadSceneMode.Additive);
+    }
+
+    #endregion
+
     public void QuitGame()
     {
-       Application.Quit(); 
+        Application.Quit();
     }
 
     public void SetLoadingText(string text)
@@ -89,7 +100,6 @@ public class LoadScreen : MonoBehaviour
 
     IEnumerator LoadScenAsync(int sceneIndex)
     {
-        
         loadingScreen.alpha = 1;
 
         yield return new WaitForSeconds(5);

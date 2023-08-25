@@ -47,6 +47,13 @@
     AdjustValuesMinigame,
     MinigameFinished,
     
+    Die,
+    
+    //SCENES
+    LoadFoundry,
+    LoadFreezer,
+    LoadWareHouse,
+    LoadGarden,
+    LoadResidentialZone
 
-    Die
 }

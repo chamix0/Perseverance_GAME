@@ -1,0 +1,19 @@
+{
+    "name": "ZonesScriptsAsselmbly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3419401ee06995048afc9d3656d906fe",
+        "GUID:89689102ed8e42a4cb422d4deee23614",
+        "GUID:4a3bab09f1c9e72449f366e9a7d4bf21",
+        "GUID:f68d05adba3b75145b9d807d5bfe71a6"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
