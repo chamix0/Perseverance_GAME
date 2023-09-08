@@ -588,7 +588,7 @@ GameObject:
   - component: {fileID: 1358861279931535016}
   - component: {fileID: 9198701010137919250}
   m_Layer: 0
-  m_Name: light (1)
+  m_Name: door light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2667,7 +2667,7 @@ GameObject:
   - component: {fileID: 8274475404369340103}
   - component: {fileID: 4487235014703165764}
   m_Layer: 0
-  m_Name: light
+  m_Name: door light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

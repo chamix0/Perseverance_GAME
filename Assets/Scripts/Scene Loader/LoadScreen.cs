@@ -14,82 +14,80 @@ public class LoadScreen : MonoBehaviour
         loadingScreen.alpha = 0;
     }
 
-    public void LoadScene(int sceneIndex)
-    {
-        StartCoroutine(LoadScenAsync(sceneIndex));
-    }
-
     public void LoadCubeConexion()
     {
-        StartCoroutine(LoadScenAsync(1));
+        StartCoroutine(LoadScenAsync("Scenes/Game/connect cube"));
     }
 
     public void LoadMenu()
     {
-        StartCoroutine(LoadScenAsync(2));
+        StartCoroutine(LoadScenAsync("Scenes/Game/Main menu"));
     }
 
     public void LoadLevels()
     {
-        StartCoroutine(LoadScenAsync(3));
+        StartCoroutine(LoadScenAsync("Scenes/Game/separated levels/Main level"));
     }
 
     public void LoadCredits()
     {
-        StartCoroutine(LoadScenAsync(11));
+        StartCoroutine(LoadScenAsync("Scenes/Game/final credits"));
     }
 
     public void LoadKeyOrCube()
     {
-        StartCoroutine(LoadScenAsync(0));
+        StartCoroutine(LoadScenAsync("Scenes/Game/Keyboard or cube"));
     }
 
     public void LoadMovementTutorial()
     {
-        StartCoroutine(LoadScenAsync(4));
+        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/Door 1"));
     }
 
     public void LoadRaceTutorial()
     {
-        StartCoroutine(LoadScenAsync(5));
+        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/race 1"));
     }
 
     public void LoadStealthTutorial()
     {
-        StartCoroutine(LoadScenAsync(6));
+        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/camera enem 1"));
     }
 
     public void LoadMinigamesTutorial()
     {
-        StartCoroutine(LoadScenAsync(7));
+        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/terminals 1"));
     }
 
     public void LoadShootingTutorial()
     {
-        StartCoroutine(LoadScenAsync(8));
+        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/target door 1"));
     }
 
     public void LoadArduinoConnect()
     {
-        StartCoroutine(LoadScenAsync(9));
+        StartCoroutine(LoadScenAsync("Scenes/Game/Connect Arduino"));
     }
 
     public void LoadEnemiesTutorial()
     {
-        StartCoroutine(LoadScenAsync(10));
+        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/enemies 1"));
     }
 
     #region Load levels async
     public void LoadFoundry()
     {
-        SceneManager.LoadScene(12, LoadSceneMode.Additive);
+        SceneManager.LoadScene("Scenes/Game/separated levels/Foundry", LoadSceneMode.Additive);
     }
 
     public void LoadFreezer()
     {
-        SceneManager.LoadScene(12, LoadSceneMode.Additive);
+        SceneManager.LoadScene("Scenes/Game/separated levels/Freezer", LoadSceneMode.Additive);
     }
-
+    public void LoadWarehouse()
+    {
+        SceneManager.LoadScene("Scenes/Game/separated levels/Warehouse", LoadSceneMode.Additive);
+    }
     #endregion
 
     public void QuitGame()
@@ -102,7 +100,7 @@ public class LoadScreen : MonoBehaviour
         _text.text = text;
     }
 
-    IEnumerator LoadScenAsync(int sceneIndex)
+    IEnumerator LoadScenAsync(string sceneIndex)
     {
         loadingScreen.alpha = 1;
 

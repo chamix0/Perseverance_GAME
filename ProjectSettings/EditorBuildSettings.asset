@@ -50,6 +50,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game/separated levels/Freezer.unity
     guid: 84ff28ed50395d84da65674c619dc517
+  - enabled: 1
+    path: Assets/Scenes/Game/separated levels/Warehouse.unity
+    guid: cac3c28dc361f2d42b2d6e7975fbca5c
   - enabled: 0
     path: Assets/Scenes/Game/map for renders/Levels 1.unity
     guid: 832ac18ef6ea0c743b9a3bce767d71ca
