@@ -29,7 +29,7 @@ public class SwitchInterruptor : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 8)
+        if (collision.gameObject.CompareTag("Bullet"))
         {
             if (timer.Elapsed.TotalMilliseconds > cooldoown)
             {

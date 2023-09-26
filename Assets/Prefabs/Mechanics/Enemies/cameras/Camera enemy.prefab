@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 622408792}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: dead pos
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1245126930}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: patrol point (3)
   m_TagString: Untagged
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 2456762044440903706}
   - component: {fileID: 1564991547657621439}
   - component: {fileID: 3626243004098935669}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4561235479500437334}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: patrol point (2)
   m_TagString: Untagged
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
@@ -354,7 +354,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4561235479997879225}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: respawn point
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
@@ -387,7 +387,7 @@ GameObject:
   - component: {fileID: 4561235480199626190}
   - component: {fileID: 4561235480199626188}
   - component: {fileID: 4561235480199626189}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -501,7 +501,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4561235480314936155}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: patrol point
   m_TagString: Untagged
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
@@ -532,7 +532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4561235480420340164}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: patrol point (1)
   m_TagString: Untagged
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
@@ -563,7 +563,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4561235480627340819}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: patrol points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -602,7 +602,7 @@ GameObject:
   - component: {fileID: 4561235480633510975}
   - component: {fileID: 4561235480633510976}
   - component: {fileID: 4561235480633510977}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: Cone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1157,7 +1157,7 @@ GameObject:
   - component: {fileID: 4561235480876251014}
   - component: {fileID: 4561235480876251013}
   - component: {fileID: 1049673830}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: alert sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1273,9 +1273,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4561235480938613295}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Camera enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1311,7 +1311,7 @@ GameObject:
   - component: {fileID: 4561235481104575177}
   - component: {fileID: 6683766566699931666}
   - component: {fileID: 4754381759895677395}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: camera manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1573,7 +1573,7 @@ GameObject:
   - component: {fileID: 3639297966995473053}
   - component: {fileID: 5215917814347437387}
   - component: {fileID: 7033818050335999389}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: camera tube holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1947,6 +1947,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4561235481104575178}
     m_Modifications:
+    - target: {fileID: 2972756193213754349, guid: bfcf2325a67f7a7488132fd73c737e29, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 3609717316829815477, guid: bfcf2325a67f7a7488132fd73c737e29, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -1994,6 +1998,22 @@ PrefabInstance:
     - target: {fileID: 3622832965208169934, guid: bfcf2325a67f7a7488132fd73c737e29, type: 3}
       propertyPath: m_Name
       value: Shooter
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622832965208169934, guid: bfcf2325a67f7a7488132fd73c737e29, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5570993358934786195, guid: bfcf2325a67f7a7488132fd73c737e29, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5571780803988403059, guid: bfcf2325a67f7a7488132fd73c737e29, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5571893480920918913, guid: bfcf2325a67f7a7488132fd73c737e29, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfcf2325a67f7a7488132fd73c737e29, type: 3}

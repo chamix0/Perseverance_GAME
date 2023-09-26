@@ -24,14 +24,14 @@ namespace General_Inputs
             //keyboard inputs
             if (playerValues.GetCurrentInput() is not CurrentInput.None)
             {
-                if (Input.GetKeyDown(KeyCode.Escape))
+                if (Input.GetKeyDown(KeyCode.Escape)||Input.GetKeyDown(KeyCode.P))
                 {
                     pauseManager.Pause();
                 }
                 else if (Input.GetKeyDown(KeyCode.Space))
                 {
                     if (!playerValues.GetIsGrounded() && playerValues.GetCurrentInput() is CurrentInput.Movement
-                            or CurrentInput.RaceMovement or CurrentInput.StealthMovement or CurrentInput.ShootMovement)
+                            or CurrentInput.RaceMovement or CurrentInput.StealthMovement or CurrentInput.ShootMovement or CurrentInput.ArcadeMechanics)
                     {
                         playerValues.CheckIfStuck(false);
                         if (playerValues.GetIsStucked())

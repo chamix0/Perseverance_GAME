@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 8827047287968093578}
   m_Layer: 0
   m_Name: bee enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0, z: 0}
   lookingPlayer: 1
-  speed: 0
+  hardLookPlayer: 0
   slowSpeed: 2
   normalSpeed: 2
 --- !u!114 &787653693
@@ -140,17 +140,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lives: 4
+  totalLives: 0
   enemyPath: {fileID: 0}
   turnSpeed: 1
+  force: 10
+  oldForce: 0
   forceMode: 0
+  maxLives: 10
   collision:
     serializedVersion: 2
     m_Bits: 0
-  timerCooldown: 5
   shootCooldown: 5
   shootSpeed: 2
+  respawn: {fileID: 0}
   shootOffset: {x: 0, y: 0, z: 0}
-  minDistanceFromPlayer: 5
 --- !u!114 &787653695
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,6 +17,9 @@ public class ZoneCleaner : Subject
     {
         _loadScreen.LoadFoundry();
         _loadScreen.LoadFreezer();
+        _loadScreen.LoadWarehouse();
+        _loadScreen.LoadGarden();
+        _loadScreen.LoadResidential();
     }
 
     public void EnableZone(PlayerActions playerAction)

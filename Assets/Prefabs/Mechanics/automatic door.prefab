@@ -177,9 +177,9 @@ GameObject:
   - component: {fileID: 1063805466135278084}
   - component: {fileID: 4391844230098388692}
   - component: {fileID: 1212351959863345174}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: is in trigger
-  m_TagString: Untagged
+  m_TagString: Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -239,9 +239,9 @@ GameObject:
   - component: {fileID: 1063805466273004037}
   - component: {fileID: 1063805466273004038}
   - component: {fileID: 1063805466273004039}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: trigger
-  m_TagString: Untagged
+  m_TagString: Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1104,9 +1104,9 @@ GameObject:
   - component: {fileID: 6494564567523957519}
   - component: {fileID: 1189698575731852913}
   - component: {fileID: 1933402216158003892}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: trigger sound
-  m_TagString: Untagged
+  m_TagString: Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1458,9 +1458,9 @@ GameObject:
   - component: {fileID: 1981715587015376135}
   - component: {fileID: 6997947970097833729}
   - component: {fileID: 513364827161315607}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: trigger sound
-  m_TagString: Untagged
+  m_TagString: Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2070,7 +2070,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2454
+  m_VersionIndex: 2457
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2448,7 +2448,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2454
+  m_VersionIndex: 2457
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2951,9 +2951,9 @@ GameObject:
   - component: {fileID: 7226005983385384844}
   - component: {fileID: 4914500890355820355}
   - component: {fileID: 4772124360651307574}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: trigger fog
-  m_TagString: Untagged
+  m_TagString: Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3185,7 +3185,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 706
+  m_VersionIndex: 709
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3471,9 +3471,9 @@ GameObject:
   - component: {fileID: 4266994008956165166}
   - component: {fileID: 4876992318670420679}
   - component: {fileID: 2828796842819257282}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: trigger
-  m_TagString: Untagged
+  m_TagString: Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3906,9 +3906,9 @@ GameObject:
   - component: {fileID: 4368387537093423218}
   - component: {fileID: 3674706943467048431}
   - component: {fileID: 3897642836184952906}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: trigger fog
-  m_TagString: Untagged
+  m_TagString: Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4140,7 +4140,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 700
+  m_VersionIndex: 703
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

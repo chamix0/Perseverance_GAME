@@ -1,5 +1,6 @@
 using System;
 using General_Inputs;
+using Mechanics.General_Inputs.Machine_gun_mode;
 using Mechanics.MiniBoss;
 using UnityEngine;
 

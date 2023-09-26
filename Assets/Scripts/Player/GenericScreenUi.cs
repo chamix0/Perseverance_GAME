@@ -49,8 +49,8 @@ public class GenericScreenUi : MonoBehaviour
 
         if (!_playerValues.GetIsStucked() && _playerValues.GetInputsEnabled() &&
             _playerValues.GetCurrentInput() is CurrentInput.Movement
-                or CurrentInput.StealthMovement
-                or CurrentInput.RotatingWall or CurrentInput.ShootMovement or CurrentInput.Conversation)
+                or CurrentInput.StealthMovement or CurrentInput.ArcadeMechanics
+                or CurrentInput.RotatingWall or CurrentInput.ShootMovement or CurrentInput.Conversation or CurrentInput.ArcadeMechanics)
         {
             Face();
         }

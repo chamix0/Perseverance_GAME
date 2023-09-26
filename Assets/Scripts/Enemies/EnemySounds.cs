@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Player.Observer_pattern;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -30,7 +31,11 @@ public class EnemySounds : MonoBehaviour
         audioSource.clip = clips[2];
         audioSource.Play();
     }
-
+    public void PlayHurtSound()
+    {
+        audioSource.clip = clips[3];
+        audioSource.Play();
+    }
     // Update is called once per frame
     void Update()
     {

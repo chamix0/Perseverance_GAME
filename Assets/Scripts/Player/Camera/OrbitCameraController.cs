@@ -8,7 +8,7 @@ public class OrbitCameraController : MonoBehaviour
     [SerializeField, Range(1f, 20f)] private float distance = 5f;
     [SerializeField, Min(0f)] float focusRadius = 1f;
     [SerializeField, Range(0f, 1f)] float focusCentering = 0.5f;
-    [SerializeField, Range(1f, 360f)] float rotationSpeed = 90f;
+    [SerializeField, Range(1f, 360f)] float rotationSpeed = 90f, slowedSpeed = 10f, normalSpeed;
     [SerializeField, Range(-89f, 89f)] float minVerticalAngle = -30f, maxVerticalAngle = 60f;
     [SerializeField] private bool invertX, invertY;
     [SerializeField, Min(0f)] float alignDelay = 5f;
@@ -23,10 +23,10 @@ public class OrbitCameraController : MonoBehaviour
 
     //values
     float lastManualRotationTime;
-    private bool freezed;
 
     private void Awake()
     {
+        normalSpeed = rotationSpeed;
         audioListener = GetComponent<AudioListener>();
         regularCamera = GetComponent<Camera>();
         focusPoint = focus.position;
@@ -45,42 +45,39 @@ public class OrbitCameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!freezed)
+        UpdateFocusPoint();
+        ManualRotation();
+
+        if (updateVertical)
         {
-            UpdateFocusPoint();
-            ManualRotation();
-
-            if (updateVertical)
-            {
-                orbitAngles.x = UpdateRotateCameraVertical();
-            }
-
-            if (updateRotation)
-            {
-                orbitAngles.y = UpdateRotateCamera();
-            }
-
-            Quaternion lookRotation;
-            if (ManualRotation() || AutomaticRotation())
-            {
-                ConstrainAngles();
-                lookRotation = Quaternion.Euler(orbitAngles);
-            }
-            else
-            {
-                lookRotation = transform.localRotation;
-            }
-
-            Vector3 lookDirection = lookRotation * Vector3.forward;
-            Vector3 lookPosition = focusPoint - lookDirection * distance;
-
-
-            if (Physics.Raycast(focusPoint, -lookDirection, out RaycastHit hit, distance, CollisionLayers))
-                lookPosition = focusPoint - lookDirection * (hit.distance - colOffset);
-
-
-            transform.SetPositionAndRotation(lookPosition, lookRotation);
+            orbitAngles.x = UpdateRotateCameraVertical();
         }
+
+        if (updateRotation)
+        {
+            orbitAngles.y = UpdateRotateCamera();
+        }
+
+        Quaternion lookRotation;
+        if (ManualRotation() || AutomaticRotation())
+        {
+            ConstrainAngles();
+            lookRotation = Quaternion.Euler(orbitAngles);
+        }
+        else
+        {
+            lookRotation = transform.localRotation;
+        }
+
+        Vector3 lookDirection = lookRotation * Vector3.forward;
+        Vector3 lookPosition = focusPoint - lookDirection * distance;
+
+
+        if (Physics.Raycast(focusPoint, -lookDirection, out RaycastHit hit, distance, CollisionLayers))
+            lookPosition = focusPoint - lookDirection * (hit.distance - colOffset);
+
+
+        transform.SetPositionAndRotation(lookPosition, lookRotation);
     }
 
 
@@ -194,6 +191,15 @@ public class OrbitCameraController : MonoBehaviour
         return direction.x < 0f ? 360f - angle : angle;
     }
 
+    public void SlowCameraSpeed()
+    {
+        rotationSpeed = slowedSpeed;
+    }
+
+    public void ReturnToNormalCameraSpeed()
+    {
+        rotationSpeed = normalSpeed;
+    }
 
     #region My stuff
 
@@ -293,18 +299,6 @@ public class OrbitCameraController : MonoBehaviour
 
         return currentRotation;
     }
-
-
-    public void FreezeCamera()
-    {
-        freezed = true;
-    }
-
-    public void UnFreezeCamera()
-    {
-        freezed = false;
-    }
-
 
     float SnapPosition(float input)
     {

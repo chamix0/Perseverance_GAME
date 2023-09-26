@@ -2,37 +2,40 @@ using System.Collections.Generic;
 using Player.Observer_pattern;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-public class MachineGunSounds : MonoBehaviour, IObserver
+namespace Mechanics.General_Inputs.Machine_gun_mode.Observers
 {
-    [SerializeField] private List<AudioClip> clips;
-
-    private AudioSource audioSource;
-
-    // Start is called before the first frame update
-    void Start()
+    [RequireComponent(typeof(AudioSource))]
+    public class MachineGunSounds : MonoBehaviour, IObserver
     {
-        audioSource = GetComponent<AudioSource>();
-    }
+        [SerializeField] private List<AudioClip> clips;
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
+        private AudioSource audioSource;
 
-
-    public void OnNotify(PlayerActions playerAction)
-    {
-        if (playerAction is PlayerActions.Aim)
-
+        // Start is called before the first frame update
+        void Start()
         {
-            audioSource.clip = clips[0];
-            audioSource.Play();
+            audioSource = GetComponent<AudioSource>();
         }
-        else if (playerAction is PlayerActions.ChangeShootingMode)
+
+        // Update is called once per frame
+        void Update()
         {
-            audioSource.clip = clips[1];
-            audioSource.Play();
+        }
+
+
+        public void OnNotify(PlayerActions playerAction)
+        {
+            if (playerAction is PlayerActions.Aim)
+
+            {
+                audioSource.clip = clips[0];
+                audioSource.Play();
+            }
+            else if (playerAction is PlayerActions.ChangeShootingMode)
+            {
+                audioSource.clip = clips[1];
+                audioSource.Play();
+            }
         }
     }
 }

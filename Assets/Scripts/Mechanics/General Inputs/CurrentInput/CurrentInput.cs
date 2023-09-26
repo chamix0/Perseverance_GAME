@@ -18,6 +18,9 @@
         Conversation,
         ShootMovement,
         RaceMovement,
-        None
+        None,
+        ArcadeMechanics,
+        Upgrade,
+        Shop
     }
 }

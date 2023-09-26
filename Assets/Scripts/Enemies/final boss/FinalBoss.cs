@@ -50,7 +50,6 @@ public class FinalBoss : Enemy, IObserver
     private void Awake()
     {
         _timer = new Stopwatch();
-        Physics.IgnoreLayerCollision(11, 12);
     }
 
     void Start()
@@ -205,17 +204,17 @@ public class FinalBoss : Enemy, IObserver
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 8)
+        if (collision.gameObject.CompareTag("Bullet"))
         {
-            RecieveDamage();
+            RecieveDamage(1);
         }
     }
 
-    public override void RecieveDamage()
+    public override void RecieveDamage(int damage)
     {
         if (lives > 0)
         {
-            lives--;
+            lives-=damage;
 
             if (lives < (maxLives / 2))
             {
@@ -234,7 +233,7 @@ public class FinalBoss : Enemy, IObserver
             }
             else
             {
-                dissolveMaterials.Hit();
+                dissolveMaterials.Hit(false);
             }
         }
     }
@@ -275,6 +274,47 @@ public class FinalBoss : Enemy, IObserver
         minigameStarted = false;
         conversationShown = false;
         StartCoroutine(ResetConversationCoroutine());
+    }
+
+    public override void ResetEnemy(int maxLivesAux, float speed, int damage, Vector3 pos)
+    {
+        throw new System.NotImplementedException();
+    }
+
+
+    public override void HitSlow()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Freeze()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Burn()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void GrenadeFreezeDamage()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void GrenadeDamage()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void GrenadeSmoke(Vector3 decoyPos, float time)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void RecieveLaserDamage()
+    {
+        throw new System.NotImplementedException();
     }
 
     private void DisableShooters()

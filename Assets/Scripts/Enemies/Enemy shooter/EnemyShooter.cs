@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using Enemies;
+using Mechanics.General_Inputs.Machine_gun_mode;
 using Player.Observer_pattern;
 using UnityEngine;
 using UnityEngine.UI;
@@ -78,7 +79,6 @@ public class EnemyShooter : Enemy, IObserver
         _timer = new Stopwatch();
         outlineTimer = new Stopwatch();
         _timer.Start();
-        Physics.IgnoreLayerCollision(11, 12);
     }
 
     void Start()
@@ -407,22 +407,22 @@ public class EnemyShooter : Enemy, IObserver
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 8)
+        if (collision.gameObject.CompareTag("Bullet"))
         {
-            RecieveDamage();
+            RecieveDamage(1);
         }
-        else if (collision.gameObject.layer == 11)
+        else if (collision.gameObject.CompareTag("Enemy"))
         {
             rigidbody.AddForce(rigidbody.transform.right * enemyCollisionForce, ForceMode.Impulse);
         }
     }
 
-    public override void RecieveDamage()
+    public override void RecieveDamage(int damage)
     {
         UpdateHealthBar();
         if (lives > 0)
         {
-            lives--;
+            lives-=damage;
             if (lives <= 0)
             {
                 Die();
@@ -431,7 +431,7 @@ public class EnemyShooter : Enemy, IObserver
             {
                 outlineTimer.Restart();
                 outline.OutlineColor = Color.red;
-                dissolveMaterials.Hit();
+                dissolveMaterials.Hit(false);
                 if (currentState != States.Alert)
                     ChangeState(States.Alert, 2);
             }
@@ -479,6 +479,47 @@ public class EnemyShooter : Enemy, IObserver
         outline.OutlineMode = Outline.Mode.OutlineAll;
         lives = maxLives;
         UpdateHealthBar();
+    }
+
+    public override void ResetEnemy(int maxLivesAux, float speed, int damage, Vector3 pos)
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public override void HitSlow()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Freeze()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Burn()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void GrenadeFreezeDamage()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void GrenadeDamage()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void GrenadeSmoke(Vector3 decoyPos, float time)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void RecieveLaserDamage()
+    {
+        throw new NotImplementedException();
     }
 
     private void UpdateHealthBar()

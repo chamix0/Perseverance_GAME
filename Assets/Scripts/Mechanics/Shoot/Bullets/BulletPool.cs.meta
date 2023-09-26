@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 102d9632df2753a4e97966e5c3db695a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - bulletTemplate: {fileID: 6760109756353639420, guid: 1e9353ae864728b4aaf3ad3d344a58ee, type: 3}
+  - bulletTemplateFreeze: {fileID: 6760109756353639420, guid: 4d0a1530cd1a2b048a78ce757bdc6146, type: 3}
+  - bulletTemplateBurn: {fileID: 6760109756353639420, guid: 5ed1d380ccd258a468936e6fba43f73d, type: 3}
+  - bulletTemplateGuided: {fileID: 6760109756353639420, guid: 28ece104a6db098479a13ee383397f18, type: 3}
+  - bulletTemplateInstakill: {fileID: 6760109756353639420, guid: 09b0a86926f32ec4988f8446212321b7, type: 3}
+  - bulletTemplateExplosive: {fileID: 1535640691960112, guid: d79f03dd3c9b07c41a430faecdcdf500, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

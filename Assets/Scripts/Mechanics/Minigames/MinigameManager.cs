@@ -95,7 +95,6 @@ public class MinigameManager : MonoBehaviour
             _minigamesNotPlayed.AddRange(minigames.ToArray());
 
         currentMinigame.StartMinigame();
-        // minigames[8].StartMinigame();
         currentMinigameFinished = false;
     }
 
@@ -111,6 +110,7 @@ public class MinigameManager : MonoBehaviour
         CursorManager.HideCursor();
         _playerValues.NotifyAction(PlayerActions.MinigameFinished);
         currentMinigameFinished = true;
+        _playerValues.NotifyAction(PlayerActions.TurnOnPower);
     }
 
     public bool GetMinigameFinished()

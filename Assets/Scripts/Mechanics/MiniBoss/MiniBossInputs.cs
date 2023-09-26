@@ -38,10 +38,6 @@ namespace Mechanics.MiniBoss
             if (_playerValues.GetCurrentInput() == CurrentInput.MiniBoss && _playerValues.GetInputsEnabled() &&
                 !_playerValues.GetPaused())
             {
-                if (Input.anyKey)
-                    CursorManager.ShowCursor();
-                
-
                 if (_miniBossManager._phase == ScreenPhase.Game)
                 {
                     if (!_timer.IsRunning)

@@ -78,7 +78,10 @@ public class MainMenuManager : MonoBehaviour
         int aux = button;
         selectedButton = aux;
         UpdateColors();
-        _texts[aux].color = Color.white;
+
+        if (_texts[aux].color == Color.black)
+            _texts[aux].color = Color.white;
+
         _materials[aux].SetColor(BackgroundColor, _colorSelected);
         StartCoroutine(ActionForButtonCoroutine(aux));
     }
@@ -90,7 +93,8 @@ public class MainMenuManager : MonoBehaviour
 
         int aux = selectedButton;
         UpdateColors();
-        _texts[aux].color = Color.white;
+        if (_texts[aux].color == Color.black)
+            _texts[aux].color = Color.white;
         _materials[aux].SetColor(BackgroundColor, _colorSelected);
         StartCoroutine(ActionForButtonCoroutine(aux));
     }
@@ -143,12 +147,15 @@ public class MainMenuManager : MonoBehaviour
         if (index == 1)
             _camerasController.SetCamera(MenuCameras.NewGame);
         else if (index == 3)
-            _camerasController.SetCamera(MenuCameras.Tutorial);
+            // _camerasController.SetCamera(MenuCameras.Tutorial);
+            ;
         else if (index == 4)
-            _camerasController.SetCamera(MenuCameras.Settings);
+            _camerasController.SetCamera(MenuCameras.Tutorial);
         else if (index == 5)
-            _camerasController.SetCamera(MenuCameras.Gallery);
+            _camerasController.SetCamera(MenuCameras.Settings);
         else if (index == 6)
+            _camerasController.SetCamera(MenuCameras.Gallery);
+        else if (index == 7)
             _camerasController.SetCamera(MenuCameras.Credits);
 
 
@@ -173,27 +180,31 @@ public class MainMenuManager : MonoBehaviour
                 _loadGameManager.UpdateColors();
 
                 break;
-            //tutorial
+            //Arcade
             case 3:
+
+                break;
+            //tutorial
+            case 4:
                 _menuInputManager.SetCurrentInput(CurrentMenuInput.Tutorial);
 
                 break;
             //settings
-            case 4:
+            case 5:
                 _menuInputManager.SetCurrentInput(CurrentMenuInput.Settings);
 
                 break;
             //Gallery
-            case 5:
+            case 6:
                 _menuInputManager.SetCurrentInput(CurrentMenuInput.Gallery);
 
                 break;
             //credits
-            case 6:
+            case 7:
                 _menuInputManager.SetCurrentInput(CurrentMenuInput.Credits);
                 break;
             //Exit
-            case 7:
+            case 8:
                 Exit();
                 break;
         }
@@ -242,7 +253,9 @@ public class MainMenuManager : MonoBehaviour
     {
         for (int i = 0; i < _buttons.Count; i++)
         {
-            _texts[i].color = Color.black;
+            if (_texts[i].color == Color.white)
+                _texts[i].color = Color.black;
+
             if (i != selectedButton)
             {
                 _materials[i].SetFloat(MyAlpha, 0);

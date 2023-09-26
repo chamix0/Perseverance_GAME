@@ -158,6 +158,8 @@ public class ColorsManager : Minigame
         _playerValues.SetCurrentInput(CurrentInput.ColorsMinigame);
         _playerValues.SetInputsEnabled(true);
         StartCoroutine(StartGameCoroutine());
+        //cursor
+        CursorManager.ShowCursor();
     }
 
     private void EndMinigame()
@@ -168,6 +170,8 @@ public class ColorsManager : Minigame
         HideGameUi();
         HideUI();
         StartCoroutine(_minigameManager.EndMinigame());
+        //cursor
+        CursorManager.HideCursor();
     }
 
     public override void ShowUI()

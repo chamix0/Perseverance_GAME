@@ -351,11 +351,11 @@ public class CameraEnemy : Enemy
 
     #endregion
 
-    public override void RecieveDamage()
+    public override void RecieveDamage(int damage)
     {
         if (lives > 0)
         {
-            lives--;
+            lives-=damage;
             if (lives <= 0)
                 Die();
         }
@@ -377,6 +377,47 @@ public class CameraEnemy : Enemy
     }
 
     public override void ResetEnemy()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void ResetEnemy(int maxLivesAux, float speed, int damage, Vector3 pos)
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public override void HitSlow()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Freeze()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Burn()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void GrenadeFreezeDamage()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void GrenadeDamage()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void GrenadeSmoke(Vector3 decoyPos, float time)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void RecieveLaserDamage()
     {
         throw new NotImplementedException();
     }

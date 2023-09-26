@@ -845,6 +845,9 @@ public class MiniBossManager : MonoBehaviour
         _playerValues.SetCurrentInput(CurrentInput.MiniBoss);
         _playerValues.SetInputsEnabled(true);
         StartCoroutine(StartGameCoroutine());
+
+        //cursor
+        CursorManager.ShowCursor();
     }
 
     private void EndMinigame()
@@ -861,6 +864,8 @@ public class MiniBossManager : MonoBehaviour
         _playerValues.SetInputsEnabled(false);
         soundManager.PlayInCorrectSound();
         StartCoroutine(ExitMinigameCoroutine());
+        //cursor
+        CursorManager.HideCursor();
     }
 
     private void StopMinigame()

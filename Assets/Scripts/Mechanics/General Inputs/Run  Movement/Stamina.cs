@@ -11,13 +11,13 @@ public class Stamina : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     private bool staminaChanged;
     public bool beingShown;
-    private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
 
     void Start()
     {
         playerValues = FindObjectOfType<PlayerValues>();
         staminaChanged = playerValues.allStaminaUsed;
-        fill.material.SetColor(BackgroundColor, playerValues.allStaminaUsed ? recoverColor : greenColor);
+
+        fill.color = playerValues.allStaminaUsed ? recoverColor : greenColor;
         canvasGroup.alpha = 0;
     }
 
@@ -28,15 +28,12 @@ public class Stamina : MonoBehaviour
         {
             if (playerValues.allStaminaUsed != staminaChanged)
             {
-                fill.material.SetColor(BackgroundColor, playerValues.allStaminaUsed ? recoverColor : greenColor);
+                fill.color= playerValues.allStaminaUsed ? recoverColor : greenColor;
                 staminaChanged = playerValues.allStaminaUsed;
             }
 
             slider.value = playerValues.stamina / 100;
         }
-
-
-        
     }
 
     public void HideStamina()
@@ -50,6 +47,4 @@ public class Stamina : MonoBehaviour
         canvasGroup.alpha = 1;
         beingShown = true;
     }
-
-
 }

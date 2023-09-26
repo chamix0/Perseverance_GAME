@@ -41,7 +41,8 @@ public class LaberinthManager : MonoBehaviour
         if (!_minigameFinished && !terminalsLeftCad.Equals(GetMissingTerminalsCad()))
         {
             terminalsLeftCad = GetMissingTerminalsCad();
-            screenText.text = terminalsLeftCad;
+            if (screenText)
+                screenText.text = terminalsLeftCad;
             if (GetMissingTerminals() <= 0)
             {
                 doorManager.OpenDoor();

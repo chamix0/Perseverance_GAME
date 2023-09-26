@@ -24,8 +24,6 @@ public class PuzzleInputs : MonoBehaviour
                 CursorManager.ShowCursor();
                 _puzzleManager.ShowKeyTutorial();
             }
-
-           
         }
     }
 

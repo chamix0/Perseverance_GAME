@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5414106636913228687}
   - component: {fileID: 4562711824784807936}
   - component: {fileID: 364236061889141754}
+  - component: {fileID: 686694511789855064}
   m_Layer: 0
   m_Name: Cube.061 (31)
   m_TagString: Untagged
@@ -83,6 +84,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &686694511789855064
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444157302027981589}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.0012377258, y: 0.014866112, z: 0.0011373562}
+  m_Center: {x: -0.00029323422, y: -0.000000059635234, z: 0.00012689065}
 --- !u!1 &1623018614064437734
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +369,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2462
+  m_VersionIndex: 2480
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -455,7 +469,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3098430590691757903}
-  - component: {fileID: 365372815168430752}
   m_Layer: 0
   m_Name: small lamps
   m_TagString: Untagged
@@ -481,20 +494,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &365372815168430752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2204207989166644764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 787083ab7f5c8db40a73c075acb42816, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _light: {fileID: 8469503044710502573}
-  _meshRenderer: {fileID: 6719390803944406285}
 --- !u!1 &6378508666099844217
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,9 +538,9 @@ Light:
   serializedVersion: 10
   m_Type: 3
   m_Shape: 0
-  m_Color: {r: 1, g: 0.9548, b: 0.88699996, a: 1}
-  m_Intensity: 15
-  m_Range: 20
+  m_Color: {r: 0.9935551, g: 1, b: 0.9103774, a: 1}
+  m_Intensity: 5.1
+  m_Range: 30
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -583,8 +582,8 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 0.6842218, y: 3.0388567}
   m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
+  m_ColorTemperature: 6145
+  m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: NaN, y: 0.03125, z: 0.046875, w: 183}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1

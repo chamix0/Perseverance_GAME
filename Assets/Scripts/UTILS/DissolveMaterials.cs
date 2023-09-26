@@ -16,7 +16,7 @@ public class DissolveMaterials : MonoBehaviour
     [SerializeField] private float speed = 0.5f;
     private List<MeshRenderer> meshRenderers;
     private List<SkinnedMeshRenderer> skinnedMeshRenderers;
-    private Material hitMaterial;
+    private Material hitMaterial, freezeMaterial;
     private bool updateValue;
 
     private float currentVal = 1, targetValue;
@@ -48,6 +48,9 @@ public class DissolveMaterials : MonoBehaviour
             hitMaterial = new Material(hitShader);
             hitMaterial.SetColor(BackgroundColor, Color.white);
             hitMaterial.SetFloat(Alpha, 0.8f);
+            freezeMaterial = new Material(hitShader);
+            freezeMaterial.SetColor(BackgroundColor, new Color(0.3398006f, 0.8043742f, 0.8679245f, 1));
+            freezeMaterial.SetFloat(Alpha, 0.3f);
         }
     }
 
@@ -261,8 +264,13 @@ public class DissolveMaterials : MonoBehaviour
         StopAllCoroutines();
     }
 
-    public void Hit()
+    public void Hit(bool burn)
     {
+        if (!burn)
+            hitMaterial.SetColor(BackgroundColor, Color.white);
+        else
+            hitMaterial.SetColor(BackgroundColor, new Color(0.9716981f, 0.6452097f, 0, 1));
+
         if (updateValue == false)
         {
             foreach (var skinnedMeshRenderer in meshRenderers)
@@ -283,6 +291,38 @@ public class DissolveMaterials : MonoBehaviour
             }
 
             StartCoroutine(HitCoroutine());
+        }
+    }
+
+    public void Freeze()
+    {
+        StopAllCoroutines();
+        if (updateValue == false)
+        {
+            foreach (var skinnedMeshRenderer in meshRenderers)
+            {
+                if (!exceptions.Contains(skinnedMeshRenderer.gameObject))
+                {
+                    skinnedMeshRenderer.sharedMaterial = freezeMaterial;
+                }
+            }
+
+            foreach (var meshRenderer in skinnedMeshRenderers)
+            {
+                if (dissolveMaterials.ContainsKey(meshRenderer.GetInstanceID()) &&
+                    !exceptions.Contains(meshRenderer.gameObject))
+                {
+                    meshRenderer.sharedMaterial = freezeMaterial;
+                }
+            }
+        }
+    }
+
+    public void UnFreeze()
+    {
+        if (updateValue == false)
+        {
+            PutOriginalMaterials();
         }
     }
 

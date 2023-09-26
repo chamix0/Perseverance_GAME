@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 3231619295939796295}
   - component: {fileID: 6283192083642215377}
   - component: {fileID: 551843985014873285}
+  - component: {fileID: 1139292172381359760}
   m_Layer: 0
   m_Name: bigger lamp
   m_TagString: Untagged
@@ -200,6 +201,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1139292172381359760
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3300917078679603781}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.023896117, y: 0.014866119, z: 0.00071158557}
+  m_Center: {x: -0.000000059604645, y: 0.000000014901161, z: -0.000009051044}
 --- !u!1 &8299253049424096570
 GameObject:
   m_ObjectHideFlags: 0

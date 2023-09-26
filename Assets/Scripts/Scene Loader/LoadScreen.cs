@@ -75,6 +75,7 @@ public class LoadScreen : MonoBehaviour
     }
 
     #region Load levels async
+
     public void LoadFoundry()
     {
         SceneManager.LoadScene("Scenes/Game/separated levels/Foundry", LoadSceneMode.Additive);
@@ -84,11 +85,25 @@ public class LoadScreen : MonoBehaviour
     {
         SceneManager.LoadScene("Scenes/Game/separated levels/Freezer", LoadSceneMode.Additive);
     }
+
     public void LoadWarehouse()
     {
         SceneManager.LoadScene("Scenes/Game/separated levels/Warehouse", LoadSceneMode.Additive);
     }
+
+    public void LoadGarden()
+    {
+        SceneManager.LoadScene("Scenes/Game/separated levels/Garden", LoadSceneMode.Additive);
+    }
+
+    public void LoadResidential()
+    {
+        SceneManager.LoadScene("Scenes/Game/separated levels/Residential", LoadSceneMode.Additive);
+
+    }
+
     #endregion
+
 
     public void QuitGame()
     {

@@ -12,7 +12,7 @@ public class WallShader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Physics.IgnoreLayerCollision(8,10);
+       
         playerValues = FindObjectOfType<PlayerValues>();
         meshRenderer = GetComponent<MeshRenderer>();
         mat = meshRenderer.sharedMaterial;

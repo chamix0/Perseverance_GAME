@@ -206,6 +206,8 @@ public class MemoryMingameManager : Minigame
         _playerValues.SetCurrentInput(CurrentInput.MemoryMinigame);
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(StartGameCoroutine());
+        //cursor
+        CursorManager.ShowCursor();
     }
 
     private void EndMinigame()
@@ -217,6 +219,8 @@ public class MemoryMingameManager : Minigame
         HideGameUi();
         HideUI();
         StartCoroutine(_minigameManager.EndMinigame());
+        //cursor
+        CursorManager.HideCursor();
     }
 
     public override void ShowUI()

@@ -11,9 +11,9 @@ public class CameraEnemyCollider : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer==8)
+        if (collision.gameObject.CompareTag("Bullet"))
         {
-            cameraEnemy.RecieveDamage();
+            cameraEnemy.RecieveDamage(1);
         }
     }
 }

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2012273772902879446}
   - component: {fileID: 2012273772902879447}
   - component: {fileID: 9068664291935707892}
-  - component: {fileID: 1447924313}
   - component: {fileID: 4004670479686844708}
+  - component: {fileID: 53487908388775597}
   m_Layer: 0
   m_Name: WorldManager
   m_TagString: Untagged
@@ -60,23 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorTexture: {fileID: 2800000, guid: fd4b77ed5a0c4c84e8913592a04decf0, type: 3}
---- !u!114 &1447924313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2012273772902879445}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e5db76fd24d4c04bb846cc98c158ec8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distance: 20
-  colisionLayers:
-    serializedVersion: 2
-    m_Bits: 73
-  switchSpeed: 0.1
+  hideOnStart: 0
 --- !u!114 &4004670479686844708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,3 +79,15 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 7ede930622ef7104a88f048d58a38dd5, type: 2}
   - {fileID: 2100000, guid: f71708f0b3fcaba47bcffb037fba0e4e, type: 2}
   - {fileID: 2100000, guid: 86450894e9d72ee43af8dfaf245362ce, type: 2}
+--- !u!114 &53487908388775597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012273772902879445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a366013c2e4ef6440b2e69d5100aacf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

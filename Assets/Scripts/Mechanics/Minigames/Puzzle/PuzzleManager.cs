@@ -272,8 +272,6 @@ private bool checkSol()
             button.interactable = val;
         }
     }
-
-
     
 
     public override void ShowUI()
@@ -323,6 +321,8 @@ private bool checkSol()
         _playerValues.SetInputsEnabled(false);
         _minigameManager.UpdateCounter(0);
         StartCoroutine(StartGameCoroutine());
+        //cursor
+        CursorManager.ShowCursor();
     }
 
     private void EndMinigame()
@@ -332,6 +332,8 @@ private bool checkSol()
         _playerValues.SetInputsEnabled(false);
         HideUI();
         StartCoroutine(_minigameManager.EndMinigame());
+        //cursor
+        CursorManager.HideCursor();
     }
 
     IEnumerator StartGameCoroutine()

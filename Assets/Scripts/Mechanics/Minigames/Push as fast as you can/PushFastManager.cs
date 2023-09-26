@@ -114,6 +114,8 @@ public class PushFastManager : Minigame
         _playerValues.SetInputsEnabled(false);
         _minigameManager.UpdateCounter(0);
         StartCoroutine(StartGameCoroutine());
+        //cursor
+        CursorManager.ShowCursor();
     }
 
     public override void ShowUI()
@@ -162,6 +164,8 @@ public class PushFastManager : Minigame
         _playerValues.SetInputsEnabled(false);
         HideUI();
         StartCoroutine(_minigameManager.EndMinigame());
+        //cursor
+        CursorManager.HideCursor();
     }
 
     IEnumerator StartGameCoroutine()

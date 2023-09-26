@@ -2,6 +2,7 @@ using System.Collections;
 using System.Diagnostics;
 using Player.Observer_pattern;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 [DefaultExecutionOrder(11)]
@@ -17,6 +18,7 @@ public class EnemyBee : Enemy, IObserver
     [SerializeField] private float force = 10, oldForce;
     public ForceMode forceMode;
     private DissolveMaterials dissolveMaterials;
+
     public int maxLives = 10;
     //outline
 
@@ -37,7 +39,7 @@ public class EnemyBee : Enemy, IObserver
     private ShootBullet _shootBullet;
     [SerializeField] private float shootCooldown = 4;
     [SerializeField] private float shootSpeed = 10;
-    [SerializeField]private Transform respawn;
+    [SerializeField] private Transform respawn;
     [SerializeField] private Vector3 shootOffset;
 
     private bool moveToPlayer;
@@ -50,7 +52,6 @@ public class EnemyBee : Enemy, IObserver
         _timer = new Stopwatch();
         outlineTimer = new Stopwatch();
         _timer.Start();
-        Physics.IgnoreLayerCollision(11, 12);
     }
 
     void Start()
@@ -197,24 +198,24 @@ public class EnemyBee : Enemy, IObserver
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 8)
+        if (collision.gameObject.CompareTag("Bullet"))
         {
-            RecieveDamage();
+            RecieveDamage(1);
         }
     }
 
-    public override void RecieveDamage()
+    public override void RecieveDamage(int damage)
     {
         if (lives > 0)
         {
             outlineTimer.Restart();
             outline.OutlineColor = Color.red;
-            lives--;
+            lives -= damage;
             if (lives <= 0)
                 Die();
             else
             {
-                dissolveMaterials.Hit();
+                dissolveMaterials.Hit(false);
             }
         }
     }
@@ -256,6 +257,47 @@ public class EnemyBee : Enemy, IObserver
         force = oldForce;
         dead = false;
         lives = maxLives;
+    }
+
+    public override void ResetEnemy(int maxLivesAux, float speed, int damage, Vector3 pos)
+    {
+        throw new System.NotImplementedException();
+    }
+
+
+    public override void HitSlow()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Freeze()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Burn()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void GrenadeFreezeDamage()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void GrenadeDamage()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void GrenadeSmoke(Vector3 decoyPos, float time)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void RecieveLaserDamage()
+    {
+        throw new System.NotImplementedException();
     }
 
     public void OnNotify(PlayerActions playerAction)

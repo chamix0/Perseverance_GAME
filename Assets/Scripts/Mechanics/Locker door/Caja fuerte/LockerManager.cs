@@ -145,6 +145,7 @@ public class LockerManager : MonoBehaviour
         minigameSoundManager.PlayClickSound();
         _lockerBase.ExitBase();
         HideUI();
+        CursorManager.HideCursor();
     }
 
     private bool checkSol()
@@ -161,6 +162,7 @@ public class LockerManager : MonoBehaviour
         _playerValues.SetCurrentInput(CurrentInput.LockerMinigame);
         _playerValues.SetInputsEnabled(false);
         StartCoroutine(StartGameCoroutine());
+        CursorManager.ShowCursor();
     }
 
     public void ShowUI()

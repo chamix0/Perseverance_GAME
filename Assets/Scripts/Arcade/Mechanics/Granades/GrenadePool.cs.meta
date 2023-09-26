@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 9085f60949e0f364ea1e3347d618476a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - grenadeTemplate: {fileID: 4455198141021162654, guid: 42a85aa9a275c304eab0f52071ebec8f, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,13 +1,15 @@
 using System.Diagnostics;
 using UnityEngine;
 
+[DefaultExecutionOrder(4)]
 public class LaserEnemy : MonoBehaviour
 {
     private PlayerValues playerValues;
     [SerializeField] private GameObject laser;
     [SerializeField] private ParticleSystem baseLaser;
+    [SerializeField] private Transform start, end;
     private bool laserShooting;
-    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private LayerMask hitLayer;
     private Stopwatch timer;
     [SerializeField] private float damageCooldown = 3;
     [SerializeField] private Transform spawnPoint;
@@ -22,7 +24,8 @@ public class LaserEnemy : MonoBehaviour
     {
         playerValues = FindObjectOfType<PlayerValues>();
         TurnOffLaser();
-        baseLaser.Stop();
+        if (baseLaser)
+            baseLaser.Stop();
     }
 
     // Update is called once per frame
@@ -33,6 +36,10 @@ public class LaserEnemy : MonoBehaviour
             timer.Restart();
             playerValues.RecieveDamage(spawnPoint.position);
         }
+
+        if (laserShooting)
+            CheckColisionWithEnemy();
+        
     }
 
     public void TurnOnLaser()
@@ -49,18 +56,44 @@ public class LaserEnemy : MonoBehaviour
 
     public bool CheckColisionWithPlayer()
     {
-        return Physics.Raycast(transform.position, baseLaser.transform.position - laser.transform.position,
-            Mathf.Infinity,
-            playerLayer);
+        RaycastHit hit;
+        if (Physics.Raycast(start.position, end.position - start.position, out hit,
+                Mathf.Infinity))
+            if (hit.collider.CompareTag("Player"))
+            {
+                return true;
+            }
+
+        return false;
+    }
+
+    public bool CheckColisionWithEnemy()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(start.position, end.position - start.position, out hit,
+                Mathf.Infinity))
+        {
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                Enemy enemy = hit.transform.GetComponent<Enemy>();
+                enemy.RecieveLaserDamage();
+                //do stuff
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void ShowBase()
     {
-        baseLaser.Play();
+        if (baseLaser)
+            baseLaser.Play();
     }
 
     public void HideBase()
     {
-        baseLaser.Stop();
+        if (baseLaser)
+            baseLaser.Stop();
     }
 }

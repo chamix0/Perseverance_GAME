@@ -11,11 +11,13 @@ public class PlayerValues : Subject
 {
     #region DATA
 
+    public  Vector3 auxDir;
     //status values
     [Header("VALUES")] [SerializeField] private List<float> movementSpeeds;
     [SerializeField] [Range(0, 4)] private int gear = 1;
     private bool isGrounded, lightsOn, cameraIsFreezed, stucked;
     private bool canMove;
+    [SerializeField] private bool isArcade;
 
     //stamina values
     public float stamina, maxStamina;
@@ -31,6 +33,7 @@ public class PlayerValues : Subject
     //compontes
     [Header("COMPONENTES")] [NonSerialized]
     public Rigidbody _rigidbody;
+
     public GenericScreenUi genericScreenUi;
     [NonSerialized] public bool allStaminaUsed = false;
     [NonSerialized] public RigidbodyConstraints _originalRigidBodyConstraints;
@@ -42,7 +45,7 @@ public class PlayerValues : Subject
     private PlayerSounds _playerSounds;
 
     //Inputs
-    private CurrentInput _currentInput;
+    [SerializeField] private CurrentInput _currentInput;
     private bool _inputsEnabled;
 
     //save data
@@ -70,7 +73,6 @@ public class PlayerValues : Subject
 
     private void Awake()
     {
-        _currentInput = CurrentInput.Movement;
         _inputsEnabled = true;
         _rigidbody = GetComponent<Rigidbody>();
         genericScreenUi = GetComponent<GenericScreenUi>();
@@ -350,9 +352,24 @@ public class PlayerValues : Subject
         StartCoroutine(StandUpCoroutine(inputs, time));
     }
 
+    public void StandUp(bool inputs, float time, CurrentInput newInput)
+    {
+        StartCoroutine(StandUpCoroutine(inputs, time, newInput));
+    }
+
     public void AddLive()
     {
         lives = Mathf.Min(lives + 1, MaxLives);
+    }
+
+    public int GetMaxLives()
+    {
+        return MaxLives;
+    }
+
+    public void AddMaxLives(int value)
+    {
+        MaxLives += value;
     }
 
     public void RecieveDamage(Vector3 spawnPos)
@@ -363,7 +380,17 @@ public class PlayerValues : Subject
             NotifyCameraLives();
             if (lives <= 0)
                 Die(spawnPos);
-            
+        }
+    }
+
+    public void RecieveDamage(Vector3 spawnPos, int damage)
+    {
+        if (lives > 0)
+        {
+            lives -= damage;
+            NotifyCameraLives();
+            if (lives <= 0)
+                Die(spawnPos);
         }
     }
 
@@ -396,8 +423,26 @@ public class PlayerValues : Subject
         NotifyObservers(PlayerActions.StandUp);
         yield return new WaitForSeconds(2f);
         if (_currentInput is not (CurrentInput.ShootMovement or CurrentInput.StealthMovement
-            or CurrentInput.RaceMovement))
-            SetCurrentInput(CurrentInput.Movement);
+            or CurrentInput.RaceMovement or CurrentInput.ArcadeMechanics))
+        {
+            if (!isArcade)
+                SetCurrentInput(CurrentInput.Movement);
+            else
+                SetCurrentInput(CurrentInput.ArcadeMechanics);
+        }
+
+        SetCanMove(true);
+        SetInputsEnabled(inputs);
+    }
+
+    IEnumerator StandUpCoroutine(bool inputs, float time, CurrentInput newInput)
+    {
+        yield return new WaitForSeconds(time);
+        NotifyObservers(PlayerActions.StandUp);
+        yield return new WaitForSeconds(2f);
+        if (_currentInput is not (CurrentInput.ShootMovement or CurrentInput.StealthMovement
+            or CurrentInput.RaceMovement or CurrentInput.ArcadeMechanics))
+            SetCurrentInput(newInput);
         SetCanMove(true);
         SetInputsEnabled(inputs);
     }
@@ -413,6 +458,7 @@ public class PlayerValues : Subject
             stuckTimer.Start();
             stucked = false;
         }
+
         if (!isGrounded && Vector3.Distance(stuckedPos, prevStuckedPos) < 0.01f)
         {
             if (stuckTimer.Elapsed.TotalSeconds > stuckTime)

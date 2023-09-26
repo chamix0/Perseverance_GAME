@@ -1,0 +1,76 @@
+{
+    "name": "Controls",
+    "maps": [
+        {
+            "name": "Pc",
+            "id": "9bd476e1-ec97-4417-bd0c-28b9d5bcf6d2",
+            "actions": [
+                {
+                    "name": "Gear up",
+                    "type": "Button",
+                    "id": "3f742eb0-e337-4896-b525-a2bee8ba15ef",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Gear down",
+                    "type": "Button",
+                    "id": "219d5671-f4c4-4f5c-ab49-86af84f83687",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7713154c-ce6c-43bd-b294-b13b6725b500",
+                    "path": "<Keyboard>/w",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gear up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "86d0e95d-08dc-4a86-aed7-dbac2f2c76b5",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gear up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0cba22bf-a94b-4453-8b10-f66513c340b5",
+                    "path": "<Keyboard>/s",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gear down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "656fa336-c4a9-4254-9d4c-de3cc17d0085",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gear down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

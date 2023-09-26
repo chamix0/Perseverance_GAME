@@ -118,25 +118,17 @@ public class PauseManager : MonoBehaviour
         if (playerValues.GetPaused())
         {
             pauseSounds.PlayChange();
-            cameraController.FreezeCamera();
             guiManager.ShowPausePanel();
             if (!guiManager.GetObjetiveText().Equals(""))
                 guiManager.ShowObjetives();
-            Time.timeScale = 0;
             guiManager.SetTutorial(" ");
             soundManager.SetVfxVolume(0);
-
-            //cursor
-            CursorManager.ShowCursor();
         }
         else
         {
-            cameraController.UnFreezeCamera();
             guiManager.HidePausePanel();
             guiManager.HideObjetives();
-            Time.timeScale = 1;
             soundManager.SetVfxVolume(playerValues.gameData.GetVfxVolume());
-            CursorManager.HideCursor();
         }
     }
 
@@ -144,7 +136,6 @@ public class PauseManager : MonoBehaviour
     {
         pauseSounds.PlaySelect();
         playerValues.SetCurrentInput(CurrentInput.None);
-        Time.timeScale = 1;
         guiManager.HideGui();
         loadScreen.LoadMenu();
     }

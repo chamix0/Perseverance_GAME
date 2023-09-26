@@ -10,6 +10,7 @@ TagManager:
   - Stair
   - Enemy
   - FreezerZone
+  - Trigger
   layers:
   - Default
   - TransparentFX
@@ -26,10 +27,10 @@ TagManager:
   - EnemyBullets
   - IgnoreCollison
   - obstacles
-  - 
-  - 
-  - 
-  - 
+  - Lights
+  - ceiling
+  - door
+  - grenade
   - 
   - 
   - 

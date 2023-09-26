@@ -1,25 +1,17 @@
 using Player.Observer_pattern;
 using UnityEngine;
 
-public class MachineGunParticles : MonoBehaviour, IObserver
+namespace Mechanics.General_Inputs.Machine_gun_mode.Observers
 {
-    // Start is called before the first frame update
-    void Start()
+    public class MachineGunParticles : MonoBehaviour, IObserver
     {
-    }
-
-    [SerializeField] private ParticleSystem flash;
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
-    public void OnNotify(PlayerActions playerAction)
-    {
-        if (playerAction is PlayerActions.Shoot)
+        [SerializeField] private ParticleSystem flash;
+        public void OnNotify(PlayerActions playerAction)
         {
-            flash.Play();
+            if (playerAction is PlayerActions.Shoot)
+            {
+                flash.Play();
+            }
         }
     }
 }

@@ -46,14 +46,21 @@
     PushFastMinigame,
     AdjustValuesMinigame,
     MinigameFinished,
-    
+
     Die,
-    
+
     //SCENES
     LoadFoundry,
     LoadFreezer,
     LoadWareHouse,
     LoadGarden,
-    LoadResidentialZone
+    LoadResidentialZone,
 
+    //ARCADE
+    OpenArmorWheel,
+    CloseArmorWheel,
+    ShowArcadeStats,
+    HideArcadeStats,
+    ChangeUpgradeLocation,
+    TurnOnPower
 }

@@ -960,7 +960,6 @@ MonoBehaviour:
   lives: 10
   totalLives: 0
   enemyShooterZone: {fileID: 0}
-  enemyPath: {fileID: 0}
   turnSpeed: 1.5
   enemyCollisionForce: 1
   forceMode: 5

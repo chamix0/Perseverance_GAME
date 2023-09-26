@@ -1,9 +1,13 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class SaveData
 {
     [SerializeField] private GameData[] slots;
     [SerializeField] private int lastSesionSlotIndex;
+    [SerializeField] private Score[] leaderBoard;
     private const int MAX_SLOTS = 4;
 
     //general settings
@@ -11,6 +15,7 @@ public class SaveData
     public SaveData()
     {
         slots = new GameData[MAX_SLOTS];
+        leaderBoard = new Score[10];
         lastSesionSlotIndex = -1;
     }
 
@@ -65,6 +70,7 @@ public class SaveData
         {
             return slots[index];
         }
+
         return new GameData();
     }
 
@@ -76,6 +82,28 @@ public class SaveData
     public void SetLastSessionSlotIndex(int value)
     {
         lastSesionSlotIndex = value;
+    }
+
+    private void InitLeaderBoard()
+    {
+        for (int i = 0; i < leaderBoard.Length; i++)
+        {
+            leaderBoard[0] = new Score("-", 0, 0);
+        }
+    }
+
+    public void AddScoreToSortedLeaderboard(Score score)
+    {
+        Score[] aux = new Score[11];
+        Array.Copy(leaderBoard, aux, 10);
+        aux[10] = score;
+        Array.Sort(aux);
+        Array.Copy(aux, leaderBoard, 10);
+    }
+
+    public Score[] GetLeaderBoard()
+    {
+        return leaderBoard;
     }
 
     #endregion

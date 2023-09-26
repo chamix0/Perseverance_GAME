@@ -1,20 +1,25 @@
 using System;
 using System.Collections.Generic;
+using Arcade.Mechanics.Bullets;
+using Mechanics.General_Inputs;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GuiManager : MonoBehaviour
+
+public class GuiManager : Subject
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;
     private CanvasGroup canvasGroup;
     private ShowCenterReference showCenterReference;
+    private OrbitCameraController _cameraController;
+
+    private SoundManager _soundManager;
 
     //last move
     [Header("last move")] [SerializeField] private CanvasGroup lastMoveObject;
     [SerializeField] private TMP_Text lastMoveText;
-
 
     //machine gun
     [Header("machine gun")] [SerializeField]
@@ -54,23 +59,61 @@ public class GuiManager : MonoBehaviour
     [SerializeField] private List<Image> gearImages;
     private int currentGear = 0;
 
+    //crosshair
+    [Header("CrossHair")] [SerializeField] private CanvasGroup crosshair;
+    [SerializeField] RectTransform crossHairRectTransform;
+
+    // arcade
+    // armor wheel
+    [Header("Armor wheel")] [SerializeField]
+    private CanvasGroup ArmorWheel;
+
+    //message
+    [Header("Message")] [SerializeField] private CanvasGroup messageCanvasGroup;
+    [SerializeField] private TMP_Text messageText;
+
+    //message
+    [Header("Arcade Stats")] [SerializeField]
+    private CanvasGroup statsCanvasGroup;
+
+    [SerializeField] private TMP_Text statsText;
+
+    //points
+    [Header("Arcade points")] [SerializeField]
+    private CanvasGroup pointsCanvasGroup;
+
+    private RectTransform emerginPointsTransform;
+    [SerializeField] private TMP_Text pointsText;
+    [SerializeField] private EmerginPointsPool _emergingPoints;
+
+
     void Start()
     {
+        _cameraController = FindObjectOfType<OrbitCameraController>();
+        _soundManager = FindObjectOfType<SoundManager>();
         _playerValues = FindObjectOfType<PlayerValues>();
+        emerginPointsTransform = _emergingPoints.GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         showCenterReference = GetComponentInChildren<ShowCenterReference>();
-        lastMoveText.text = "";
-        lastMoveObject.alpha = 0;
-        machinegunImage.sprite = null;
-        machinegunImage.color = Color.clear;
-        machinegunText.text = "";
+        if (lastMoveText)
+            lastMoveText.text = "";
+        if (lastMoveObject)
+            lastMoveObject.alpha = 0;
+        if (machinegunText)
+        {
+            machinegunImage.sprite = null;
+            machinegunImage.color = Color.clear;
+            machinegunText.text = "";
+        }
+
         raceImage.color = Color.clear;
         raceText.text = "";
-
+        HideArmorWheel();
         HideDialog();
         HideObjetives();
         HidePauseIndicator();
         HidePausePanel();
+        HideMessage();
     }
 
     private void Update()
@@ -81,7 +124,6 @@ public class GuiManager : MonoBehaviour
             currentGear = _playerValues.GetGear();
             HighlightGear(currentGear);
         }
-        
     }
 
     public void ShowGui()
@@ -105,16 +147,19 @@ public class GuiManager : MonoBehaviour
 
     public void SetMachinegun(int index)
     {
-        if (index == -1)
+        if (machinegunText)
         {
-            machinegunImage.color = Color.clear;
-            machinegunText.text = "";
-            return;
-        }
+            if (index == -1)
+            {
+                machinegunImage.color = Color.clear;
+                machinegunText.text = "";
+                return;
+            }
 
-        machinegunImage.color = Color.white;
-        machinegunImage.sprite = shootingModeImages[index];
-        machinegunText.text = shootingModeTexts[index];
+            machinegunImage.color = Color.clear;
+            machinegunImage.sprite = shootingModeImages[index];
+            machinegunText.text = shootingModeTexts[index];
+        }
     }
 
     #region Race
@@ -139,16 +184,61 @@ public class GuiManager : MonoBehaviour
         showCenterReference.ShowColors();
     }
 
+    #region Arcade
+
+    #region armor wheel
+
+    public void ShowArmorWheel()
+    {
+        if (ArmorWheel)
+        {
+            crosshair.alpha = 0;
+            ArmorWheel.alpha = 1;
+            canvasGroup.blocksRaycasts = true;
+            ArmorWheel.blocksRaycasts = true;
+            ArmorWheel.interactable = true;
+
+            Time.timeScale = 0.0125f;
+            CursorManager.ShowCursor();
+            _cameraController.SlowCameraSpeed();
+            _soundManager.SetMuteVFX(true);
+            NotifyObservers(PlayerActions.OpenArmorWheel);
+        }
+    }
+
+    public void HideArmorWheel()
+    {
+        if (ArmorWheel)
+        {
+            crosshair.alpha = 1;
+            ArmorWheel.alpha = 0;
+            canvasGroup.blocksRaycasts = false;
+            ArmorWheel.blocksRaycasts = false;
+            ArmorWheel.interactable = false;
+            Time.timeScale = 1f;
+            CursorManager.HideCursor();
+            _cameraController.ReturnToNormalCameraSpeed();
+            _soundManager.SetMuteVFX(false);
+            NotifyObservers(PlayerActions.CloseArmorWheel);
+        }
+    }
+
+    #endregion
+
+    #endregion
+
     #region Dialog
 
     public void ShowDialog()
     {
         dialogObject.alpha = 1;
+        crosshair.alpha = 0;
     }
 
     public void HideDialog()
     {
         dialogObject.alpha = 0;
+        crosshair.alpha = 1;
     }
 
     public void SetDialogName(string cad)
@@ -207,9 +297,10 @@ public class GuiManager : MonoBehaviour
     {
         objetiveText.text = text;
     }
+
     public string GetObjetiveText()
     {
-      return  objetiveText.text;
+        return objetiveText.text;
     }
 
     #endregion
@@ -218,28 +309,53 @@ public class GuiManager : MonoBehaviour
 
     public void ShowPauseIndicator()
     {
-        pauseIndicator.alpha = 1;
+        if (pauseIndicator)
+            pauseIndicator.alpha = 1;
     }
 
     public void HidePauseIndicator()
     {
-        pauseIndicator.alpha = 0;
+        if (pauseIndicator)
+            pauseIndicator.alpha = 0;
     }
 
     public void ShowPausePanel()
     {
+        if (ArmorWheel)
+            HideArmorWheel();
+        if (statsCanvasGroup)
+            ShowArcadeStats();
+
         canvasGroup.blocksRaycasts = true;
         pausePanel.blocksRaycasts = true;
         pausePanel.alpha = 1;
         pausePanel.interactable = true;
+        crosshair.alpha = 0;
+        _cameraController.SlowCameraSpeed();
+        _soundManager.SetMuteVFX(true);
+        Time.timeScale = 0;
+        CursorManager.ShowCursor();
     }
 
     public void HidePausePanel()
     {
+        if (statsCanvasGroup && _playerValues.GetCurrentInput() != CurrentInput.Upgrade)
+            HideArcadeStats();
         canvasGroup.blocksRaycasts = false;
         pausePanel.blocksRaycasts = false;
         pausePanel.alpha = 0;
         pausePanel.interactable = false;
+        crosshair.alpha = 1;
+        Time.timeScale = 1;
+        _soundManager.SetMuteVFX(false);
+        _cameraController.ReturnToNormalCameraSpeed();
+        if (_playerValues.GetCurrentInput() is CurrentInput.Movement or CurrentInput.Conversation or CurrentInput.None
+            or CurrentInput.ArcadeMechanics or CurrentInput.AsteroidMinigame or CurrentInput.RaceMovement
+            or CurrentInput.RotatingWall or CurrentInput.ShootMovement or CurrentInput.StealthMovement
+            or CurrentInput.DontTouchTheWallsMinigame)
+        {
+            CursorManager.HideCursor();
+        }
     }
 
     public void FillPauseSlider(float value)
@@ -250,6 +366,25 @@ public class GuiManager : MonoBehaviour
     public void SetNextMoveText(string value)
     {
         pauseMoveText.text = value;
+    }
+
+    #endregion
+
+    #region crosshair
+
+    public void ShowCrosshair()
+    {
+        crosshair.alpha = 1;
+    }
+
+    public void HideCrossHAir()
+    {
+        crosshair.alpha = 0;
+    }
+
+    public RectTransform GetCrossHairPosition()
+    {
+        return crossHairRectTransform;
     }
 
     #endregion
@@ -297,6 +432,77 @@ public class GuiManager : MonoBehaviour
     private Color CopyColorChangAlpha(Color inColor, float alpha)
     {
         return new Color(inColor.r, inColor.g, inColor.b, alpha);
+    }
+
+    #endregion
+
+    #region Message
+
+    public void ShowMessage()
+    {
+        messageCanvasGroup.alpha = 1;
+    }
+
+    public void HideMessage()
+    {
+        messageCanvasGroup.alpha = 0;
+    }
+
+    public void SetMessageText_(string text)
+    {
+        messageText.text = text;
+    }
+
+    #endregion
+
+    #region Arcade Stats
+
+    public void ShowArcadeStats()
+    {
+        NotifyObservers(PlayerActions.ShowArcadeStats);
+        statsCanvasGroup.alpha = 1;
+    }
+
+    public void HideArcadeStats()
+    {
+        NotifyObservers(PlayerActions.HideArcadeStats);
+        statsCanvasGroup.alpha = 0;
+    }
+
+    public void SetArcadeStatsText(string text)
+    {
+        statsText.text = text;
+    }
+
+    #endregion
+
+    #region Emergin points
+
+    public void ShowArcadePoints()
+    {
+        statsCanvasGroup.alpha = 1;
+    }
+
+    public void HideArcadePoints()
+    {
+        statsCanvasGroup.alpha = 0;
+    }
+
+    public void UpdatePointsText(string text)
+    {
+        pointsText.text = text;
+    }
+
+    public void InsertPoints(string text)
+    {
+        EmergingPoints points = _emergingPoints.GetText();
+        points.StartPoints(emerginPointsTransform.position, text);
+    }
+
+    public void InsertPoints(string text, Color color)
+    {
+        EmergingPoints points = _emergingPoints.GetText();
+        points.StartPoints(emerginPointsTransform.position, text, color);
     }
 
     #endregion

@@ -1,181 +1,177 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using Mechanics.General_Inputs;
 using Player.Observer_pattern;
 using UnityEngine;
 
-[DefaultExecutionOrder(4)]
-public class MachinegunMovementInputs : MonoBehaviour,InputInterface
+namespace Mechanics.General_Inputs.Machine_gun_mode
 {
-    // Start is called before the first frame update
-    private PlayerValues _playerValues;
-    private CameraController _cameraController;
-    private CameraChanger _cameraChanger;
-    private List<MachineGun> machineGuns;
-    private GuiManager guiManager;
-
-    private Stopwatch shootTimer;
-    [SerializeField] private int shootCooldown = 250;
-    [SerializeField] private float yAngle;
-
-    private void Awake()
+    [DefaultExecutionOrder(4)]
+    public class MachinegunMovementInputs : MonoBehaviour
     {
-        machineGuns = new List<MachineGun>();
-        shootTimer = new Stopwatch();
-        shootTimer.Start();
-    }
+        // Start is called before the first frame update
+        private PlayerValues _playerValues;
+        private CameraController _cameraController;
+        private CameraChanger _cameraChanger;
+        private List<MachineGun> machineGuns;
+        private GuiManager guiManager;
 
-    void Start()
-    {
-        guiManager = FindObjectOfType<GuiManager>();
-        _playerValues = FindObjectOfType<PlayerValues>();
-        _cameraController = FindObjectOfType<CameraController>();
-        _cameraChanger = FindObjectOfType<CameraChanger>();
-        machineGuns.AddRange(FindObjectsOfType<MachineGun>());
-    }
+        private Stopwatch shootTimer;
+        [SerializeField] private int shootCooldown = 250;
+        [SerializeField] private float yAngle;
 
-    // Update is called once per frame
-    void Update()
-    {
-        //keyboard inputs
-        //accelerate and decelerate
-        if (_playerValues.GetCurrentInput() == CurrentInput.ShootMovement)
+        private void Awake()
         {
-            foreach (var machineGun in machineGuns)
-            {
-                machineGun.ShowMachineGun();
-            }
-        }
-        else
-        {
-            bool changeCam = false;
-            foreach (var machineGun in machineGuns)
-            {
-                machineGun.ResetShootingMode();
-                changeCam = machineGun.HideMachinegun();
-            }
-
-            if (changeCam)
-            {
-                _cameraChanger.SetOrbitCamera();
-            }
+            machineGuns = new List<MachineGun>();
+            shootTimer = new Stopwatch();
+            shootTimer.Start();
         }
 
-        if (_playerValues.GetCurrentInput() == CurrentInput.ShootMovement && _playerValues.GetInputsEnabled() &&
-            !_playerValues.GetPaused())
+        void Start()
         {
-            if (Input.anyKey)
-            {
-                guiManager.SetTutorial(
-                    "WS - Increase/Descrease gear    RCLICK - Aim    LCLICK - Shoot      EQ - Change shooting mode       D - Lights      " +
-                    "V - First person mode");
-            }
+            guiManager = FindObjectOfType<GuiManager>();
+            _playerValues = FindObjectOfType<PlayerValues>();
+            _cameraController = FindObjectOfType<CameraController>();
+            _cameraChanger = FindObjectOfType<CameraChanger>();
+            machineGuns.AddRange(FindObjectsOfType<MachineGun>());
+        }
 
-            if (Input.GetKeyDown(KeyCode.W))
+        // Update is called once per frame
+        void Update()
+        {
+            //keyboard inputs
+            //accelerate and decelerate
+            if (_playerValues.GetCurrentInput() == CurrentInput.ShootMovement)
             {
-                if (_playerValues.GetGear() < 3)
-                    _playerValues.RiseGear();
-                _playerValues.CheckIfStuck(true);
-            }
-
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                _playerValues.DecreaseGear();
-                _playerValues.CheckIfStuck(true);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                if (shootTimer.Elapsed.TotalMilliseconds > shootCooldown)
+                foreach (var machineGun in machineGuns)
                 {
-                    shootTimer.Restart();
-                    // if (machineGuns[0].GetAim()) _cameraController.Shake();
-                    foreach (var machineGun in machineGuns)
+                    machineGun.ShowMachineGun();
+                }
+            }
+            else
+            {
+                bool changeCam = false;
+                foreach (var machineGun in machineGuns)
+                {
+                    machineGun.ResetShootingMode();
+                    changeCam = machineGun.HideMachinegun();
+                }
+
+                if (changeCam)
+                {
+                    _cameraChanger.SetOrbitCamera();
+                }
+            }
+
+            if (_playerValues.GetCurrentInput() == CurrentInput.ShootMovement && _playerValues.GetInputsEnabled() &&
+                !_playerValues.GetPaused())
+            {
+                if (Input.anyKey)
+                {
+                    guiManager.SetTutorial(
+                        "WS - Increase/Descrease gear    RCLICK - Aim    LCLICK - Shoot      EQ - Change shooting mode       D - Lights      " +
+                        "V - First person mode");
+                }
+
+                if (Input.GetKeyDown(KeyCode.W))
+                {
+                    if (_playerValues.GetGear() < 3)
+                        _playerValues.RiseGear();
+                    _playerValues.CheckIfStuck(true);
+                }
+
+                if (Input.GetKeyDown(KeyCode.S))
+                {
+                    _playerValues.DecreaseGear();
+                    _playerValues.CheckIfStuck(true);
+                }
+
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    if (shootTimer.Elapsed.TotalMilliseconds > shootCooldown)
                     {
-                        shootCooldown = machineGun.Shoot();
+                        shootTimer.Restart();
+                        foreach (var machineGun in machineGuns)
+                        {
+                            shootCooldown = machineGun.Shoot();
+                        }
                     }
                 }
-            }
 
-            if (Input.GetKey(KeyCode.Mouse1))
-            {
-                foreach (var machineGun in machineGuns)
+                if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
-                    machineGun.Aim();
+                    foreach (var machineGun in machineGuns)
+                    {
+                        machineGun.StopAutomaticShooting();
+                    }
                 }
-            }
-            else if (Input.GetKeyUp(KeyCode.Mouse1))
-            {
-                foreach (var machineGun in machineGuns)
-                {
-                    machineGun.StopAim();
-                }
-            }
 
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                foreach (var machineGun in machineGuns)
+                if (Input.GetKey(KeyCode.Mouse1))
                 {
-                    machineGun.NextShootingMode();
+                    foreach (var machineGun in machineGuns)
+                    {
+                        machineGun.Aim();
+                    }
                 }
-            }
+                else if (Input.GetKeyUp(KeyCode.Mouse1))
+                {
+                    foreach (var machineGun in machineGuns)
+                    {
+                        machineGun.StopAim();
+                    }
+                }
 
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                foreach (var machineGun in machineGuns)
-                {
-                    machineGun.PrevShootingMode();
-                }
-            }
 
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                if (_playerValues.GetLights())
+                if (Input.GetKeyDown(KeyCode.E))
                 {
-                    _playerValues.NotifyAction(PlayerActions.TurnOffLights);
+                    foreach (var machineGun in machineGuns)
+                    {
+                        machineGun.NextShootingMode();
+                    }
                 }
-                else
-                {
-                    _playerValues.NotifyAction(PlayerActions.TurnOnLights);
-                }
-            }
 
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                if (_cameraChanger.activeCamera is not ActiveCamera.FirstPerson)
-                    _cameraChanger.SetFirstPersonCamera();
-                else
-                    _cameraChanger.SetOrbitCamera();
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    foreach (var machineGun in machineGuns)
+                    {
+                        machineGun.PrevShootingMode();
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.D))
+                {
+                    if (_playerValues.GetLights())
+                    {
+                        _playerValues.NotifyAction(PlayerActions.TurnOffLights);
+                    }
+                    else
+                    {
+                        _playerValues.NotifyAction(PlayerActions.TurnOnLights);
+                    }
+                }
+
+                // if (Input.GetKeyDown(KeyCode.V))
+                // {
+                //     if (_cameraChanger.activeCamera is not ActiveCamera.FirstPerson)
+                //         _cameraChanger.SetFirstPersonCamera();
+                //     else
+                //         _cameraChanger.SetOrbitCamera();
+                // }
             }
         }
-    }
 
-    public void PerformAction(Move move)
-    {
-        //set camera height
-
-        if (_cameraChanger.activeCamera is ActiveCamera.Orbit)
-            _cameraController.RotateVerticalCustom(yAngle);
-        _playerValues.CheckIfStuck(true);
-        if (_playerValues.GetInputsEnabled())
+        public void PerformAction(Move move)
         {
-            if (_cameraChanger.activeCamera is ActiveCamera.FirstPerson)
-                guiManager.SetTutorial(
-                    "R - Camera vertical axis   U - Camera horizonatal axis    L - Aim and load     L' - Shoot     B' - Lights      B2 - Third person mode       F - Change Shooting mode");
-            else
+            //set camera height
+
+            if (_cameraChanger.activeCamera is ActiveCamera.Orbit)
+                _cameraController.RotateVerticalCustom(yAngle);
+            _playerValues.CheckIfStuck(true);
+            if (_playerValues.GetInputsEnabled())
+            {
                 guiManager.SetTutorial(
                     "R - Increase/Decrease Gear    U - Camera horizonatal axis    L - Aim and load     L' - Shoot     B' - Lights      B'2 - First person mode       F - Change Shooting mode");
 
-            if (move.face == FACES.R)
-            {
-                if (_cameraChanger.activeCamera is ActiveCamera.FirstPerson)
-                {
-                    if (move.direction == 1)
-                        _cameraController.RotateVerticalUp();
-                    else
-                        _cameraController.RotateVerticalDown();
-                }
-                else
+                if (move.face == FACES.R)
                 {
                     if (move.direction == 1)
                     {
@@ -187,71 +183,65 @@ public class MachinegunMovementInputs : MonoBehaviour,InputInterface
                         _playerValues.DecreaseGear();
                     }
                 }
-            }
-            //turn camera in y axis
-            else if (move.face == FACES.L)
-            {
-                if (move.direction == 1)
+                //turn camera in y axis
+                else if (move.face == FACES.L)
                 {
-                    foreach (var machineGun in machineGuns)
+                    if (move.direction == 1)
                     {
-                        machineGun.Aim();
-                    }
-                }
-                else
-                {
-                    if (shootTimer.Elapsed.TotalMilliseconds > shootCooldown)
-                    {
-                        shootTimer.Restart();
                         foreach (var machineGun in machineGuns)
                         {
-                            shootCooldown = machineGun.Shoot();
-                            machineGun.StopAim();
+                            machineGun.Aim();
+                        }
+                    }
+                    else
+                    {
+                        if (shootTimer.Elapsed.TotalMilliseconds > shootCooldown)
+                        {
+                            shootTimer.Restart();
+                            foreach (var machineGun in machineGuns)
+                            {
+                                shootCooldown = machineGun.Shoot();
+                                machineGun.StopAim();
+                            }
                         }
                     }
                 }
-            }
-            else if (move.face == FACES.B)
-            {
-                if (move.direction == 1)
+                else if (move.face == FACES.B)
                 {
-                    if (_cameraChanger.activeCamera is ActiveCamera.FirstPerson)
+                    if (move.direction == 1)
                     {
-                        _cameraChanger.SetOrbitCamera();
+                        if (_playerValues.GetLights())
+                            _playerValues.NotifyAction(PlayerActions.TurnOffLights);
                     }
-                    else if (_playerValues.GetLights())
-                        _playerValues.NotifyAction(PlayerActions.TurnOffLights);
+                    else
+                    {
+                        if (!_playerValues.GetLights())
+                            _playerValues.NotifyAction(PlayerActions.TurnOnLights);
+                    }
                 }
-                else
+                else if (move.face == FACES.F)
                 {
-                    if (!_playerValues.GetLights())
-                        _playerValues.NotifyAction(PlayerActions.TurnOnLights);
-                    else if (_cameraChanger.activeCamera is not ActiveCamera.FirstPerson)
-                        _cameraChanger.SetFirstPersonCamera();
+                    if (move.direction == 1)
+                        foreach (var machineGun in machineGuns)
+                            machineGun.NextShootingMode();
+                    else
+                        foreach (var machineGun in machineGuns)
+                            machineGun.PrevShootingMode();
                 }
             }
-            else if (move.face == FACES.F)
+
+            if (move.face == FACES.U)
             {
                 if (move.direction == 1)
-                    foreach (var machineGun in machineGuns)
-                        machineGun.NextShootingMode();
+                    _cameraController.RotateClockwise();
                 else
-                    foreach (var machineGun in machineGuns)
-                        machineGun.PrevShootingMode();
+                    _cameraController.RotateCounterClockwise();
             }
         }
 
-        if (move.face == FACES.U)
+        public void AddObservers(IObserver observer)
         {
-            if (move.direction == 1)
-                _cameraController.RotateClockwise();
-            else
-                _cameraController.RotateCounterClockwise();
+            machineGuns[0].AddObserver(observer);
         }
-    }
-
-    public void AddObservers(IObserver observer)
-    {
-        machineGuns[0].AddObserver(observer);
     }
 }
