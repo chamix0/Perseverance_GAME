@@ -23,6 +23,7 @@ public class EnemyPool : MonoBehaviour
         if (enemy != null)
             return enemy;
         GameObject newEnemy = Instantiate(enemyTemplate, transform);
+        newEnemy.transform.position = new Vector3(1000, 1000, 0);
         Enemy enemyComp = newEnemy.GetComponent<Enemy>();
         InsertNewEnemy(enemyComp);
         return enemyComp;

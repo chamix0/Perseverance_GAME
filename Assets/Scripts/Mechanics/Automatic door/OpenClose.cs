@@ -3,8 +3,7 @@ using UnityEngine;
 enum DoorMode
 {
     Open,
-    Close,
-    Automatic
+    Close
 }
 
 public class OpenClose : MonoBehaviour
@@ -21,7 +20,7 @@ public class OpenClose : MonoBehaviour
     // Update is called once per frame
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player")||other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy"))
         {
             switch (doorMode)
             {
@@ -30,17 +29,6 @@ public class OpenClose : MonoBehaviour
                     break;
                 case DoorMode.Close:
                     _doorBase.CloseDoor();
-                    break;
-                case DoorMode.Automatic:
-                    if (_doorBase.opened)
-                    {
-                        _doorBase.CloseDoor();
-                    }
-                    else
-                    {
-                        _doorBase.OpenDoor();
-                    }
-
                     break;
             }
         }

@@ -16,7 +16,7 @@ public class UpgradeManager : MonoBehaviour, IObserver
 {
     //values
     public bool isIn;
-    private int prize = 1000, reRollPrize = 500;
+    private int prize = 250, reRollPrize = 500;
     private bool limitReached;
 
     //components

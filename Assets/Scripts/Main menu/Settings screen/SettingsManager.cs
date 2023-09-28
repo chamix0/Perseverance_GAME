@@ -8,10 +8,13 @@ public class SettingsManager : MonoBehaviour
     // Start is called before the first frame update
     private SoundManager soundManager;
     private JSONsaving _jsoNsaving;
+    private LoadScreen _loadScreen;
 
     //settings
     private List<Slider> _sliders;
     [SerializeField] private Slider masterVolumeSlider, vfxVolumeSlider, musicVolumeSlider, uiVolumeSlider;
+    [SerializeField] private CanvasGroup _canvasGroup, musicCanvas, experimentalCanvas;
+    [SerializeField] private Button selectSoundButton, selectExperimentalButton, dumpButton, arduinoButton, cubeButton;
 
     //sliders and buttons
     private int index = 0;
@@ -30,10 +33,10 @@ public class SettingsManager : MonoBehaviour
         _sounds = FindObjectOfType<MainMenuSounds>();
         soundManager = FindObjectOfType<SoundManager>();
         _jsoNsaving = FindObjectOfType<JSONsaving>();
+        _loadScreen = FindObjectOfType<LoadScreen>();
 
         _sliders.AddRange(new[] { masterVolumeSlider, vfxVolumeSlider, musicVolumeSlider, uiVolumeSlider });
         //previus game sound values
-
         masterVolumeSlider.value = GetGameDataSettings().GetMasterVolume();
         soundManager.SetMasterVolume(GetGameDataSettings().GetMasterVolume());
         vfxVolumeSlider.value = GetGameDataSettings().GetVfxVolume();
@@ -42,23 +45,79 @@ public class SettingsManager : MonoBehaviour
         soundManager.SetMusicVolume(GetGameDataSettings().GetMusicVolume());
         uiVolumeSlider.value = GetGameDataSettings().GetUiVolume();
         soundManager.SetUiVolume(GetGameDataSettings().GetUiVolume());
-
-
+        //sliders
         masterVolumeSlider.onValueChanged.AddListener(MasterSliderAction);
         vfxVolumeSlider.onValueChanged.AddListener(VfxSliderAction);
         musicVolumeSlider.onValueChanged.AddListener(MusicSliderAction);
         uiVolumeSlider.onValueChanged.AddListener(UiSliderAction);
         Highlight();
+        //buttons
+        selectSoundButton.onClick.AddListener(ShowMusic);
+        selectExperimentalButton.onClick.AddListener(ShowExperimental);
+        dumpButton.onClick.AddListener(() =>
+        {
+            _jsoNsaving.dumpData();
+            _loadScreen.LoadMenu();
+        });
+        arduinoButton.onClick.AddListener(() => { _loadScreen.LoadArduinoConnect(); });
+        cubeButton.onClick.AddListener(() => { _loadScreen.LoadCubeConexion(); });
+        HideExperimental();
+        ShowMusic();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (updateValue)
-        {
             UpdatesliderValue();
-        }
     }
+
+    public void ShowUI()
+    {
+        _canvasGroup.alpha = 1;
+        _canvasGroup.interactable = true;
+        _canvasGroup.blocksRaycasts = true;
+    }
+
+    public void HideUI()
+    {
+        _canvasGroup.alpha = 0;
+        _canvasGroup.interactable = false;
+        _canvasGroup.blocksRaycasts = false;
+    }
+
+    public void ShowMusic()
+    {
+        musicCanvas.alpha = 1;
+        musicCanvas.interactable = true;
+        musicCanvas.blocksRaycasts = true;
+        HideExperimental();
+    }
+
+    public void HideMusic()
+    {
+        musicCanvas.alpha = 0;
+        musicCanvas.interactable = false;
+        musicCanvas.blocksRaycasts = false;
+    }
+
+
+    public void ShowExperimental()
+    {
+        experimentalCanvas.alpha = 1;
+        experimentalCanvas.interactable = true;
+        experimentalCanvas.blocksRaycasts = true;
+        HideMusic();
+    }
+
+    public void HideExperimental()
+    {
+        experimentalCanvas.alpha = 0;
+        experimentalCanvas.interactable = false;
+        experimentalCanvas.blocksRaycasts = false;
+    }
+
+    #region Sliders
 
     private void MasterSliderAction(float value)
     {
@@ -174,6 +233,9 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
+    #endregion
+
+
     private bool GameDataExists()
     {
         int lastGameIndex = _jsoNsaving._saveData.GetLastSessionSlotIndex();
@@ -188,6 +250,5 @@ public class SettingsManager : MonoBehaviour
     private GameData GetGameDataSettings()
     {
         return _jsoNsaving._saveData.GetGameData(_jsoNsaving._saveData.GetLastSessionSlotIndex());
-        
     }
 }

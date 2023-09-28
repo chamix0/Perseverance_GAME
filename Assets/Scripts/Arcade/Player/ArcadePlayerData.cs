@@ -42,7 +42,7 @@ public class ArcadePlayerData : Subject, IObserver
     private Dictionary<ZonesArcade, bool> zonesUnlocked;
 
     //enemies
-    private int enemiesKilled = 0, headShots = 0;
+    private int enemiesKilled = 0;
 
     //auxiliar
     public bool isArmorWheelDisplayed;
@@ -54,6 +54,7 @@ public class ArcadePlayerData : Subject, IObserver
     //save data
     private JSONsaving _jsoNsaving;
     private SaveData _saveData;
+    private LoadScreen _loadScreen;
 
     #endregion
 
@@ -77,6 +78,7 @@ public class ArcadePlayerData : Subject, IObserver
     {
         _playerValues = FindObjectOfType<PlayerValues>();
         _guiManager = FindObjectOfType<GuiManager>();
+        _loadScreen = FindObjectOfType<LoadScreen>();
         _playerValues.AddObserver(this);
         totalPoints = points;
         _guiManager.UpdatePointsText(points + "");
@@ -99,7 +101,7 @@ public class ArcadePlayerData : Subject, IObserver
     {
         //ammo
         bulletsAmmo = new Dictionary<BulletType, int>();
-        bulletsAmmo.Add(BulletType.NormalBullet, 1000);
+        bulletsAmmo.Add(BulletType.NormalBullet, 100);
         bulletsAmmo.Add(BulletType.FreezeBullet, 0);
         bulletsAmmo.Add(BulletType.InstaKillBullet, 0);
         bulletsAmmo.Add(BulletType.BurnBullet, 0);
@@ -108,7 +110,7 @@ public class ArcadePlayerData : Subject, IObserver
         bulletsAmmo.Add(BulletType.ExplosiveBullet, 0);
         //max ammo
         bulletsCurrentMaxAmmo = new Dictionary<BulletType, int>();
-        bulletsCurrentMaxAmmo.Add(BulletType.NormalBullet, 1000);
+        bulletsCurrentMaxAmmo.Add(BulletType.NormalBullet, 100);
         bulletsCurrentMaxAmmo.Add(BulletType.FreezeBullet, 20);
         bulletsCurrentMaxAmmo.Add(BulletType.InstaKillBullet, 5);
         bulletsCurrentMaxAmmo.Add(BulletType.BurnBullet, 20);
@@ -117,7 +119,7 @@ public class ArcadePlayerData : Subject, IObserver
         bulletsCurrentMaxAmmo.Add(BulletType.ExplosiveBullet, 20);
         //max ammo
         bulletsMaxAmmo = new Dictionary<BulletType, int>();
-        bulletsMaxAmmo.Add(BulletType.NormalBullet, 10000);
+        bulletsMaxAmmo.Add(BulletType.NormalBullet, 1000);
         bulletsMaxAmmo.Add(BulletType.FreezeBullet, 200);
         bulletsMaxAmmo.Add(BulletType.InstaKillBullet, 50);
         bulletsMaxAmmo.Add(BulletType.BurnBullet, 200);
@@ -524,13 +526,24 @@ public class ArcadePlayerData : Subject, IObserver
     }
 
     #endregion
-  
+
+    public void AddEnemiesKilled()
+    {
+        enemiesKilled++;
+    }
 
     public void UpgradeLevel()
     {
         level++;
         if (level % 5 == 0 && GetUnlockedZones() > 1)
             NotifyObservers(PlayerActions.ChangeUpgradeLocation);
+    }
+
+    public ArcadeStats GetArcadeStats()
+    {
+        return new ArcadeStats(GetPointsReduced(totalPoints), rounds, level, enemiesKilled,
+            GetUnlockedZones() + "/" + zonesUnlocked.Count, (unlockedGear + 1) + "/" + 5,
+            power ? "yes" : "no");
     }
 
     public string GetPointsReduced(int num)
@@ -579,13 +592,26 @@ public class ArcadePlayerData : Subject, IObserver
                grenadesAmmo[GrenadeType.SmokeGrenade] + "/" +
                GrenadesCurrentMaxAmmo[GrenadeType.SmokeGrenade] +
                "\n\n\n" + GetUnlockedZones() + "/" +
-               zonesUnlocked.Count + "\n" + enemiesKilled +
-               "\n" + headShots;
+               zonesUnlocked.Count + "\n" + enemiesKilled;
     }
 
     public void OnNotify(PlayerActions playerAction)
     {
         if (playerAction is PlayerActions.TurnOnPower)
             SetPower(true);
+        else if (playerAction is PlayerActions.Die)
+        {
+            _saveData.AddScoreToSortedLeaderboard(new Score(_saveData.GetArcadeName(), rounds, totalPoints));
+            _saveData.SetArcadeStats(GetArcadeStats());
+            _jsoNsaving.SaveTheData();
+            StartCoroutine(changeSceneCoroutine());
+
+        }
+    }
+
+    IEnumerator changeSceneCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        _loadScreen.LoadArcadeStatsScreen();
     }
 }

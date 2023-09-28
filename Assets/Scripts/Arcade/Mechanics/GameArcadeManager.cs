@@ -2,19 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Player.Observer_pattern;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
 [DefaultExecutionOrder(6)]
-public class GameArcadeManager : MonoBehaviour
+public class GameArcadeManager : MonoBehaviour,IObserver
 {
     private PlayerValues _playerValues;
     private EnemyManager _enemyManager;
     private ArcadePlayerData _playerData;
     private GuiManager _guiManager;
 
-    private MyStopWatch _betweenRoundsTimer;
-    private readonly float timeBetweenRounds = 30f;
+    [SerializeField] private MyStopWatch _betweenRoundsTimer;
+    [SerializeField] private float timeBetweenRounds = 30f;
 
     //shops
     private List<BulletShopBase> _bulletShopBases;
@@ -34,7 +35,6 @@ public class GameArcadeManager : MonoBehaviour
 
     private void Awake()
     {
-        _betweenRoundsTimer = gameObject.AddComponent<MyStopWatch>();
     }
 
     // Start is called before the first frame update
@@ -149,5 +149,13 @@ public class GameArcadeManager : MonoBehaviour
     {
         var aux = timeBetweenRounds * 1000 - _betweenRoundsTimer.GetElapsedMiliseconds();
         return MyUtils.GetCountdownTimeString(aux);
+    }
+
+    public void OnNotify(PlayerActions playerAction)
+    {
+        if (playerAction is PlayerActions.Die)
+        {
+            
+        }
     }
 }

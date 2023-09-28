@@ -9,6 +9,8 @@ public class PlayerCreation : MonoBehaviour
     private int model;
     [SerializeField] private List<GameObject> modelTextures;
     [SerializeField] private List<GameObject> modelObjects;
+
+    [SerializeField] private bool isArcade;
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
     private static readonly int FresnelColor = Shader.PropertyToID("_fresnel_color");
     [SerializeField] private Transform newGamePos, startedGamePos;
@@ -18,10 +20,14 @@ public class PlayerCreation : MonoBehaviour
     void Start()
     {
         //collisions
-     
-        
+
+
         _playerValues = FindObjectOfType<PlayerValues>();
-        model = _playerValues.gameData.GetEddoModel();
+        if (isArcade)
+            model = _playerValues._saveData.GetArcadeModel();
+        else
+            model = _playerValues.gameData.GetEddoModel();
+
 
         for (int i = 0; i < modelObjects.Count; i++)
         {
@@ -34,7 +40,6 @@ public class PlayerCreation : MonoBehaviour
                     .sharedMaterials;
             SetMaterials(oldMaterials, newMaterials);
         }
-
 
         SpawnPoint();
 

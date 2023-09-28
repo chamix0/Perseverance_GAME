@@ -34,11 +34,6 @@ public class LoadScreen : MonoBehaviour
         StartCoroutine(LoadScenAsync("Scenes/Game/final credits"));
     }
 
-    public void LoadKeyOrCube()
-    {
-        StartCoroutine(LoadScenAsync("Scenes/Game/Keyboard or cube"));
-    }
-
     public void LoadMovementTutorial()
     {
         StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/Door 1"));
@@ -73,7 +68,11 @@ public class LoadScreen : MonoBehaviour
     {
         StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/enemies 1"));
     }
-
+    
+    public void LoadArcadeGame()
+    {
+        StartCoroutine(LoadScenAsync("Scenes/Game/Arcade/Arcade Game"));
+    }
     #region Load levels async
 
     public void LoadFoundry()
@@ -99,11 +98,14 @@ public class LoadScreen : MonoBehaviour
     public void LoadResidential()
     {
         SceneManager.LoadScene("Scenes/Game/separated levels/Residential", LoadSceneMode.Additive);
-
     }
 
     #endregion
 
+    public void LoadArcadeStatsScreen()
+    {
+        SceneManager.LoadScene("Scenes/Game/Arcade/Arcade final Screen");
+    }
 
     public void QuitGame()
     {

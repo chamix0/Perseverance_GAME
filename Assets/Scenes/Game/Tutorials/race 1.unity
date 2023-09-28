@@ -17242,6 +17242,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1114377834, guid: ad090d17cfcf6de4897e662bc229a725, type: 3}
+      propertyPath: greenColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114377834, guid: ad090d17cfcf6de4897e662bc229a725, type: 3}
+      propertyPath: recoverColor.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1397858693, guid: ad090d17cfcf6de4897e662bc229a725, type: 3}
       propertyPath: m_Cameras.Array.size
       value: 1

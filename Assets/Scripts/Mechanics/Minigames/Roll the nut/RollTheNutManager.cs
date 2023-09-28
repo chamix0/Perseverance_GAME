@@ -116,7 +116,7 @@ public class RollTheNutManager : Minigame
     {
         _nut.transform.localRotation =
             Quaternion.Slerp(_nut.transform.localRotation, Quaternion.Euler(0, 0, MyUtils.Clamp0360(_targetAngle)),
-                Time.deltaTime * 5f);
+                Time.unscaledDeltaTime * 5f);
 
         if (Mathf.Abs(_nut.transform.localRotation.eulerAngles.z - MyUtils.Clamp0360(_targetAngle)) < 0.01f)
         {

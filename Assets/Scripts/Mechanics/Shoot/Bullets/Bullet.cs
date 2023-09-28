@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Arcade.Mechanics.Bullets;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -19,6 +20,7 @@ public class Bullet : MonoBehaviour
     public LayerMask collisionLayers;
     private DecallPool _decallPool;
     private Transform target;
+    private bool enemyHit;
 
 
     //audio
@@ -52,9 +54,18 @@ public class Bullet : MonoBehaviour
     {
         return ready;
     }
+    public void SetEnemyHit(bool val)
+    {
+        enemyHit = val;
+    }
 
+    public bool GetEnemyHit()
+    {
+        return enemyHit;
+    }
     public void Shoot(bool player, Vector3 origin, Vector3 dir, float s, Vector3 checkpoint)
     {
+        enemyHit = false;
         isPlayer = player;
         respawn = checkpoint;
         speed = s;
@@ -129,6 +140,14 @@ public class Bullet : MonoBehaviour
             _rigidbody.useGravity = true;
             _rigidbody.drag = 1;
             target = null;
+            StartCoroutine(DelayEnemyHitCoroutine());
         }
+    }
+
+    IEnumerator DelayEnemyHitCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (!enemyHit)
+            enemyHit = true;
     }
 }

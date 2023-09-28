@@ -10,7 +10,7 @@ public class MyStopWatch : MonoBehaviour
     private bool stoped;
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (!stoped)
             elapsed += Time.deltaTime;
@@ -42,9 +42,9 @@ public class MyStopWatch : MonoBehaviour
         return !stoped;
     }
 
-    public int GetElapsedMiliseconds()
+    public float GetElapsedMiliseconds()
     {
-        return (int)elapsed * 1000;
+        return elapsed * 1000;
     }
 
     public float GetElapsedSeconds()

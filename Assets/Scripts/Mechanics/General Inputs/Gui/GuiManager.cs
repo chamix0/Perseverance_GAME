@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Arcade.Mechanics.Bullets;
 using Mechanics.General_Inputs;
 using TMPro;
@@ -86,13 +87,18 @@ public class GuiManager : Subject
     [SerializeField] private TMP_Text pointsText;
     [SerializeField] private EmerginPointsPool _emergingPoints;
 
+    //lives
+    [Header("Lives")] [SerializeField] private CanvasGroup livesCanvas;
+    [SerializeField] private TMP_Text livesText;
+    private int currentLives;
 
     void Start()
     {
         _cameraController = FindObjectOfType<OrbitCameraController>();
         _soundManager = FindObjectOfType<SoundManager>();
         _playerValues = FindObjectOfType<PlayerValues>();
-        emerginPointsTransform = _emergingPoints.GetComponent<RectTransform>();
+        if (_emergingPoints)
+            emerginPointsTransform = _emergingPoints.GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         showCenterReference = GetComponentInChildren<ShowCenterReference>();
         if (lastMoveText)
@@ -106,6 +112,7 @@ public class GuiManager : Subject
             machinegunText.text = "";
         }
 
+        currentLives = 0;
         raceImage.color = Color.clear;
         raceText.text = "";
         HideArmorWheel();
@@ -113,7 +120,8 @@ public class GuiManager : Subject
         HideObjetives();
         HidePauseIndicator();
         HidePausePanel();
-        HideMessage();
+        if (messageCanvasGroup)
+            HideMessage();
     }
 
     private void Update()
@@ -123,6 +131,12 @@ public class GuiManager : Subject
         {
             currentGear = _playerValues.GetGear();
             HighlightGear(currentGear);
+        }
+
+        if (livesText && currentLives != _playerValues.lives)
+        {
+            currentLives = _playerValues.lives;
+            SetLives(currentLives);
         }
     }
 
@@ -503,6 +517,29 @@ public class GuiManager : Subject
     {
         EmergingPoints points = _emergingPoints.GetText();
         points.StartPoints(emerginPointsTransform.position, text, color);
+    }
+
+    #endregion
+
+    #region Lives
+
+    public void ShowLives()
+    {
+        livesCanvas.alpha = 1;
+        livesCanvas.interactable = false;
+        livesCanvas.blocksRaycasts = false;
+    }
+
+    public void HideLives()
+    {
+        livesCanvas.alpha = 0;
+        livesCanvas.interactable = false;
+        livesCanvas.blocksRaycasts = false;
+    }
+
+    public void SetLives(int num)
+    {
+        livesText.text = num + "";
     }
 
     #endregion

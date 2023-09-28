@@ -89,10 +89,16 @@ public class EnemyManager : MonoBehaviour
             Vector3 spawnPoint = GetSpawnPoint();
             Enemy enemy = _enemyPool.GetEnemy();
             currentEnemies.Add(enemy);
-            enemy.ResetEnemy(lives, speed, damage, spawnPoint);
+            StartCoroutine(SetEnemyCoroutine(enemy, lives, speed, damage, spawnPoint));
         }
 
         yield return new WaitUntil(AllCurrentEnemiesDead);
         _gameArcadeManager.EndRound();
+    }
+
+    IEnumerator SetEnemyCoroutine(Enemy enemy, int lives, float speed, int damage, Vector3 pos)
+    {
+        yield return new WaitForSeconds(0.01f);
+        enemy.ResetEnemy(lives, speed, damage, pos);
     }
 }

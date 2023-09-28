@@ -2,23 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
-public class Score : IComparer<Score>
+public class Score : IComparable<Score>
 {
-    [SerializeField] private string name;
+    [FormerlySerializedAs("name")] [SerializeField] private string nameP;
     [SerializeField] private int round, points;
 
-    public Score(string name, int round, int points)
+    public Score(string nameP, int round, int points)
     {
-        this.name = name;
+        this.nameP = nameP;
         this.round = round;
         this.points = points;
     }
 
     public string GetName()
     {
-        return name;
+        return nameP;
     }
 
     public int GetRound()
@@ -31,20 +32,24 @@ public class Score : IComparer<Score>
         return points;
     }
 
-
-    public int Compare(Score a, Score b)
+    public int CompareTo(Score other)
     {
-        if (a.points < b.points)
-            return -1;
-
-        if (a.points > b.points)
+        if (points < other.points)
             return 1;
 
-        if (a.round < b.round)
+        if (points > other.points)
             return -1;
 
-        if (a.round > b.round)
+        if (round < other.round)
             return 1;
+
+        if (round > other.round)
+            return -1;
         return 0;
+    }
+
+    public override string ToString()
+    {
+        return GetName() + "\t" + round + "\t" + points + "pts";
     }
 }

@@ -10,11 +10,12 @@ namespace Mechanics.Laberinth
         private PlayerValues _playerValues;
         private GameObject _snapPos;
         private RigidbodyConstraints _rigidbodyOriginalConstraints;
-        private bool minigameFinished,minigameActuallyFinished;
+        private bool minigameFinished, minigameActuallyFinished;
         private MinigameManager _minigameManager;
         private CameraChanger cameraChanger;
 
         [SerializeField] private TMP_Text terminalText;
+        [SerializeField] private MyStopWatch _stopWatch;
 
         // Start is called before the first frame update
         void Start()
@@ -33,6 +34,8 @@ namespace Mechanics.Laberinth
         {
             if (collision.gameObject.CompareTag("Player") && !minigameFinished)
             {
+                if (_stopWatch)
+                    _stopWatch.Stop();
                 _playerValues.snapRotationTo(_snapPos.transform.eulerAngles.y);
                 _playerValues.SnapPositionTo(_snapPos.transform.position);
                 _playerValues.Sit();
@@ -49,11 +52,15 @@ namespace Mechanics.Laberinth
             cameraChanger.SetScreenCamera();
             terminalText.SetText("Terminal operative");
         }
+
         IEnumerator FinisghMinigameCoroutine()
         {
             yield return new WaitUntil(_minigameManager.GetMinigameFinished);
+            if (_stopWatch)
+                _stopWatch.StartStopwatch();
             minigameActuallyFinished = true;
         }
+
         public bool GetMinigameFinished()
         {
             return minigameActuallyFinished;

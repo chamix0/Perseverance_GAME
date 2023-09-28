@@ -1,13 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using Arcade.Mechanics.Bullets;
-using Mechanics.General_Inputs.Machine_gun_mode;
-using Player.Observer_pattern;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 using Slider = UnityEngine.UI.Slider;
 
 public class ChaserEnemy : Enemy
@@ -15,9 +10,8 @@ public class ChaserEnemy : Enemy
     // Start is called before the first frame update
     private PlayerValues playerValues;
     private ArcadePlayerData _playerData;
-    private Rigidbody rigidbody;
-    private DissolveMaterials dissolveMaterials;
-
+    [SerializeField] private Rigidbody rigidbody;
+    [SerializeField] private DissolveMaterials dissolveMaterials;
     [SerializeField] private ParticleSystem flash;
 
     //navmesh 
@@ -28,24 +22,25 @@ public class ChaserEnemy : Enemy
 
     [SerializeField] private int damage = 1;
     [SerializeField] private int maxLives;
-    private Stopwatch damageTimer;
+    private MyStopWatch damageTimer;
     [SerializeField] private float damageColdown = 2;
-    private Stopwatch slowTimer, freezeTimer, burnTimer;
+    private MyStopWatch slowTimer, freezeTimer, burnTimer;
     [SerializeField] private float slowColdown = 0.5f, freezeCooldown = 5, burnCooldown = 0.5f;
     private int burnCount = 0, BurnMaxCount = 5;
     private bool slow, freeze, burn, decoy;
-
-    private Stopwatch laserTimer;
+    private MyStopWatch laserTimer;
     private float laserDamageCooldown = 0.5f;
 
+    [SerializeField] private float minDistToPlayer = 1;
+
     //outline
-    private Outline outline;
-    private Stopwatch outlineTimer;
+    [SerializeField] private Outline outline;
+    private MyStopWatch outlineTimer;
     private float outlineCooldown = 10f;
 
 
     //sounds
-    private EnemySounds enemySounds;
+    [SerializeField] private EnemySounds enemySounds;
 
     //health bar
     [SerializeField] private CanvasGroup healthBarCanvas;
@@ -53,56 +48,53 @@ public class ChaserEnemy : Enemy
 
     private void Awake()
     {
-        outlineTimer = new Stopwatch();
-        damageTimer = new Stopwatch();
-        slowTimer = new Stopwatch();
-        freezeTimer = new Stopwatch();
-        burnTimer = new Stopwatch();
-        laserTimer = new Stopwatch();
-        damageTimer.Start();
+        outlineTimer = gameObject.AddComponent<MyStopWatch>();
+        damageTimer = gameObject.AddComponent<MyStopWatch>();
+        slowTimer = gameObject.AddComponent<MyStopWatch>();
+        freezeTimer = gameObject.AddComponent<MyStopWatch>();
+        burnTimer = gameObject.AddComponent<MyStopWatch>();
+        laserTimer = gameObject.AddComponent<MyStopWatch>();
+        damageTimer.StartStopwatch();
     }
 
     void Start()
     {
-        outline = GetComponentInChildren<Outline>();
-        enemySounds = GetComponent<EnemySounds>();
-        dissolveMaterials = GetComponent<DissolveMaterials>();
         playerValues = FindObjectOfType<PlayerValues>();
         _playerData = FindObjectOfType<ArcadePlayerData>();
-        rigidbody = GetComponent<Rigidbody>();
         outline.OutlineColor = Color.clear;
         lives = maxLives;
         totalLives = lives;
         _navMeshAgent.speed = speed;
+        isDead = true;
     }
 
 
     private void Update()
     {
-        if (outlineTimer.IsRunning)
+        if (outlineTimer.IsRunning())
         {
-            if (outlineTimer.Elapsed.TotalSeconds > outlineCooldown)
+            if (outlineTimer.GetElapsedSeconds() > outlineCooldown)
             {
                 outlineTimer.Stop();
-                outlineTimer.Reset();
+                outlineTimer.ResetStopwatch();
                 outline.OutlineColor = Color.clear;
             }
         }
 
-        if (slow && slowTimer.Elapsed.TotalSeconds > slowColdown)
+        if (slow && slowTimer.GetElapsedSeconds() > slowColdown)
         {
             slow = false;
             slowTimer.Stop();
-            slowTimer.Reset();
+            slowTimer.ResetStopwatch();
             if (!freeze)
                 _navMeshAgent.speed = speed;
         }
 
-        if (freeze && freezeTimer.Elapsed.TotalSeconds > freezeCooldown)
+        if (freeze && freezeTimer.GetElapsedSeconds() > freezeCooldown)
         {
             freeze = false;
             freezeTimer.Stop();
-            freezeTimer.Reset();
+            freezeTimer.ResetStopwatch();
             dissolveMaterials.UnFreeze();
             _navMeshAgent.speed = speed;
         }
@@ -112,13 +104,23 @@ public class ChaserEnemy : Enemy
             burn = false;
             burnCount = 0;
             burnTimer.Stop();
-            burnTimer.Reset();
+            burnTimer.ResetStopwatch();
         }
-        else if (burn && burnTimer.Elapsed.TotalSeconds > burnCooldown)
+        else if (burn && burnTimer.GetElapsedSeconds() > burnCooldown)
         {
             burnTimer.Restart();
             burnCount++;
             RecieveDamage(1);
+        }
+
+        if (Vector3.Distance(transform.position, playerValues.GetPos()) < minDistToPlayer && !isDead)
+        {
+            _navMeshAgent.speed = 0;
+            if (damageTimer.GetElapsedSeconds() > damageColdown)
+            {
+                playerValues.RecieveDamage(playerValues.GetPos(), damage);
+                damageTimer.Restart();
+            }
         }
     }
 
@@ -126,14 +128,14 @@ public class ChaserEnemy : Enemy
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!decoy)
+        if (!decoy && !isDead)
             MoveToTarget();
     }
 
 
     public void SetPos(Vector3 pos)
     {
-        rigidbody.MovePosition(pos);
+        _navMeshAgent.Warp(pos);
     }
 
     private void MoveToTarget()
@@ -147,56 +149,70 @@ public class ChaserEnemy : Enemy
         if (collision.gameObject.CompareTag("Bullet"))
         {
             Bullet bullet = collision.transform.GetComponent<Bullet>();
-            switch (bullet.GetBulletType())
+            if (!bullet.GetEnemyHit())
             {
-                case BulletType.NormalBullet:
-                    RecieveDamage(1);
-                    HitSlow();
-                    break;
-                case BulletType.FreezeBullet:
-                    RecieveDamage(1);
-                    Freeze();
-                    break;
-                case BulletType.BurnBullet:
-                    Burn();
-                    RecieveDamage(1);
-                    HitSlow();
-                    break;
-                case BulletType.GuidedBullet:
-                    RecieveDamage(1);
-                    HitSlow();
-                    break;
-                case BulletType.InstaKillBullet:
-                    RecieveDamage(maxLives);
-                    break;
-                case BulletType.ShotgunBullet:
-                    RecieveDamage(1);
-                    HitSlow();
-                    break;
-                case BulletType.ExplosiveBullet:
-                    RecieveDamage(5);
-                    HitSlow();
-                    break;
-                case BulletType.None:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                bullet.SetEnemyHit(true);
+                switch (bullet.GetBulletType())
+                {
+                    case BulletType.NormalBullet:
+                        RecieveDamage(1);
+                        HitSlow();
+                        break;
+                    case BulletType.FreezeBullet:
+                        RecieveDamage(1);
+                        Freeze();
+                        break;
+                    case BulletType.BurnBullet:
+                        Burn();
+                        RecieveDamage(1);
+                        HitSlow();
+                        break;
+                    case BulletType.GuidedBullet:
+                        RecieveDamage(1);
+                        HitSlow();
+                        break;
+                    case BulletType.InstaKillBullet:
+                        RecieveDamage(maxLives);
+                        break;
+                    case BulletType.ShotgunBullet:
+                        RecieveDamage(1);
+                        HitSlow();
+                        break;
+                    case BulletType.ExplosiveBullet:
+                        RecieveDamage(5);
+                        HitSlow();
+                        break;
+                    case BulletType.None:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
+
+        // if (collision.gameObject.CompareTag("Player"))
+        // {
+        //     _navMeshAgent.speed = 0;
+        //     if (damageTimer.GetElapsedSeconds() > damageColdown)
+        //     {
+        //         playerValues.RecieveDamage(playerValues.GetPos(), damage);
+        //         damageTimer.Restart();
+        //     }
+        // }
     }
 
-    private void OnCollisionStay(Collision collisionInfo)
-    {
-        _navMeshAgent.speed = 0;
-        if (collisionInfo.gameObject.CompareTag("Player"))
-        {
-            if (damageTimer.Elapsed.TotalSeconds > damageColdown)
-            {
-                playerValues.RecieveDamage(playerValues.GetPos(), damage);
-                damageTimer.Restart();
-            }
-        }
-    }
+    // private void OnCollisionStay(Collision collisionInfo)
+    // {
+    //     if (collisionInfo.gameObject.CompareTag("Player"))
+    //     {
+    //         _navMeshAgent.speed = 0;
+    //         if (damageTimer.GetElapsedSeconds() > damageColdown)
+    //         {
+    //             playerValues.RecieveDamage(playerValues.GetPos(), damage);
+    //             damageTimer.Restart();
+    //         }
+    //     }
+    // }
 
     private void OnCollisionExit(Collision other)
     {
@@ -259,16 +275,16 @@ public class ChaserEnemy : Enemy
 
     public override void RecieveLaserDamage()
     {
-        if (!laserTimer.IsRunning)
+        if (!laserTimer.IsRunning())
         {
             laserTimer.Restart();
             RecieveDamage(15);
         }
 
-        if (laserTimer.Elapsed.TotalSeconds > laserDamageCooldown)
+        if (laserTimer.GetElapsedSeconds() > laserDamageCooldown)
         {
             laserTimer.Stop();
-            laserTimer.Reset();
+            laserTimer.ResetStopwatch();
         }
     }
 
@@ -310,7 +326,7 @@ public class ChaserEnemy : Enemy
     {
         healthBarCanvas.alpha = 1;
         dissolveMaterials.DissolveIn();
-        outlineTimer.Start();
+        outlineTimer.StartStopwatch();
         rigidbody.detectCollisions = true;
         outline.OutlineMode = Outline.Mode.OutlineAll;
         healthBar.value = 1;
@@ -326,7 +342,7 @@ public class ChaserEnemy : Enemy
         isDead = false;
         healthBarCanvas.alpha = 1;
         dissolveMaterials.DissolveIn();
-        outlineTimer.Start();
+        outlineTimer.StartStopwatch();
         rigidbody.detectCollisions = true;
         outline.OutlineMode = Outline.Mode.OutlineAll;
         //lives
@@ -335,24 +351,34 @@ public class ChaserEnemy : Enemy
         UpdateHealthBar();
     }
 
-    public override void ResetEnemy(int maxLivesAux, float speed, int damage, Vector3 pos)
+    public override void ResetEnemy(int maxLivesAux, float speedVal, int damageVal, Vector3 pos)
     {
+        transform.position = new Vector3(0, -1000, 0);
         SetPos(pos);
-        isDead = false;
         healthBarCanvas.alpha = 1;
         dissolveMaterials.DissolveIn();
-        outlineTimer.Start();
+        outlineTimer.Restart();
         rigidbody.detectCollisions = true;
+        //outline
         outline.OutlineMode = Outline.Mode.OutlineAll;
+        outline.OutlineColor = Color.clear;
         //lives
         maxLives = maxLivesAux;
         lives = maxLives;
         //speed
-        this.speed = speed;
+        speed = speedVal;
         ContinueWander();
         //damage
-        this.damage = damage;
+        this.damage = damageVal;
         UpdateHealthBar();
+        isDead = false;
+        StartCoroutine(DelayDissolveInCoroutine());
+    }
+
+    IEnumerator DelayDissolveInCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        dissolveMaterials.DissolveIn();
     }
 
     private void UpdateHealthBar()
@@ -362,6 +388,7 @@ public class ChaserEnemy : Enemy
 
     private void Die()
     {
+        _playerData.AddEnemiesKilled();
         healthBarCanvas.alpha = 0;
         outlineTimer.Stop();
         outline.OutlineMode = Outline.Mode.OutlineHidden;

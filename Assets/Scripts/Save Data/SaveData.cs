@@ -8,6 +8,10 @@ public class SaveData
     [SerializeField] private GameData[] slots;
     [SerializeField] private int lastSesionSlotIndex;
     [SerializeField] private Score[] leaderBoard;
+    //arcade
+    [SerializeField] private string arcadePlayer;
+    [SerializeField] private int arcadeModel;
+    [SerializeField] private ArcadeStats lastGameStats;
     private const int MAX_SLOTS = 4;
 
     //general settings
@@ -16,7 +20,10 @@ public class SaveData
     {
         slots = new GameData[MAX_SLOTS];
         leaderBoard = new Score[10];
+        InitLeaderBoard();
         lastSesionSlotIndex = -1;
+        arcadeModel = 0;
+        arcadePlayer = "---";
     }
 
     #region Methods
@@ -88,7 +95,7 @@ public class SaveData
     {
         for (int i = 0; i < leaderBoard.Length; i++)
         {
-            leaderBoard[0] = new Score("-", 0, 0);
+            leaderBoard[i] = new Score("-", 0, 0);
         }
     }
 
@@ -106,5 +113,34 @@ public class SaveData
         return leaderBoard;
     }
 
+    public void SetArcadeName(string cad)
+    {
+        arcadePlayer = cad.Substring(0,3);
+    }
+
+    public string GetArcadeName()
+    {
+        return arcadePlayer;
+    }
+
+    public void SetArcadeModel(int index)
+    {
+        arcadeModel = index;
+    }
+
+    public int GetArcadeModel()
+    {
+        return arcadeModel;
+    }
+
+    public void SetArcadeStats(ArcadeStats arcadeStats)
+    {
+        lastGameStats = arcadeStats;
+    }
+
+    public ArcadeStats GetArcadeStats()
+    {
+        return lastGameStats;
+    }
     #endregion
 }

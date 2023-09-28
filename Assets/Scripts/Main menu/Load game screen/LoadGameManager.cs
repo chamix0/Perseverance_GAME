@@ -15,10 +15,9 @@ namespace Main_menu.Load_game_screen
         private JSONsaving _jsoNsaving;
         private SaveData _saveData;
         private MainMenuManager _menuManager;
-        [SerializeField] private GameObject uiGameObject;
         [SerializeField] private Toggle loadFileTogle;
         [SerializeField] private Toggle eraseFileTogle;
-
+        [SerializeField] private CanvasGroup uiGameObject;
         private LoadScreen loadScreen;
 
         //variables
@@ -177,9 +176,19 @@ namespace Main_menu.Load_game_screen
             }
         }
 
-        public void HideUI() => uiGameObject.SetActive(false);
+        public void HideUI()
+        {
+            uiGameObject.alpha = 0;
+            uiGameObject.interactable = false;
+            uiGameObject.blocksRaycasts = false;
+        }
 
-        public void ShowUI() => uiGameObject.SetActive(true);
+        public void ShowUI()
+        {
+            uiGameObject.alpha = 1;
+            uiGameObject.interactable = true;
+            uiGameObject.blocksRaycasts = true;
+        }
 
 
         public void SelectNextButton()

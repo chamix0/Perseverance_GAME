@@ -45,6 +45,7 @@ _menuManager.SetTutortialText("W - prev  S - Next  D - increase value   A - decr
             //go back to menu
             else if (Input.GetKeyDown(KeyCode.Escape))
             {
+                settingsManager.HideUI();
                 _sounds.ReturnSound();
                 _camerasController.SetCamera(MenuCameras.EDDO);
                 _menuManager.CheckForContinueAndNewGame();

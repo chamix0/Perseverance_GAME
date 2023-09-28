@@ -13,7 +13,9 @@ public enum CurrentMenuInput
     Gallery,
     Credits,
     Tutorial,
-    None
+    None,
+    Arcade,
+    PreArcade
 }
 
 [DefaultExecutionOrder(1)]
@@ -61,8 +63,6 @@ public class MyMenuInputManager : MonoBehaviour
     {
         if (_inputsMoves && _inputsMoves.HasMessages() && _inputsEnabled)
         {
-           
-            
             Move move = _inputsMoves.Dequeue();
             switch (_currentInput)
             {

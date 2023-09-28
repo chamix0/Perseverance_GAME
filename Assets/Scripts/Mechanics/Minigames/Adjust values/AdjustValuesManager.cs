@@ -199,7 +199,7 @@ public class AdjustValuesManager : Minigame
     private void UpdatesliderValue()
     {
         _sliders[_sliderIndex].value = Mathf.Lerp(_sliders[_sliderIndex].value, _targetValueSlider, _tX);
-        _tX += 0.5f * Time.deltaTime;
+        _tX += 0.5f * Time.unscaledDeltaTime;
         if (_tX > 1.0f)
         {
             _tX = 1.0f;

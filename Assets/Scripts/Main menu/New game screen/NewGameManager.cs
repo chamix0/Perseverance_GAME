@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Main_menu.New_game_screen
 {
@@ -8,9 +9,12 @@ namespace Main_menu.New_game_screen
     {
         //components
         [SerializeField] private List<GameObject> models;
-        [SerializeField] private GameObject uiObject;
+        [SerializeField] private CanvasGroup uiObject;
+        [SerializeField] private Button playButton;
         private MyMenuInputManager _myMenuInputManager;
-        private TMP_InputField _inputField;
+        [SerializeField] private TMP_InputField _inputField;
+        private LoadScreen _loadScreen;
+        private JSONsaving _jsoNsaving;
 
         //variables
         private int _modelIndex;
@@ -20,11 +24,13 @@ namespace Main_menu.New_game_screen
         private List<List<Renderer>> _renderers;
 
         private MainMenuSounds _sounds;
+
         private void Awake()
         {
             _sounds = FindObjectOfType<MainMenuSounds>();
+            _jsoNsaving = FindObjectOfType<JSONsaving>();
             _myMenuInputManager = FindObjectOfType<MyMenuInputManager>();
-            _inputField = uiObject.GetComponent<TMP_InputField>();
+            _loadScreen = FindObjectOfType<LoadScreen>();
             _renderers = new List<List<Renderer>>();
         }
 
@@ -38,6 +44,7 @@ namespace Main_menu.New_game_screen
             _inputField.onValueChanged.AddListener(delegate(string arg0) { OnValueChanged(arg0); });
             _inputField.onSelect.AddListener(delegate { OnSelect(); });
             _inputField.onDeselect.AddListener(delegate { OnDeselect(); });
+            playButton.onClick.AddListener(PlayButtonAction);
         }
 
 
@@ -63,9 +70,27 @@ namespace Main_menu.New_game_screen
             ActivateModel(_modelIndex);
         }
 
-        public void ShowUI() => uiObject.SetActive(true);
+        public void PlayButtonAction()
+        {
+            _sounds.SelectOptionSound();
+            _jsoNsaving._saveData.StartNewGame(GetModelIndex(), GetName());
+            _jsoNsaving.SaveTheData();
+            _loadScreen.LoadLevels();
+        }
 
-        public void HideUI() => uiObject.SetActive(false);
+        public void ShowUI()
+        {
+            uiObject.alpha = 1;
+            uiObject.blocksRaycasts = true;
+            uiObject.interactable = true;
+        }
+
+        public void HideUI()
+        {
+            uiObject.alpha = 0;
+            uiObject.interactable = false;
+            uiObject.blocksRaycasts = false;
+        }
 
         private void HideModels()
         {

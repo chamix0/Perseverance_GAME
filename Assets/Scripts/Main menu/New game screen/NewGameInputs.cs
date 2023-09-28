@@ -45,14 +45,14 @@ namespace Main_menu.New_game_screen
                 else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
                     _newGameManager.ShowPrev();
 
-                //confirm model
-                else if (Input.GetKeyDown(KeyCode.Return))
-                {
-                    _sounds.SelectOptionSound();
-                    _saveData.StartNewGame(_newGameManager.GetModelIndex(), _newGameManager.GetName());
-                    _jsonSaving.SaveTheData();
-                    loadScreen.LoadLevels();
-                }
+                // //confirm model
+                // else if (Input.GetKeyDown(KeyCode.Return))
+                // {
+                //     _sounds.SelectOptionSound();
+                //     _saveData.StartNewGame(_newGameManager.GetModelIndex(), _newGameManager.GetName());
+                //     _jsonSaving.SaveTheData();
+                //     loadScreen.LoadLevels();
+                // }
                 //go back to menu
                 else if (Input.GetKeyDown(KeyCode.Escape))
                 {

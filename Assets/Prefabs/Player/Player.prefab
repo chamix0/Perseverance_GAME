@@ -720,7 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f9ac3a8f9f00ab34295f85ef9da9a8a5, type: 2}
+  m_Material: {fileID: 2100000, guid: 672c7d9648d3dc8408caaf7688917f42, type: 2}
   m_Color: {r: 0.03901863, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -10915,14 +10915,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5529412}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: ae4df6ec191719b4ab937677e720a023, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14695,6 +14695,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad1eac6a1f8322468eff9aeb6318a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  auxDir: {x: 0, y: 0, z: 0}
   movementSpeeds:
   - -1
   - 0
@@ -14702,6 +14703,7 @@ MonoBehaviour:
   - 5
   - 8
   gear: 1
+  isArcade: 0
   stamina: 0
   maxStamina: 100
   lives: 3

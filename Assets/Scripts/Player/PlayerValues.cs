@@ -50,7 +50,7 @@ public class PlayerValues : Subject
 
     //save data
     private JSONsaving _jsoNsaving;
-    private SaveData _saveData;
+    [NonSerialized] public SaveData _saveData;
     [NonSerialized] public GameData gameData;
 
     //variables

@@ -45,32 +45,32 @@ public class TutorialManager : MonoBehaviour
 
     public void Select()
     {
-        if (index == 16)
+        if (index == imagesPoints.Count-6)
         {
             _sounds.SelectOptionSound();
             _loadScreen.LoadMovementTutorial();
         }
-        else if (index == 17)
+        else if (index == imagesPoints.Count-5)
         {
             _sounds.SelectOptionSound();
             _loadScreen.LoadRaceTutorial();
         }
-        else if (index == 18)
+        else if (index == imagesPoints.Count-4)
         {
             _sounds.SelectOptionSound();
             _loadScreen.LoadStealthTutorial();
         }
-        else if (index == 19)
+        else if (index == imagesPoints.Count-3)
         {
             _sounds.SelectOptionSound();
             _loadScreen.LoadMinigamesTutorial();
         }
-        else if (index == 20)
+        else if (index == imagesPoints.Count-2)
         {
             _sounds.SelectOptionSound();
             _loadScreen.LoadShootingTutorial();
         }
-        else if (index == 21)
+        else if (index == imagesPoints.Count-1)
         {
             _sounds.SelectOptionSound();
             _loadScreen.LoadEnemiesTutorial();

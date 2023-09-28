@@ -14,11 +14,14 @@ public class MainMenuManager : MonoBehaviour
     private MyMenuInputManager _menuInputManager;
     private NewGameManager _newGameManager;
     private MenuCamerasController _camerasController;
+    private ArcadeMenuManager _arcadeMenuManager;
     private JSONsaving _jsoNsaving;
     private SaveData _saveData;
     [SerializeField] private Shader buttonShader;
     private LoadGameManager _loadGameManager;
     private LoadScreen loadScreen;
+
+    private SettingsManager _settingsManager;
 
     //variables
     public Color _colorHighlighted;
@@ -51,6 +54,8 @@ public class MainMenuManager : MonoBehaviour
         _menuInputManager = FindObjectOfType<MyMenuInputManager>();
         _newGameManager = FindObjectOfType<NewGameManager>();
         _loadGameManager = FindObjectOfType<LoadGameManager>();
+        _arcadeMenuManager = FindObjectOfType<ArcadeMenuManager>();
+        _settingsManager = FindObjectOfType<SettingsManager>();
         loadScreen = FindObjectOfType<LoadScreen>();
         _jsoNsaving = GetComponent<JSONsaving>();
         _materials = new List<Material>();
@@ -144,11 +149,10 @@ public class MainMenuManager : MonoBehaviour
         //cameras
         if (index != 2)
             _loadGameManager.HideUI();
+        if (index != 3)
+            _arcadeMenuManager.HideUi();
         if (index == 1)
             _camerasController.SetCamera(MenuCameras.NewGame);
-        else if (index == 3)
-            // _camerasController.SetCamera(MenuCameras.Tutorial);
-            ;
         else if (index == 4)
             _camerasController.SetCamera(MenuCameras.Tutorial);
         else if (index == 5)
@@ -178,10 +182,10 @@ public class MainMenuManager : MonoBehaviour
                 _loadGameManager.ShowUI();
                 _loadGameManager.UpdateText();
                 _loadGameManager.UpdateColors();
-
                 break;
-            //Arcade
             case 3:
+                _menuInputManager.SetCurrentInput(CurrentMenuInput.PreArcade);
+                _arcadeMenuManager.ShowUi();
 
                 break;
             //tutorial
@@ -192,7 +196,7 @@ public class MainMenuManager : MonoBehaviour
             //settings
             case 5:
                 _menuInputManager.SetCurrentInput(CurrentMenuInput.Settings);
-
+                _settingsManager.ShowUI();
                 break;
             //Gallery
             case 6:

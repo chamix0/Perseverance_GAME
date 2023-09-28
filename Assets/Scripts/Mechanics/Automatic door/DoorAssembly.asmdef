@@ -1,3 +1,16 @@
 {
-	"name": "DoorAssembly"
+    "name": "DoorAssembly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:949c73f3b268c5043af00f8cb0c1310e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

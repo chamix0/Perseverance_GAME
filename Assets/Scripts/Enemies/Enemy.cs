@@ -13,7 +13,6 @@ public abstract class Enemy : MonoBehaviour
     public abstract bool GetEnemyDead();
     public abstract void ResetEnemy();
     public abstract void ResetEnemy(int maxLivesAux, float speed, int damage, Vector3 pos);
-
     public abstract void HitSlow();
     public abstract void Freeze();
     public abstract void Burn();
