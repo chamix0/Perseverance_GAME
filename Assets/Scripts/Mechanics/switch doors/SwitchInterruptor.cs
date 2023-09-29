@@ -6,14 +6,14 @@ public class SwitchInterruptor : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] SwitchDoorManager switchDoorManager;
-    private MeshRenderer renderer;
+    private MeshRenderer rendererSwitch;
     private Stopwatch timer;
     private float cooldoown = 500;
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
 
     void Start()
     {
-        renderer = GetComponent<MeshRenderer>();
+        rendererSwitch = GetComponent<MeshRenderer>();
         timer = new Stopwatch();
         timer.Start();
     }
@@ -21,9 +21,9 @@ public class SwitchInterruptor : MonoBehaviour
     public void SetColor()
     {
         if (switchDoorManager.redBlue)
-            renderer.sharedMaterial.SetColor(BackgroundColor, Color.magenta);
+            rendererSwitch.sharedMaterial.SetColor(BackgroundColor, Color.magenta);
         else
-            renderer.sharedMaterial.SetColor(BackgroundColor, Color.green);
+            rendererSwitch.sharedMaterial.SetColor(BackgroundColor, Color.green);
     }
 
 

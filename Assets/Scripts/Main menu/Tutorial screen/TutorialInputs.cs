@@ -1,7 +1,8 @@
 using Main_menu;
+using Player.Observer_pattern;
 using UnityEngine;
 
-public class TutorialInputs : MonoBehaviour
+public class TutorialInputs : MonoBehaviour, IObserver
 {
     //components
     private MyMenuInputManager _myInputManager;
@@ -10,6 +11,8 @@ public class TutorialInputs : MonoBehaviour
     private SaveData _saveData;
     private MainMenuManager _menuManager;
     private MainMenuSounds _sounds;
+    private GuiManagerMainMenu _guiManagerMainMenu;
+    private PlayerNewInputs _newInputs;
 
     void Start()
     {
@@ -18,30 +21,29 @@ public class TutorialInputs : MonoBehaviour
         tutorialManager = FindObjectOfType<TutorialManager>();
         _camerasController = FindObjectOfType<MenuCamerasController>();
         _menuManager = FindObjectOfType<MainMenuManager>();
+        _guiManagerMainMenu = FindObjectOfType<GuiManagerMainMenu>();
+        _newInputs = FindObjectOfType<PlayerNewInputs>();
+        _myInputManager.AddObserver(this);
     }
 
     void Update()
     {
         if (_myInputManager.GetCurrentInput() == CurrentMenuInput.Tutorial && _myInputManager.GetInputsEnabled())
         {
-            if (Input.anyKey)
-            {
-                _menuManager.SetTutortialText("A- prev  D - Next  Enter - select   esc - exit");  
-            }
+            if (_newInputs.CheckInputChanged())
+                UpdateTutorial();
 
             //next model
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            if (_newInputs.DownTap())
                 tutorialManager.ShowNext();
-
             //prev model
-            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            else if (_newInputs.UpTap())
                 tutorialManager.ShowPrev();
             //prev model
-            else if (Input.GetKeyDown(KeyCode.Return))
+            else if (_newInputs.SelectBasic())
                 tutorialManager.Select();
-
             //go back to menu
-            else if (Input.GetKeyDown(KeyCode.Escape))
+            else if (_newInputs.ReturnBasic())
             {
                 _sounds.ReturnSound();
                 _camerasController.SetCamera(MenuCameras.EDDO);
@@ -53,6 +55,10 @@ public class TutorialInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
+        _newInputs.SetCubeAsDevice();
+        if (_newInputs.CheckInputChanged())
+            UpdateTutorial();
+
         //change model
         if (move.face == FACES.U)
         {
@@ -80,5 +86,21 @@ public class TutorialInputs : MonoBehaviour
                 tutorialManager.Select();
             }
         }
+    }
+
+    public void OnNotify(PlayerActions playerAction)
+    {
+        if (playerAction is PlayerActions.ChangeInputMode &&
+            _myInputManager.GetCurrentInput() is CurrentMenuInput.Tutorial)
+            UpdateTutorial();
+    }
+
+    private void UpdateTutorial()
+    {
+        _guiManagerMainMenu.ShowTutorial();
+        _guiManagerMainMenu.SetTutorial(
+            _newInputs.DownText() + "- next |" + _newInputs.UpText() +
+            "- Prev |" +
+            _newInputs.SelectBasicText() + "- Select |" + _newInputs.ExitBasicText() + "- return ");
     }
 }

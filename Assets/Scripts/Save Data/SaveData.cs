@@ -7,7 +7,9 @@ public class SaveData
 {
     [SerializeField] private GameData[] slots;
     [SerializeField] private int lastSesionSlotIndex;
+
     [SerializeField] private Score[] leaderBoard;
+
     //arcade
     [SerializeField] private string arcadePlayer;
     [SerializeField] private int arcadeModel;
@@ -115,11 +117,14 @@ public class SaveData
 
     public void SetArcadeName(string cad)
     {
-        arcadePlayer = cad.Substring(0,3);
+        string aux = cad.Substring(0, 3);
+        arcadePlayer = aux;
     }
 
     public string GetArcadeName()
     {
+        if (arcadePlayer == null)
+            return "---";
         return arcadePlayer;
     }
 
@@ -142,5 +147,6 @@ public class SaveData
     {
         return lastGameStats;
     }
+
     #endregion
 }

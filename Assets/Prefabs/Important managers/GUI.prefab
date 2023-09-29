@@ -31,7 +31,7 @@ RectTransform:
   - {fileID: 911341898861209121}
   - {fileID: 5608633599473271868}
   m_Father: {fileID: 8813333371353065930}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -347,8 +347,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 738197503
-  m_fontColor: {r: 1, g: 1, b: 1, a: 0.16862746}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3063,6 +3063,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1485029908}
+  - component: {fileID: 5366511493656712439}
+  - component: {fileID: 3888041694665106732}
+  - component: {fileID: 3279469438665719282}
   m_Layer: 9
   m_Name: Tutorials
   m_TagString: Untagged
@@ -3084,13 +3087,63 @@ RectTransform:
   m_Children:
   - {fileID: 182804445}
   m_Father: {fileID: 8813333371353065930}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00001923, y: -203.3}
-  m_SizeDelta: {x: 800, y: 43.39}
+  m_AnchoredPosition: {x: -0.00001923, y: -205.85}
+  m_SizeDelta: {x: 800, y: 38.31}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &5366511493656712439
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485029907}
+  m_CullTransparentMesh: 1
+--- !u!114 &3888041694665106732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485029907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5529412}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!225 &3279469438665719282
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485029907}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1608369160
 GameObject:
   m_ObjectHideFlags: 0
@@ -5951,7 +6004,7 @@ Transform:
   - {fileID: 6259348526193108940}
   - {fileID: 7640514586010013310}
   m_Father: {fileID: 8813333371353065930}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6591523724119154690
 GameObject:
@@ -6997,9 +7050,9 @@ RectTransform:
   - {fileID: 2000832924}
   - {fileID: 623970496}
   - {fileID: 1644235800}
-  - {fileID: 3445095}
   - {fileID: 1485029908}
   - {fileID: 3125284006434096039}
+  - {fileID: 3445095}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7120,7 +7173,7 @@ MonoBehaviour:
   pausePanel: {fileID: 0}
   pauseMoveText: {fileID: 1929553458}
   pauseProgressSlider: {fileID: 442652195}
-  tutorialGameObject: {fileID: 1485029907}
+  tutorialGameObject: {fileID: 3279469438665719282}
   tutorialText: {fileID: 182804446}
   gearsGameObject: {fileID: 6442379904044107460}
   gearImages:
@@ -7129,6 +7182,18 @@ MonoBehaviour:
   - {fileID: 8622559994282816838}
   - {fileID: 6298832783325219501}
   - {fileID: 1225266408120753070}
+  crosshair: {fileID: 0}
+  crossHairRectTransform: {fileID: 0}
+  ArmorWheel: {fileID: 0}
+  messageCanvasGroup: {fileID: 0}
+  messageText: {fileID: 0}
+  statsCanvasGroup: {fileID: 0}
+  statsText: {fileID: 0}
+  pointsCanvasGroup: {fileID: 0}
+  pointsText: {fileID: 0}
+  _emergingPoints: {fileID: 0}
+  livesCanvas: {fileID: 0}
+  livesText: {fileID: 0}
 --- !u!1 &8854964104836340720
 GameObject:
   m_ObjectHideFlags: 0

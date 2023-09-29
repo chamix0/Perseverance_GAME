@@ -1,6 +1,7 @@
 using System;
 using General_Inputs;
 using Mechanics.General_Inputs.Machine_gun_mode;
+using Mechanics.Locker_door.Caja_fuerte;
 using Mechanics.MiniBoss;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Mechanics.General_Inputs
     {
         private PlayerValues _playerValues;
         private MovesQueue _inputsMoves;
-        private BasicCameraMovementInputs _movementInputs;
+        // private BasicCameraMovementInputs _movementInputs;
         private RotatingWallInputs _rotatingWallInputs;
         private ColorsInputs _colorsInputs;
         private MemoryMinigameInputs _memoryMinigameInputs;
@@ -21,13 +22,14 @@ namespace Mechanics.General_Inputs
         private PushFastInputs _pushFastInputs;
         private MiniBossInputs _miniBossInputs;
         private LockerInputs _lockerInputs;
-        private StealthMovementInputs _stealthMovementInputs;
-        private MachinegunMovementInputs _machinegunMovementInputs;
-        private RunMovementInputs _runMovementInputs;
+        // private StealthMovementInputs _stealthMovementInputs;
+        // private MachinegunMovementInputs _machinegunMovementInputs;
+        // private RunMovementInputs _runMovementInputs;
         private DontTouchWallsInputs _dontTouchWallsInputs;
         private PuzzleInputs _puzzleInputs;
         private ConversationInputs _conversationInputs;
         private PlayerMechanicsArcadeInputs _arcadeInputs;
+        private UnifiedMechanicsInput _unifiedMechanicsInput;
 
         private GuiManager gui;
         private Generalnputs generalnputs;
@@ -46,7 +48,7 @@ namespace Mechanics.General_Inputs
             }
 
             _playerValues = FindObjectOfType<PlayerValues>();
-            _movementInputs = FindObjectOfType<BasicCameraMovementInputs>();
+            // _movementInputs = FindObjectOfType<BasicCameraMovementInputs>();
             _rotatingWallInputs = FindObjectOfType<RotatingWallInputs>();
             _colorsInputs = FindObjectOfType<ColorsInputs>();
             _memoryMinigameInputs = FindObjectOfType<MemoryMinigameInputs>();
@@ -56,9 +58,9 @@ namespace Mechanics.General_Inputs
             _pushFastInputs = FindObjectOfType<PushFastInputs>();
             _miniBossInputs = FindObjectOfType<MiniBossInputs>();
             _lockerInputs = FindObjectOfType<LockerInputs>();
-            _stealthMovementInputs = FindObjectOfType<StealthMovementInputs>();
-            _machinegunMovementInputs = FindObjectOfType<MachinegunMovementInputs>();
-            _runMovementInputs = FindObjectOfType<RunMovementInputs>();
+            // _stealthMovementInputs = FindObjectOfType<StealthMovementInputs>();
+            // _machinegunMovementInputs = FindObjectOfType<MachinegunMovementInputs>();
+            // _runMovementInputs = FindObjectOfType<RunMovementInputs>();
             _dontTouchWallsInputs = FindObjectOfType<DontTouchWallsInputs>();
             _puzzleInputs = FindObjectOfType<PuzzleInputs>();
             _conversationInputs = FindObjectOfType<ConversationInputs>();
@@ -66,6 +68,7 @@ namespace Mechanics.General_Inputs
             generalnputs = FindObjectOfType<Generalnputs>();
             pauseInputs = FindObjectOfType<PauseInputs>();
             _arcadeInputs = FindObjectOfType<PlayerMechanicsArcadeInputs>();
+            _unifiedMechanicsInput = FindObjectOfType<UnifiedMechanicsInput>();
         }
 
         private void Update()
@@ -86,7 +89,8 @@ namespace Mechanics.General_Inputs
                     switch (_playerValues.GetCurrentInput())
                     {
                         case CurrentInput.Movement:
-                            _movementInputs.PerformAction(move);
+                            _unifiedMechanicsInput.PerformAction(move);
+                            // _movementInputs.PerformAction(move);
                             break;
                         case CurrentInput.RotatingWall:
                             _rotatingWallInputs.PerformAction(move);
@@ -116,13 +120,16 @@ namespace Mechanics.General_Inputs
                             _miniBossInputs.PerformAction(move);
                             break;
                         case CurrentInput.StealthMovement:
-                            _stealthMovementInputs.PerformAction(move);
+                            _unifiedMechanicsInput.PerformAction(move);
+                            // _stealthMovementInputs.PerformAction(move);
                             break;
                         case CurrentInput.ShootMovement:
-                            _machinegunMovementInputs.PerformAction(move);
+                            // _machinegunMovementInputs.PerformAction(move);
+                            _unifiedMechanicsInput.PerformAction(move);
                             break;
                         case CurrentInput.RaceMovement:
-                            _runMovementInputs.PerformAction(move);
+                            // _runMovementInputs.PerformAction(move);
+                            _unifiedMechanicsInput.PerformAction(move);
                             break;
                         case CurrentInput.DontTouchTheWallsMinigame:
                             _dontTouchWallsInputs.PerformAction(move);

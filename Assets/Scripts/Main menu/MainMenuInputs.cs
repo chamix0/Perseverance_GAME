@@ -1,15 +1,21 @@
+using Player.Observer_pattern;
 using UnityEngine;
 
-public class MainMenuInputs : MonoBehaviour
+public class MainMenuInputs : MonoBehaviour, IObserver
 {
     //components
     private MyMenuInputManager _myInputManager;
     private MainMenuManager _menuManager;
+    private GuiManagerMainMenu _guiManagerMainMenu;
+    private PlayerNewInputs _newInputs;
 
     void Start()
     {
         _myInputManager = FindObjectOfType<MyMenuInputManager>();
         _menuManager = FindObjectOfType<MainMenuManager>();
+        _guiManagerMainMenu = FindObjectOfType<GuiManagerMainMenu>();
+        _newInputs = FindObjectOfType<PlayerNewInputs>();
+        _myInputManager.AddObserver(this);
     }
 
     // Update is called once per frame
@@ -17,29 +23,29 @@ public class MainMenuInputs : MonoBehaviour
     {
         if (_myInputManager.GetCurrentInput() == CurrentMenuInput.Menu && _myInputManager.GetInputsEnabled())
         {
-            if (Input.anyKey)
-            {
-                _menuManager.SetTutortialText("W - up   S - down  Enter/D - Select");
-            }
+            if (_newInputs.CheckInputChanged())
+                UpdateTutorial();
+
 
             //select next button
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            if (_newInputs.UpTap())
                 _menuManager.SelectPrevButton();
 
             //select previous button 
-            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            else if (_newInputs.DownTap())
                 _menuManager.SelectNextButton();
 
             //select button
-            else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.D))
+            else if (_newInputs.SelectBasic() || _newInputs.RightTap())
                 _menuManager.PressEnter();
         }
     }
 
     public void PerformAction(Move move)
     {
-        _menuManager.SetTutortialText("R - up/down  F - Select");
-
+        _newInputs.SetCubeAsDevice();
+        if (_newInputs.CheckInputChanged())
+            UpdateTutorial();
         //move between buttons
         if (move.face == FACES.R)
         {
@@ -55,5 +61,20 @@ public class MainMenuInputs : MonoBehaviour
             if (move.direction == 1)
                 _menuManager.PressEnter();
         }
+    }
+
+    public void OnNotify(PlayerActions playerAction)
+    {
+        if (playerAction is PlayerActions.ChangeInputMode && _myInputManager.GetCurrentInput() is CurrentMenuInput.Menu)
+            UpdateTutorial();
+    }
+
+    private void UpdateTutorial()
+    {
+        _guiManagerMainMenu.ShowTutorial();
+        _guiManagerMainMenu.SetTutorial(
+            _newInputs.DownText() + "- next |" + _newInputs.UpText() +
+            "- Prev |" +
+            _newInputs.SelectBasicText() + "- Select ");
     }
 }

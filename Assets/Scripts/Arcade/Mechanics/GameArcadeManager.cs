@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Player.Observer_pattern;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UTILS;
 
 [DefaultExecutionOrder(6)]
 public class GameArcadeManager : MonoBehaviour,IObserver

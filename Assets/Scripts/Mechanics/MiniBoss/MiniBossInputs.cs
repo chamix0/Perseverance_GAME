@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Mechanics.General_Inputs;
+using Player.Observer_pattern;
 using UnityEngine;
 
 namespace Mechanics.MiniBoss
 {
-    public class MiniBossInputs : MonoBehaviour
+    public class MiniBossInputs : MonoBehaviour, IObserver
     {
         private PlayerValues _playerValues;
         private MiniBossManager _miniBossManager;
+        private GuiManager _guiManager;
+        private PlayerNewInputs _newInputs;
         private KeyCode kCode; //this stores your custom key
         private Stopwatch _timer;
         private float _keyCooldown = 50;
@@ -31,6 +34,9 @@ namespace Mechanics.MiniBoss
         {
             _playerValues = FindObjectOfType<PlayerValues>();
             _miniBossManager = FindObjectOfType<MiniBossManager>();
+            _guiManager = FindObjectOfType<GuiManager>();
+            _newInputs = FindObjectOfType<PlayerNewInputs>();
+            _playerValues.AddObserver(this);
         }
 
         void Update()
@@ -38,6 +44,9 @@ namespace Mechanics.MiniBoss
             if (_playerValues.GetCurrentInput() == CurrentInput.MiniBoss && _playerValues.GetInputsEnabled() &&
                 !_playerValues.GetPaused())
             {
+                if (_newInputs.CheckInputChanged())
+                    UpdateTutorial();
+
                 if (_miniBossManager._phase == ScreenPhase.Game)
                 {
                     if (!_timer.IsRunning)
@@ -59,14 +68,28 @@ namespace Mechanics.MiniBoss
                         }
                     }
                 }
+                else if (_miniBossManager._phase == ScreenPhase.Boss)
+                {
+                    if (_newInputs.AttackMiniBoss())
+                        _miniBossManager.SelectAction(PlayerFightAction.Attack);
+                    if (_newInputs.SpecialAttackMiniBoss())
+                        _miniBossManager.SelectAction(PlayerFightAction.SpecialAttack);
+                    if (_newInputs.DefendMiniBoss())
+                        _miniBossManager.SelectAction(PlayerFightAction.Defend);
+                    if (_newInputs.SpecialDefendMiniBoss())
+                        _miniBossManager.SelectAction(PlayerFightAction.SpecialDefense);
+                }
             }
         }
 
         public void PerformAction(Move move)
         {
-            _miniBossManager.ChangeInputToCube();
             if (_playerValues.GetInputsEnabled())
             {
+                _miniBossManager.ChangeInputToCube();
+                _newInputs.SetCubeAsDevice();
+                if (_newInputs.CheckInputChanged())
+                    UpdateTutorial();
                 if (_miniBossManager._phase == ScreenPhase.Game)
                 {
                     _miniBossManager.ProcessInput(move);
@@ -88,6 +111,21 @@ namespace Mechanics.MiniBoss
                     }
                 }
             }
+        }
+
+        public void OnNotify(PlayerActions playerAction)
+        {
+            if (playerAction is PlayerActions.ChangeInputMode&& _playerValues.GetCurrentInput() == CurrentInput.MiniBoss)
+                UpdateTutorial();
+        }
+
+        private void UpdateTutorial()
+        {
+            _guiManager.ShowTutorial();
+            _guiManager.SetTutorial(
+                _newInputs.AttackText() + "- Attack |" + _newInputs.SpecialAttackText() +
+                "- Special attack |" +
+                _newInputs.DefendText() + "- Defend |"+_newInputs.SpecialDefenseText()+"- Special defense");
         }
     }
 }

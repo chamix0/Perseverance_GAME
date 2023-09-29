@@ -52,7 +52,7 @@ public class GuiManager : Subject
     [SerializeField] private Slider pauseProgressSlider;
 
     //tutorial
-    [Header("Tutorial")] [SerializeField] private GameObject tutorialGameObject;
+    [Header("Tutorial")] [SerializeField] private CanvasGroup tutorialGameObject;
     [SerializeField] private TMP_Text tutorialText;
 
     //gears
@@ -404,7 +404,7 @@ public class GuiManager : Subject
     #endregion
 
     #region Tutorial
-
+    
     public void SetTutorial(string cad)
     {
         tutorialText.text = cad;
@@ -412,10 +412,12 @@ public class GuiManager : Subject
 
     public void ShowTutorial()
     {
+        tutorialGameObject.alpha = 1;
     }
 
     public void HideTutorial()
     {
+        tutorialGameObject.alpha = 0;
     }
 
     #endregion

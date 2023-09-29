@@ -1,12 +1,14 @@
 using System;
 using Mechanics.General_Inputs;
+using Player.Observer_pattern;
 using UnityEngine;
 
-public class RotatingWallInputs : MonoBehaviour,InputInterface
+public class RotatingWallInputs : MonoBehaviour, IObserver
 {
     // Start is called before the first frame update
     // Start is called before the first frame update
     private PlayerValues _playerValues;
+    private PlayerNewInputs _newInputs;
     [NonSerialized] public RotatingWall _rotatingWall;
     private GuiManager _guiManager;
     private CameraController _cameraController;
@@ -16,6 +18,8 @@ public class RotatingWallInputs : MonoBehaviour,InputInterface
         _cameraController = FindObjectOfType<CameraController>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _guiManager = FindObjectOfType<GuiManager>();
+        _newInputs = FindObjectOfType<PlayerNewInputs>();
+        _playerValues.AddObserver(this);
     }
 
     // Update is called once per frame
@@ -24,23 +28,20 @@ public class RotatingWallInputs : MonoBehaviour,InputInterface
         if (_playerValues.GetCurrentInput() == CurrentInput.RotatingWall && _playerValues.GetInputsEnabled() &&
             !_playerValues.GetPaused())
         {
-            if (Input.anyKey)
-            {
-                _guiManager.SetTutorial(
-                    "QE - Rotate wall    WS - Exit   ");
-            }
+            if (_newInputs.CheckInputChanged())
+                UpdateTutorial();
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (_newInputs.RotateWallCounterClockWise())
             {
                 _rotatingWall.RotateWallCounterClockWise();
             }
 
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (_newInputs.RotateWallClockWise())
             {
                 _rotatingWall.RotateWallClockWise();
             }
 
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.W))
+            if (_newInputs.ExitWall())
             {
                 if (_rotatingWall.CanExitRotatingWall())
                 {
@@ -55,8 +56,10 @@ public class RotatingWallInputs : MonoBehaviour,InputInterface
     {
         if (_playerValues.GetInputsEnabled())
         {
-            _guiManager.SetTutorial(
-                "D - Rotate wall   U - Camera horizonatal axis    L - Camera Vertical Axis     R - Exit");
+            _newInputs.SetCubeAsDevice();
+            if (_newInputs.CheckInputChanged())
+                UpdateTutorial();
+
             if (move.face == FACES.D)
             {
                 if (move.direction == 1)
@@ -85,5 +88,20 @@ public class RotatingWallInputs : MonoBehaviour,InputInterface
                 else _cameraController.RotateCounterClockwise();
             }
         }
+    }
+
+    public void OnNotify(PlayerActions playerAction)
+    {
+        if (playerAction is PlayerActions.ChangeInputMode && _playerValues.GetCurrentInput() == CurrentInput.RotatingWall )
+            UpdateTutorial();
+    }
+
+    private void UpdateTutorial()
+    {
+        _guiManager.ShowTutorial();
+        _guiManager.SetTutorial(
+            _newInputs.RotateCWText() + "- Rotate wall Clockwise |" + _newInputs.RotateCCWText() +
+            "- Rotate wall Counter Clockwise |" +
+            _newInputs.ExitWallText() + "- Exit ");
     }
 }

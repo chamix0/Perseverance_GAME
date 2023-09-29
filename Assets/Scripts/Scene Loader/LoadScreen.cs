@@ -1,6 +1,5 @@
 using System.Collections;
 using TMPro;
-using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,63 +15,64 @@ public class LoadScreen : MonoBehaviour
 
     public void LoadCubeConexion()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/connect cube"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/connect cube"));
     }
 
     public void LoadMenu()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/Main menu"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/Main menu"));
     }
 
     public void LoadLevels()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/separated levels/Main level"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/separated levels/Main level"));
     }
 
     public void LoadCredits()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/final credits"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/final credits"));
     }
 
     public void LoadMovementTutorial()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/Door 1"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/Tutorials/Door 1"));
     }
 
     public void LoadRaceTutorial()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/race 1"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/Tutorials/race 1"));
     }
 
     public void LoadStealthTutorial()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/camera enem 1"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/Tutorials/camera enem 1"));
     }
 
     public void LoadMinigamesTutorial()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/terminals 1"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/Tutorials/terminals 1"));
     }
 
     public void LoadShootingTutorial()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/target door 1"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/Tutorials/target door 1"));
     }
 
     public void LoadArduinoConnect()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/Connect Arduino"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/Connect Arduino"));
     }
 
     public void LoadEnemiesTutorial()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/Tutorials/enemies 1"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/Tutorials/enemies 1"));
     }
-    
+
     public void LoadArcadeGame()
     {
-        StartCoroutine(LoadScenAsync("Scenes/Game/Arcade/Arcade Game"));
+        StartCoroutine(LoadSceneCoroutine("Scenes/Game/Arcade/Arcade Game"));
     }
+
     #region Load levels async
 
     public void LoadFoundry()
@@ -117,11 +117,13 @@ public class LoadScreen : MonoBehaviour
         _text.text = text;
     }
 
-    IEnumerator LoadScenAsync(string sceneIndex)
+    IEnumerator LoadSceneCoroutine(string sceneIndex)
     {
         loadingScreen.alpha = 1;
-
+        loadingScreen.interactable = false;
+        loadingScreen.blocksRaycasts = true;
+        print("AAAA");
         yield return new WaitForSeconds(5);
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
+        SceneManager.LoadScene(sceneIndex,LoadSceneMode.Single);
     }
 }

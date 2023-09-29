@@ -9,7 +9,7 @@ namespace Main_menu.New_game_screen
     {
         //components
         [SerializeField] private List<GameObject> models;
-        [SerializeField] private CanvasGroup uiObject;
+        [SerializeField] private CanvasGroup uiObject,playButtonCanvas;
         [SerializeField] private Button playButton;
         private MyMenuInputManager _myMenuInputManager;
         [SerializeField] private TMP_InputField _inputField;
@@ -45,6 +45,7 @@ namespace Main_menu.New_game_screen
             _inputField.onSelect.AddListener(delegate { OnSelect(); });
             _inputField.onDeselect.AddListener(delegate { OnDeselect(); });
             playButton.onClick.AddListener(PlayButtonAction);
+            HidePlayButton();
         }
 
 
@@ -76,6 +77,7 @@ namespace Main_menu.New_game_screen
             _jsoNsaving._saveData.StartNewGame(GetModelIndex(), GetName());
             _jsoNsaving.SaveTheData();
             _loadScreen.LoadLevels();
+            playButton.interactable = false;
         }
 
         public void ShowUI()
@@ -91,7 +93,18 @@ namespace Main_menu.New_game_screen
             uiObject.interactable = false;
             uiObject.blocksRaycasts = false;
         }
-
+        public void ShowPlayButton()
+        {
+            playButtonCanvas.alpha = 1;
+            playButtonCanvas.interactable = true;
+            playButtonCanvas.blocksRaycasts = true;
+        }
+        public void HidePlayButton()
+        {
+            playButtonCanvas.alpha = 0;
+            playButtonCanvas.interactable = false;
+            playButtonCanvas.blocksRaycasts = false;
+        }
         private void HideModels()
         {
             for (int i = 0; i < models.Count; i++)

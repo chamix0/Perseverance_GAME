@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Mechanics.General_Inputs;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -58,7 +58,7 @@ public class PauseManager : MonoBehaviour
             Pause();
             pauseSounds.PlaySelect();
         });
-        exitButton.onClick.AddListener(() => ExitButtonAction());
+        exitButton.onClick.AddListener(ExitButtonAction);
         if (cubeConectionManager)
             reconectButton.onClick.AddListener(() => cubeConectionManager.ReEstablish());
         else reconectButton.gameObject.SetActive(false);
@@ -74,7 +74,6 @@ public class PauseManager : MonoBehaviour
         soundManager.SetMusicVolume(playerValues.gameData.GetMusicVolume());
         uiVolumeSlider.value = playerValues.gameData.GetUiVolume();
         soundManager.SetUiVolume(playerValues.gameData.GetUiVolume());
-
 
         masterVolumeSlider.onValueChanged.AddListener(MasterSliderAction);
         vfxVolumeSlider.onValueChanged.AddListener(VfxSliderAction);
@@ -121,7 +120,6 @@ public class PauseManager : MonoBehaviour
             guiManager.ShowPausePanel();
             if (!guiManager.GetObjetiveText().Equals(""))
                 guiManager.ShowObjetives();
-            guiManager.SetTutorial(" ");
             soundManager.SetVfxVolume(0);
         }
         else
@@ -135,7 +133,6 @@ public class PauseManager : MonoBehaviour
     public void ExitButtonAction()
     {
         pauseSounds.PlaySelect();
-        playerValues.SetCurrentInput(CurrentInput.None);
         guiManager.HideGui();
         loadScreen.LoadMenu();
     }

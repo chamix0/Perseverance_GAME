@@ -1,54 +1,54 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
 
-public class MyStopWatch : MonoBehaviour
+namespace UTILS
 {
-    private float elapsed = 0;
-
-    private bool stoped;
-
-    // Update is called once per frame
-    void FixedUpdate()
+    public class MyStopWatch : MonoBehaviour
     {
-        if (!stoped)
-            elapsed += Time.deltaTime;
-    }
+        private float _elapsed = 0;
 
-    public void Stop()
-    {
-        stoped = true;
-    }
+        private bool _stopped;
 
-    public void StartStopwatch()
-    {
-        stoped = false;
-    }
+        // Update is called once per frame
+        void FixedUpdate()
+        {
+            if (!_stopped)
+                _elapsed += Time.deltaTime;
+        }
 
-    public void ResetStopwatch()
-    {
-        elapsed = 0;
-    }
+        public void Stop()
+        {
+            _stopped = true;
+        }
 
-    public void Restart()
-    {
-        ResetStopwatch();
-        StartStopwatch();
-    }
+        public void StartStopwatch()
+        {
+            _stopped = false;
+        }
 
-    public bool IsRunning()
-    {
-        return !stoped;
-    }
+        public void ResetStopwatch()
+        {
+            _elapsed = 0;
+        }
 
-    public float GetElapsedMiliseconds()
-    {
-        return elapsed * 1000;
-    }
+        public void Restart()
+        {
+            ResetStopwatch();
+            StartStopwatch();
+        }
 
-    public float GetElapsedSeconds()
-    {
-        return elapsed;
+        public bool IsRunning()
+        {
+            return !_stopped;
+        }
+
+        public float GetElapsedMiliseconds()
+        {
+            return _elapsed * 1000;
+        }
+
+        public float GetElapsedSeconds()
+        {
+            return _elapsed;
+        }
     }
 }

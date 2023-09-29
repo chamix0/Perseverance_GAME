@@ -5,14 +5,14 @@ public class PauseInputs : MonoBehaviour,InputInterface
 {
     // Start is called before the first frame update
     private PauseManager pauseManager;
-    private GuiManager guiManager;
     private PlayerValues playerValues;
+    private PlayerNewInputs _newInputs;
 
     void Start()
     {
         playerValues = FindObjectOfType<PlayerValues>();
         pauseManager = FindObjectOfType<PauseManager>();
-        guiManager = FindObjectOfType<GuiManager>();
+        _newInputs = FindObjectOfType<PlayerNewInputs>();
     }
 
     // Update is called once per frame
@@ -20,40 +20,26 @@ public class PauseInputs : MonoBehaviour,InputInterface
     {
         if (playerValues.GetPaused())
         {
-            if (Input.anyKey)
-            {
-                guiManager.SetTutorial(
-                    "Esc - Exit pause ");
-            }
-
-            if (Input.GetKeyDown(KeyCode.W))
-            {
+            if (_newInputs.UpTap())
                 pauseManager.SelectPrev();
-            }
-            else if (Input.GetKeyDown(KeyCode.S))
-            {
+            
+            else if (_newInputs.DownTap())
                 pauseManager.SelectNext();
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
+            
+            else if (_newInputs.RightTap())
                 pauseManager.IncreaseValue();
-            }
-            else if (Input.GetKeyDown(KeyCode.A))
-            {
+            
+            else if (_newInputs.LeftTap())
                 pauseManager.DecreaseValue();
-            }
-            else if (Input.GetKeyDown(KeyCode.Return))
-            {
+            
+            else if (_newInputs.SelectBasic())
                 pauseManager.Confirm();
-            }
+            
         }
     }
 
     public void PerformAction(Move move)
     {
-        guiManager.SetTutorial(
-            "R - Select Next/Previous    F - Increase/Decrease value     U - Confirm     B - Exit");
-
         if (move.face is FACES.R)
         {
             if (move.direction == 1)

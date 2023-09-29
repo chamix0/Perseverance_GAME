@@ -3,6 +3,7 @@ using System.Collections;
 using Arcade.Mechanics.Bullets;
 using UnityEngine;
 using UnityEngine.AI;
+using UTILS;
 using Slider = UnityEngine.UI.Slider;
 
 public class ChaserEnemy : Enemy

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[DefaultExecutionOrder(2)]
+[DefaultExecutionOrder(1)]
 public class PlayerCreation : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -17,7 +17,7 @@ public class PlayerCreation : MonoBehaviour
     private string[] bodyParts = { "", "Cylinder.001", "Cylinder.015", "Cube.012", "Cube.007", "Cube.001", "Cube.005" };
     private static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
 
-    void Start()
+    void Awake()
     {
         //collisions
 
@@ -33,6 +33,7 @@ public class PlayerCreation : MonoBehaviour
         {
             var oldMaterials = modelObjects[i].GetComponent<Renderer>().materials;
             Material[] newMaterials;
+            
             if (i == 0)
                 newMaterials = modelTextures[model].GetComponent<Renderer>().sharedMaterials;
             else

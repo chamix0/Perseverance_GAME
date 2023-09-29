@@ -1,10 +1,12 @@
 using Mechanics.General_Inputs;
+using Player.Observer_pattern;
 using UnityEngine;
 
-public class AdjustValuesInputs : MonoBehaviour
+public class AdjustValuesInputs : MonoBehaviour, IObserver
 {
     private AdjustValuesManager _adjustValuesManager;
-
+    private PlayerNewInputs _newInputs;
+    private GuiManager _guiManager;
     private PlayerValues _playerValues;
 
     // Start is called before the first frame update
@@ -12,6 +14,9 @@ public class AdjustValuesInputs : MonoBehaviour
     {
         _playerValues = FindObjectOfType<PlayerValues>();
         _adjustValuesManager = FindObjectOfType<AdjustValuesManager>();
+        _newInputs = FindObjectOfType<PlayerNewInputs>();
+        _guiManager = FindObjectOfType<GuiManager>();
+        _playerValues.AddObserver(this);
     }
 
     // Update is called once per frame
@@ -20,56 +25,63 @@ public class AdjustValuesInputs : MonoBehaviour
         if (_playerValues.GetCurrentInput() == CurrentInput.AdjustValuesMinigame && _playerValues.GetInputsEnabled() &&
             !_playerValues.GetPaused())
         {
-            if (Input.anyKey)
-            {
-                CursorManager.ShowCursor();
-                _adjustValuesManager.ShowKeyTutorial();
-            }
+            if (_newInputs.CheckInputChanged())
+                UpdateTutorial();
 
-            if (Input.GetKeyDown(KeyCode.S))
-            {
+            //next slider
+            if (_newInputs.DownTap())
                 _adjustValuesManager.SelectNextSlider();
-            }
-
-            if (Input.GetKeyDown(KeyCode.W))
-            {
+            //prev slider
+            if (_newInputs.UpTap())
                 _adjustValuesManager.SelectPrevSlider();
-            }
-
-            if (Input.GetKeyDown(KeyCode.D))
-            {
+            //increase value
+            if (_newInputs.RightTap())
                 _adjustValuesManager.IncreaseValue();
-            }
-
-            if (Input.GetKeyDown(KeyCode.A))
-            {
+            //decrease value
+            if (_newInputs.LeftTap())
                 _adjustValuesManager.DecreaseValue();
-            }
         }
     }
 
     public void PerformAction(Move move)
     {
-        _adjustValuesManager.ShowCubeTutorial();
         if (_playerValues.GetInputsEnabled())
         {
+            _newInputs.SetCubeAsDevice();
+            if (_newInputs.CheckInputChanged())
+                UpdateTutorial();
+
             if (move.face == FACES.R)
             {
                 if (move.direction == 1)
                     _adjustValuesManager.SelectPrevSlider();
-
                 else
                     _adjustValuesManager.SelectNextSlider();
             }
 
-            if (move.face == FACES.F)
+            if (move.face == FACES.U)
             {
-                if (move.direction == 1)
+                if (move.direction == -1)
                     _adjustValuesManager.IncreaseValue();
-
                 else
                     _adjustValuesManager.DecreaseValue();
             }
         }
+    }
+
+    public void OnNotify(PlayerActions playerAction)
+    {
+        if (playerAction is PlayerActions.ChangeInputMode&& _playerValues.GetCurrentInput() == CurrentInput.AdjustValuesMinigame)
+            UpdateTutorial();
+    }
+
+    private void UpdateTutorial()
+    {
+        _guiManager.ShowTutorial();
+        _guiManager.SetTutorial(
+            _newInputs.UpText() + "- Prev |" + _newInputs.DownText() +
+            "- Next |" +
+            _newInputs.RightText() + "- Increase value |" +
+            _newInputs.LeftText() + "- Decrease value ");
     }
 }

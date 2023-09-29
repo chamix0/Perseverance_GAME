@@ -1,70 +1,91 @@
 using Mechanics.General_Inputs;
+using Player.Observer_pattern;
 using UnityEngine;
 
-public class AsteroidsInputs : MonoBehaviour
+public class AsteroidsInputs : MonoBehaviour, IObserver
 {
-    // Start is called before the first frame update
-    // Start is called before the first frame update
     private PlayerValues _playerValues;
-    private AsteroidsManager asteroidsManager;
+    private AsteroidsManager _asteroidsManager;
+    private PlayerNewInputs _newInputs;
+    private GuiManager _guiManager;
 
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
-        asteroidsManager = FindObjectOfType<AsteroidsManager>();
+        _asteroidsManager = FindObjectOfType<AsteroidsManager>();
+        _newInputs = FindObjectOfType<PlayerNewInputs>();
+        _guiManager = FindObjectOfType<GuiManager>();
+        _playerValues.AddObserver(this);
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (_playerValues.GetCurrentInput() == CurrentInput.AsteroidMinigame && _playerValues.GetInputsEnabled()&&!_playerValues.GetPaused())
+        if (_playerValues.GetCurrentInput() == CurrentInput.AsteroidMinigame && _playerValues.GetInputsEnabled() &&
+            !_playerValues.GetPaused())
         {
             Vector2 dir = Vector2.zero;
-            if (Input.anyKey)
+            if (_newInputs.CheckInputChanged())
             {
-                asteroidsManager.SetGearsZero();
-                asteroidsManager.ShowKeyTutorial();
+                UpdateTutorial();
+                _asteroidsManager.SetGearsZero();
+                _asteroidsManager.ShowKeyTutorial();
             }
 
-            if (Input.GetKey(KeyCode.W))
+            if (_newInputs.UpHold())
             {
                 dir.y += 1;
-                asteroidsManager.VerticalMovement(1, asteroidsManager._speed);
+                _asteroidsManager.VerticalMovement(1, _asteroidsManager._speed);
             }
 
-            if (Input.GetKey(KeyCode.S))
+            if (_newInputs.DownHold())
             {
                 dir.y -= 1;
-                asteroidsManager.VerticalMovement(-1, asteroidsManager._speed);
+                _asteroidsManager.VerticalMovement(-1, _asteroidsManager._speed);
             }
 
-            if (Input.GetKey(KeyCode.A))
+            if (_newInputs.LeftHold())
             {
                 dir.x -= 1;
-                asteroidsManager.HorizontalMovement(-1, asteroidsManager._speed);
+                _asteroidsManager.HorizontalMovement(-1, _asteroidsManager._speed);
             }
 
-            if (Input.GetKey(KeyCode.D))
+            if (_newInputs.RightHold())
             {
                 dir.x += 1;
-                asteroidsManager.HorizontalMovement(1, asteroidsManager._speed);
+                _asteroidsManager.HorizontalMovement(1, _asteroidsManager._speed);
             }
 
-            asteroidsManager.SpriteRotation(dir);
+            _asteroidsManager.SpriteRotation(dir);
         }
     }
 
     public void PerformAction(Move move)
     {
-        asteroidsManager.ShowCubeTutorial();
         if (_playerValues.GetInputsEnabled())
         {
-            if (move.face == FACES.R)
-                asteroidsManager.VerticalMovementCube(move.direction);
+            _newInputs.SetCubeAsDevice();
+            if (_newInputs.CheckInputChanged())
+                UpdateTutorial();
 
+            if (move.face == FACES.R)
+                _asteroidsManager.VerticalMovementCube(move.direction);
 
             if (move.face == FACES.U)
-                asteroidsManager.HorizontalMovementCube(move.direction);
+                _asteroidsManager.HorizontalMovementCube(move.direction);
         }
+    }
+
+    public void OnNotify(PlayerActions playerAction)
+    {
+        if (playerAction is PlayerActions.ChangeInputMode&& _playerValues.GetCurrentInput() == CurrentInput.AsteroidMinigame)
+            UpdateTutorial();
+    }
+
+    private void UpdateTutorial()
+    {
+        _guiManager.ShowTutorial();
+        _guiManager.SetTutorial(
+            _newInputs.AllDirectionsText() + "- Movement ");
     }
 }

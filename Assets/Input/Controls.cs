@@ -468,34 +468,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Conversation"",
-            ""id"": ""1f7f8b1e-c20d-4687-b87e-99d23b00c2d8"",
-            ""actions"": [
-                {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""340bb5c1-67a2-4c5f-b863-4663a086d6ff"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""47e97922-9266-45ea-b767-717f04f94f53"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
             ""name"": ""Basic"",
             ""id"": ""c0ef4615-1eb8-4540-8e0b-800fce1e2057"",
             ""actions"": [
@@ -552,6 +524,24 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Enable Load"",
+                    ""type"": ""Button"",
+                    ""id"": ""05f007e9-7199-4b96-8e43-0585d431b608"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Enable Erase"",
+                    ""type"": ""Button"",
+                    ""id"": ""735282d0-cdb3-4803-9b4b-796acfccf762"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -590,6 +580,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""4d3675e8-9ff0-40dd-9472-9aed52499ca8"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""5785a753-8fb6-4950-b764-fc6ac3fb42ac"",
                     ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
@@ -614,6 +615,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""0c770935-dc95-4891-a126-559a4043045f"",
                     ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""45db3520-480b-4e52-a62a-fc8c4cb945ee"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -678,6 +690,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""f76254a3-c04c-4a88-b5ae-915ae85fa71a"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c39587de-bab3-4d56-94bc-ce318b21b0e3"",
                     ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
@@ -711,12 +734,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""62ce0427-072b-4b8f-b0ee-789ff7a113c9"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""id"": ""285cf55d-6024-4954-b201-69ed377b1fbf"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Return"",
+                    ""action"": ""Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -728,6 +751,395 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a140cbab-69a1-40cb-a726-ca3512f8b24e"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9930164-a013-4d6e-a3d9-0152176930dc"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Enable Load"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""45a563d8-2f1f-418e-90cc-1fd40cf9addc"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Enable Load"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c148ed1d-724b-4b7d-a895-6a2c250f3c4e"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Enable Erase"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d8b4bcf-b127-49c7-b005-79eefded9265"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Enable Erase"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Rotating Wall"",
+            ""id"": ""3f04917c-864d-4d9f-a9ca-5befbfa88d66"",
+            ""actions"": [
+                {
+                    ""name"": ""Rotate CW"",
+                    ""type"": ""Button"",
+                    ""id"": ""c407817a-87b5-4492-a241-3393b986dadc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotate CCW"",
+                    ""type"": ""Button"",
+                    ""id"": ""e4ec21a3-5900-4c15-9f18-c184a4b00931"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""d58ed72a-d3d5-496e-beb2-d6605f3c168a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1af1bacb-83bc-4f1e-8116-f7f6f1bbc5ed"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate CW"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd536a17-0062-4e6c-afb9-967f4d758ca0"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate CW"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d669eaf-2fce-4dc7-881c-0a88aa69fc5c"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate CCW"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c64d5501-d5e7-4718-86b5-c068f56445a0"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate CCW"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""639d90d5-4d4a-4541-b744-e1540fa06a55"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1363cd82-064b-4d50-a2bd-ee341c5890ca"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Miniboss"",
+            ""id"": ""dc4d328b-dbf3-4a1a-b855-6f94a90a9535"",
+            ""actions"": [
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""29621483-55b7-4001-a1ab-d8b63723a5e1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Special Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""294a0da1-bc50-4681-9356-3a7f96504eea"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Defend"",
+                    ""type"": ""Button"",
+                    ""id"": ""4401cfa0-d5e0-403e-bf15-dd8c757bf429"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Special Defense"",
+                    ""type"": ""Button"",
+                    ""id"": ""8a51bf56-e260-4504-8b18-18a8c1d2b6e5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""82076f15-8394-4917-add4-1911704c8aef"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9859a17f-894c-4d74-8ce8-bb13f3397612"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6afaedb4-a69c-42cb-b566-e6afd22f0cf7"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special Defense"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d9bc5d9c-00d7-4819-97a2-e649919b8d42"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special Defense"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d9efa1b4-55f4-4cdc-9804-f3e5f8a70829"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Defend"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e4511c9-5165-4765-a849-7f995a052171"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Defend"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47ea0f02-5652-4007-be25-b8c16dcacdc1"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c290c49-7e52-48a3-8d99-2348ed32de29"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Minigames"",
+            ""id"": ""210bd9e1-8ec2-4616-be20-1c5bc13b43d9"",
+            ""actions"": [
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""40d78f8b-3738-4c0d-84ef-868970266da9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Roll CW"",
+                    ""type"": ""Button"",
+                    ""id"": ""23729b41-2545-42e8-8c48-cbd66c3bce60"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Roll CCW"",
+                    ""type"": ""Button"",
+                    ""id"": ""77b07526-99e3-461f-83ee-94001233dc57"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""dc588bca-39d8-458c-8162-4b42d702ce24"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""774cfc04-e4d9-4c6a-8d60-18f3139a2808"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""17fa8ff2-796a-4f7e-bd57-599d155c9490"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""Roll CW"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e2eae5b0-800a-4216-aa7d-29feeee8ccf0"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Roll CW"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ea29ecd-26f4-49d7-99fb-1dfe9c9939af"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""Roll CCW"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc92961e-a8cf-4493-9fae-265b196603c9"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Roll CCW"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -774,9 +1186,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Eddo_Jump = m_Eddo.FindAction("Jump", throwIfNotFound: true);
         m_Eddo_Controls = m_Eddo.FindAction("Controls", throwIfNotFound: true);
         m_Eddo_Select = m_Eddo.FindAction("Select", throwIfNotFound: true);
-        // Conversation
-        m_Conversation = asset.FindActionMap("Conversation", throwIfNotFound: true);
-        m_Conversation_Newaction = m_Conversation.FindAction("New action", throwIfNotFound: true);
         // Basic
         m_Basic = asset.FindActionMap("Basic", throwIfNotFound: true);
         m_Basic_Up = m_Basic.FindAction("Up", throwIfNotFound: true);
@@ -785,6 +1194,24 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Basic_Down = m_Basic.FindAction("Down", throwIfNotFound: true);
         m_Basic_Select = m_Basic.FindAction("Select", throwIfNotFound: true);
         m_Basic_Return = m_Basic.FindAction("Return", throwIfNotFound: true);
+        m_Basic_EnableLoad = m_Basic.FindAction("Enable Load", throwIfNotFound: true);
+        m_Basic_EnableErase = m_Basic.FindAction("Enable Erase", throwIfNotFound: true);
+        // Rotating Wall
+        m_RotatingWall = asset.FindActionMap("Rotating Wall", throwIfNotFound: true);
+        m_RotatingWall_RotateCW = m_RotatingWall.FindAction("Rotate CW", throwIfNotFound: true);
+        m_RotatingWall_RotateCCW = m_RotatingWall.FindAction("Rotate CCW", throwIfNotFound: true);
+        m_RotatingWall_Exit = m_RotatingWall.FindAction("Exit", throwIfNotFound: true);
+        // Miniboss
+        m_Miniboss = asset.FindActionMap("Miniboss", throwIfNotFound: true);
+        m_Miniboss_Attack = m_Miniboss.FindAction("Attack", throwIfNotFound: true);
+        m_Miniboss_SpecialAttack = m_Miniboss.FindAction("Special Attack", throwIfNotFound: true);
+        m_Miniboss_Defend = m_Miniboss.FindAction("Defend", throwIfNotFound: true);
+        m_Miniboss_SpecialDefense = m_Miniboss.FindAction("Special Defense", throwIfNotFound: true);
+        // Minigames
+        m_Minigames = asset.FindActionMap("Minigames", throwIfNotFound: true);
+        m_Minigames_Sprint = m_Minigames.FindAction("Sprint", throwIfNotFound: true);
+        m_Minigames_RollCW = m_Minigames.FindAction("Roll CW", throwIfNotFound: true);
+        m_Minigames_RollCCW = m_Minigames.FindAction("Roll CCW", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -970,39 +1397,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     }
     public EddoActions @Eddo => new EddoActions(this);
 
-    // Conversation
-    private readonly InputActionMap m_Conversation;
-    private IConversationActions m_ConversationActionsCallbackInterface;
-    private readonly InputAction m_Conversation_Newaction;
-    public struct ConversationActions
-    {
-        private @Controls m_Wrapper;
-        public ConversationActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_Conversation_Newaction;
-        public InputActionMap Get() { return m_Wrapper.m_Conversation; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ConversationActions set) { return set.Get(); }
-        public void SetCallbacks(IConversationActions instance)
-        {
-            if (m_Wrapper.m_ConversationActionsCallbackInterface != null)
-            {
-                @Newaction.started -= m_Wrapper.m_ConversationActionsCallbackInterface.OnNewaction;
-                @Newaction.performed -= m_Wrapper.m_ConversationActionsCallbackInterface.OnNewaction;
-                @Newaction.canceled -= m_Wrapper.m_ConversationActionsCallbackInterface.OnNewaction;
-            }
-            m_Wrapper.m_ConversationActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @Newaction.started += instance.OnNewaction;
-                @Newaction.performed += instance.OnNewaction;
-                @Newaction.canceled += instance.OnNewaction;
-            }
-        }
-    }
-    public ConversationActions @Conversation => new ConversationActions(this);
-
     // Basic
     private readonly InputActionMap m_Basic;
     private IBasicActions m_BasicActionsCallbackInterface;
@@ -1012,6 +1406,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Basic_Down;
     private readonly InputAction m_Basic_Select;
     private readonly InputAction m_Basic_Return;
+    private readonly InputAction m_Basic_EnableLoad;
+    private readonly InputAction m_Basic_EnableErase;
     public struct BasicActions
     {
         private @Controls m_Wrapper;
@@ -1022,6 +1418,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Down => m_Wrapper.m_Basic_Down;
         public InputAction @Select => m_Wrapper.m_Basic_Select;
         public InputAction @Return => m_Wrapper.m_Basic_Return;
+        public InputAction @EnableLoad => m_Wrapper.m_Basic_EnableLoad;
+        public InputAction @EnableErase => m_Wrapper.m_Basic_EnableErase;
         public InputActionMap Get() { return m_Wrapper.m_Basic; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1049,6 +1447,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Return.started -= m_Wrapper.m_BasicActionsCallbackInterface.OnReturn;
                 @Return.performed -= m_Wrapper.m_BasicActionsCallbackInterface.OnReturn;
                 @Return.canceled -= m_Wrapper.m_BasicActionsCallbackInterface.OnReturn;
+                @EnableLoad.started -= m_Wrapper.m_BasicActionsCallbackInterface.OnEnableLoad;
+                @EnableLoad.performed -= m_Wrapper.m_BasicActionsCallbackInterface.OnEnableLoad;
+                @EnableLoad.canceled -= m_Wrapper.m_BasicActionsCallbackInterface.OnEnableLoad;
+                @EnableErase.started -= m_Wrapper.m_BasicActionsCallbackInterface.OnEnableErase;
+                @EnableErase.performed -= m_Wrapper.m_BasicActionsCallbackInterface.OnEnableErase;
+                @EnableErase.canceled -= m_Wrapper.m_BasicActionsCallbackInterface.OnEnableErase;
             }
             m_Wrapper.m_BasicActionsCallbackInterface = instance;
             if (instance != null)
@@ -1071,10 +1475,171 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Return.started += instance.OnReturn;
                 @Return.performed += instance.OnReturn;
                 @Return.canceled += instance.OnReturn;
+                @EnableLoad.started += instance.OnEnableLoad;
+                @EnableLoad.performed += instance.OnEnableLoad;
+                @EnableLoad.canceled += instance.OnEnableLoad;
+                @EnableErase.started += instance.OnEnableErase;
+                @EnableErase.performed += instance.OnEnableErase;
+                @EnableErase.canceled += instance.OnEnableErase;
             }
         }
     }
     public BasicActions @Basic => new BasicActions(this);
+
+    // Rotating Wall
+    private readonly InputActionMap m_RotatingWall;
+    private IRotatingWallActions m_RotatingWallActionsCallbackInterface;
+    private readonly InputAction m_RotatingWall_RotateCW;
+    private readonly InputAction m_RotatingWall_RotateCCW;
+    private readonly InputAction m_RotatingWall_Exit;
+    public struct RotatingWallActions
+    {
+        private @Controls m_Wrapper;
+        public RotatingWallActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @RotateCW => m_Wrapper.m_RotatingWall_RotateCW;
+        public InputAction @RotateCCW => m_Wrapper.m_RotatingWall_RotateCCW;
+        public InputAction @Exit => m_Wrapper.m_RotatingWall_Exit;
+        public InputActionMap Get() { return m_Wrapper.m_RotatingWall; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(RotatingWallActions set) { return set.Get(); }
+        public void SetCallbacks(IRotatingWallActions instance)
+        {
+            if (m_Wrapper.m_RotatingWallActionsCallbackInterface != null)
+            {
+                @RotateCW.started -= m_Wrapper.m_RotatingWallActionsCallbackInterface.OnRotateCW;
+                @RotateCW.performed -= m_Wrapper.m_RotatingWallActionsCallbackInterface.OnRotateCW;
+                @RotateCW.canceled -= m_Wrapper.m_RotatingWallActionsCallbackInterface.OnRotateCW;
+                @RotateCCW.started -= m_Wrapper.m_RotatingWallActionsCallbackInterface.OnRotateCCW;
+                @RotateCCW.performed -= m_Wrapper.m_RotatingWallActionsCallbackInterface.OnRotateCCW;
+                @RotateCCW.canceled -= m_Wrapper.m_RotatingWallActionsCallbackInterface.OnRotateCCW;
+                @Exit.started -= m_Wrapper.m_RotatingWallActionsCallbackInterface.OnExit;
+                @Exit.performed -= m_Wrapper.m_RotatingWallActionsCallbackInterface.OnExit;
+                @Exit.canceled -= m_Wrapper.m_RotatingWallActionsCallbackInterface.OnExit;
+            }
+            m_Wrapper.m_RotatingWallActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @RotateCW.started += instance.OnRotateCW;
+                @RotateCW.performed += instance.OnRotateCW;
+                @RotateCW.canceled += instance.OnRotateCW;
+                @RotateCCW.started += instance.OnRotateCCW;
+                @RotateCCW.performed += instance.OnRotateCCW;
+                @RotateCCW.canceled += instance.OnRotateCCW;
+                @Exit.started += instance.OnExit;
+                @Exit.performed += instance.OnExit;
+                @Exit.canceled += instance.OnExit;
+            }
+        }
+    }
+    public RotatingWallActions @RotatingWall => new RotatingWallActions(this);
+
+    // Miniboss
+    private readonly InputActionMap m_Miniboss;
+    private IMinibossActions m_MinibossActionsCallbackInterface;
+    private readonly InputAction m_Miniboss_Attack;
+    private readonly InputAction m_Miniboss_SpecialAttack;
+    private readonly InputAction m_Miniboss_Defend;
+    private readonly InputAction m_Miniboss_SpecialDefense;
+    public struct MinibossActions
+    {
+        private @Controls m_Wrapper;
+        public MinibossActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Attack => m_Wrapper.m_Miniboss_Attack;
+        public InputAction @SpecialAttack => m_Wrapper.m_Miniboss_SpecialAttack;
+        public InputAction @Defend => m_Wrapper.m_Miniboss_Defend;
+        public InputAction @SpecialDefense => m_Wrapper.m_Miniboss_SpecialDefense;
+        public InputActionMap Get() { return m_Wrapper.m_Miniboss; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MinibossActions set) { return set.Get(); }
+        public void SetCallbacks(IMinibossActions instance)
+        {
+            if (m_Wrapper.m_MinibossActionsCallbackInterface != null)
+            {
+                @Attack.started -= m_Wrapper.m_MinibossActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_MinibossActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_MinibossActionsCallbackInterface.OnAttack;
+                @SpecialAttack.started -= m_Wrapper.m_MinibossActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.performed -= m_Wrapper.m_MinibossActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.canceled -= m_Wrapper.m_MinibossActionsCallbackInterface.OnSpecialAttack;
+                @Defend.started -= m_Wrapper.m_MinibossActionsCallbackInterface.OnDefend;
+                @Defend.performed -= m_Wrapper.m_MinibossActionsCallbackInterface.OnDefend;
+                @Defend.canceled -= m_Wrapper.m_MinibossActionsCallbackInterface.OnDefend;
+                @SpecialDefense.started -= m_Wrapper.m_MinibossActionsCallbackInterface.OnSpecialDefense;
+                @SpecialDefense.performed -= m_Wrapper.m_MinibossActionsCallbackInterface.OnSpecialDefense;
+                @SpecialDefense.canceled -= m_Wrapper.m_MinibossActionsCallbackInterface.OnSpecialDefense;
+            }
+            m_Wrapper.m_MinibossActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
+                @SpecialAttack.started += instance.OnSpecialAttack;
+                @SpecialAttack.performed += instance.OnSpecialAttack;
+                @SpecialAttack.canceled += instance.OnSpecialAttack;
+                @Defend.started += instance.OnDefend;
+                @Defend.performed += instance.OnDefend;
+                @Defend.canceled += instance.OnDefend;
+                @SpecialDefense.started += instance.OnSpecialDefense;
+                @SpecialDefense.performed += instance.OnSpecialDefense;
+                @SpecialDefense.canceled += instance.OnSpecialDefense;
+            }
+        }
+    }
+    public MinibossActions @Miniboss => new MinibossActions(this);
+
+    // Minigames
+    private readonly InputActionMap m_Minigames;
+    private IMinigamesActions m_MinigamesActionsCallbackInterface;
+    private readonly InputAction m_Minigames_Sprint;
+    private readonly InputAction m_Minigames_RollCW;
+    private readonly InputAction m_Minigames_RollCCW;
+    public struct MinigamesActions
+    {
+        private @Controls m_Wrapper;
+        public MinigamesActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Sprint => m_Wrapper.m_Minigames_Sprint;
+        public InputAction @RollCW => m_Wrapper.m_Minigames_RollCW;
+        public InputAction @RollCCW => m_Wrapper.m_Minigames_RollCCW;
+        public InputActionMap Get() { return m_Wrapper.m_Minigames; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MinigamesActions set) { return set.Get(); }
+        public void SetCallbacks(IMinigamesActions instance)
+        {
+            if (m_Wrapper.m_MinigamesActionsCallbackInterface != null)
+            {
+                @Sprint.started -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnSprint;
+                @Sprint.performed -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnSprint;
+                @Sprint.canceled -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnSprint;
+                @RollCW.started -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnRollCW;
+                @RollCW.performed -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnRollCW;
+                @RollCW.canceled -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnRollCW;
+                @RollCCW.started -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnRollCCW;
+                @RollCCW.performed -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnRollCCW;
+                @RollCCW.canceled -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnRollCCW;
+            }
+            m_Wrapper.m_MinigamesActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Sprint.started += instance.OnSprint;
+                @Sprint.performed += instance.OnSprint;
+                @Sprint.canceled += instance.OnSprint;
+                @RollCW.started += instance.OnRollCW;
+                @RollCW.performed += instance.OnRollCW;
+                @RollCW.canceled += instance.OnRollCW;
+                @RollCCW.started += instance.OnRollCCW;
+                @RollCCW.performed += instance.OnRollCCW;
+                @RollCCW.canceled += instance.OnRollCCW;
+            }
+        }
+    }
+    public MinigamesActions @Minigames => new MinigamesActions(this);
     private int m_KeyBoardSchemeIndex = -1;
     public InputControlScheme KeyBoardScheme
     {
@@ -1109,10 +1674,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnControls(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
     }
-    public interface IConversationActions
-    {
-        void OnNewaction(InputAction.CallbackContext context);
-    }
     public interface IBasicActions
     {
         void OnUp(InputAction.CallbackContext context);
@@ -1121,5 +1682,26 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnDown(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnReturn(InputAction.CallbackContext context);
+        void OnEnableLoad(InputAction.CallbackContext context);
+        void OnEnableErase(InputAction.CallbackContext context);
+    }
+    public interface IRotatingWallActions
+    {
+        void OnRotateCW(InputAction.CallbackContext context);
+        void OnRotateCCW(InputAction.CallbackContext context);
+        void OnExit(InputAction.CallbackContext context);
+    }
+    public interface IMinibossActions
+    {
+        void OnAttack(InputAction.CallbackContext context);
+        void OnSpecialAttack(InputAction.CallbackContext context);
+        void OnDefend(InputAction.CallbackContext context);
+        void OnSpecialDefense(InputAction.CallbackContext context);
+    }
+    public interface IMinigamesActions
+    {
+        void OnSprint(InputAction.CallbackContext context);
+        void OnRollCW(InputAction.CallbackContext context);
+        void OnRollCCW(InputAction.CallbackContext context);
     }
 }

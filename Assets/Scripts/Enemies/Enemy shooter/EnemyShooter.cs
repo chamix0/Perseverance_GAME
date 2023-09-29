@@ -19,7 +19,6 @@ public class EnemyShooter : Enemy, IObserver
 {
     // Start is called before the first frame update
     private PlayerValues playerValues;
-    private MachinegunMovementInputs machinegunMovementInputs;
     private Rigidbody rigidbody;
     [SerializeField] private EnemyShooterZone enemyShooterZone;
     private LookAtPlayer lookAtPlayer; 
@@ -51,7 +50,7 @@ public class EnemyShooter : Enemy, IObserver
     [SerializeField] private LayerMask collision;
     [SerializeField] private float detectionDistance = 8;
     [SerializeField] private float searchingDistance = 12;
-
+    private MachineGun _machineGun;
     private Stopwatch _timer;
     [SerializeField] private int timerCooldown = 5;
 
@@ -61,7 +60,6 @@ public class EnemyShooter : Enemy, IObserver
     [SerializeField] private float shootSpeed = 10;
     [SerializeField] private Transform respawn;
     [SerializeField] private Vector3 shootOffset;
-
     [SerializeField] private bool isSearcher;
     private bool moveToPlayer;
     [SerializeField] private float minDistanceFromPlayer = 5;
@@ -88,14 +86,12 @@ public class EnemyShooter : Enemy, IObserver
         dissolveMaterials = GetComponent<DissolveMaterials>();
         _targetDistraction = FindObjectOfType<Distraction>();
         playerValues = FindObjectOfType<PlayerValues>();
-        machinegunMovementInputs = FindObjectOfType<MachinegunMovementInputs>();
-        machinegunMovementInputs.AddObservers(this);
-        playerValues.AddObserver(this);
+        _machineGun = FindObjectOfType<MachineGun>();
+        _machineGun.AddObserver(this);
         rigidbody = GetComponent<Rigidbody>();
         lookAtPlayer = GetComponentInChildren<LookAtPlayer>();
         animator = GetComponentInChildren<Animator>();
         _shootBullet = GetComponentInChildren<ShootBullet>();
-
         outline.OutlineColor = Color.clear;
         ChangeState(States.Patrol, 0);
         maxLives = lives;

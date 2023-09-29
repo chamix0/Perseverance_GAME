@@ -36,9 +36,7 @@ public class MainMenuManager : MonoBehaviour
     private List<TMP_Text> _texts;
     private List<Material> _materials;
 
-    //tutorial
-    [SerializeField] private TMP_Text tutorialText;
-
+   
     //shader properties
     private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
@@ -247,12 +245,7 @@ public class MainMenuManager : MonoBehaviour
         selectedButton = aux;
         UpdateColors();
     }
-
-    public void SetTutortialText(string text)
-    {
-        tutorialText.text = text;
-    }
-
+    
     private void UpdateColors()
     {
         for (int i = 0; i < _buttons.Count; i++)

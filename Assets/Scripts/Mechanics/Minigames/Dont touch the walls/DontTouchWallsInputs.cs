@@ -1,17 +1,23 @@
 using Mechanics.General_Inputs;
+using Player.Observer_pattern;
 using UnityEngine;
 
-public class DontTouchWallsInputs : MonoBehaviour
+public class DontTouchWallsInputs : MonoBehaviour, IObserver
 {
     // Start is called before the first frame update
     // Start is called before the first frame update
     private PlayerValues _playerValues;
-    private DontTouchWallsManager dontTouchWallsManager;
+    private DontTouchWallsManager _dontTouchWallsManager;
+    private PlayerNewInputs _newInputs;
+    private GuiManager _guiManager;
 
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
-        dontTouchWallsManager = FindObjectOfType<DontTouchWallsManager>();
+        _dontTouchWallsManager = FindObjectOfType<DontTouchWallsManager>();
+        _newInputs = FindObjectOfType<PlayerNewInputs>();
+        _guiManager = FindObjectOfType<GuiManager>();
+        _playerValues.AddObserver(this);
     }
 
     // Update is called once per frame
@@ -21,57 +27,74 @@ public class DontTouchWallsInputs : MonoBehaviour
             _playerValues.GetInputsEnabled() && !_playerValues.GetPaused())
         {
             Vector2 dir = Vector2.zero;
-            float speed = dontTouchWallsManager._speed;
-
-            if (Input.anyKey)
+            float speed = _dontTouchWallsManager._speed;
+            if (_newInputs.CheckInputChanged())
             {
-                dontTouchWallsManager.SetGearsZero();
-                dontTouchWallsManager.ShowKeyTutorial();
+                UpdateTutorial();
+                _dontTouchWallsManager.SetGearsZero();
+                _dontTouchWallsManager.ShowKeyTutorial();
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+
+            if (_newInputs.Sprint())
                 speed *= 1.25f;
 
-
-            if (Input.GetKey(KeyCode.W))
+            if (_newInputs.UpHold())
             {
                 dir.y += 1;
-                dontTouchWallsManager.VerticalMovement(1, speed);
+                _dontTouchWallsManager.VerticalMovement(1, speed);
             }
 
-            if (Input.GetKey(KeyCode.S))
+            if (_newInputs.DownHold())
             {
                 dir.y -= 1;
-                dontTouchWallsManager.VerticalMovement(-1, speed);
+                _dontTouchWallsManager.VerticalMovement(-1, speed);
             }
 
-            if (Input.GetKey(KeyCode.A))
+            if (_newInputs.LeftHold())
             {
                 dir.x -= 1;
-                dontTouchWallsManager.HorizontalMovement(-1, speed);
+                _dontTouchWallsManager.HorizontalMovement(-1, speed);
             }
 
-            if (Input.GetKey(KeyCode.D))
+            if (_newInputs.RightHold())
             {
                 dir.x += 1;
-                dontTouchWallsManager.HorizontalMovement(1, speed);
+                _dontTouchWallsManager.HorizontalMovement(1, speed);
             }
 
-            dontTouchWallsManager.SpriteRotation(dir);
+            _dontTouchWallsManager.SpriteRotation(dir);
         }
     }
 
     public void PerformAction(Move move)
     {
-        dontTouchWallsManager.ShowCubeTutorial();
+        _dontTouchWallsManager.ShowCubeTutorial();
         if (_playerValues.GetInputsEnabled())
         {
+            _newInputs.SetCubeAsDevice();
+            if (_newInputs.CheckInputChanged())
+                UpdateTutorial();
+
             if (move.face == FACES.R)
-                dontTouchWallsManager.VerticalMovementCube(move.direction);
+                _dontTouchWallsManager.VerticalMovementCube(move.direction);
 
 
             else if (move.face == FACES.U)
-                dontTouchWallsManager.HorizontalMovementCube(move.direction);
+                _dontTouchWallsManager.HorizontalMovementCube(move.direction);
         }
+    }
+
+    public void OnNotify(PlayerActions playerAction)
+    {
+        if (playerAction is PlayerActions.ChangeInputMode&& _playerValues.GetCurrentInput() == CurrentInput.DontTouchTheWallsMinigame)
+            UpdateTutorial();
+    }
+
+    private void UpdateTutorial()
+    {
+        _guiManager.ShowTutorial();
+        _guiManager.SetTutorial(
+            _newInputs.AllDirectionsText() + "- Movement ");
     }
 }

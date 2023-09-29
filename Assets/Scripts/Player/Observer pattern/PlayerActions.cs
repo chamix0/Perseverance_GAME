@@ -46,7 +46,6 @@
     PushFastMinigame,
     AdjustValuesMinigame,
     MinigameFinished,
-
     Die,
 
     //SCENES
@@ -62,5 +61,8 @@
     ShowArcadeStats,
     HideArcadeStats,
     ChangeUpgradeLocation,
-    TurnOnPower
+    TurnOnPower,
+    
+    //change input mode
+    ChangeInputMode
 }

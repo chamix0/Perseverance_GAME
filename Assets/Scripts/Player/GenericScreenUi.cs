@@ -18,7 +18,6 @@ public class GenericScreenUi : MonoBehaviour
     private float _blinkCooldown;
     private bool _blinking, scared;
     private bool _faceUpdated;
-    private float faceAlpha = 1;
 
     private string normalFace = "O.O";
     private const string NormalFace1 = "O.O";

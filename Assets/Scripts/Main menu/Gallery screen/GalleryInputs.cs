@@ -1,8 +1,9 @@
 using Main_menu;
+using Player.Observer_pattern;
 using UnityEngine;
 
 [DefaultExecutionOrder(1)]
-public class GalleryInputs : MonoBehaviour
+public class GalleryInputs : MonoBehaviour, IObserver
 {
     //components
     private MyMenuInputManager _myInputManager;
@@ -11,6 +12,8 @@ public class GalleryInputs : MonoBehaviour
     private SaveData _saveData;
     private MainMenuManager _menuManager;
     private MainMenuSounds _sounds;
+    private GuiManagerMainMenu _guiManagerMainMenu;
+    private PlayerNewInputs _newInputs;
 
     void Start()
     {
@@ -19,27 +22,28 @@ public class GalleryInputs : MonoBehaviour
         galleryManager = FindObjectOfType<GalleryManager>();
         _camerasController = FindObjectOfType<MenuCamerasController>();
         _menuManager = FindObjectOfType<MainMenuManager>();
+        _guiManagerMainMenu = FindObjectOfType<GuiManagerMainMenu>();
+        _newInputs = FindObjectOfType<PlayerNewInputs>();
+        _myInputManager.AddObserver(this);
     }
 
     void Update()
     {
         if (_myInputManager.GetCurrentInput() == CurrentMenuInput.Gallery && _myInputManager.GetInputsEnabled())
         {
-            if (Input.anyKey)
-            {
-                _menuManager.SetTutortialText("A - prev  D - Next    esc - exit");  
-            }
+            if (_newInputs.CheckInputChanged())
+                UpdateTutorial();
 
             //next model
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            if (_newInputs.RightTap())
                 galleryManager.ShowNext();
 
             //prev model
-            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            else if (_newInputs.LeftTap())
                 galleryManager.ShowPrev();
 
             //go back to menu
-            else if (Input.GetKeyDown(KeyCode.Escape))
+            else if (_newInputs.ReturnBasic())
             {
                 _sounds.ReturnSound();
                 _camerasController.SetCamera(MenuCameras.EDDO);
@@ -51,8 +55,9 @@ public class GalleryInputs : MonoBehaviour
 
     public void PerformAction(Move move)
     {
-        _menuManager.SetTutortialText("U - prev/Next  B' - exit");  
-
+        _newInputs.SetCubeAsDevice();
+        if (_newInputs.CheckInputChanged())
+            UpdateTutorial();
         //change model
         if (move.face == FACES.U)
         {
@@ -67,11 +72,24 @@ public class GalleryInputs : MonoBehaviour
             if (move.direction != 1)
             {
                 _sounds.ReturnSound();
-
                 _camerasController.SetCamera(MenuCameras.EDDO);
                 _menuManager.CheckForContinueAndNewGame();
                 _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
             }
         }
+    }
+
+    public void OnNotify(PlayerActions playerAction)
+    {
+        if (playerAction is PlayerActions.ChangeInputMode&& _myInputManager.GetCurrentInput() is CurrentMenuInput.Gallery)
+            UpdateTutorial();
+    }
+
+    private void UpdateTutorial()
+    {
+        _guiManagerMainMenu.ShowTutorial();
+        _guiManagerMainMenu.SetTutorial(
+            _newInputs.LeftText() + "- Prev |" + _newInputs.RightText() +
+            "- Next |" + _newInputs.ExitBasicText() + "- Exit ");
     }
 }

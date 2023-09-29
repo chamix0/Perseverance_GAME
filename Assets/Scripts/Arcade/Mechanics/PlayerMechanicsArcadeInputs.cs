@@ -120,6 +120,7 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
                     _manager.Aim();
                 }
 
+                //stop aim
                 if (_playerNewInputs.AimRelease())
                 {
                     _manager.StopAim();
@@ -161,6 +162,7 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
 
         if (_playerValues.GetInputsEnabled())
         {
+            //gears
             if (move.face == FACES.R)
             {
                 _playerValues.CheckIfStuck(true);
@@ -172,9 +174,56 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
                 else
                     _playerValues.DecreaseGear();
             }
+            //lights
+            else if (move.face == FACES.B)
+            {
+                if (move.direction == 1)
+                {
+                    if (_playerValues.GetLights())
+                        _playerValues.NotifyAction(PlayerActions.TurnOffLights);
+                }
+                else
+                {
+                    if (!_playerValues.GetLights())
+                        _playerValues.NotifyAction(PlayerActions.TurnOnLights);
+                }
+            }
+            //shoot and aim
+            else if (move.face == FACES.F)
+            {
+                if (move.direction == -1)
+                {
+                    _manager.Aim();
+                    _manager.StopAutomaticShooting();
+                }
+                else
+                {
+                    if (shootTimer.Elapsed.TotalMilliseconds > _arcadePlayerData.GetShootingCooldown())
+                    {
+                        shootTimer.Restart();
+                        _manager.Shoot();
+                        _manager.StopAim();
+                    }
+                }
+            }
+            //Armor wheel
+            else if (move.face == FACES.D)
+            {
+                if (move.direction == -1)
+                {
+                    guiManager.ShowArmorWheel();
+                    _manager.StopAutomaticShooting();
+                }
+                else
+                {
+                    guiManager.HideArmorWheel();
+                    _manager.StopAutomaticShooting();
+                    _manager.StopAim();
+                }
+            }
         }
 
-        //turn camera in y axis
+        //camera movement
         if (move.face == FACES.L)
         {
             if (move.direction == 1)
@@ -186,20 +235,6 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
         {
             if (move.direction == 1) _cameraController.RotateClockwise();
             else _cameraController.RotateCounterClockwise();
-        }
-        
-        else if (move.face == FACES.B)
-        {
-            if (move.direction == 1)
-            {
-                if (_playerValues.GetLights())
-                    _playerValues.NotifyAction(PlayerActions.TurnOffLights);
-            }
-            else
-            {
-                if (!_playerValues.GetLights())
-                    _playerValues.NotifyAction(PlayerActions.TurnOnLights);
-            }
         }
     }
 
@@ -213,5 +248,21 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
         {
             _arcadePlayerData.isArmorWheelDisplayed = false;
         }
+        else if (playerAction is PlayerActions.ChangeInputMode &&
+                 _playerValues.GetCurrentInput() is CurrentInput.ArcadeMechanics)
+        {
+            UpdateTutorial();
+        }
+    }
+
+    private void UpdateTutorial()
+    {
+        guiManager.ShowTutorial();
+        guiManager.SetTutorial(
+            _playerNewInputs.GearUpText() + "- Gear Up |" + _playerNewInputs.GearDownText() + "- Gear Down |" +
+            _playerNewInputs.CamMovementText() + "- Camera |" + _playerNewInputs.LightsText() + "- Lights |" +
+            _playerNewInputs.AimText() + "- Aim |" + _playerNewInputs.ShootText() + "- Shoot |" +
+            _playerNewInputs.ArmorWheelText() +
+            "- Armor Wheel |" + _playerNewInputs.GrenadeDistractionText() + "- Grenade");
     }
 }

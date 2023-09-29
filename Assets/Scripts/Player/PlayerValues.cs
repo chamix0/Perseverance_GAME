@@ -11,7 +11,8 @@ public class PlayerValues : Subject
 {
     #region DATA
 
-    public  Vector3 auxDir;
+    public Vector3 auxDir;
+
     //status values
     [Header("VALUES")] [SerializeField] private List<float> movementSpeeds;
     [SerializeField] [Range(0, 4)] private int gear = 1;
@@ -68,9 +69,8 @@ public class PlayerValues : Subject
     //animator parameters
     private static readonly int Gear = Animator.StringToHash("Gear");
     private DissolveMaterials dissolveMaterials;
-    
+
     //newInputSystem
-    
 
     #endregion
 
@@ -130,6 +130,7 @@ public class PlayerValues : Subject
     public void SetCurrentInput(CurrentInput currentInput)
     {
         _currentInput = currentInput;
+        NotifyObservers(PlayerActions.ChangeInputMode);
     }
 
     public CurrentInput GetCurrentInput()

@@ -19,7 +19,7 @@ public enum CurrentMenuInput
 }
 
 [DefaultExecutionOrder(1)]
-public class MyMenuInputManager : MonoBehaviour
+public class MyMenuInputManager : Subject
 {
     //components
     private MovesQueue _inputsMoves;
@@ -31,6 +31,7 @@ public class MyMenuInputManager : MonoBehaviour
     private TutorialInputs _tutorialInputs;
     private SettingsInputs _settingsInputs;
     private CreditsInputs _creditsInputs;
+    private ArcadeMenuInputs _arcadeMenuInputs;
 
     //variables
     private bool _inputsEnabled = true;
@@ -44,6 +45,7 @@ public class MyMenuInputManager : MonoBehaviour
         _tutorialInputs = FindObjectOfType<TutorialInputs>();
         _settingsInputs = FindObjectOfType<SettingsInputs>();
         _creditsInputs = FindObjectOfType<CreditsInputs>();
+        _arcadeMenuInputs = FindObjectOfType<ArcadeMenuInputs>();
         try
         {
             _inputsMoves = GameObject.FindGameObjectWithTag("UserCubeManager").GetComponent<MovesQueue>();
@@ -87,6 +89,12 @@ public class MyMenuInputManager : MonoBehaviour
                 case CurrentMenuInput.Credits:
                     _creditsInputs.PerformAction(move);
                     break;
+                case CurrentMenuInput.Arcade:
+                    _arcadeMenuInputs.PerformAction(move);
+                    break;
+                case CurrentMenuInput.PreArcade:
+                    _arcadeMenuInputs.PerformAction(move);
+                    break;
             }
         }
     }
@@ -94,6 +102,8 @@ public class MyMenuInputManager : MonoBehaviour
     public void SetCurrentInput(CurrentMenuInput currentInput)
     {
         _currentInput = currentInput;
+        NotifyObservers(PlayerActions.ChangeInputMode);
+        
     }
 
     public CurrentMenuInput GetCurrentInput()

@@ -1,74 +1,118 @@
 using Mechanics.General_Inputs;
+using Player.Observer_pattern;
 using UnityEngine;
 
-public class LockerInputs : MonoBehaviour
+namespace Mechanics.Locker_door.Caja_fuerte
 {
-    private LockerManager lockerManager;
-
-    private PlayerValues _playerValues;
-
-    // Start is called before the first frame update
-    void Start()
+    public class LockerInputs : MonoBehaviour, IObserver
     {
-        _playerValues = FindObjectOfType<PlayerValues>();
-        lockerManager = FindObjectOfType<LockerManager>();
-    }
+        private LockerManager _lockerManager;
+        private PlayerValues _playerValues;
+        private PlayerNewInputs _newInputs;
+        private GuiManager _guiManager;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (_playerValues.GetCurrentInput() == CurrentInput.LockerMinigame && _playerValues.GetInputsEnabled() &&
-            !_playerValues.GetPaused())
+        // Start is called before the first frame update
+        void Start()
         {
-            if (Input.anyKey)
+            _playerValues = FindObjectOfType<PlayerValues>();
+            _lockerManager = FindObjectOfType<LockerManager>();
+            _newInputs = FindObjectOfType<PlayerNewInputs>();
+            _guiManager = FindObjectOfType<GuiManager>();
+            _playerValues.AddObserver(this);
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (_playerValues.GetCurrentInput() == CurrentInput.LockerMinigame && _playerValues.GetInputsEnabled() &&
+                !_playerValues.GetPaused())
             {
-                CursorManager.ShowCursor();
-                lockerManager.ShowKeyTutorial();
+                if (Input.anyKey)
+                    CursorManager.ShowCursor();
+                if (_newInputs.CheckInputChanged())
+                    UpdateTutorial();
+
+                //select previous
+                if (_newInputs.LeftTap())
+                    _lockerManager.SelectPrevNumber();
+                //select next
+                else if (_newInputs.RightTap())
+                    _lockerManager.SelectNextNumber();
+                // increase value
+                else if (_newInputs.UpTap())
+                    _lockerManager.IncreaseValueCube();
+                //decrease value
+                else if (_newInputs.DownTap())
+                    _lockerManager.DecreaseValueCube();
+                //exit
+                else if (_newInputs.ReturnBasic())
+                    _lockerManager.ExitButton();
+                //check
+                else if (_newInputs.SelectBasic())
+                    _lockerManager.CheckButton();
             }
         }
-    }
 
-    public void PerformAction(Move move)
-    {
-        lockerManager.ShowCubeTutorial();
-        if (_playerValues.GetInputsEnabled())
+        public void PerformAction(Move move)
         {
-            if (move.face == FACES.R)
+            if (_playerValues.GetInputsEnabled())
             {
-                if (move.direction > 0)
+                _newInputs.SetCubeAsDevice();
+                if (_newInputs.CheckInputChanged())
+                    UpdateTutorial();
+
+                if (move.face == FACES.R)
                 {
-                    lockerManager.IncreaseValueCube();
+                    if (move.direction > 0)
+                    {
+                        _lockerManager.IncreaseValueCube();
+                    }
+                    else
+                    {
+                        _lockerManager.DecreaseValueCube();
+                    }
                 }
-                else
+                else if (move.face == FACES.U)
                 {
-                    lockerManager.DecreaseValueCube();
+                    if (move.direction < 0)
+                    {
+                        _lockerManager.SelectNextNumber();
+                    }
+                    else
+                    {
+                        _lockerManager.SelectPrevNumber();
+                    }
+                }
+                else if (move.face == FACES.F)
+                {
+                    if (move.direction < 0)
+                    {
+                        _lockerManager.CheckButton();
+                    }
+                }
+                else if (move.face == FACES.B)
+                {
+                    if (move.direction > 0)
+                    {
+                        _lockerManager.ExitButton();
+                    }
                 }
             }
-            else if (move.face == FACES.F)
-            {
-                if (move.direction > 0)
-                {
-                    lockerManager.SelectNextNumber();
-                }
-                else
-                {
-                    lockerManager.SelectPrevNumber();
-                }
-            }
-            else if (move.face == FACES.L)
-            {
-                if (move.direction < 0)
-                {
-                    lockerManager.CheckButton();
-                }
-            }
-            else if (move.face == FACES.B)
-            {
-                if (move.direction > 0)
-                {
-                    lockerManager.ExitButton();
-                }
-            }
+        }
+
+        public void OnNotify(PlayerActions playerAction)
+        {
+            if (playerAction is PlayerActions.ChangeInputMode&& _playerValues.GetCurrentInput() == CurrentInput.LockerMinigame)
+                UpdateTutorial();
+        }
+
+        private void UpdateTutorial()
+        {
+            _guiManager.ShowTutorial();
+            _guiManager.SetTutorial(
+                _newInputs.RightText() + "- Next |" + _newInputs.LeftText() +
+                "- Previous |" + _newInputs.SelectBasicText() +
+                _newInputs.ExitBasicText() + "- Exit ");
         }
     }
 }

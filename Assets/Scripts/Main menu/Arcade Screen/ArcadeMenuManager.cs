@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class ArcadeMenuManager : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup _canvasGroup;
+    [SerializeField] private CanvasGroup _canvasGroup,secondPlayButtonCanvas;
     [SerializeField] private Button playButton, secondPlayButton;
     [SerializeField] private List<TMP_Text> leaderBoardNames, leaderBoardRounds, leaderBoardPoints;
     private JSONsaving _jsoNsaving;
@@ -32,13 +32,15 @@ public class ArcadeMenuManager : MonoBehaviour
         HideUi();
         playButton.onClick.AddListener(PlayButtonAction);
         secondPlayButton.onClick.AddListener(PlaySecondButtonAction);
+        HidePlayButton();
     }
 
-    private void PlayButtonAction()
+    public void PlayButtonAction()
     {
         _menuInputManager.SetCurrentInput(CurrentMenuInput.Arcade);
         _camerasController.SetCamera(MenuCameras.NewGame);
         _newGameManager.ShowUI();
+        playButton.interactable = false;
     }
 
     public void PlaySecondButtonAction()
@@ -46,7 +48,8 @@ public class ArcadeMenuManager : MonoBehaviour
         _sounds.SelectOptionSound();
         _jsoNsaving._saveData.StartNewGame(_newGameManager.GetModelIndex(), _newGameManager.GetName());
         _jsoNsaving.SaveTheData();
-        _loadScreen.LoadLevels();
+        _loadScreen.LoadArcadeGame();
+        playButton.interactable = false;
     }
 
     public void ShowUi()
@@ -57,6 +60,18 @@ public class ArcadeMenuManager : MonoBehaviour
         UpdateLeaderBoards();
     }
 
+    public void ShowPlayButton()
+    {
+        secondPlayButtonCanvas.alpha = 1;
+        secondPlayButtonCanvas.interactable = true;
+        secondPlayButtonCanvas.blocksRaycasts = true;
+    }
+    public void HidePlayButton()
+    {
+        secondPlayButtonCanvas.alpha = 0;
+        secondPlayButtonCanvas.interactable = false;
+        secondPlayButtonCanvas.blocksRaycasts = false;
+    }
     public void HideUi()
     {
         _canvasGroup.alpha = 0;
@@ -70,8 +85,8 @@ public class ArcadeMenuManager : MonoBehaviour
         for (int i = 0; i < leaderBoardNames.Count; i++)
         {
             leaderBoardNames[i].text = leaderBoards[i].GetName();
-            leaderBoardRounds[i].text = leaderBoards[i].GetRound()+"";
-            leaderBoardPoints[i].text = leaderBoards[i].GetPoints()+"";
+            leaderBoardRounds[i].text = leaderBoards[i].GetRound() + "";
+            leaderBoardPoints[i].text = leaderBoards[i].GetPoints() + "";
         }
     }
 }

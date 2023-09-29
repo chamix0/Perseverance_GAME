@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
+using UTILS;
 
 public class Distraction : Subject
 {
@@ -49,11 +50,11 @@ public class Distraction : Subject
         _playerValues = FindObjectOfType<PlayerValues>();
         AddObserver(_playerValues.GetComponent<PlayerSounds>());
         Physics.IgnoreCollision(_playerValues.GetComponent<BoxCollider>(), GetComponent<BoxCollider>());
-
         outlineWidth = _outline.OutlineWidth;
         _outline.OutlineWidth = 0;
         transform.parent = null;
         _renderer.material.SetFloat(Alpha, 0);
+        _timer.Stop();
     }
 
     private void Update()
@@ -89,6 +90,9 @@ public class Distraction : Subject
             _rigidbody.AddForce(cameraChanger.GetActiveCam().transform.forward * throwForce, ForceMode.Impulse);
             _timer.Restart();
         }
+        else
+            RecuperateDistraction();
+        
     }
 
     public void RecuperateDistraction()
