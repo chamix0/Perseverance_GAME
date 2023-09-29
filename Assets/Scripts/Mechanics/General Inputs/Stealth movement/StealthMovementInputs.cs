@@ -1,7 +1,7 @@
 using Mechanics.General_Inputs;
 using UnityEngine;
 
-public class StealthMovementInputs : MonoBehaviour,InputInterface
+public class StealthMovementInputs : MonoBehaviour
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;

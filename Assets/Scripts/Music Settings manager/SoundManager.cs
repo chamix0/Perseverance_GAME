@@ -47,7 +47,7 @@ public class SoundManager : MonoBehaviour
         if (value)
         {
             audioMixer.GetFloat("VFXVolume", out auxVfxValue);
-            audioMixer.SetFloat("VFXVolume", 0);
+            audioMixer.SetFloat("VFXVolume", Mathf.Log10(0.001f) * 20);
         }
         else
         {

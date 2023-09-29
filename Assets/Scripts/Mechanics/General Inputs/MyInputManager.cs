@@ -27,6 +27,8 @@ namespace Mechanics.General_Inputs
         private DontTouchWallsInputs _dontTouchWallsInputs;
         private PuzzleInputs _puzzleInputs;
         private ConversationInputs _conversationInputs;
+        private PlayerMechanicsArcadeInputs _arcadeInputs;
+
         private GuiManager gui;
         private Generalnputs generalnputs;
 
@@ -63,6 +65,7 @@ namespace Mechanics.General_Inputs
             gui = FindObjectOfType<GuiManager>();
             generalnputs = FindObjectOfType<Generalnputs>();
             pauseInputs = FindObjectOfType<PauseInputs>();
+            _arcadeInputs = FindObjectOfType<PlayerMechanicsArcadeInputs>();
         }
 
         private void Update()
@@ -129,6 +132,9 @@ namespace Mechanics.General_Inputs
                             break;
                         case CurrentInput.Conversation:
                             _conversationInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.ArcadeMechanics:
+                            _arcadeInputs.PerformAction(move);
                             break;
                         case CurrentInput.None:
                             break;

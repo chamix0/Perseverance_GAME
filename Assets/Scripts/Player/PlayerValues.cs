@@ -68,6 +68,9 @@ public class PlayerValues : Subject
     //animator parameters
     private static readonly int Gear = Animator.StringToHash("Gear");
     private DissolveMaterials dissolveMaterials;
+    
+    //newInputSystem
+    
 
     #endregion
 

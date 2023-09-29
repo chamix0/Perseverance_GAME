@@ -16086,7 +16086,7 @@ MonoBehaviour:
   slowColdown: 0.5
   freezeCooldown: 5
   burnCooldown: 0.5
-  minDistToPlayer: 1.5
+  minDistToPlayer: 1.7
   outline: {fileID: 7116040711610517342}
   enemySounds: {fileID: 7116040712356279433}
   healthBarCanvas: {fileID: 7116040711182490815}

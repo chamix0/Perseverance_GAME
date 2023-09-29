@@ -212,10 +212,10 @@ public class GuiManager : Subject
             ArmorWheel.blocksRaycasts = true;
             ArmorWheel.interactable = true;
 
-            Time.timeScale = 0.0125f;
             CursorManager.ShowCursor();
             _cameraController.SlowCameraSpeed();
             _soundManager.SetMuteVFX(true);
+            Time.timeScale = 0.0125f;
             NotifyObservers(PlayerActions.OpenArmorWheel);
         }
     }
@@ -229,10 +229,10 @@ public class GuiManager : Subject
             canvasGroup.blocksRaycasts = false;
             ArmorWheel.blocksRaycasts = false;
             ArmorWheel.interactable = false;
-            Time.timeScale = 1f;
             CursorManager.HideCursor();
             _cameraController.ReturnToNormalCameraSpeed();
             _soundManager.SetMuteVFX(false);
+             Time.timeScale = 1f;
             NotifyObservers(PlayerActions.CloseArmorWheel);
         }
     }

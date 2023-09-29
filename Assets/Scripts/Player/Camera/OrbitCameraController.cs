@@ -21,11 +21,14 @@ public class OrbitCameraController : MonoBehaviour
     private Vector3 focusPoint, previousFocusPoint;
     [SerializeField] Vector2 orbitAngles = new Vector2(45f, 0f);
 
+    private PlayerNewInputs _newInputs;
+
     //values
     float lastManualRotationTime;
 
     private void Awake()
     {
+        _newInputs = FindObjectOfType<PlayerNewInputs>();
         normalSpeed = rotationSpeed;
         audioListener = GetComponent<AudioListener>();
         regularCamera = GetComponent<Camera>();
@@ -110,9 +113,10 @@ public class OrbitCameraController : MonoBehaviour
             xMod = -1;
         if (invertY)
             yMod = -1;
+        Vector2 inputValue = _newInputs.CameraAxis();
         Vector2 input = new Vector2(
-            Input.GetAxis("Mouse Y") * yMod,
-            Input.GetAxis("Mouse X") * xMod
+            inputValue.y * yMod,
+            inputValue.x * xMod
         );
         const float e = 0.001f;
         if (input.x < e || input.x > e || input.y < e || input.y > e)

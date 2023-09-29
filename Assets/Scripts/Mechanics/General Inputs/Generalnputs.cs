@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace General_Inputs
 {
-    public class Generalnputs : MonoBehaviour,InputInterface
+    public class Generalnputs : MonoBehaviour, InputInterface
     {
+        private PlayerNewInputs _playerNewInputs;
         private PauseManager pauseManager;
         private PlayerValues playerValues;
         private Stopwatch timer;
@@ -17,6 +18,7 @@ namespace General_Inputs
             timer.Start();
             playerValues = FindObjectOfType<PlayerValues>();
             pauseManager = FindObjectOfType<PauseManager>();
+            _playerNewInputs = FindObjectOfType<PlayerNewInputs>();
         }
 
         private void Update()
@@ -24,14 +26,15 @@ namespace General_Inputs
             //keyboard inputs
             if (playerValues.GetCurrentInput() is not CurrentInput.None)
             {
-                if (Input.GetKeyDown(KeyCode.Escape)||Input.GetKeyDown(KeyCode.P))
+                if (_playerNewInputs.Pause())
                 {
                     pauseManager.Pause();
                 }
-                else if (Input.GetKeyDown(KeyCode.Space))
+                else if (_playerNewInputs.Jump())
                 {
                     if (!playerValues.GetIsGrounded() && playerValues.GetCurrentInput() is CurrentInput.Movement
-                            or CurrentInput.RaceMovement or CurrentInput.StealthMovement or CurrentInput.ShootMovement or CurrentInput.ArcadeMechanics)
+                            or CurrentInput.RaceMovement or CurrentInput.StealthMovement or CurrentInput.ShootMovement
+                            or CurrentInput.ArcadeMechanics)
                     {
                         playerValues.CheckIfStuck(false);
                         if (playerValues.GetIsStucked())

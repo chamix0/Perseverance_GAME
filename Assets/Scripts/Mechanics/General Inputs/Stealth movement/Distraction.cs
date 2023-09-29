@@ -20,7 +20,7 @@ public class Distraction : Subject
     private float outlineWidth;
 
     //cooldown
-    private Stopwatch _timer;
+    private MyStopWatch _timer;
     [SerializeField] private float distractionCooldown = 5;
     private float _targetAlpha, _tA;
     private bool _updateAlpha, _lockPos;
@@ -35,7 +35,7 @@ public class Distraction : Subject
 
     private void Awake()
     {
-        _timer = new Stopwatch();
+        _timer = gameObject.AddComponent<MyStopWatch>();
         _rigidbody = GetComponent<Rigidbody>();
         _renderer = GetComponent<Renderer>();
         _outline = GetComponent<Outline>();
@@ -61,7 +61,7 @@ public class Distraction : Subject
         if (_updateAlpha)
             SmoothAlpha();
 
-        if (!playedEffects && _timer.Elapsed.TotalSeconds > distractionCooldown)
+        if (!playedEffects && _timer.GetElapsedSeconds() > distractionCooldown)
         {
             if (!particles)
                 particles = Instantiate(popParticles, transform).GetComponent<ParticleSystem>();
@@ -93,7 +93,7 @@ public class Distraction : Subject
 
     public void RecuperateDistraction()
     {
-        if (_timer.Elapsed.TotalSeconds > distractionCooldown)
+        if (_timer.GetElapsedSeconds() > distractionCooldown)
         {
             RaycastHit hit;
 
@@ -113,7 +113,7 @@ public class Distraction : Subject
             _rigidbody.drag = recoverDrag;
             playedEffects = false;
             _timer.Stop();
-            _timer.Reset();
+            _timer.ResetStopwatch();
         }
     }
 

@@ -10,10 +10,12 @@ using UnityEngine;
 public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
 {
     // Start is called before the first frame update
+    private PlayerNewInputs _playerNewInputs;
     private PlayerValues _playerValues;
     private PlayerMechanicsArcadeManager _manager;
     private ArcadePlayerData _arcadePlayerData;
     private CameraChanger _cameraChanger;
+    private CameraController _cameraController;
     private GuiManager guiManager;
 
     //run mode
@@ -34,8 +36,10 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
     {
         guiManager = FindObjectOfType<GuiManager>();
         guiManager.AddObserver(this);
+        _playerNewInputs = FindObjectOfType<PlayerNewInputs>();
         _playerValues = FindObjectOfType<PlayerValues>();
         _arcadePlayerData = FindObjectOfType<ArcadePlayerData>();
+        _cameraController = FindObjectOfType<CameraController>();
         _cameraChanger = FindObjectOfType<CameraChanger>();
         stamina = FindObjectOfType<Stamina>();
         _manager = FindObjectOfType<PlayerMechanicsArcadeManager>();
@@ -72,7 +76,7 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
             if (!_arcadePlayerData.isArmorWheelDisplayed)
             {
                 //gear up
-                if (Input.GetKeyDown(KeyCode.W))
+                if (_playerNewInputs.GearUp())
                 {
                     int gear = _playerValues.GetGear();
                     if (gear < _arcadePlayerData.unlockedGear)
@@ -87,7 +91,7 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
                 }
 
                 //gear down
-                if (Input.GetKeyDown(KeyCode.S))
+                if (_playerNewInputs.GearDown())
                 {
                     _playerValues.DecreaseGear();
                     turboParticles.Stop();
@@ -95,7 +99,7 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
                 }
 
                 //shoot
-                if (Input.GetKeyDown(KeyCode.Mouse0))
+                if (_playerNewInputs.Shoot())
                 {
                     if (shootTimer.Elapsed.TotalMilliseconds > _arcadePlayerData.GetShootingCooldown())
                     {
@@ -105,62 +109,95 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
                 }
 
                 //stop  shooting
-                if (Input.GetKeyUp(KeyCode.Mouse0))
+                if (_playerNewInputs.ShootReleased())
                 {
                     _manager.StopAutomaticShooting();
                 }
 
                 //aim
-                if (Input.GetKey(KeyCode.Mouse1))
+                if (_playerNewInputs.Aim())
                 {
                     _manager.Aim();
                 }
-                else if (Input.GetKeyUp(KeyCode.Mouse1))
+
+                if (_playerNewInputs.AimRelease())
                 {
                     _manager.StopAim();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Q))
+                //grenade
+                if (_playerNewInputs.GrenadeDistraction())
                 {
                     _manager.ThrowGrenade();
                 }
 
                 //open armor wheel
-                if (Input.GetKeyDown(KeyCode.Tab))
+                if (_playerNewInputs.ShowArmorWheel())
                 {
                     guiManager.ShowArmorWheel();
                     _manager.StopAutomaticShooting();
                 }
             }
-            else if (Input.GetKeyUp(KeyCode.Tab))
+            else if (_playerNewInputs.HideArmorWheel())
             {
                 guiManager.HideArmorWheel();
                 _manager.StopAutomaticShooting();
                 _manager.StopAim();
             }
 
-
-            // if (Input.GetKeyDown(KeyCode.E))
-            // {
-            //     foreach (var machineGun in machineGuns)
-            //     {
-            //         machineGun.NextShootingMode();
-            //     }
-            // }
-            //
-            // if (Input.GetKeyDown(KeyCode.Q))
-            // {
-            //     foreach (var machineGun in machineGuns)
-            //     {
-            //         machineGun.PrevShootingMode();
-            //     }
-            // }
-
-            if (Input.GetKeyDown(KeyCode.V))
+            if (_playerNewInputs.Lights())
             {
                 if (_playerValues.GetLights())
                     _playerValues.NotifyAction(PlayerActions.TurnOffLights);
                 else
+                    _playerValues.NotifyAction(PlayerActions.TurnOnLights);
+            }
+        }
+    }
+
+    public void PerformAction(Move move)
+    {
+        _playerNewInputs.SetCubeAsDevice();
+
+        if (_playerValues.GetInputsEnabled())
+        {
+            if (move.face == FACES.R)
+            {
+                _playerValues.CheckIfStuck(true);
+                if (move.direction == 1)
+                {
+                    if (_playerValues.GetGear() < 3)
+                        _playerValues.RiseGear();
+                }
+                else
+                    _playerValues.DecreaseGear();
+            }
+        }
+
+        //turn camera in y axis
+        if (move.face == FACES.L)
+        {
+            if (move.direction == 1)
+                _cameraController.RotateVerticalDown();
+            else
+                _cameraController.RotateVerticalUp();
+        }
+        else if (move.face == FACES.U)
+        {
+            if (move.direction == 1) _cameraController.RotateClockwise();
+            else _cameraController.RotateCounterClockwise();
+        }
+        
+        else if (move.face == FACES.B)
+        {
+            if (move.direction == 1)
+            {
+                if (_playerValues.GetLights())
+                    _playerValues.NotifyAction(PlayerActions.TurnOffLights);
+            }
+            else
+            {
+                if (!_playerValues.GetLights())
                     _playerValues.NotifyAction(PlayerActions.TurnOnLights);
             }
         }

@@ -13,6 +13,7 @@ public class TrapManager : MonoBehaviour
 
     private ArcadePlayerData _playerData;
     private GuiManager _guiManager;
+    private PlayerNewInputs _newInputs;
     private bool _isIn, _lasersOn;
 
     //values
@@ -24,6 +25,7 @@ public class TrapManager : MonoBehaviour
         trigger = GetComponent<BoxCollider>();
         _guiManager = FindObjectOfType<GuiManager>();
         _playerData = FindObjectOfType<ArcadePlayerData>();
+        _newInputs = FindObjectOfType<PlayerNewInputs>();
     }
 
     private void StartLasers()
@@ -48,10 +50,12 @@ public class TrapManager : MonoBehaviour
             if (_playerData.GetPower())
             {
                 if (CanPay())
-                    _guiManager.SetMessageText_("Press E to enable trap for the next 30 seconds. \n <color=#0d9146>" +
+                    _guiManager.SetMessageText_("Press" + _newInputs.PlayerSelectText() +
+                                                "to enable trap for the next 30 seconds. \n <color=#0d9146>" +
                                                 prize + " pts</color>");
                 else
-                    _guiManager.SetMessageText_("Press E to enable trap for the next 30 seconds. \n <color=#911f0d>" +
+                    _guiManager.SetMessageText_("Press" + _newInputs.PlayerSelectText() +
+                                                "to enable trap for the next 30 seconds. \n <color=#911f0d>" +
                                                 prize + "  pts</color>");
             }
             else
@@ -65,7 +69,7 @@ public class TrapManager : MonoBehaviour
     {
         if (_isIn && !_lasersOn && CanPay() && _playerData.GetPower())
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (_newInputs.PlayerSelect())
             {
                 StartCoroutine(TurnOnLaserCoroutine());
                 _playerData.RemovePoints(prize);

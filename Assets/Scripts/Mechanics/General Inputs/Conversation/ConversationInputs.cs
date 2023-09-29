@@ -1,7 +1,7 @@
 using Mechanics.General_Inputs;
 using UnityEngine;
 
-public class ConversationInputs : MonoBehaviour,InputInterface
+public class ConversationInputs : MonoBehaviour
 {
     // Start is called before the first frame update
     private PlayerValues _playerValues;

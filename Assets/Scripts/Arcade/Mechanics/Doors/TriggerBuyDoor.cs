@@ -7,7 +7,7 @@ namespace Arcade.Mechanics.Doors
     {
         // Start is called before the first frame update
         [SerializeField] private List<GameObject> triggers;
-
+        private PlayerNewInputs _newInputs;
         private ArcadePlayerData _playerData;
         private GuiManager _guiManager;
         [SerializeField] private DoorManager doorManager;
@@ -21,6 +21,7 @@ namespace Arcade.Mechanics.Doors
         {
             _guiManager = FindObjectOfType<GuiManager>();
             _playerData = FindObjectOfType<ArcadePlayerData>();
+            _newInputs = FindObjectOfType<PlayerNewInputs>();
         }
 
 
@@ -30,10 +31,13 @@ namespace Arcade.Mechanics.Doors
             {
                 isIn = true;
                 _guiManager.ShowMessage();
+                _newInputs.PlayerSelectText();
                 if (CanPay())
-                    _guiManager.SetMessageText_("Press E to open \n <color=#0d9146>" + prize + " pts</color>");
+                    _guiManager.SetMessageText_("Press" + _newInputs.PlayerSelectText() + "to open \n <color=#0d9146>" +
+                                                prize + " pts</color>");
                 else
-                    _guiManager.SetMessageText_("Press E to open \n <color=#911f0d>" + prize + "  pts</color>");
+                    _guiManager.SetMessageText_("Press" + _newInputs.PlayerSelectText() + "to open \n <color=#911f0d>" +
+                                                prize + "  pts</color>");
             }
         }
 
@@ -41,13 +45,13 @@ namespace Arcade.Mechanics.Doors
         {
             if (isIn && CanPay())
             {
-                if (Input.GetKeyDown(KeyCode.E))
+                if (_newInputs.PlayerSelect())
                 {
                     doorManager.OpenDoor();
                     _playerData.RemovePoints(prize);
                     isIn = false;
                     _guiManager.HideMessage();
-                    
+
                     foreach (var zone in zonesThatUnlocks)
                         _playerData.UnlockZone(zone);
 
