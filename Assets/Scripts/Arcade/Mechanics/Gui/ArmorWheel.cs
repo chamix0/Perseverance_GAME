@@ -205,7 +205,8 @@ public class ArmorWheel : MonoBehaviour, IObserver
         {
             ShootingMode.Automatic => "Automatic",
             ShootingMode.Manual => "Manual",
-            ShootingMode.Burst => "Burst"
+            ShootingMode.Burst => "Burst",
+            _ => throw new ArgumentOutOfRangeException(nameof(shootingMode), shootingMode, null)
         };
     }
 

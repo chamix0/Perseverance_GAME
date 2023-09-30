@@ -128,6 +128,7 @@ public class MainMenuManager : MonoBehaviour
         }
         else
         {
+            _texts[1].color = Color.black;
             NewGameInteractable = true;
             _buttons[1].interactable = true;
         }

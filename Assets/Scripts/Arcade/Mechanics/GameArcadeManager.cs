@@ -28,7 +28,7 @@ public class GameArcadeManager : MonoBehaviour,IObserver
     [SerializeField] private int minNumEnemies = 3, maxNumEnemies = 6, numEnemyCap = 50;
     [SerializeField] private int minLives = 6, maxLives = 10;
     [SerializeField] float minSpeed = 1, maxSpeed = 2, speedCap = 4;
-    [SerializeField] private int minDamage = 1, maxDamage = 1, _damageCap = 2;
+    [SerializeField] private int minDamage = 1, maxDamage = 1;
     [SerializeField] private float minSpawnTime = 7, maxSpawnTime = 10, _spawnTimeCap = 1;
 
     //variables

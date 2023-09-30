@@ -67,11 +67,8 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
         if (_playerValues.GetCurrentInput() == CurrentInput.ArcadeMechanics && _playerValues.GetInputsEnabled() &&
             !_playerValues.GetPaused())
         {
-            if (Input.anyKey)
-            {
-                guiManager.SetTutorial(
-                    "WS - Increase/Descrease gear    RCLICK - Aim    LCLICK - Shoot");
-            }
+            if (_playerNewInputs.CheckInputChanged())
+                UpdateTutorial();
 
             if (!_arcadePlayerData.isArmorWheelDisplayed)
             {
@@ -158,10 +155,11 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
 
     public void PerformAction(Move move)
     {
-        _playerNewInputs.SetCubeAsDevice();
-
         if (_playerValues.GetInputsEnabled())
         {
+            _playerNewInputs.SetCubeAsDevice();
+            if (_playerNewInputs.CheckInputChanged())
+                UpdateTutorial();
             //gears
             if (move.face == FACES.R)
             {

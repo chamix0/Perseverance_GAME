@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class ArcadeMenuManager : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup _canvasGroup,secondPlayButtonCanvas;
+    [SerializeField] private CanvasGroup _canvasGroup, secondPlayButtonCanvas;
     [SerializeField] private Button playButton, secondPlayButton;
     [SerializeField] private List<TMP_Text> leaderBoardNames, leaderBoardRounds, leaderBoardPoints;
     private JSONsaving _jsoNsaving;
@@ -46,7 +46,8 @@ public class ArcadeMenuManager : MonoBehaviour
     public void PlaySecondButtonAction()
     {
         _sounds.SelectOptionSound();
-        _jsoNsaving._saveData.StartNewGame(_newGameManager.GetModelIndex(), _newGameManager.GetName());
+        _jsoNsaving._saveData.SetArcadeModel(_newGameManager.GetModelIndex());
+        _jsoNsaving._saveData.SetArcadeName(_newGameManager.GetName());
         _jsoNsaving.SaveTheData();
         _loadScreen.LoadArcadeGame();
         playButton.interactable = false;
@@ -66,12 +67,14 @@ public class ArcadeMenuManager : MonoBehaviour
         secondPlayButtonCanvas.interactable = true;
         secondPlayButtonCanvas.blocksRaycasts = true;
     }
+
     public void HidePlayButton()
     {
         secondPlayButtonCanvas.alpha = 0;
         secondPlayButtonCanvas.interactable = false;
         secondPlayButtonCanvas.blocksRaycasts = false;
     }
+
     public void HideUi()
     {
         _canvasGroup.alpha = 0;
