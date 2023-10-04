@@ -112,7 +112,7 @@ namespace Main_menu.New_game_screen
             _guiManagerMainMenu.ShowTutorial();
             _guiManagerMainMenu.SetTutorial(
                 _newInputs.RightText() + "- next |" + _newInputs.LeftText() +
-                "- Prev |" + _newInputs.ExitBasicText() + "- return |");
+                "- Prev |" + _newInputs.ExitBasicText() + "- return ");
         }
     }
 }

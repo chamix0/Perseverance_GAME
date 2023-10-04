@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,6 +29,15 @@ public class PlayerNewInputs : MonoBehaviour
     }
 
     private void OnDisable()
+    {
+        _controls.Disable();
+    }
+
+    public void EnableControls()
+    {
+        _controls.Enable();
+    }
+    public void DisableControls()
     {
         _controls.Disable();
     }
@@ -115,6 +122,10 @@ public class PlayerNewInputs : MonoBehaviour
     {
         return _controls.Eddo.ArmorWheel.WasReleasedThisFrame();
     }
+    public bool HideArmorPressed()
+    {
+        return _controls.Eddo.ArmorWheel.IsPressed();
+    }
 
     public bool ChangeWeapon()
     {
@@ -157,7 +168,7 @@ public class PlayerNewInputs : MonoBehaviour
         return currentDevice switch
         {
             MyDevices.GamePad => "<color=white> Start </color>",
-            MyDevices.KeyBoard => "<color=white> P </color>",
+            MyDevices.KeyBoard => "<color=white> Esc </color>",
             MyDevices.Cube => "<color=white> T </color>",
             _ => throw new ArgumentOutOfRangeException()
         };
@@ -576,6 +587,11 @@ public class PlayerNewInputs : MonoBehaviour
         return _controls.Minigames.RollCCW.WasPressedThisFrame();
     }
 
+    public bool ReRoll()
+    {
+        return _controls.Minigames.Reroll.WasPressedThisFrame();
+    }
+
     #endregion
 
     #region minigames text
@@ -598,6 +614,17 @@ public class PlayerNewInputs : MonoBehaviour
             MyDevices.GamePad => "<color=white> LT </color>",
             MyDevices.KeyBoard => "<color=white> A </color>",
             MyDevices.Cube => "<color=white> F' </color>",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
+    public string ReRollText()
+    {
+        return currentDevice switch
+        {
+            MyDevices.GamePad => "<color=#1c5abd> X </color>",
+            MyDevices.KeyBoard => "<color=white> R </color>",
+            MyDevices.Cube => "<color=white> L </color>",
             _ => throw new ArgumentOutOfRangeException()
         };
     }

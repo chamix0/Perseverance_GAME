@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Mechanics.General_Inputs.Machine_gun_mode

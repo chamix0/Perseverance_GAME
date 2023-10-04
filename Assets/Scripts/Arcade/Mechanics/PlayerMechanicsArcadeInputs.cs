@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Mechanics.General_Inputs;
-using Mechanics.General_Inputs.Machine_gun_mode;
 using Player.Observer_pattern;
 using UnityEngine;
 
@@ -17,6 +13,7 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
     private CameraChanger _cameraChanger;
     private CameraController _cameraController;
     private GuiManager guiManager;
+    private ArmorWheel _armorWheel;
 
     //run mode
     private Stamina stamina;
@@ -43,6 +40,8 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
         _cameraChanger = FindObjectOfType<CameraChanger>();
         stamina = FindObjectOfType<Stamina>();
         _manager = FindObjectOfType<PlayerMechanicsArcadeManager>();
+        _armorWheel = FindObjectOfType<ArmorWheel>();
+        _playerValues.AddObserver(this);
     }
 
     // Update is called once per frame
@@ -114,12 +113,14 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
                 //aim
                 if (_playerNewInputs.Aim())
                 {
+                    _cameraController.SlowCamera(50);
                     _manager.Aim();
                 }
 
                 //stop aim
                 if (_playerNewInputs.AimRelease())
                 {
+                    _cameraController.NormalCameraSpeed();
                     _manager.StopAim();
                 }
 
@@ -135,6 +136,22 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
                     guiManager.ShowArmorWheel();
                     _manager.StopAutomaticShooting();
                 }
+            }
+            else if (_playerNewInputs.HideArmorPressed() && _playerNewInputs.UpTap())
+            {
+                _armorWheel.SelectUp();
+            }
+            else if (_playerNewInputs.HideArmorPressed() && _playerNewInputs.DownTap())
+            {
+                _armorWheel.SelectDown();
+            }
+            else if (_playerNewInputs.HideArmorPressed() && _playerNewInputs.RightTap())
+            {
+                _armorWheel.SelectNext();
+            }
+            else if (_playerNewInputs.HideArmorPressed() && _playerNewInputs.LeftTap())
+            {
+                _armorWheel.SelectPrev();
             }
             else if (_playerNewInputs.HideArmorWheel())
             {

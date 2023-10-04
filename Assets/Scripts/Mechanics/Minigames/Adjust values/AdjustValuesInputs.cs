@@ -25,6 +25,7 @@ public class AdjustValuesInputs : MonoBehaviour, IObserver
         if (_playerValues.GetCurrentInput() == CurrentInput.AdjustValuesMinigame && _playerValues.GetInputsEnabled() &&
             !_playerValues.GetPaused())
         {
+            
             if (_newInputs.CheckInputChanged())
                 UpdateTutorial();
 

@@ -69,9 +69,7 @@ public class LockerManager : MonoBehaviour
             });
             digits[i].text = "" + _code[i];
         }
-
-        cubeTutorial.SetActive(false);
-        keyTutorial.SetActive(false);
+        
         checkButton.onClick.AddListener(CheckButton);
         exitButton.onClick.AddListener(ExitButton);
         statusText.text = "";
@@ -86,7 +84,6 @@ public class LockerManager : MonoBehaviour
 
     private void KeyboardInputs()
     {
-        ShowKeyTutorial();
         UnHighlighlightNumber();
     }
     
@@ -168,14 +165,12 @@ public class LockerManager : MonoBehaviour
     public void ShowUI()
     {
         uiObject.SetActive(true);
-        ShowKeyTutorial();
     }
 
     public void HideUI()
     {
         uiObject.SetActive(false);
-        cubeTutorial.SetActive(false);
-        keyTutorial.SetActive(false);
+
     }
 
     public void IncreaseValue(int index)
@@ -204,24 +199,6 @@ public class LockerManager : MonoBehaviour
     {
         DecreaseValue(index);
         HighlightNumber();
-    }
-
-    [SerializeField] private GameObject cubeTutorial, keyTutorial;
-
-    public void ShowCubeTutorial()
-    {
-        if (!cubeTutorial.activeSelf)
-            cubeTutorial.SetActive(true);
-        if (keyTutorial.activeSelf)
-            keyTutorial.SetActive(false);
-    }
-
-    public void ShowKeyTutorial()
-    {
-        if (cubeTutorial.activeSelf)
-            cubeTutorial.SetActive(false);
-        if (!keyTutorial.activeSelf)
-            keyTutorial.SetActive(true);
     }
 
     private void EndMinigame()

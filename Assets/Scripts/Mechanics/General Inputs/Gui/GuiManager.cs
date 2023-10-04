@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using Arcade.Mechanics.Bullets;
 using Mechanics.General_Inputs;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
@@ -36,7 +35,7 @@ public class GuiManager : Subject
 
     //dialog
     [Header("Dialog")] [SerializeField] private CanvasGroup dialogObject;
-    [SerializeField] private TMP_Text name;
+    [SerializeField] private TMP_Text nameDialog;
     [SerializeField] private TMP_Text message;
     [SerializeField] private List<TMP_Text> answers;
     [SerializeField] private Image avatarImage;
@@ -92,6 +91,11 @@ public class GuiManager : Subject
     [SerializeField] private TMP_Text livesText;
     private int currentLives;
 
+    //round
+    [Header("rounds")] [SerializeField] private CanvasGroup roundCanvas;
+    [SerializeField] private TMP_Text roundText;
+
+
     void Start()
     {
         _cameraController = FindObjectOfType<OrbitCameraController>();
@@ -122,6 +126,8 @@ public class GuiManager : Subject
         HidePausePanel();
         if (messageCanvasGroup)
             HideMessage();
+        if (roundCanvas)
+            HideRound();
     }
 
     private void Update()
@@ -213,7 +219,7 @@ public class GuiManager : Subject
             ArmorWheel.interactable = true;
 
             CursorManager.ShowCursor();
-            _cameraController.SlowCameraSpeed();
+            _cameraController.SlowCameraSpeed(5);
             _soundManager.SetMuteVFX(true);
             Time.timeScale = 0.0125f;
             NotifyObservers(PlayerActions.OpenArmorWheel);
@@ -232,7 +238,7 @@ public class GuiManager : Subject
             CursorManager.HideCursor();
             _cameraController.ReturnToNormalCameraSpeed();
             _soundManager.SetMuteVFX(false);
-             Time.timeScale = 1f;
+            _playerValues.ContinueRelativeTime();
             NotifyObservers(PlayerActions.CloseArmorWheel);
         }
     }
@@ -257,7 +263,7 @@ public class GuiManager : Subject
 
     public void SetDialogName(string cad)
     {
-        name.text = cad;
+        nameDialog.text = cad;
     }
 
     public void SetDialogMesasge(string cad)
@@ -345,9 +351,9 @@ public class GuiManager : Subject
         pausePanel.alpha = 1;
         pausePanel.interactable = true;
         crosshair.alpha = 0;
-        _cameraController.SlowCameraSpeed();
+        _cameraController.SlowCameraSpeed(0);
         _soundManager.SetMuteVFX(true);
-        Time.timeScale = 0;
+        _playerValues.StopRelativeTime();
         CursorManager.ShowCursor();
     }
 
@@ -360,7 +366,7 @@ public class GuiManager : Subject
         pausePanel.alpha = 0;
         pausePanel.interactable = false;
         crosshair.alpha = 1;
-        Time.timeScale = 1;
+        _playerValues.ContinueRelativeTime();
         _soundManager.SetMuteVFX(false);
         _cameraController.ReturnToNormalCameraSpeed();
         if (_playerValues.GetCurrentInput() is CurrentInput.Movement or CurrentInput.Conversation or CurrentInput.None
@@ -404,7 +410,7 @@ public class GuiManager : Subject
     #endregion
 
     #region Tutorial
-    
+
     public void SetTutorial(string cad)
     {
         tutorialText.text = cad;
@@ -542,6 +548,25 @@ public class GuiManager : Subject
     public void SetLives(int num)
     {
         livesText.text = num + "";
+    }
+
+    #endregion
+
+    #region round
+
+    public void ShowRound()
+    {
+        roundCanvas.alpha = 1;
+    }
+
+    public void HideRound()
+    {
+        roundCanvas.alpha = 0;
+    }
+
+    public void SetRound(string text)
+    {
+        roundText.text = text;
     }
 
     #endregion

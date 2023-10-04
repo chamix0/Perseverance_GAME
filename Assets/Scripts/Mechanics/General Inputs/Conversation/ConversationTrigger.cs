@@ -1,5 +1,5 @@
-using System.Diagnostics;
 using UnityEngine;
+using UTILS;
 
 public enum ObetiveType
 {
@@ -14,7 +14,7 @@ public class ConversationTrigger : MonoBehaviour
     [SerializeField] private Conversation conversation;
     [SerializeField] private Transform focus;
     private ConversationManager conversationManager;
-    private Stopwatch stopwatch;
+    private MyStopWatch stopwatch;
     private float conversationCooldown = 2;
     public bool destroyAfterUse = false;
     public bool showAlice = false;
@@ -26,7 +26,7 @@ public class ConversationTrigger : MonoBehaviour
 
     private void Awake()
     {
-        stopwatch = new Stopwatch();
+        stopwatch = gameObject.AddComponent<MyStopWatch>();
     }
 
     void Start()
@@ -41,20 +41,19 @@ public class ConversationTrigger : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (stopwatch.Elapsed.TotalSeconds > conversationCooldown || !stopwatch.IsRunning)
+            if (stopwatch.GetElapsedSeconds() > conversationCooldown || !stopwatch.IsRunning())
             {
                 if (showAlice)
-                {
                     alice.SetActive(true);
-                }
-
+                
                 playerValues.transform.LookAt(new Vector3(focus.position.x, playerValues.transform.position.y,
                     focus.position.z));
-
                 conversation.ResetConversation();
                 conversationManager.StartConversation(conversation, focus);
-                if (!stopwatch.IsRunning)
-                    stopwatch.Start();
+                if (!stopwatch.IsRunning())
+                    stopwatch.StartStopwatch();
+                else
+                    stopwatch.Restart();
             }
         }
     }
@@ -76,13 +75,7 @@ public class ConversationTrigger : MonoBehaviour
             if (destroyAfterUse)
             {
                 gameObject.SetActive(false);
-            }
-            else
-            {
-                if (!stopwatch.IsRunning)
-                    stopwatch.Start();
-                else
-                    stopwatch.Restart();
+                stopwatch.Stop();
             }
         }
     }

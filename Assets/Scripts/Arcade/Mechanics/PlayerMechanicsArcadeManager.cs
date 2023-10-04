@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Arcade.Mechanics.Bullets;
 using Mechanics.General_Inputs.Machine_gun_mode;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class PlayerMechanicsArcadeManager : MonoBehaviour
 {

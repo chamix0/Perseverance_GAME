@@ -218,7 +218,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KeyBoard"",
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -229,7 +229,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""GamePad"",
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -319,17 +319,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Grenade"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2d90a63d-70dd-42f1-ae3f-c34f4af39928"",
-                    ""path"": ""<Keyboard>/p"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -648,6 +637,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""12bed2d8-3568-41bf-ba8b-f4c8cb372c2d"",
                     ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba263bf6-e5ac-4108-854c-94be20026321"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1074,6 +1074,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reroll"",
+                    ""type"": ""Button"",
+                    ""id"": ""6e9fa1f2-08f1-495a-beac-1235d639b9fd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1140,6 +1149,28 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Roll CCW"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""06570758-89cc-4599-8ebc-999994119f96"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""872bac30-db41-4741-a05b-021b8582f8f8"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1212,6 +1243,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Minigames_Sprint = m_Minigames.FindAction("Sprint", throwIfNotFound: true);
         m_Minigames_RollCW = m_Minigames.FindAction("Roll CW", throwIfNotFound: true);
         m_Minigames_RollCCW = m_Minigames.FindAction("Roll CCW", throwIfNotFound: true);
+        m_Minigames_Reroll = m_Minigames.FindAction("Reroll", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1598,6 +1630,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Minigames_Sprint;
     private readonly InputAction m_Minigames_RollCW;
     private readonly InputAction m_Minigames_RollCCW;
+    private readonly InputAction m_Minigames_Reroll;
     public struct MinigamesActions
     {
         private @Controls m_Wrapper;
@@ -1605,6 +1638,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Minigames_Sprint;
         public InputAction @RollCW => m_Wrapper.m_Minigames_RollCW;
         public InputAction @RollCCW => m_Wrapper.m_Minigames_RollCCW;
+        public InputAction @Reroll => m_Wrapper.m_Minigames_Reroll;
         public InputActionMap Get() { return m_Wrapper.m_Minigames; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1623,6 +1657,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @RollCCW.started -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnRollCCW;
                 @RollCCW.performed -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnRollCCW;
                 @RollCCW.canceled -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnRollCCW;
+                @Reroll.started -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnReroll;
+                @Reroll.performed -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnReroll;
+                @Reroll.canceled -= m_Wrapper.m_MinigamesActionsCallbackInterface.OnReroll;
             }
             m_Wrapper.m_MinigamesActionsCallbackInterface = instance;
             if (instance != null)
@@ -1636,6 +1673,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @RollCCW.started += instance.OnRollCCW;
                 @RollCCW.performed += instance.OnRollCCW;
                 @RollCCW.canceled += instance.OnRollCCW;
+                @Reroll.started += instance.OnReroll;
+                @Reroll.performed += instance.OnReroll;
+                @Reroll.canceled += instance.OnReroll;
             }
         }
     }
@@ -1703,5 +1743,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnRollCW(InputAction.CallbackContext context);
         void OnRollCCW(InputAction.CallbackContext context);
+        void OnReroll(InputAction.CallbackContext context);
     }
 }

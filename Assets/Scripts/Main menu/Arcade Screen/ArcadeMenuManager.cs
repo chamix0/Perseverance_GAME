@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Main_menu;
 using Main_menu.New_game_screen;

@@ -129,24 +129,22 @@ public class CameraEnemy : Enemy
         }
 
         //transition
-        if (CheckIsInCone())
-        {
-            ChangeState(States.Alert, Color.red, 2);
-        }
-
         if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
         {
             ChangeState(States.DestroyDistraction, Color.red, 2);
         }
-
+        else if (CheckIsInCone())
+        {
+            ChangeState(States.Alert, Color.red, 2);
+        }
         //if player has the lights on and in sight
-        if (_playerValues.GetLights() && InSight())
+        else if (_playerValues.GetLights() && InSight())
         {
             ChangeState(States.Alert, Color.red, 2);
         }
 
         //if its moving too fast and in sight
-        if (_playerValues.GetGear() > 2 && InSight())
+        else if (_playerValues.GetGear() > 2 && InSight())
         {
             ChangeState(States.Alert, Color.red, 2);
         }
@@ -167,19 +165,17 @@ public class CameraEnemy : Enemy
             _timer.Restart();
             ChangeState(States.Patrol, Color.blue, 0);
         }
-
-        if (CheckIsInCone() && InSight())
-        {
-            ChangeState(States.Alert, Color.red, 2);
-        }
-
-        if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
+        else if (_targetDistraction.GetBeingUsed() && InSight(_targetDistraction.transform.position, "Distraction"))
         {
             ChangeState(States.DestroyDistraction, Color.red, 2);
         }
-
+        else if (CheckIsInCone() && InSight())
+        {
+            ChangeState(States.Alert, Color.red, 2);
+        }
+        
         //if player has the lights on and in sight or if its moving too fast and in sight
-        if (_playerValues.GetLights() && InSight() || _playerValues.GetGear() > 2 && InSight())
+        else if (_playerValues.GetLights() && InSight() || _playerValues.GetGear() > 2 && InSight())
         {
             ChangeState(States.Alert, Color.red, 2);
         }
@@ -205,12 +201,6 @@ public class CameraEnemy : Enemy
         {
             _timer.Restart();
             ChangeState(States.Searching, Color.yellow, 1);
-        }
-
-        //if player has the lights on and in sight or if its moving too fast and in sight
-        if (_playerValues.GetLights() && InSight() || _playerValues.GetGear() > 2 && InSight())
-        {
-            ChangeState(States.Alert, Color.red, 2);
         }
     }
 
@@ -355,7 +345,7 @@ public class CameraEnemy : Enemy
     {
         if (lives > 0)
         {
-            lives-=damage;
+            lives -= damage;
             if (lives <= 0)
                 Die();
         }

@@ -872,6 +872,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4125965063977538212, guid: 60f82ddd917f5db439598d6accdb7a2b, type: 3}
   m_PrefabInstance: {fileID: 1409124389}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &85790811
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 85790812}
+  - component: {fileID: 85790814}
+  - component: {fileID: 85790813}
+  m_Layer: 0
+  m_Name: Rumble manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &85790812
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85790811}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 12.01545, y: -47.35226, z: 35.768204}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 592286123}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &85790813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85790811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3930f29e9d25dec408e58a740ecd25e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &85790814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85790811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d00b3149c2e0434fa695fb2674010b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &89307073
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7924,6 +7981,7 @@ Transform:
   - {fileID: 222495062}
   - {fileID: 1335183912}
   - {fileID: 12694561}
+  - {fileID: 85790812}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -24360,6 +24418,10 @@ PrefabInstance:
     - target: {fileID: 7026184178439971440, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
       propertyPath: m_Name
       value: Scene Loader
+      objectReference: {fileID: 0}
+    - target: {fileID: 7026184178439971440, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8993048552959868200, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
       propertyPath: m_Pivot.x

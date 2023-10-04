@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Arcade.Mechanics.Doors;
 using Mechanics.General_Inputs;
 using UnityEngine;

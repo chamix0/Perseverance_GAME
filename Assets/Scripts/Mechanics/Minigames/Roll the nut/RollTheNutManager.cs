@@ -189,30 +189,6 @@ public class RollTheNutManager : Minigame
         uiObject.SetActive(false);
     }
 
-    [SerializeField] private GameObject cubeTutorial,
-        keyTutorial;
-
-    public void ShowCubeTutorial()
-    {
-        if (_isEnabled)
-        {
-            if (!cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(true);
-            if (keyTutorial.activeSelf)
-                keyTutorial.SetActive(false);
-        }
-    }
-
-    public void ShowKeyTutorial()
-    {
-        if (_isEnabled)
-        {
-            if (cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(false);
-            if (!keyTutorial.activeSelf)
-                keyTutorial.SetActive(true);
-        }
-    }
 
     private void EndMinigame()
     {
@@ -243,7 +219,6 @@ public class RollTheNutManager : Minigame
         ShowUI();
         _isEnabled = true;
         _playerValues.SetInputsEnabled(true);
-        ShowKeyTutorial();
         _playerValues.NotifyAction(PlayerActions.RollMinigame);
     }
 }

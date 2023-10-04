@@ -53,8 +53,6 @@ namespace Arcade.Mechanics.Upgrades
                 case UpgradeType.PointMultiplier:
                     _playerData.IncreasePointMultiplier();
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -70,7 +68,6 @@ namespace Arcade.Mechanics.Upgrades
                 UpgradeType.MoreBulletSlots => "Increase Bullet Slots",
                 UpgradeType.MoreGrenadeSlots => "Increase Grenade Slots",
                 UpgradeType.PointMultiplier => "Increase Points Multiplier",
-                _ => throw new ArgumentOutOfRangeException()
             };
         }
     }

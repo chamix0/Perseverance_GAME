@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -23,12 +22,9 @@ public class LastScreenArcadeManager : MonoBehaviour
         _texts[1].text = arcadeStats.Rounds + "";
         _texts[2].text = arcadeStats.Level + "";
         _texts[3].text = arcadeStats.EnemiesKilled + "";
-        _texts[4].text = arcadeStats.ZonesUnlocked ;
+        _texts[4].text = arcadeStats.ZonesUnlocked;
         _texts[5].text = arcadeStats.UnlockedGears;
         _texts[6].text = arcadeStats.PowerEnabled;
-
-
-
-
+        CursorManager.ShowCursor();
     }
 }

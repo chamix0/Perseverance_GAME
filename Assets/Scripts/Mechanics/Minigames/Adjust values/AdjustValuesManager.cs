@@ -158,29 +158,6 @@ public class AdjustValuesManager : Minigame
         uiObject.SetActive(false);
     }
 
-    [SerializeField] private GameObject cubeTutorial, keyTutorial;
-
-    public void ShowCubeTutorial()
-    {
-        if (minigameStarted)
-        {
-            if (!cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(true);
-            if (keyTutorial.activeSelf)
-                keyTutorial.SetActive(false);
-        }
-    }
-
-    public void ShowKeyTutorial()
-    {
-        if (minigameStarted)
-        {
-            if (cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(false);
-            if (!keyTutorial.activeSelf)
-                keyTutorial.SetActive(true);
-        }
-    }
 
     public void IncreaseValue()
     {
@@ -236,7 +213,6 @@ public class AdjustValuesManager : Minigame
         ShowUI();
         _playerValues.SetInputsEnabled(true);
         minigameStarted = true;
-        ShowKeyTutorial();
         _playerValues.NotifyAction(PlayerActions.AdjustValuesMinigame);
 
         //empezar minijuego

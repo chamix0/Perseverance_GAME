@@ -32,7 +32,6 @@ public class DontTouchWallsInputs : MonoBehaviour, IObserver
             {
                 UpdateTutorial();
                 _dontTouchWallsManager.SetGearsZero();
-                _dontTouchWallsManager.ShowKeyTutorial();
             }
 
 
@@ -69,7 +68,6 @@ public class DontTouchWallsInputs : MonoBehaviour, IObserver
 
     public void PerformAction(Move move)
     {
-        _dontTouchWallsManager.ShowCubeTutorial();
         if (_playerValues.GetInputsEnabled())
         {
             _newInputs.SetCubeAsDevice();

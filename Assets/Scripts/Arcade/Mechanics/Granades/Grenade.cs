@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 using Arcade.Mechanics.Granades;
-using Codice.Client.BaseCommands.Differences;
 using UnityEngine;
 
 public class Grenade : Subject
@@ -56,6 +55,7 @@ public class Grenade : Subject
     {
         _playerValues = FindObjectOfType<PlayerValues>();
         AddObserver(_playerValues.GetComponent<PlayerSounds>());
+        AddObserver(FindObjectOfType<RumbleObserver>());
         Physics.IgnoreCollision(_playerValues.GetComponent<BoxCollider>(), GetComponent<BoxCollider>());
         _renderer.material.SetFloat(Alpha, 0);
     }
@@ -180,6 +180,7 @@ public class Grenade : Subject
             StartCoroutine(ReadyGrenadeCoroutine());
             //do the damage
             GetEnemiesExplotion();
+            NotifyObservers(PlayerActions.GrenadeExplode);
         }
     }
 

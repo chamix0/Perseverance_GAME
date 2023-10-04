@@ -58,7 +58,7 @@ public class ConversationManager : MonoBehaviour
 
     public void StartConversation(Conversation conversation, Transform newFocus)
     {
-        Time.timeScale = 0;
+        playerValues.StopGeneralTime();
         this.conversation = conversation;
         guiManager.ShowDialog();
         playerFocus = cameraController.GetFocus();
@@ -72,7 +72,7 @@ public class ConversationManager : MonoBehaviour
 
     private void EndConversation()
     {
-        Time.timeScale = 1;
+        playerValues.ContinueGeneralTime();
         guiManager.HideDialog();
         cameraController.ChangeFocus(playerFocus);
         playerValues.ContinueAllMovement();

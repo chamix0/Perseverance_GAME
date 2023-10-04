@@ -1,14 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Arcade.Mechanics.Bullets;
-using Arcade.Mechanics.Granades;
 using Arcade.Mechanics.Upgrades;
 using Mechanics.General_Inputs;
 using Player.Observer_pattern;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -16,8 +12,10 @@ public class UpgradeManager : MonoBehaviour, IObserver
 {
     //values
     public bool isIn;
-    private int prize = 250, reRollPrize = 500;
+    private int prize = 100, prizeIncrease = 100, reRollPrize = 500;
     private bool limitReached;
+
+    private int navegationIndex;
 
     //components
     [SerializeField] private CanvasGroup uiCanvas, limitReachedCanvasGroup;
@@ -72,10 +70,9 @@ public class UpgradeManager : MonoBehaviour, IObserver
         exitButton.onClick.AddListener(ExitButtonAction);
         //reroll
         reRoll.onClick.AddListener(ReRollButtonAction);
-        cubeTutorial.SetActive(false);
-        keyTutorial.SetActive(false);
         _genericScreenUi.SetTextAlpha(0);
         HideUI();
+        _selectedUpgrades.AddRange(SelectThreeRandomUpgrades());
     }
 
     #region Button actions
@@ -86,10 +83,16 @@ public class UpgradeManager : MonoBehaviour, IObserver
         {
             _selectedUpgrades[index].ApplyUpgrade();
             _playerData.RemovePoints(prize);
-            prize += 500;
+            prize += prizeIncrease;
             _upgrades.Remove(_selectedUpgrades[index]);
             _playerData.UpgradeLevel();
             _guiManager.SetArcadeStatsText(_playerData.GetStatsText());
+            minigameSoundManager.PlayClickSound();
+            if (AllCurrentUpgradesUsed())
+            {
+                _selectedUpgrades.Clear();
+                _selectedUpgrades.AddRange(SelectThreeRandomUpgrades());
+            }
         }
 
         if (!limitReached)
@@ -105,6 +108,7 @@ public class UpgradeManager : MonoBehaviour, IObserver
             _selectedUpgrades.Clear();
             _selectedUpgrades.AddRange(SelectThreeRandomUpgrades());
             _playerData.RemovePoints(reRollPrize);
+            minigameSoundManager.PlayClickSound();
         }
 
         UpdateButtons();
@@ -115,6 +119,7 @@ public class UpgradeManager : MonoBehaviour, IObserver
     {
         EndShop();
         exitButton.interactable = false;
+        minigameSoundManager.PlayClickSound();
     }
 
     #endregion
@@ -188,6 +193,8 @@ public class UpgradeManager : MonoBehaviour, IObserver
         _upgrades.Add(new Upgrade(UpgradeType.IncreaseShootSpeed, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.IncreaseShootSpeed, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.IncreaseShootSpeed, _playerData));
+        _upgrades.Add(new Upgrade(UpgradeType.IncreaseShootSpeed, _playerData));
+        _upgrades.Add(new Upgrade(UpgradeType.IncreaseShootSpeed, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MaxBullets, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MaxBullets, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MaxBullets, _playerData));
@@ -204,6 +211,7 @@ public class UpgradeManager : MonoBehaviour, IObserver
         _upgrades.Add(new Upgrade(UpgradeType.MoreGrenadeSlots, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MoreBulletSlots, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MoreBulletSlots, _playerData));
+        _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
@@ -282,15 +290,15 @@ public class UpgradeManager : MonoBehaviour, IObserver
         limitReached = false;
         upgradeBase = newBase;
         exitButton.interactable = true;
-        _selectedUpgrades.Clear();
-        _selectedUpgrades.AddRange(SelectThreeRandomUpgrades());
+        // _selectedUpgrades.Clear();
+        // _selectedUpgrades.AddRange(SelectThreeRandomUpgrades());
 
         UpdateTexts();
         UpdateButtons();
 
         _genericScreenUi.FadeOutText();
         _playerValues.SetCurrentInput(CurrentInput.Upgrade);
-        _playerValues.SetInputsEnabled(false);
+        _playerValues.SetInputsEnabled(true);
         ShowUI();
         //_playerValues.SetInputsEnabled(true);
         _guiManager.ShowArcadeStats();
@@ -302,7 +310,6 @@ public class UpgradeManager : MonoBehaviour, IObserver
         uiCanvas.alpha = 1;
         uiCanvas.interactable = true;
         uiCanvas.blocksRaycasts = true;
-        ShowKeyTutorial();
     }
 
     public void HideUI()
@@ -310,8 +317,6 @@ public class UpgradeManager : MonoBehaviour, IObserver
         uiCanvas.alpha = 0;
         uiCanvas.interactable = false;
         uiCanvas.blocksRaycasts = false;
-        cubeTutorial.SetActive(false);
-        keyTutorial.SetActive(false);
     }
 
     private void BlockAllButtons()
@@ -321,22 +326,53 @@ public class UpgradeManager : MonoBehaviour, IObserver
         reRoll.interactable = false;
     }
 
-    [SerializeField] private GameObject cubeTutorial, keyTutorial;
-
-    public void ShowCubeTutorial()
+    public void SelectNext()
     {
-        if (!cubeTutorial.activeSelf)
-            cubeTutorial.SetActive(true);
-        if (keyTutorial.activeSelf)
-            keyTutorial.SetActive(false);
+        minigameSoundManager.PlayTapSound();
+        navegationIndex = (navegationIndex + 1) % 3;
+        HighlightButton(slots, navegationIndex);
     }
 
-    public void ShowKeyTutorial()
+    public void SelectPrev()
     {
-        if (cubeTutorial.activeSelf)
-            cubeTutorial.SetActive(false);
-        if (!keyTutorial.activeSelf)
-            keyTutorial.SetActive(true);
+        minigameSoundManager.PlayTapSound();
+        navegationIndex = navegationIndex - 1 < 0 ? 2 : navegationIndex - 1;
+        HighlightButton(slots, navegationIndex);
+    }
+
+    public void HighlightButton(List<Button> buttons, int index)
+    {
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            if (i == index)
+                buttons[i].image.color = Color.black;
+            else
+                buttons[i].image.color = Color.white;
+        }
+    }
+
+    public void SelectButton()
+    {
+        Button button = slots[navegationIndex];
+        if (button.IsInteractable())
+            button.onClick.Invoke();
+    }
+
+    public void TryReroll()
+    {
+        if (reRoll.IsInteractable())
+            reRoll.onClick.Invoke();
+    }
+
+    private bool AllCurrentUpgradesUsed()
+    {
+        foreach (var upgrade in _selectedUpgrades)
+        {
+            if (!upgrade.Used)
+                return false;
+        }
+
+        return true;
     }
 
     public void EndShop()
@@ -364,6 +400,7 @@ public class UpgradeManager : MonoBehaviour, IObserver
             limitReachedCanvasGroup.alpha = 1;
             limitReached = true;
             BlockAllButtons();
+            minigameSoundManager.PlayInCorrectSound();
         }
     }
 }

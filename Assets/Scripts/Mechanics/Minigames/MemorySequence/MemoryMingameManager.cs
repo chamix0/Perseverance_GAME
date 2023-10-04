@@ -34,12 +34,12 @@ public class MemoryMingameManager : Minigame
     private PlayerAnimations _playerAnimations;
     private GenericScreenUi _genericScreenUi;
     private MinigameManager _minigameManager;
-
     private MinigameSoundManager soundManager;
 
     //Values
     private const int NUM_ROUNDS = 5;
 
+    private int navegationIndex;
     //variables
     private float textAlpha, targetAlpha, _tA;
     private Image targetImage;
@@ -250,7 +250,36 @@ public class MemoryMingameManager : Minigame
         _minigameManager.SetCounterVisivility(false);
     }
 
+    public void SelectNext()
+    {
+        navegationIndex = (navegationIndex + 1) % _buttons.Count;
+        HighlightButton(navegationIndex);
+    }
 
+    public void SelectPrev()
+    {
+        navegationIndex = navegationIndex - 1 < 0 ? _buttons.Count - 1 : navegationIndex - 1;
+        HighlightButton(navegationIndex);
+    }
+
+    public void HighlightButton(int index)
+    {
+        for (int i = 0; i < _buttons.Count; i++)
+        {
+            if (i == index)
+                _buttons[i].image.color = new Color(0.7f, 0.7f, 0.7f, 1);
+            else
+                _buttons[i].image.color = Color.white;
+        }
+    }
+
+    public void SelectButton()
+    {
+        Button button = _buttons[navegationIndex];
+
+        if (button.IsInteractable())
+            button.onClick.Invoke();
+    }
     IEnumerator StartGameCoroutine()
     {
         //enseñar nombre del minijuego

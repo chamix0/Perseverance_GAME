@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
+using UTILS;
+using Random = UnityEngine.Random;
 
 [DefaultExecutionOrder(3)]
 public class JustWaitManager : Minigame
@@ -21,7 +24,7 @@ public class JustWaitManager : Minigame
     private MinigameManager _minigameManager;
     private GenericScreenUi _genericScreenUi;
     private MinigameSoundManager soundManager;
-    private Stopwatch _timer;
+    private MyStopWatch _timer;
     [SerializeField] private Slider timeSlider;
 
     //variables
@@ -30,7 +33,10 @@ public class JustWaitManager : Minigame
 
 
     //lists
-
+    private void Awake()
+    {
+        _timer = gameObject.AddComponent<MyStopWatch>();
+    }
 
     void Start()
     {
@@ -39,7 +45,6 @@ public class JustWaitManager : Minigame
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
-        _timer = new Stopwatch();
         _genericScreenUi.SetTextAlpha(0);
         HideUI();
     }
@@ -47,15 +52,6 @@ public class JustWaitManager : Minigame
 
     void Update()
     {
-        if (_playerValues.GetPaused() && _timer.IsRunning && minigameActive)
-        {
-            _timer.Stop();
-        }
-        else if (!_playerValues.GetPaused() && !_timer.IsRunning && minigameActive)
-        {
-            _timer.Start();
-        }
-
         if (minigameActive)
         {
             UpdateTimeSlider();
@@ -66,14 +62,17 @@ public class JustWaitManager : Minigame
 
     private void UpdateTimeSlider()
     {
-        float aux = (float)(_maxTime - _timer.Elapsed.TotalSeconds) / _maxTime;
+        float aux = (float)(_maxTime - _timer.GetElapsedSeconds()) / _maxTime;
         timeSlider.value = aux;
     }
 
     private void CheckSol()
     {
-        if (_timer.Elapsed.TotalSeconds >= _maxTime)
+        if (_timer.GetElapsedSeconds() >= _maxTime)
+        {
             EndMinigame();
+            _timer.Stop();
+        }
     }
 
 
@@ -101,7 +100,7 @@ public class JustWaitManager : Minigame
         soundManager.PlayFinishedSound();
         minigameActive = false;
         _timer.Stop();
-        _timer.Reset();
+        _timer.ResetStopwatch();
         _minigameManager.UpdateCounter(0);
         _playerValues.SetInputsEnabled(false);
         HideUI();
@@ -126,6 +125,5 @@ public class JustWaitManager : Minigame
         //empezar minijuego
         _timer.Restart();
         _playerValues.NotifyAction(PlayerActions.JustWaitMinigame);
-
     }
 }

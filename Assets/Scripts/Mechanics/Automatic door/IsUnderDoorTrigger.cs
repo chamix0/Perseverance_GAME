@@ -15,6 +15,10 @@ public class IsUnderDoorTrigger : MonoBehaviour
     // Update is called once per frame
     private void OnTriggerEnter(Collider other)
     {
+        if (_doorBase.opened)
+        {
+            
+      
         if (other.gameObject.CompareTag("Player"))
         {
             _doorBase.OpenDoor();
@@ -26,6 +30,7 @@ public class IsUnderDoorTrigger : MonoBehaviour
         {
             _doorBase.OpenDoor();
             _doorBase._inside = true;
+        }
         }
     }
 

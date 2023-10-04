@@ -368,7 +368,6 @@ GameObject:
   - component: {fileID: 7000394659066289871}
   - component: {fileID: 2822409753737580283}
   - component: {fileID: 6653994240751817418}
-  - component: {fileID: 8062791708136406870}
   m_Layer: 0
   m_Name: lamp light cone (2)
   m_TagString: Untagged
@@ -718,20 +717,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!114 &8062791708136406870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 637557090829357043}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 787083ab7f5c8db40a73c075acb42816, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _light: {fileID: 3675667967195102513}
-  _meshRenderer: {fileID: 7000394659066289871}
 --- !u!1 &701527373071875581
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,7 +1085,6 @@ GameObject:
   - component: {fileID: 1001063591631494222}
   - component: {fileID: 4376826610366288138}
   - component: {fileID: 7227007080677080805}
-  - component: {fileID: 3786018499604648780}
   m_Layer: 0
   m_Name: lamp light cone (1)
   m_TagString: Untagged
@@ -1450,20 +1434,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!114 &3786018499604648780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912723036925112291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 787083ab7f5c8db40a73c075acb42816, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _light: {fileID: 5984696914104030558}
-  _meshRenderer: {fileID: 1001063591631494222}
 --- !u!1 &2662924164679810291
 GameObject:
   m_ObjectHideFlags: 0

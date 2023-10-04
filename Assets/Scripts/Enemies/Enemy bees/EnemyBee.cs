@@ -2,7 +2,6 @@ using System.Collections;
 using System.Diagnostics;
 using Player.Observer_pattern;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 [DefaultExecutionOrder(11)]

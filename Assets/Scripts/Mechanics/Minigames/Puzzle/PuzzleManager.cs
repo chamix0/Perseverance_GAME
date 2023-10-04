@@ -38,7 +38,8 @@ public class PuzzleManager : Minigame
     [SerializeField] private Button botRightButton, botLeftButton;
     [SerializeField] private Button rightUpButton, rightDownButton;
     [SerializeField] private Button leftUpButton, leftDownButton;
-
+    private int verticalIndex, horizontalIndex;
+    private List<List<Button>> navegationButtons;
 
     void Start()
     {
@@ -53,6 +54,11 @@ public class PuzzleManager : Minigame
         puzzleColor = new Color[3][];
         solution = new Color[3][];
         HideUI();
+        navegationButtons = new List<List<Button>>();
+        navegationButtons.Add(new List<Button>(new[] { topLeftButton, topRightButton }));
+        navegationButtons.Add(new List<Button>(new[] { leftUpButton, rightUpButton }));
+        navegationButtons.Add(new List<Button>(new[] { leftDownButton, rightDownButton }));
+        navegationButtons.Add(new List<Button>(new[] { botLeftButton, botRightButton }));
     }
 
     #region Set Up Puzzle
@@ -162,7 +168,6 @@ public class PuzzleManager : Minigame
 
         SetPuzzleColors();
         CheckEndMinigame();
-
     }
 
     public void ShiftBotRow(int dir)
@@ -185,7 +190,6 @@ public class PuzzleManager : Minigame
 
         SetPuzzleColors();
         CheckEndMinigame();
-
     }
 
     public void ShiftLeftRow(int dir)
@@ -207,7 +211,6 @@ public class PuzzleManager : Minigame
 
         SetPuzzleColors();
         CheckEndMinigame();
-
     }
 
     public void ShiftRightRow(int dir)
@@ -230,7 +233,8 @@ public class PuzzleManager : Minigame
         SetPuzzleColors();
         CheckEndMinigame();
     }
-private bool checkSol()
+
+    private bool checkSol()
     {
         soundManager.PlayClickSound();
         for (int i = 0; i < 3; i++)
@@ -244,6 +248,7 @@ private bool checkSol()
 
         return true;
     }
+
     private void CheckEndMinigame()
     {
         if (checkSol())
@@ -264,6 +269,52 @@ private bool checkSol()
 
     #endregion
 
+    public void Right()
+    {
+        horizontalIndex = (horizontalIndex + 1) % navegationButtons[verticalIndex].Count;
+        HighLightButton();
+    }
+
+    public void Left()
+    {
+        horizontalIndex = horizontalIndex - 1 < 0 ? navegationButtons[verticalIndex].Count - 1 : horizontalIndex - 1;
+        HighLightButton();
+    }
+
+    public void Up()
+    {
+        verticalIndex = (verticalIndex + 1) % navegationButtons.Count;
+        HighLightButton();
+    }
+
+    public void Down()
+    {
+        verticalIndex = verticalIndex - 1 < 0 ? navegationButtons.Count - 1 : verticalIndex - 1;
+        HighLightButton();
+    }
+
+    private void HighLightButton()
+    {
+        for (int i = 0; i < navegationButtons.Count; i++)
+        {
+            for (int j = 0; j < navegationButtons[i].Count; j++)
+            {
+                if (i == verticalIndex && j == horizontalIndex)
+                    navegationButtons[i][j].image.color = Color.black;
+                else
+                    navegationButtons[i][j].image.color = Color.white;
+            }
+        }
+    }
+
+    public void SelectButton()
+    {
+        Button button = navegationButtons[verticalIndex][horizontalIndex];
+        if (button.IsInteractable())
+        {
+            button.onClick.Invoke();
+        }
+    }
 
     private void SetActiveButtons(bool val)
     {
@@ -272,7 +323,7 @@ private bool checkSol()
             button.interactable = val;
         }
     }
-    
+
 
     public override void ShowUI()
     {
@@ -286,33 +337,6 @@ private bool checkSol()
         uiObject.SetActive(false);
     }
 
-    #region Tutorial
-
-    [SerializeField] private GameObject cubeTutorial, keyTutorial;
-
-    public void ShowCubeTutorial()
-    {
-        if (minigameStarted)
-        {
-            if (!cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(true);
-            if (keyTutorial.activeSelf)
-                keyTutorial.SetActive(false);
-        }
-    }
-
-    public void ShowKeyTutorial()
-    {
-        if (minigameStarted)
-        {
-            if (cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(false);
-            if (!keyTutorial.activeSelf)
-                keyTutorial.SetActive(true);
-        }
-    }
-
-    #endregion
 
     public override void StartMinigame()
     {
@@ -353,7 +377,6 @@ private bool checkSol()
         ShowUI();
         _playerValues.SetInputsEnabled(true);
         minigameStarted = true;
-        ShowKeyTutorial();
         SetActiveButtons(true);
         _playerValues.NotifyAction(PlayerActions.PuzzleMinigame);
 

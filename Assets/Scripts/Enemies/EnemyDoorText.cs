@@ -15,7 +15,6 @@ public class EnemyDoorText : MonoBehaviour
     void Start()
     {
         enemiesLeftCad = "";
-        StartCoroutine(WaitForEnemiesCoroutine());
     }
 
     // Update is called once per frame
@@ -26,7 +25,10 @@ public class EnemyDoorText : MonoBehaviour
             enemiesLeftCad = GetMissingTargetsCad();
             screenText.text = enemiesLeftCad;
             if (GetMissingEnemies() <= 0)
+            {
                 _minigameFinished = true;
+                doorManager.OpenDoor();
+            }
         }
     }
 
@@ -52,11 +54,5 @@ public class EnemyDoorText : MonoBehaviour
     {
         return "Enemies Left : " + GetMissingEnemies();
     }
-
-    IEnumerator WaitForEnemiesCoroutine()
-    {
-        yield return new WaitForSeconds(3);
-        yield return new WaitUntil(() => GetMissingEnemies() <= 0);
-        doorManager.OpenDoor();
-    }
+    
 }

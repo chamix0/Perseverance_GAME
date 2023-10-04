@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.000032799988, g: 0.000024045237, b: 0.000004808986, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -661,38 +661,46 @@ MonoBehaviour:
       newGame: 1
     lastSesionSlotIndex: -1
     leaderBoard:
-    - name: '-'
+    - nameP: '-'
       round: 0
       points: 0
-    - name: '-'
+    - nameP: '-'
       round: 0
       points: 0
-    - name: '-'
+    - nameP: '-'
       round: 0
       points: 0
-    - name: '-'
+    - nameP: '-'
       round: 0
       points: 0
-    - name: '-'
+    - nameP: '-'
       round: 0
       points: 0
-    - name: '-'
+    - nameP: '-'
       round: 0
       points: 0
-    - name: '-'
+    - nameP: '-'
       round: 0
       points: 0
-    - name: '-'
+    - nameP: '-'
       round: 0
       points: 0
-    - name: '-'
+    - nameP: '-'
       round: 0
       points: 0
-    - name: '-'
+    - nameP: '-'
       round: 0
       points: 0
     arcadePlayer: ---
     arcadeModel: 0
+    lastGameStats:
+      _totalPoints: 
+      _rounds: 0
+      _level: 0
+      _enemiesKilled: 0
+      _zonesUnlocked: 
+      _unlockedGears: 
+      _powerEnabled: 
 --- !u!4 &257101047
 Transform:
   m_ObjectHideFlags: 0
@@ -3154,6 +3162,10 @@ PrefabInstance:
     - target: {fileID: 7026184178439971440, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
       propertyPath: m_Name
       value: Scene Loader
+      objectReference: {fileID: 0}
+    - target: {fileID: 7026184178439971440, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8993048552959868200, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
       propertyPath: m_Pivot.x

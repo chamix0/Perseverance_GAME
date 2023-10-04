@@ -3,7 +3,7 @@
     public enum ShootingMode
     {
         Manual,
-        Burst,
-        Automatic
+        Automatic,
+        Burst
     }
 }

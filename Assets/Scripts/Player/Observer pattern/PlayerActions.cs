@@ -17,6 +17,7 @@
     LowDamage,
     MediumDamage,
     HighDamage,
+    Damage,
 
     //machine gun
     Shoot,
@@ -62,6 +63,7 @@
     HideArcadeStats,
     ChangeUpgradeLocation,
     TurnOnPower,
+    GrenadeExplode,
     
     //change input mode
     ChangeInputMode

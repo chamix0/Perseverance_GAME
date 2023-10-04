@@ -20,6 +20,15 @@ public class CameraController : MonoBehaviour
         orbitCameraController = FindObjectOfType<OrbitCameraController>();
     }
 
+    public void SlowCamera(int speed)
+    {
+        orbitCameraController.SlowCameraSpeed(speed);
+    }
+
+    public void NormalCameraSpeed()
+    {
+        orbitCameraController.ReturnToNormalCameraSpeed();
+    }
     public void Shake()
     {
         CameraShaker.Instance.ShakeOnce(magnitude, roughness, fadeInTime, fadeOutTime);

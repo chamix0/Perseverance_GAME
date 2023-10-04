@@ -70,6 +70,7 @@ public class MainMenuManager : MonoBehaviour
         if (!continueInteractable)
             selectedButton = 1;
         UpdateColors();
+        Time.timeScale = 1;
     }
 
     public void clicked(int button)

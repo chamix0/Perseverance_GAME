@@ -16,7 +16,7 @@ public class BeeFight : MonoBehaviour, IObserver
     [SerializeField] private GameObject conversation;
     private PlayerValues playerValues;
     [SerializeField] private EnemyShooterZone enemyShooterZone;
-    private bool fightEnded;
+    private bool fightStarted;
     private float sliderVal = 0;
 
 
@@ -25,23 +25,28 @@ public class BeeFight : MonoBehaviour, IObserver
         playerValues = FindObjectOfType<PlayerValues>();
         playerValues.AddObserver(this);
         canvasGroup.alpha = 0;
-
-        StartCoroutine(WaitForFightToEnd());
     }
 
     // Update is called once per frame
     void Update()
     {
         float newVal = enemyShooterZone.GetLiveValue();
-        if (Math.Abs(sliderVal - newVal) > 0.01)
+        if (Math.Abs(sliderVal - newVal) > 0)
         {
             sliderVal = enemyShooterZone.GetLiveValue();
             slider.value = newVal;
+        }
+
+        if (fightStarted && enemyShooterZone.AllEnemiesDead())
+        {
+            fightStarted = false;
+            EndFight();
         }
     }
 
     public void StartBattle()
     {
+        fightStarted = true;
         canvasGroup.alpha = 1;
         enemyShooterZone.AssignInitialPositions();
     }
@@ -72,11 +77,5 @@ public class BeeFight : MonoBehaviour, IObserver
         {
             ResetFight();
         }
-    }
-
-    IEnumerator WaitForFightToEnd()
-    {
-        yield return new WaitUntil(enemyShooterZone.AllEnemiesDead);
-        EndFight();
     }
 }

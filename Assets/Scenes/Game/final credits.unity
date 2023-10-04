@@ -332,6 +332,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Scene Loader
       objectReference: {fileID: 0}
+    - target: {fileID: 7026184178439971440, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8993048552959868200, guid: f31ce485eaee8914abe55373bdfcf1e3, type: 3}
       propertyPath: m_Pivot.x
       value: 0

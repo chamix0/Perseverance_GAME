@@ -108,23 +108,8 @@ public class EnemyShooterZone : MonoBehaviour, IObserver
 
     private void Update()
     {
-        if (!_minigameFinished)
-        {
-            if (GetMissingEnemies() <= 0)
-                _minigameFinished = true;
-        }
-    }
-
-    public int GetMissingEnemies()
-    {
-        int count = 0;
-        foreach (var enemy in enemies)
-        {
-            if (enemy.GetEnemyDead())
-                count++;
-        }
-
-        return enemies.Count - count;
+        if (!_minigameFinished && AllEnemiesDead())
+            _minigameFinished = true;
     }
 
     public int GetTotalEnemies()

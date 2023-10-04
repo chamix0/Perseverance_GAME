@@ -16,6 +16,8 @@ public class BulletShopManager : MonoBehaviour
     private int prize;
     public bool isIn;
 
+    private int navegationIndex;
+
     //components
     [SerializeField] private CanvasGroup uiCanvas;
     private PlayerValues _playerValues;
@@ -36,8 +38,10 @@ public class BulletShopManager : MonoBehaviour
 
     //texts
     [SerializeField] private TMP_Text yourPointsText;
+
     [FormerlySerializedAs("yourBulletsText")] [SerializeField]
     private TMP_Text yourUnitsText;
+
     [SerializeField] private TMP_Text plusOnePrizeText, plusTenPrizeText, plusMaxPrizeText;
     [SerializeField] private List<TMP_Text> slotTexts;
 
@@ -65,8 +69,6 @@ public class BulletShopManager : MonoBehaviour
         //exit
         exitButton.onClick.AddListener(ExitButtonAction);
 
-        cubeTutorial.SetActive(false);
-        keyTutorial.SetActive(false);
         _genericScreenUi.SetTextAlpha(0);
         HideUI();
     }
@@ -86,7 +88,7 @@ public class BulletShopManager : MonoBehaviour
             _playerData.SetCurrentBulletType(currentBulletType);
         }
 
-
+        minigameSoundManager.PlayClickSound();
         HideSlotScreen();
         ShowBuyScreen();
     }
@@ -108,6 +110,7 @@ public class BulletShopManager : MonoBehaviour
 
         if (points > prizeAux && desiredUnitsNumber <= maxUnits)
         {
+            minigameSoundManager.PlayClickSound();
             _playerData.RemovePoints(prizeAux);
             if (shopBase.isGrenade)
                 _playerData.AddGrenades(currentGrenadeType, quantity);
@@ -140,6 +143,7 @@ public class BulletShopManager : MonoBehaviour
 
         if (points > prizeMax)
         {
+            minigameSoundManager.PlayClickSound();
             _playerData.RemovePoints(prizeMax);
             if (shopBase.isGrenade)
                 _playerData.AddGrenades(currentGrenadeType, unitsPlayerNeeds);
@@ -156,6 +160,7 @@ public class BulletShopManager : MonoBehaviour
 
     public void ExitButtonAction()
     {
+        minigameSoundManager.PlayClickSound();
         EndShop();
         exitButton.interactable = false;
     }
@@ -187,19 +192,22 @@ public class BulletShopManager : MonoBehaviour
         plusMaxPrizeText.text = (prize * unitsPlayerNeeds) + " pts";
 
         if (prize > _playerData.GetPoints())
-        {
             plusOnePrizeText.color = Color.red;
-            plusTenPrizeText.color = Color.red;
-            plusMaxPrizeText.color = Color.red;
-        }
         else
-        {
             plusOnePrizeText.color = Color.green;
+
+
+        if (prize * unitsPlayerNeeds > _playerData.GetPoints())
+            plusMaxPrizeText.color = Color.red;
+        else
             plusMaxPrizeText.color = Color.green;
-        }
 
         if (_playerData.GetPoints() > prize * 10)
             plusTenPrizeText.color = Color.green;
+        else
+            plusTenPrizeText.color = Color.red;
+
+          
 
         for (int i = 0; i < slotTexts.Count; i++)
         {
@@ -223,18 +231,25 @@ public class BulletShopManager : MonoBehaviour
         bool playerIsFullAmmo = shopBase.isGrenade
             ? _playerData.isFullGrenadeAmmo(currentGrenadeType)
             : _playerData.isFullAmmo(currentBulletType);
+        int unitsPlayerNeeds = maxUnits - units;
+        int prizeMax = unitsPlayerNeeds * prize;
+
 
         if (prize > _playerData.GetPoints() || playerIsFullAmmo)
-        {
             plusOne.interactable = false;
-            plusMax.interactable = false;
-            plusTen.interactable = false;
-        }
         else
-        {
             plusOne.interactable = true;
+        
+
+        if (prizeMax > _playerData.GetPoints() || playerIsFullAmmo)
+            plusMax.interactable = false;
+        else
             plusMax.interactable = true;
-        }
+        
+        if (prize * 10 > _playerData.GetPoints() || playerIsFullAmmo)
+            plusTen.interactable = false;
+        else
+            plusTen.interactable = true;
 
         if (units + 10 > maxUnits)
             plusTen.interactable = false;
@@ -310,11 +325,9 @@ public class BulletShopManager : MonoBehaviour
             }
         }
 
-
         _playerValues.SetCurrentInput(CurrentInput.Shop);
-        _playerValues.SetInputsEnabled(false);
+        _playerValues.SetInputsEnabled(true);
         ShowUI();
-        //_playerValues.SetInputsEnabled(true);
         CursorManager.ShowCursor();
     }
 
@@ -323,7 +336,6 @@ public class BulletShopManager : MonoBehaviour
         uiCanvas.alpha = 1;
         uiCanvas.interactable = true;
         uiCanvas.blocksRaycasts = true;
-        ShowKeyTutorial();
     }
 
     public void HideUI()
@@ -331,8 +343,6 @@ public class BulletShopManager : MonoBehaviour
         uiCanvas.alpha = 0;
         uiCanvas.interactable = false;
         uiCanvas.blocksRaycasts = false;
-        cubeTutorial.SetActive(false);
-        keyTutorial.SetActive(false);
     }
 
     private void ShowBuyScreen()
@@ -363,23 +373,65 @@ public class BulletShopManager : MonoBehaviour
         slotScreen.blocksRaycasts = false;
     }
 
-    [SerializeField] private GameObject cubeTutorial, keyTutorial;
-
-    public void ShowCubeTutorial()
+    public void SelectNext()
     {
-        if (!cubeTutorial.activeSelf)
-            cubeTutorial.SetActive(true);
-        if (keyTutorial.activeSelf)
-            keyTutorial.SetActive(false);
+        minigameSoundManager.PlayTapSound();
+
+        navegationIndex = (navegationIndex + 1) % 3;
+        if (slotScreen.alpha >= 1)
+        {
+            HighlightButton(slots, navegationIndex);
+        }
+        else
+        {
+            List<Button> priceButtons = new List<Button>(new[] { plusOne, plusTen, plusMax });
+            HighlightButton(priceButtons, navegationIndex);
+        }
     }
 
-    public void ShowKeyTutorial()
+    public void SelectPrev()
     {
-        if (cubeTutorial.activeSelf)
-            cubeTutorial.SetActive(false);
-        if (!keyTutorial.activeSelf)
-            keyTutorial.SetActive(true);
+        minigameSoundManager.PlayTapSound();
+        navegationIndex = navegationIndex - 1 < 0 ? 2 : navegationIndex - 1;
+        if (slotScreen.alpha >= 1)
+        {
+            HighlightButton(slots, navegationIndex);
+        }
+        else
+        {
+            List<Button> priceButtons = new List<Button>(new[] { plusOne, plusTen, plusMax });
+            HighlightButton(priceButtons, navegationIndex);
+        }
     }
+
+    public void HighlightButton(List<Button> buttons, int index)
+    {
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            if (i == index)
+                buttons[i].image.color = Color.black;
+            else
+                buttons[i].image.color = Color.white;
+        }
+    }
+
+    public void SelectButton()
+    {
+        Button button;
+        if (slotScreen.alpha >= 1)
+        {
+            button = slots[navegationIndex];
+        }
+        else
+        {
+            List<Button> priceButtons = new List<Button>(new[] { plusOne, plusTen, plusMax });
+            button = priceButtons[navegationIndex];
+        }
+
+        if (button.IsInteractable())
+            button.onClick.Invoke();
+    }
+
 
     public void EndShop()
     {

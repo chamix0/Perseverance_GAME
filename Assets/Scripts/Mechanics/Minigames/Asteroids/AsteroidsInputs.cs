@@ -29,7 +29,6 @@ public class AsteroidsInputs : MonoBehaviour, IObserver
             {
                 UpdateTutorial();
                 _asteroidsManager.SetGearsZero();
-                _asteroidsManager.ShowKeyTutorial();
             }
 
             if (_newInputs.UpHold())

@@ -1,6 +1,5 @@
 using System;
 using General_Inputs;
-using Mechanics.General_Inputs.Machine_gun_mode;
 using Mechanics.Locker_door.Caja_fuerte;
 using Mechanics.MiniBoss;
 using UnityEngine;
@@ -11,7 +10,9 @@ namespace Mechanics.General_Inputs
     public class MyInputManager : MonoBehaviour
     {
         private PlayerValues _playerValues;
+
         private MovesQueue _inputsMoves;
+
         // private BasicCameraMovementInputs _movementInputs;
         private RotatingWallInputs _rotatingWallInputs;
         private ColorsInputs _colorsInputs;
@@ -22,14 +23,13 @@ namespace Mechanics.General_Inputs
         private PushFastInputs _pushFastInputs;
         private MiniBossInputs _miniBossInputs;
         private LockerInputs _lockerInputs;
-        // private StealthMovementInputs _stealthMovementInputs;
-        // private MachinegunMovementInputs _machinegunMovementInputs;
-        // private RunMovementInputs _runMovementInputs;
         private DontTouchWallsInputs _dontTouchWallsInputs;
         private PuzzleInputs _puzzleInputs;
         private ConversationInputs _conversationInputs;
         private PlayerMechanicsArcadeInputs _arcadeInputs;
         private UnifiedMechanicsInput _unifiedMechanicsInput;
+        private ShopInputs _shopInputs;
+        private UpgradeInputs _upgradeInputs;
 
         private GuiManager gui;
         private Generalnputs generalnputs;
@@ -48,7 +48,6 @@ namespace Mechanics.General_Inputs
             }
 
             _playerValues = FindObjectOfType<PlayerValues>();
-            // _movementInputs = FindObjectOfType<BasicCameraMovementInputs>();
             _rotatingWallInputs = FindObjectOfType<RotatingWallInputs>();
             _colorsInputs = FindObjectOfType<ColorsInputs>();
             _memoryMinigameInputs = FindObjectOfType<MemoryMinigameInputs>();
@@ -58,9 +57,6 @@ namespace Mechanics.General_Inputs
             _pushFastInputs = FindObjectOfType<PushFastInputs>();
             _miniBossInputs = FindObjectOfType<MiniBossInputs>();
             _lockerInputs = FindObjectOfType<LockerInputs>();
-            // _stealthMovementInputs = FindObjectOfType<StealthMovementInputs>();
-            // _machinegunMovementInputs = FindObjectOfType<MachinegunMovementInputs>();
-            // _runMovementInputs = FindObjectOfType<RunMovementInputs>();
             _dontTouchWallsInputs = FindObjectOfType<DontTouchWallsInputs>();
             _puzzleInputs = FindObjectOfType<PuzzleInputs>();
             _conversationInputs = FindObjectOfType<ConversationInputs>();
@@ -69,6 +65,8 @@ namespace Mechanics.General_Inputs
             pauseInputs = FindObjectOfType<PauseInputs>();
             _arcadeInputs = FindObjectOfType<PlayerMechanicsArcadeInputs>();
             _unifiedMechanicsInput = FindObjectOfType<UnifiedMechanicsInput>();
+            _shopInputs = FindObjectOfType<ShopInputs>();
+            _upgradeInputs = FindObjectOfType<UpgradeInputs>();
         }
 
         private void Update()
@@ -142,6 +140,12 @@ namespace Mechanics.General_Inputs
                             break;
                         case CurrentInput.ArcadeMechanics:
                             _arcadeInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.Shop:
+                            _shopInputs.PerformAction(move);
+                            break;
+                        case CurrentInput.Upgrade:
+                            _upgradeInputs.PerformAction(move);
                             break;
                         case CurrentInput.None:
                             break;

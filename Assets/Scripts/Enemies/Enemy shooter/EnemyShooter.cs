@@ -63,7 +63,6 @@ public class EnemyShooter : Enemy, IObserver
     [SerializeField] private bool isSearcher;
     private bool moveToPlayer;
     [SerializeField] private float minDistanceFromPlayer = 5;
-    private bool isDead;
 
     //sounds
     private EnemySounds enemySounds;

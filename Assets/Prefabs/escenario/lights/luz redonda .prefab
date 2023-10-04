@@ -1127,7 +1127,6 @@ GameObject:
   - component: {fileID: 5597737004145523097}
   - component: {fileID: 8791294413761951292}
   - component: {fileID: 6765538007747969782}
-  - component: {fileID: 2907087306929346284}
   m_Layer: 0
   m_Name: 'luz redonda '
   m_TagString: Untagged
@@ -1205,20 +1204,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2907087306929346284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5108481145521529635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 787083ab7f5c8db40a73c075acb42816, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _light: {fileID: 866349765395727120}
-  _meshRenderer: {fileID: 308781790}
 --- !u!1 &5118619568258410780
 GameObject:
   m_ObjectHideFlags: 0

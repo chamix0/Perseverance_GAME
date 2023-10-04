@@ -1,14 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Player.Observer_pattern;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UTILS;
 
 [DefaultExecutionOrder(6)]
-public class GameArcadeManager : MonoBehaviour,IObserver
+public class GameArcadeManager : MonoBehaviour
 {
     private PlayerValues _playerValues;
     private EnemyManager _enemyManager;
@@ -34,9 +31,7 @@ public class GameArcadeManager : MonoBehaviour,IObserver
     //variables
     private bool displayRace, roundStarted;
 
-    private void Awake()
-    {
-    }
+    
 
     // Start is called before the first frame update
     void Start()
@@ -65,8 +60,9 @@ public class GameArcadeManager : MonoBehaviour,IObserver
 
     public void StartInBetweenRound()
     {
+        StartCoroutine(ShowRoundCoroutine());
         roundStarted = false;
-        EnableShops();
+        // EnableShops();
         //timer
         _betweenRoundsTimer.Restart();
         displayRace = true;
@@ -83,11 +79,11 @@ public class GameArcadeManager : MonoBehaviour,IObserver
         _betweenRoundsTimer.Stop();
         _betweenRoundsTimer.ResetStopwatch();
         //dissable shops
-        ExitFromShops();
-        DisableShops();
+        // ExitFromShops();
+        // DisableShops();
         //spawn enemies
         int round = _playerData.GetRound();
-        if (round % 5 == 0 && round > 0)
+        if (round % 3 == 0 && round > 0)
             IncreaseDifficulty(round);
         _enemyManager.StartRound(minNumEnemies, maxNumEnemies, minLives,
             maxLives, minSpeed, maxSpeed, minDamage,
@@ -152,11 +148,12 @@ public class GameArcadeManager : MonoBehaviour,IObserver
         return MyUtils.GetCountdownTimeString(aux);
     }
 
-    public void OnNotify(PlayerActions playerAction)
+    IEnumerator ShowRoundCoroutine()
     {
-        if (playerAction is PlayerActions.Die)
-        {
-            
-        }
+        _guiManager.ShowRound();
+        _guiManager.SetRound(_playerData.GetRound()+"");
+        yield return new WaitForSeconds(3);
+        _guiManager.HideRound();
     }
+    
 }

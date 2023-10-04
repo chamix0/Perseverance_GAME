@@ -6,17 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Game/connect cube.unity
-    guid: 4124952769f9f7349ac7661396813982
-  - enabled: 1
     path: Assets/Scenes/Game/Main menu.unity
     guid: b5c2db412bfb1234d9488e90519d7366
   - enabled: 1
     path: Assets/Scenes/Game/separated levels/Main level.unity
     guid: 1c08de8d41a852f4b9b50a109b59bcf0
-  - enabled: 0
-    path: Assets/Scenes/Game/Levels.unity
-    guid: 79bb7ee81e16cf046958f23197e8de73
+  - enabled: 1
+    path: Assets/Scenes/Game/connect cube.unity
+    guid: 4124952769f9f7349ac7661396813982
   - enabled: 1
     path: Assets/Scenes/Game/Tutorials/Door 1.unity
     guid: e727dbf04e4a6ce4e8b06dc5eff9f45f
@@ -45,26 +42,20 @@ EditorBuildSettings:
     path: Assets/Scenes/Game/separated levels/Foundry.unity
     guid: 5d5e317a393f55447966c0f6e07a6881
   - enabled: 1
-    path: Assets/Scenes/Game/separated levels/Freezer.unity
-    guid: 84ff28ed50395d84da65674c619dc517
-  - enabled: 1
     path: Assets/Scenes/Game/separated levels/Warehouse.unity
     guid: cac3c28dc361f2d42b2d6e7975fbca5c
   - enabled: 1
     path: Assets/Scenes/Game/separated levels/Garden.unity
     guid: 8afa3126cec4bfe44993bd26175b3538
   - enabled: 1
-    path: Assets/Scenes/Game/Arcade/Arcade Game.unity
-    guid: 4b9ca5f1935dbbc48817bbc1921d6bc6
-  - enabled: 1
-    path: Assets/Scenes/Game/Arcade/Lobby.unity
-    guid: 8b4600685192f834c825d60670c72c09
+    path: Assets/Scenes/Game/separated levels/Freezer.unity
+    guid: 9d6cf6f3db04d594bbbf4eee445c6b51
   - enabled: 1
     path: Assets/Scenes/Game/separated levels/Residential.unity
     guid: 5c9949dc344f13d43a4445b14aac875d
-  - enabled: 0
-    path: Assets/Scenes/Game/map for renders/Levels 1.unity
-    guid: 832ac18ef6ea0c743b9a3bce767d71ca
+  - enabled: 1
+    path: Assets/Scenes/Game/Arcade/Arcade Game.unity
+    guid: 4b9ca5f1935dbbc48817bbc1921d6bc6
   - enabled: 1
     path: Assets/Scenes/Game/Arcade/Arcade final Screen.unity
     guid: 9dd0a9ec3299c694090e9ea7f97ca4ac

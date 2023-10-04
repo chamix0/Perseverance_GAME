@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Arcade.Mechanics.Doors;
-using Player.Observer_pattern;
 using UnityEngine;
 
 [DefaultExecutionOrder(5)]

@@ -260,6 +260,14 @@ public class FinalBoss : Enemy, IObserver
         conversationShown = true;
         boxCollider.enabled = false;
         _doorManager.OpenDoor();
+        //stop lasers
+        moveTowardsPlayer.StopMoving();
+        foreach (var laser in laserEnemies)
+            laser.TurnOffLaser();
+
+        foreach (var laser in laserEnemies)
+            laser.HideBase();
+        
     }
 
     public override bool GetEnemyDead()

@@ -83,9 +83,8 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
             guiManager = FindObjectOfType<GuiManager>();
             shooter = GetComponentInChildren<ShootBullet>();
             aimSphere.gameObject.SetActive(false);
-
             machineGunParticles = GetComponent<MachineGunParticles>();
-
+            AddObserver(FindObjectOfType<RumbleObserver>());
             AddObserver(machineGunParticles);
             AddObserver(machineGunSounds);
 

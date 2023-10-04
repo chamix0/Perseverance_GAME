@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Arcade.Mechanics.Bullets;
@@ -6,9 +5,7 @@ using Arcade.Mechanics.Doors;
 using Arcade.Mechanics.Granades;
 using Mechanics.General_Inputs.Machine_gun_mode;
 using Player.Observer_pattern;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [DefaultExecutionOrder(2)]
 public class ArcadePlayerData : Subject, IObserver
@@ -164,6 +161,17 @@ public class ArcadePlayerData : Subject, IObserver
         return unlockedBulletSlots;
     }
 
+    public int GetBulletSlotsFilled()
+    {
+        for (int i = 0; i < bulletSlots.Count; i++)
+        {
+            if (bulletSlots[i] is BulletType.None)
+                return i;
+        }
+
+        return bulletSlots.Count;
+    }
+
     public int GetEmptySlot()
     {
         for (int i = 0; i < bulletSlots.Count; i++)
@@ -300,6 +308,17 @@ public class ArcadePlayerData : Subject, IObserver
         return -1;
     }
 
+    public int GetGrenadeSlotsFilled()
+    {
+        for (int i = 0; i < grenadeSlots.Count; i++)
+        {
+            if (grenadeSlots[i] is GrenadeType.None)
+                return i;
+        }
+
+        return grenadeSlots.Count;
+    }
+
     public bool ContainsGrenadeInArmor(GrenadeType type)
     {
         for (int i = 0; i < grenadeSlots.Count; i++)
@@ -410,7 +429,7 @@ public class ArcadePlayerData : Subject, IObserver
         int updatedVal = (int)(val * pointMultiplier);
         totalPoints += updatedVal;
         points += updatedVal;
-        _guiManager.InsertPoints("+" + GetPointsReduced(val));
+        _guiManager.InsertPoints("+" + GetPointsReduced(updatedVal));
         _guiManager.UpdatePointsText(points + "");
     }
 
@@ -423,7 +442,7 @@ public class ArcadePlayerData : Subject, IObserver
 
     public void IncreasePointMultiplier()
     {
-        pointMultiplier = Mathf.Min(maxPointMultiplier, pointMultiplier + 0.125f);
+        pointMultiplier = Mathf.Min(maxPointMultiplier, pointMultiplier + 0.25f);
     }
 
     #endregion
@@ -535,7 +554,7 @@ public class ArcadePlayerData : Subject, IObserver
     public void UpgradeLevel()
     {
         level++;
-        if (level % 5 == 0 && GetUnlockedZones() > 1)
+        if (level % 5 == 0 && GetUnlockedZonesArrayForMap().Length > 1)
             NotifyObservers(PlayerActions.ChangeUpgradeLocation);
     }
 
@@ -605,7 +624,6 @@ public class ArcadePlayerData : Subject, IObserver
             _saveData.SetArcadeStats(GetArcadeStats());
             _jsoNsaving.SaveTheData();
             StartCoroutine(changeSceneCoroutine());
-
         }
     }
 

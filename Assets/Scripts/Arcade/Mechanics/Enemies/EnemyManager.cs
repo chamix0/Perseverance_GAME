@@ -12,6 +12,7 @@ public class EnemyManager : MonoBehaviour
     private Dictionary<ZonesArcade, List<Transform>> spawnPoints;
     [SerializeField] private EnemyPool _enemyPool;
     private List<Enemy> currentEnemies;
+    private bool roundStarted;
 
     //separatedZones lists
     [SerializeField] private List<Transform> lobbySpawns, tubesSpawns, freezerSpawns, salonSpawns, librarySpawns;
@@ -34,6 +35,15 @@ public class EnemyManager : MonoBehaviour
         _gameArcadeManager = FindObjectOfType<GameArcadeManager>();
     }
 
+    private void FixedUpdate()
+    {
+        if (roundStarted && AllCurrentEnemiesDead())
+        {
+            roundStarted = false;
+            _gameArcadeManager.EndRound();
+        }
+    }
+
     public void StartRound(int minNumEnemies, int maxNumEnemies, int minLives, int maxLives, float minSpeed,
         float maxSpeed,
         int minDamage, int maxDamage, float minSpawnTime, float maxSpawnTime)
@@ -45,10 +55,7 @@ public class EnemyManager : MonoBehaviour
     }
 
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
+
 
     private Vector3 GetSpawnPoint()
     {
@@ -71,7 +78,6 @@ public class EnemyManager : MonoBehaviour
             if (!enemy.GetEnemyDead())
                 return false;
         }
-
         return true;
     }
 
@@ -92,8 +98,7 @@ public class EnemyManager : MonoBehaviour
             StartCoroutine(SetEnemyCoroutine(enemy, lives, speed, damage, spawnPoint));
         }
 
-        yield return new WaitUntil(AllCurrentEnemiesDead);
-        _gameArcadeManager.EndRound();
+        roundStarted = true;
     }
 
     IEnumerator SetEnemyCoroutine(Enemy enemy, int lives, float speed, int damage, Vector3 pos)

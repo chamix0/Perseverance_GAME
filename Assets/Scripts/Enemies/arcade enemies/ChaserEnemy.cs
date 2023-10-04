@@ -291,11 +291,11 @@ public class ChaserEnemy : Enemy
 
     public override void RecieveDamage(int damage)
     {
-        UpdateHealthBar();
         if (lives > 0)
         {
             _playerData.AddPoints(+10);
             lives -= damage;
+            UpdateHealthBar();
             if (lives <= 0)
             {
                 _playerData.AddPoints(+100);
@@ -363,6 +363,7 @@ public class ChaserEnemy : Enemy
         //outline
         outline.OutlineMode = Outline.Mode.OutlineAll;
         outline.OutlineColor = Color.clear;
+        flash.Play();
         //lives
         maxLives = maxLivesAux;
         lives = maxLives;

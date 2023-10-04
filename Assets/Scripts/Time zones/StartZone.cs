@@ -8,11 +8,13 @@ public class StartZone : MonoBehaviour
     [SerializeField] private DoorManager loadedLevelDoor;
     private ZoneCleaner _zoneCleaner;
     private bool actionPerformed;
+    private LoadScreen _loadScreen;
 
     private void Start()
     {
         _timeZoneManager = transform.parent.GetComponent<TimeZoneManager>();
         _zoneCleaner = FindObjectOfType<ZoneCleaner>();
+        _loadScreen = FindObjectOfType<LoadScreen>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,7 +30,7 @@ public class StartZone : MonoBehaviour
     IEnumerator LoadZoneCoroutine()
     {
         _zoneCleaner.EnableZone(IndexToPlayerAction(_timeZoneManager.zone));
-        yield return new WaitForSeconds(5);
+        yield return new WaitUntil(_loadScreen.Loaded);
         loadedLevelDoor.OpenDoor();
     }
 

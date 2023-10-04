@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Mechanics.General_Inputs;
 using Mechanics.General_Inputs.Machine_gun_mode;
@@ -137,12 +136,14 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
 
                 if (_newInputs.Aim())
                 {
+                    _cameraController.SlowCamera(50);
                     foreach (var machineGun in machineGuns)
                         machineGun.Aim();
                 }
 
                 if (_newInputs.AimRelease())
                 {
+                    _cameraController.NormalCameraSpeed();
                     foreach (var machineGun in machineGuns)
                         machineGun.StopAim();
                 }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[DefaultExecutionOrder(1)]
+[DefaultExecutionOrder(2)]
 public class PlayerCreation : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -20,20 +20,17 @@ public class PlayerCreation : MonoBehaviour
     void Awake()
     {
         //collisions
-
-
         _playerValues = FindObjectOfType<PlayerValues>();
         if (isArcade)
             model = _playerValues._saveData.GetArcadeModel();
         else
             model = _playerValues.gameData.GetEddoModel();
 
-
-        for (int i = 0; i < modelObjects.Count; i++)
+        for (int i = 0; i < bodyParts.Length; i++)
         {
             var oldMaterials = modelObjects[i].GetComponent<Renderer>().materials;
             Material[] newMaterials;
-            
+
             if (i == 0)
                 newMaterials = modelTextures[model].GetComponent<Renderer>().sharedMaterials;
             else

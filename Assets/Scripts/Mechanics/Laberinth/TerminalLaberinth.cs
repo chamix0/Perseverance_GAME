@@ -26,6 +26,7 @@ namespace Mechanics.Laberinth
             _minigameManager = FindObjectOfType<MinigameManager>();
             _snapPos = transform.gameObject.transform.Find("snap pos").gameObject;
             _playerValues = FindObjectOfType<PlayerValues>();
+            terminalText.color = Color.red;
         }
 
 
@@ -51,6 +52,7 @@ namespace Mechanics.Laberinth
             _minigameManager.StartRandomMinigame();
             StartCoroutine(FinisghMinigameCoroutine());
             cameraChanger.SetScreenCamera();
+            terminalText.color = Color.green;
             terminalText.SetText("Terminal operative");
         }
 

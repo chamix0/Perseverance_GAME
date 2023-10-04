@@ -111,7 +111,7 @@ namespace Mechanics.Locker_door.Caja_fuerte
             _guiManager.ShowTutorial();
             _guiManager.SetTutorial(
                 _newInputs.RightText() + "- Next |" + _newInputs.LeftText() +
-                "- Previous |" + _newInputs.SelectBasicText() +
+                "- Previous |" + _newInputs.SelectBasicText() +"- Confirm |"+
                 _newInputs.ExitBasicText() + "- Exit ");
         }
     }

@@ -99,7 +99,7 @@ public class AsteroidsManager : Minigame
     {
         _player.transform.localRotation =
             Quaternion.Slerp(_player.transform.localRotation, Quaternion.Euler(0, 0, MyUtils.Clamp0360(angle)),
-                Time.unscaledDeltaTime * 10f);
+                Time.deltaTime * 10f);
     }
 
     public void SpriteRotation(Vector2 direction)
@@ -138,7 +138,7 @@ public class AsteroidsManager : Minigame
         {
             if (_player.transform.localPosition.y < (_arenaMeasures[0] - _arenaMeasures[0] / 100) / 2)
                 _player.transform.localPosition +=
-                    new Vector3(0, speed * Time.unscaledDeltaTime, 0);
+                    new Vector3(0, speed * Time.deltaTime, 0);
             else
             {
                 _player.transform.localPosition =
@@ -150,7 +150,7 @@ public class AsteroidsManager : Minigame
         {
             if (_player.transform.localPosition.y > (-_arenaMeasures[0] + _arenaMeasures[0] / 100) / 2)
                 _player.transform.localPosition -=
-                    new Vector3(0, speed * Time.unscaledDeltaTime, 0);
+                    new Vector3(0, speed * Time.deltaTime, 0);
             else
             {
                 _player.transform.localPosition =
@@ -166,7 +166,7 @@ public class AsteroidsManager : Minigame
         {
             if (_player.transform.localPosition.x < (_arenaMeasures[1] - _arenaMeasures[1] / 100) / 2)
                 _player.transform.localPosition +=
-                    new Vector3(speed * Time.unscaledDeltaTime, 0, 0);
+                    new Vector3(speed * Time.deltaTime, 0, 0);
             else
             {
                 _player.transform.localPosition =
@@ -178,7 +178,7 @@ public class AsteroidsManager : Minigame
         {
             if (_player.transform.localPosition.x > (-_arenaMeasures[1] + _arenaMeasures[1] / 100) / 2)
                 _player.transform.localPosition -=
-                    new Vector3(speed * Time.unscaledDeltaTime, 0, 0);
+                    new Vector3(speed * Time.deltaTime, 0, 0);
             else
             {
                 _player.transform.localPosition =
@@ -326,38 +326,11 @@ public class AsteroidsManager : Minigame
     private void ShowGameUi()
     {
         _minigameManager.SetCounterVisivility(true);
-        ShowCubeTutorial();
     }
 
     private void HideGameUi()
     {
         _minigameManager.SetCounterVisivility(false);
-        cubeTutorial.SetActive(false);
-        keyTutorial.SetActive(false);
-    }
-
-    [SerializeField] private GameObject cubeTutorial, keyTutorial;
-
-    public void ShowCubeTutorial()
-    {
-        if (minigameStarted)
-        {
-            if (!cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(true);
-            if (keyTutorial.activeSelf)
-                keyTutorial.SetActive(false);
-        }
-    }
-
-    public void ShowKeyTutorial()
-    {
-        if (minigameStarted)
-        {
-            if (cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(false);
-            if (!keyTutorial.activeSelf)
-                keyTutorial.SetActive(true);
-        }
     }
 
     IEnumerator StartGameCoroutine()

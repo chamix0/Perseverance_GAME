@@ -13,6 +13,8 @@ public class ColorsManager : Minigame
     private const int NUM_ROUNDS = 5;
     private int correctCount = 0;
 
+    private int navegationIndex;
+
     //text to show on screen before the game
     private readonly string _name = "colors",
         _tutorial = "Click the corresponding color\n or \n turn the corresponding face.",
@@ -24,7 +26,6 @@ public class ColorsManager : Minigame
     private GameObject template;
     [SerializeField] private Shader shader;
     private PlayerValues _playerValues;
-    private CameraChanger _cameraChanger;
     private MinigameManager _minigameManager;
     private GenericScreenUi _genericScreenUi;
 
@@ -56,7 +57,6 @@ public class ColorsManager : Minigame
     void Start()
     {
         _playerValues = FindObjectOfType<PlayerValues>();
-        _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         minigameSoundManager = GetComponent<MinigameSoundManager>();
@@ -147,6 +147,37 @@ public class ColorsManager : Minigame
         targetImage.material.SetColor(BackgroundColor, targetColor);
     }
 
+    public void SelectNext()
+    {
+        navegationIndex = (navegationIndex + 1) % _buttons.Count;
+        HighlightButton(navegationIndex);
+    }
+
+    public void SelectPrev()
+    {
+        navegationIndex = navegationIndex - 1 < 0 ? _buttons.Count - 1 : navegationIndex - 1;
+        HighlightButton(navegationIndex);
+    }
+
+    public void HighlightButton(int index)
+    {
+        for (int i = 0; i < _buttons.Count; i++)
+        {
+            if (i == index)
+                _buttons[i].image.color = new Color(0.7f, 0.7f, 0.7f, 1);
+            else
+                _buttons[i].image.color = Color.white;
+        }
+    }
+
+    public void SelectButton()
+    {
+        Button button = _buttons[navegationIndex];
+
+        if (button.IsInteractable())
+            button.onClick.Invoke();
+    }
+
     public override void StartMinigame()
     {
         correctCount = 0;
@@ -219,5 +250,4 @@ public class ColorsManager : Minigame
         ShowGameUi();
         _playerValues.NotifyAction(PlayerActions.ColorsMinigame);
     }
-    
 }

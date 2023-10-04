@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Mechanics.General_Inputs;
 using UnityEngine;
 using UnityEngine.UI;
+using UTILS;
 
 [DefaultExecutionOrder(3)]
 public class PushFastManager : Minigame
@@ -25,13 +26,13 @@ public class PushFastManager : Minigame
     private MinigameSoundManager soundManager;
 
     [SerializeField] private Button button;
-    private Stopwatch _timer;
+    private MyStopWatch _timer;
     [SerializeField] private Slider timeSlider;
 
     //variables
     private int _clickCount;
     private int _targetClicks;
-    private int _maxTime;
+    private int _maxTime=10;
     private bool minigameActive = false;
 
 
@@ -49,7 +50,7 @@ public class PushFastManager : Minigame
         _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
-        _timer = new Stopwatch();
+        _timer = gameObject.AddComponent<MyStopWatch>();
         button.onClick.AddListener(Click);
         _genericScreenUi.SetTextAlpha(0);
         HideUI();
@@ -60,12 +61,11 @@ public class PushFastManager : Minigame
     {
         if (minigameActive)
         {
-            if (_timer.Elapsed.TotalSeconds > _maxTime)
+            if (_timer.GetElapsedSeconds() > _maxTime)
             {
                 soundManager.PlayInCorrectSound();
                 ResetMinigame();
             }
-
             UpdateTimeSlider();
         }
     }
@@ -81,7 +81,7 @@ public class PushFastManager : Minigame
 
     private void UpdateTimeSlider()
     {
-        float aux = (float)(_maxTime - _timer.Elapsed.TotalSeconds) / _maxTime;
+        float aux = (float)(_maxTime - _timer.GetElapsedSeconds()) / _maxTime;
         timeSlider.value = aux;
     }
 
@@ -122,7 +122,6 @@ public class PushFastManager : Minigame
     {
         _minigameManager.SetCounterVisivility(true);
         uiObject.SetActive(true);
-        ShowKeyTutorial();
     }
 
     public override void HideUI()
@@ -131,29 +130,7 @@ public class PushFastManager : Minigame
         uiObject.SetActive(false);
     }
 
-    [SerializeField] private GameObject cubeTutorial, keyTutorial;
-
-    public void ShowCubeTutorial()
-    {
-        if (minigameActive)
-        {
-            if (!cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(true);
-            if (keyTutorial.activeSelf)
-                keyTutorial.SetActive(false);
-        }
-    }
-
-    public void ShowKeyTutorial()
-    {
-        if (minigameActive)
-        {
-            if (cubeTutorial.activeSelf)
-                cubeTutorial.SetActive(false);
-            if (!keyTutorial.activeSelf)
-                keyTutorial.SetActive(true);
-        }
-    }
+ 
 
     private void EndMinigame()
     {
@@ -184,7 +161,6 @@ public class PushFastManager : Minigame
         yield return new WaitForSeconds(1f);
         ShowUI();
         _playerValues.SetInputsEnabled(true);
-        _timer.Start();
         //empezar minijuego
         _timer.Restart();
         _playerValues.NotifyAction(PlayerActions.PushFastMinigame);

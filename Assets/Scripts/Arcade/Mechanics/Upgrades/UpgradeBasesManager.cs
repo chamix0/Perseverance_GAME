@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Arcade.Mechanics.Doors;
 using Player.Observer_pattern;
@@ -27,13 +25,13 @@ public class UpgradeBasesManager : MonoBehaviour, IObserver
     private void SelectNewLocation()
     {
         List<ZonesArcade> possibleLocations = new List<ZonesArcade>(_playerData.GetUnlockedZonesArrayForMap());
-        if (possibleLocations.Count > 0)
+        if (possibleLocations.Count > 1)
         {
             ZonesArcade selectedZone;
             do
             {
                 selectedZone = possibleLocations[Random.Range(0, possibleLocations.Count)];
-            } while (selectedZone == currentBase.GetZone);
+            } while (selectedZone == currentBase.GetZone  );
 
             currentBase = SelectBase(selectedZone);
             UpdateMaps(selectedZone);

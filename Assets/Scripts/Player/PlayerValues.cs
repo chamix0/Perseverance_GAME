@@ -382,6 +382,7 @@ public class PlayerValues : Subject
         {
             lives--;
             NotifyCameraLives();
+            NotifyAction(PlayerActions.Damage);
             if (lives <= 0)
                 Die(spawnPos);
         }
@@ -393,6 +394,7 @@ public class PlayerValues : Subject
         {
             lives -= damage;
             NotifyCameraLives();
+            NotifyAction(PlayerActions.Damage);
             if (lives <= 0)
                 Die(spawnPos);
         }
@@ -614,6 +616,33 @@ public class PlayerValues : Subject
     public bool GetPaused()
     {
         return paused;
+    }
+
+    #endregion
+
+    #region Time
+
+    private float timeScale=1;
+    public void StopGeneralTime()
+    {
+        timeScale = 0;
+        Time.timeScale = 0;
+    }
+
+    public void ContinueGeneralTime()
+    {
+        timeScale = 1;
+        Time.timeScale = 1;
+    }
+
+    public void StopRelativeTime()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void ContinueRelativeTime()
+    {
+        Time.timeScale = timeScale;
     }
 
     #endregion

@@ -80,7 +80,7 @@ public class AsteroidBehavior : MonoBehaviour
 
         SelfRotation();
         transform.localPosition +=
-            new Vector3(speed * direction.x * Time.unscaledDeltaTime, speed * direction.y * Time.unscaledDeltaTime, 0);
+            new Vector3(speed * direction.x * Time.deltaTime, speed * direction.y * Time.deltaTime, 0);
     }
 
     private void AddBounce()
@@ -142,9 +142,9 @@ public class AsteroidBehavior : MonoBehaviour
     private void SelfRotation()
     {
         if (direction.x > 0)
-            transform.Rotate(0, 0, MyUtils.Clamp0360(-speed * 100 * Time.unscaledDeltaTime));
+            transform.Rotate(0, 0, MyUtils.Clamp0360(-speed * 100 * Time.deltaTime));
         else
-            transform.Rotate(0, 0, MyUtils.Clamp0360(speed * 100 * Time.unscaledDeltaTime));
+            transform.Rotate(0, 0, MyUtils.Clamp0360(speed * 100 * Time.deltaTime));
     }
 
     public void Die()
