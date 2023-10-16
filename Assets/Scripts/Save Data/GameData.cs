@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameData
 {
     [SerializeField] private string runName;
-    [SerializeField] private float masterVolume, vfxVolume, musicVolume, uiVolume;
+    [SerializeField] private float masterVolume, vfxVolume, musicVolume, uiVolume, camSensitivity;
     [SerializeField] private float tiltSens;
     [SerializeField] private bool GameStarted;
     [SerializeField] private int eddoModel;
@@ -25,6 +25,7 @@ public class GameData
         vfxVolume = 0.5f;
         musicVolume = 0.5f;
         uiVolume = 0.5f;
+        camSensitivity = 0.222222f;
         runName = name;
         tiltSens = 75;
         eddoModel = model;
@@ -45,6 +46,7 @@ public class GameData
         vfxVolume = 0.5f;
         musicVolume = 0.5f;
         uiVolume = 0.5f;
+        camSensitivity = 0.222222f;
         runName = "------";
         tiltSens = 75;
         eddoModel = 1;
@@ -102,6 +104,16 @@ public class GameData
     public float GetVfxVolume()
     {
         return vfxVolume;
+    }
+
+    public void SetCamSensitivity(float value)
+    {
+        camSensitivity = value;
+    }
+
+    public float GetCamSensitivity()
+    {
+        return camSensitivity;
     }
 
     #endregion

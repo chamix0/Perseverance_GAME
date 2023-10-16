@@ -26,7 +26,6 @@ public class RollTheNutInputs : MonoBehaviour, IObserver
         if (_playerValues.GetCurrentInput() == CurrentInput.RollTheNutMinigame && _playerValues.GetInputsEnabled() &&
             !_playerValues.GetPaused())
         {
-            _newInputs.SetCubeAsDevice();
             if (_newInputs.CheckInputChanged())
             {
                 CursorManager.ShowCursor();

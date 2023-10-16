@@ -94,7 +94,7 @@ public class UpgradeInputs : MonoBehaviour, IObserver
         _guiManager.SetTutorial(
             _newInputs.UpText() + "- Prev |" + _newInputs.DownText() +
             "- Next |" + _newInputs.ReRollText() + "- Reroll |" +
-            _newInputs.SelectBasic() + "- select |" +
+            _newInputs.SelectBasicText() + "- select |" +
             _newInputs.ExitBasicText() + "- exit ");
     }
 }

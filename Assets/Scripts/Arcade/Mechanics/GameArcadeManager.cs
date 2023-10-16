@@ -22,16 +22,15 @@ public class GameArcadeManager : MonoBehaviour
     private BulletShopManager _bulletShopManager;
 
     //enemy parameters
-    [SerializeField] private int minNumEnemies = 3, maxNumEnemies = 6, numEnemyCap = 50;
+    [SerializeField] private int minNumEnemies, maxNumEnemies = 6, numEnemyCap = 70;
     [SerializeField] private int minLives = 6, maxLives = 10;
-    [SerializeField] float minSpeed = 1, maxSpeed = 2, speedCap = 4;
+    [SerializeField] float minSpeed, maxSpeed = 3f, speedCap = 7f;
     [SerializeField] private int minDamage = 1, maxDamage = 1;
-    [SerializeField] private float minSpawnTime = 7, maxSpawnTime = 10, _spawnTimeCap = 1;
+    private float spawnTime;
 
     //variables
     private bool displayRace, roundStarted;
 
-    
 
     // Start is called before the first frame update
     void Start()
@@ -87,7 +86,7 @@ public class GameArcadeManager : MonoBehaviour
             IncreaseDifficulty(round);
         _enemyManager.StartRound(minNumEnemies, maxNumEnemies, minLives,
             maxLives, minSpeed, maxSpeed, minDamage,
-            maxDamage, minSpawnTime, maxSpawnTime);
+            maxDamage, spawnTime);
     }
 
     public void EndRound()
@@ -125,21 +124,45 @@ public class GameArcadeManager : MonoBehaviour
     private void IncreaseDifficulty(int numRound)
     {
         //num enemies
-        minNumEnemies = Mathf.Min(numEnemyCap / 2, minNumEnemies + 1);
-        maxNumEnemies = Mathf.Min(numEnemyCap, minNumEnemies + 2);
-        //lives
-        minLives += 2;
-        maxLives += 2;
-        //damage
-        if (numRound >= 15)
-            maxDamage = 2;
-        //speed
-        if (numRound >= 10)
-            maxSpeed = Mathf.Min(speedCap, maxSpeed + 0.5f);
-        //spawn time
+        if (numRound < 10)
+            maxNumEnemies = Mathf.Min(numEnemyCap, maxNumEnemies + 1);
+        else if (numRound < 20)
+            maxNumEnemies = Mathf.Min(numEnemyCap, maxNumEnemies + 3);
+        else
+            maxNumEnemies = Mathf.Min(numEnemyCap, maxNumEnemies + 4);
 
-        minSpawnTime = Mathf.Max(_spawnTimeCap, minSpawnTime - 1);
-        maxSpawnTime = Mathf.Max(_spawnTimeCap * 2, maxSpawnTime - 1);
+        minNumEnemies = maxNumEnemies / 2;
+
+        //lives
+        if (numRound < 25)
+        {
+            minLives += 1;
+            maxLives += 2;
+        }
+        else
+        {
+            minLives += 2;
+            maxLives += 6;
+        }
+
+
+        //damage
+        if (numRound >= 20 && numRound < 30)
+            maxDamage = 2;
+        else if (numRound > 30)
+            maxDamage = 3;
+
+        //speed
+        if (numRound >= 12 && numRound < 22)
+            maxSpeed = Mathf.Min(speedCap, maxSpeed + 0.5f);
+        else if (numRound >= 22)
+        {
+            maxSpeed = Mathf.Min(speedCap, maxSpeed + 1f);
+        }
+        minSpeed = maxSpeed / 2;
+
+        //spawn time
+        spawnTime = Random.Range(0.5f, 3f);
     }
 
     private string GetRemainingTime()
@@ -151,9 +174,8 @@ public class GameArcadeManager : MonoBehaviour
     IEnumerator ShowRoundCoroutine()
     {
         _guiManager.ShowRound();
-        _guiManager.SetRound(_playerData.GetRound()+"");
+        _guiManager.SetRound(_playerData.GetRound() + "");
         yield return new WaitForSeconds(3);
         _guiManager.HideRound();
     }
-    
 }

@@ -41,13 +41,15 @@ public class TutorialInputs : MonoBehaviour, IObserver
                 tutorialManager.ShowPrev();
             //prev model
             else if (_newInputs.SelectBasic())
+            {
                 tutorialManager.Select();
-            //go back to menu
+            }            //go back to menu
             else if (_newInputs.ReturnBasic())
             {
                 _sounds.ReturnSound();
                 _camerasController.SetCamera(MenuCameras.EDDO);
                 _menuManager.CheckForContinueAndNewGame();
+                _menuManager.UpdateColors();
                 _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
             }
         }

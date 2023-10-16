@@ -351,6 +351,11 @@ public class CameraEnemy : Enemy
         }
     }
 
+    public override void RecieveDamage(int damage, int points)
+    {
+        throw new NotImplementedException();
+    }
+
     public override void Hide()
     {
         throw new NotImplementedException();

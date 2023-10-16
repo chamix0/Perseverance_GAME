@@ -36,10 +36,12 @@ public class ArcadeMenuInputs : MonoBehaviour, IObserver
     {
         if (_myInputManager.GetCurrentInput() == CurrentMenuInput.PreArcade && _myInputManager.GetInputsEnabled())
         {
-            if (_newInputs.ReturnBasic())
+            if (_newInputs.ReturnBasic() || _newInputs.LeftTap())
             {
                 _sounds.ReturnSound();
                 _menuManager.CheckForContinueAndNewGame();
+                _menuManager.UpdateColors();
+                _arcadeMenuManager.HideUi();
                 _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
             }
             else if (_newInputs.SelectBasic())

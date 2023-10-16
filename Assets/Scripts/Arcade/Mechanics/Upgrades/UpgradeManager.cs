@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Arcade.Mechanics.Upgrades;
@@ -60,8 +61,8 @@ public class UpgradeManager : MonoBehaviour, IObserver
         for (int i = 0; i < slots.Count; i++)
         {
             int index = i;
-            slots[i].onClick.AddListener(() => SlotButtonAction(index));
-            slotTexts.Add(slots[i].GetComponentInChildren<TMP_Text>());
+            slots[index].onClick.AddListener(() => SlotButtonAction(index));
+            slotTexts.Add(slots[index].GetComponentInChildren<TMP_Text>());
         }
 
         InitUpgrades();
@@ -73,6 +74,11 @@ public class UpgradeManager : MonoBehaviour, IObserver
         _genericScreenUi.SetTextAlpha(0);
         HideUI();
         _selectedUpgrades.AddRange(SelectThreeRandomUpgrades());
+        navegationIndex = 0;
+    }
+
+    private void Update()
+    {
     }
 
     #region Button actions
@@ -88,6 +94,7 @@ public class UpgradeManager : MonoBehaviour, IObserver
             _playerData.UpgradeLevel();
             _guiManager.SetArcadeStatsText(_playerData.GetStatsText());
             minigameSoundManager.PlayClickSound();
+            navegationIndex = index;
             if (AllCurrentUpgradesUsed())
             {
                 _selectedUpgrades.Clear();
@@ -97,7 +104,6 @@ public class UpgradeManager : MonoBehaviour, IObserver
 
         if (!limitReached)
             UpdateButtons();
-
         UpdateTexts();
     }
 
@@ -161,7 +167,7 @@ public class UpgradeManager : MonoBehaviour, IObserver
             foreach (var slot in slots)
                 slot.interactable = true;
 
-        for (int i = 0; i < slots.Count; i++)
+        for (var i = 0; i < slots.Count; i++)
             if (i >= _selectedUpgrades.Count || _selectedUpgrades[i].Used)
                 slots[i].interactable = false;
 
@@ -192,9 +198,6 @@ public class UpgradeManager : MonoBehaviour, IObserver
         _upgrades.Add(new Upgrade(UpgradeType.IncreaseShootSpeed, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.IncreaseShootSpeed, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.IncreaseShootSpeed, _playerData));
-        _upgrades.Add(new Upgrade(UpgradeType.IncreaseShootSpeed, _playerData));
-        _upgrades.Add(new Upgrade(UpgradeType.IncreaseShootSpeed, _playerData));
-        _upgrades.Add(new Upgrade(UpgradeType.IncreaseShootSpeed, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MaxBullets, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MaxBullets, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MaxBullets, _playerData));
@@ -211,6 +214,10 @@ public class UpgradeManager : MonoBehaviour, IObserver
         _upgrades.Add(new Upgrade(UpgradeType.MoreGrenadeSlots, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MoreBulletSlots, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MoreBulletSlots, _playerData));
+        _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
+        _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
+        _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
+        _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));

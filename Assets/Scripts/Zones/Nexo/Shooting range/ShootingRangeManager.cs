@@ -102,7 +102,6 @@ public class ShootingRangeManager : MonoBehaviour
             playerValues.gameData.SetMaxShootingScore(hitCount);
             maxScore.text = "" + playerValues.gameData.GetMaxShootingScore();
             playerValues.SaveGame();
-            print("end");
             StartCoroutine(EndChallengeCoroutine());
         }
     }

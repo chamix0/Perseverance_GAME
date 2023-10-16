@@ -29,7 +29,7 @@ public class PlayerValues : Subject
     private Stopwatch stuckTimer;
     private Vector3 stuckedPos, prevStuckedPos;
     private Vector3 lastValidPos;
-    public float stuckTime = 3f;
+    float stuckTime = 0.5f; 
 
     //compontes
     [Header("COMPONENTES")] [NonSerialized]
@@ -427,7 +427,7 @@ public class PlayerValues : Subject
     {
         yield return new WaitForSeconds(time);
         NotifyObservers(PlayerActions.StandUp);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         if (_currentInput is not (CurrentInput.ShootMovement or CurrentInput.StealthMovement
             or CurrentInput.RaceMovement or CurrentInput.ArcadeMechanics))
         {
@@ -517,8 +517,8 @@ public class PlayerValues : Subject
         dissolveMaterials.DissolveOut();
         _currentInput = CurrentInput.Movement;
         Sit();
-        yield return new WaitForSeconds(2);
-        StandUp(true, 3f);
+        yield return new WaitForSeconds(1);
+        StandUp(true, 0f);
         transform.position = pos;
         transform.up = Vector3.up;
         dissolveMaterials.DissolveIn();

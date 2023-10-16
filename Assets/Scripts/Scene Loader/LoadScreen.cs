@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UTILS;
 
+[DefaultExecutionOrder(3)]
 public class LoadScreen : MonoBehaviour
 {
     [SerializeField] CanvasGroup loadingScreen;
@@ -93,7 +94,7 @@ public class LoadScreen : MonoBehaviour
 
     public void LoadFoundry()
     {
-        SceneManager.LoadSceneAsync("Scenes/Game/separated levels/Foundry", LoadSceneMode.Additive);
+        _operation = SceneManager.LoadSceneAsync("Scenes/Game/separated levels/Foundry", LoadSceneMode.Additive);
     }
 
     public void LoadFreezer()

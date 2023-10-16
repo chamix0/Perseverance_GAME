@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Diagnostics;
-using Arcade.Mechanics.Bullets;
 using Mechanics.General_Inputs.Machine_gun_mode.Observers;
+using Mechanics.Shoot.Bullets;
 using UnityEngine;
 
 namespace Mechanics.General_Inputs.Machine_gun_mode
@@ -65,12 +65,9 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
         private GuiManager guiManager;
 
         //slow time 
-        [SerializeField] private float slowTime = 3f;
-        private Stopwatch slowTimer;
 
         private void Awake()
         {
-            slowTimer = new Stopwatch();
             automaticShootTimer = new Stopwatch();
             hookTimer = new Stopwatch();
         }
@@ -170,11 +167,11 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
             recoil();
             NotifyObservers(PlayerActions.Shoot);
         }
-        
-        public void ActualShotArcadeRandom(BulletType bulletType)
+
+        public void ActualShotArcadeRandom(BulletType bulletType, float randomRange)
         {
             _cameraController.Shake();
-            shooter.ShootRandom(bulletType, bulletSpeed);
+            shooter.ShootRandom(bulletType, bulletSpeed, randomRange);
             recoil();
             NotifyObservers(PlayerActions.Shoot);
         }
@@ -200,13 +197,12 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
 
         public void StopAim()
         {
-            slowTimer.Stop();
-            slowTimer.Reset();
-
-            aiming = false;
-            // Time.timeScale = 1f;
-            StopLaser();
-            NotifyObservers(PlayerActions.StopAim);
+            if (aiming)
+            {
+                aiming = false;
+                StopLaser();
+                NotifyObservers(PlayerActions.StopAim);
+            }
         }
 
 
@@ -363,6 +359,10 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
 
         #endregion
 
+        public bool isAiming()
+        {
+            return aiming;
+        }
 
         private void ConstraintLocalAxisRigidbody()
         {

@@ -433,6 +433,11 @@ public class EnemyShooter : Enemy, IObserver
         }
     }
 
+    public override void RecieveDamage(int damage, int points)
+    {
+        throw new NotImplementedException();
+    }
+
     public override void Hide()
     {
         healthBarCanvas.alpha = 0;

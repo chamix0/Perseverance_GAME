@@ -26,7 +26,6 @@ public class MainMenuInputs : MonoBehaviour, IObserver
             if (_newInputs.CheckInputChanged())
                 UpdateTutorial();
 
-
             //select next button
             if (_newInputs.UpTap())
                 _menuManager.SelectPrevButton();
@@ -37,7 +36,9 @@ public class MainMenuInputs : MonoBehaviour, IObserver
 
             //select button
             else if (_newInputs.SelectBasic() || _newInputs.RightTap())
+            {
                 _menuManager.PressEnter();
+            }
         }
     }
 

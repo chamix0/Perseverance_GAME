@@ -1,4 +1,4 @@
-using Arcade.Mechanics.Bullets;
+using Mechanics.Shoot.Bullets;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -23,12 +23,13 @@ public class ShootBullet : MonoBehaviour
         aux.Shoot(isPlayer, transform.position, transform.forward, speed, Vector3.zero);
     }
 
-    public void ShootRandom(BulletType bulletType, float speed)
+    public void ShootRandom(BulletType bulletType, float speed, float randomRange)
     {
         PlayParticlesAndSound();
         Bullet aux = _bulletPool.GetBullet(bulletType);
         aux.Shoot(isPlayer, transform.position, transform.forward +
-                                                new Vector3(Random.Range(-0.2f, 0.2f), Random.Range(-0.2f, 0.2f), 0),
+                                                new Vector3(Random.Range(-randomRange, randomRange),
+                                                    Random.Range(-randomRange, randomRange), 0),
             speed, Vector3.zero);
     }
 

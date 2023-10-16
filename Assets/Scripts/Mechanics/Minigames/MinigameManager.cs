@@ -94,6 +94,7 @@ public class MinigameManager : MonoBehaviour
         if (_minigamesNotPlayed.Count <= 0)
             _minigamesNotPlayed.AddRange(minigames.ToArray());
 
+        _playerValues.StopGeneralTime();
         currentMinigame.StartMinigame();
         currentMinigameFinished = false;
     }
@@ -102,15 +103,17 @@ public class MinigameManager : MonoBehaviour
     {
         _genericScreenUi.SetText("WELL DONE!", 10);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         _cameraChanger.SetOrbitCamera();
         _playerValues.StandUp(true, 0f);
         CursorManager.HideCursor();
         _playerValues.NotifyAction(PlayerActions.MinigameFinished);
         currentMinigameFinished = true;
         _playerValues.NotifyAction(PlayerActions.TurnOnPower);
+        _playerValues.ContinueGeneralTime();
+
     }
 
     public bool GetMinigameFinished()

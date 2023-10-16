@@ -1,4 +1,4 @@
-﻿namespace Arcade.Mechanics.Bullets
+﻿namespace Mechanics.Shoot.Bullets
 {
     public enum BulletType
     {

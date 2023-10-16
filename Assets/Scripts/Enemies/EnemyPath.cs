@@ -236,8 +236,6 @@ public class EnemyPath : MonoBehaviour
 
             cad += "]" + '\n';
         }
-
-        print(cad);
     }
 
     private void InitDistances()

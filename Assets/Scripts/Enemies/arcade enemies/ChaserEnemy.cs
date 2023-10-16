@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
-using Arcade.Mechanics.Bullets;
+using Mechanics.Shoot.Bullets;
 using UnityEngine;
 using UnityEngine.AI;
 using UTILS;
+using Random = UnityEngine.Random;
 using Slider = UnityEngine.UI.Slider;
 
 public class ChaserEnemy : Enemy
@@ -47,6 +48,10 @@ public class ChaserEnemy : Enemy
     [SerializeField] private CanvasGroup healthBarCanvas;
     [SerializeField] private Slider healthBar;
 
+    //consumible
+
+    private ConsumiblePool _consumiblePool;
+
     private void Awake()
     {
         outlineTimer = gameObject.AddComponent<MyStopWatch>();
@@ -62,6 +67,7 @@ public class ChaserEnemy : Enemy
     {
         playerValues = FindObjectOfType<PlayerValues>();
         _playerData = FindObjectOfType<ArcadePlayerData>();
+        _consumiblePool = FindObjectOfType<ConsumiblePool>();
         outline.OutlineColor = Color.clear;
         lives = maxLives;
         totalLives = lives;
@@ -111,12 +117,11 @@ public class ChaserEnemy : Enemy
         {
             burnTimer.Restart();
             burnCount++;
-            RecieveDamage(1);
+            RecieveDamage(1, 10);
         }
 
         if (Vector3.Distance(transform.position, playerValues.GetPos()) < minDistToPlayer && !isDead)
         {
-            _navMeshAgent.speed = 0;
             if (damageTimer.GetElapsedSeconds() > damageColdown)
             {
                 playerValues.RecieveDamage(playerValues.GetPos(), damage);
@@ -156,31 +161,32 @@ public class ChaserEnemy : Enemy
                 switch (bullet.GetBulletType())
                 {
                     case BulletType.NormalBullet:
-                        RecieveDamage(1);
+
+                        RecieveDamage(1,15);
                         HitSlow();
                         break;
                     case BulletType.FreezeBullet:
-                        RecieveDamage(1);
+                        RecieveDamage(1,15);
                         Freeze();
                         break;
                     case BulletType.BurnBullet:
                         Burn();
-                        RecieveDamage(1);
+                        RecieveDamage(1,15);
                         HitSlow();
                         break;
                     case BulletType.GuidedBullet:
-                        RecieveDamage(1);
+                        RecieveDamage(1,15);
                         HitSlow();
                         break;
                     case BulletType.InstaKillBullet:
-                        RecieveDamage(maxLives);
+                        RecieveDamage(maxLives, maxLives * 10);
                         break;
                     case BulletType.ShotgunBullet:
-                        RecieveDamage(1);
+                        RecieveDamage(1, 15);
                         HitSlow();
                         break;
                     case BulletType.ExplosiveBullet:
-                        RecieveDamage(5);
+                        RecieveDamage(5, 50);
                         HitSlow();
                         break;
                     case BulletType.None:
@@ -190,30 +196,8 @@ public class ChaserEnemy : Enemy
                 }
             }
         }
-
-        // if (collision.gameObject.CompareTag("Player"))
-        // {
-        //     _navMeshAgent.speed = 0;
-        //     if (damageTimer.GetElapsedSeconds() > damageColdown)
-        //     {
-        //         playerValues.RecieveDamage(playerValues.GetPos(), damage);
-        //         damageTimer.Restart();
-        //     }
-        // }
     }
 
-    // private void OnCollisionStay(Collision collisionInfo)
-    // {
-    //     if (collisionInfo.gameObject.CompareTag("Player"))
-    //     {
-    //         _navMeshAgent.speed = 0;
-    //         if (damageTimer.GetElapsedSeconds() > damageColdown)
-    //         {
-    //             playerValues.RecieveDamage(playerValues.GetPos(), damage);
-    //             damageTimer.Restart();
-    //         }
-    //     }
-    // }
 
     private void OnCollisionExit(Collision other)
     {
@@ -257,18 +241,18 @@ public class ChaserEnemy : Enemy
 
     public override void GrenadeFreezeDamage()
     {
-        RecieveDamage(6);
+        RecieveDamage(6, 60);
         Freeze();
     }
 
     public override void GrenadeDamage()
     {
-        RecieveDamage(10);
+        RecieveDamage(10, 100);
     }
 
     public override void GrenadeSmoke(Vector3 decoyPos, float time)
     {
-        RecieveDamage(3);
+        RecieveDamage(3, 30);
         decoy = true;
         _navMeshAgent.SetDestination(decoyPos);
         StartCoroutine(DisableDecoyCoroutine(time));
@@ -279,7 +263,7 @@ public class ChaserEnemy : Enemy
         if (!laserTimer.IsRunning())
         {
             laserTimer.Restart();
-            RecieveDamage(15);
+            RecieveDamage(15, 20);
         }
 
         if (laserTimer.GetElapsedSeconds() > laserDamageCooldown)
@@ -293,7 +277,27 @@ public class ChaserEnemy : Enemy
     {
         if (lives > 0)
         {
-            _playerData.AddPoints(+10);
+            lives -= damage;
+            UpdateHealthBar();
+            if (lives <= 0)
+            {
+                Die();
+            }
+            else
+            {
+                enemySounds.PlayHurtSound();
+                outlineTimer.Restart();
+                outline.OutlineColor = Color.red;
+                dissolveMaterials.Hit(burn);
+            }
+        }
+    }
+
+    public override void RecieveDamage(int damage, int points)
+    {
+        if (lives > 0)
+        {
+            _playerData.AddPoints(points);
             lives -= damage;
             UpdateHealthBar();
             if (lives <= 0)
@@ -348,7 +352,6 @@ public class ChaserEnemy : Enemy
         outline.OutlineMode = Outline.Mode.OutlineAll;
         //lives
         lives = maxLives;
-
         UpdateHealthBar();
     }
 
@@ -390,6 +393,14 @@ public class ChaserEnemy : Enemy
 
     private void Die()
     {
+        //drop consumible 2% drop chance
+        int randomIndex = Random.Range(0, 25);
+        if (randomIndex == 0)
+        {
+            Consumible consumible = _consumiblePool.GetConsumible();
+            consumible.DeployConsumible(transform.position - new Vector3(0, 1, 0));
+        }
+
         _playerData.AddEnemiesKilled();
         healthBarCanvas.alpha = 0;
         outlineTimer.Stop();

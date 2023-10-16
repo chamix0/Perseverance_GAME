@@ -14,7 +14,9 @@ public class SaveData
     [SerializeField] private string arcadePlayer;
     [SerializeField] private int arcadeModel;
     [SerializeField] private ArcadeStats lastGameStats;
+    [SerializeField] private int currentVersion;
     private const int MAX_SLOTS = 4;
+    private const int Version = 1;
 
     //general settings
 
@@ -24,6 +26,7 @@ public class SaveData
         leaderBoard = new Score[10];
         InitLeaderBoard();
         lastSesionSlotIndex = -1;
+        currentVersion = Version;
         arcadeModel = 0;
         arcadePlayer = "---";
     }
@@ -117,8 +120,15 @@ public class SaveData
 
     public void SetArcadeName(string cad)
     {
-        string aux = cad.Substring(0, 3);
-        arcadePlayer = aux;
+        if (cad.Length <= 3)
+        {
+            arcadePlayer = cad;
+        }
+        else
+        {
+            string aux = cad.Substring(0, 3);
+            arcadePlayer = aux;
+        }
     }
 
     public string GetArcadeName()
@@ -146,6 +156,15 @@ public class SaveData
     public ArcadeStats GetArcadeStats()
     {
         return lastGameStats;
+    }
+
+    public int GetVersion()
+    {
+        return currentVersion;
+    }
+    public static bool CheckVersionObsolet(int old)
+    {
+        return old < Version;
     }
 
     #endregion

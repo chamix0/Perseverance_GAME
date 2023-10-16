@@ -136,7 +136,7 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
 
                 if (_newInputs.Aim())
                 {
-                    _cameraController.SlowCamera(50);
+                    _cameraController.SlowCamera(3);
                     foreach (var machineGun in machineGuns)
                         machineGun.Aim();
                 }

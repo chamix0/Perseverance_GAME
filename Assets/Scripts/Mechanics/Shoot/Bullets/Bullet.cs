@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using Arcade.Mechanics.Bullets;
+using Mechanics.Shoot.Bullets;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -16,7 +16,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private ParticleSystem hit;
     private float speed = 1;
     [SerializeField] private Rigidbody _rigidbody;
-    private bool ready = true;
+    private bool ready;
     public LayerMask collisionLayers;
     private DecallPool _decallPool;
     private Transform target;
@@ -30,7 +30,6 @@ public class Bullet : MonoBehaviour
     {
         _playerValues = FindObjectOfType<PlayerValues>();
         _decallPool = FindObjectOfType<DecallPool>();
-        ready = false;
         _rigidbody.useGravity = false;
     }
 
@@ -41,7 +40,11 @@ public class Bullet : MonoBehaviour
             if (target == null)
                 target = FindTarget();
             if (target != null)
-                _rigidbody.AddForce((target.position - transform.position), ForceMode.VelocityChange);
+            {
+                _rigidbody.AddForce((target.position - transform.position).normalized * (speed * 8),
+                    ForceMode.Acceleration);
+                _rigidbody.velocity = _rigidbody.velocity.normalized * (speed * 4);
+            }
         }
     }
 
@@ -54,6 +57,7 @@ public class Bullet : MonoBehaviour
     {
         return ready;
     }
+
     public void SetEnemyHit(bool val)
     {
         enemyHit = val;
@@ -63,8 +67,10 @@ public class Bullet : MonoBehaviour
     {
         return enemyHit;
     }
+
     public void Shoot(bool player, Vector3 origin, Vector3 dir, float s, Vector3 checkpoint)
     {
+        ready = false;
         enemyHit = false;
         isPlayer = player;
         respawn = checkpoint;
@@ -75,12 +81,11 @@ public class Bullet : MonoBehaviour
         _rigidbody.angularVelocity = Vector3.zero;
         _rigidbody.useGravity = false;
         _rigidbody.drag = 0;
+        hit.Stop();
         hit.Clear();
         if (_bulletType is BulletType.GuidedBullet)
-        {
-            _rigidbody.drag = 1f;
             _rigidbody.AddForce(_direction * speed / 2, ForceMode.Impulse);
-        }
+
         else _rigidbody.AddForce(_direction * speed, ForceMode.Impulse);
     }
 
@@ -106,8 +111,6 @@ public class Bullet : MonoBehaviour
                     minDistTransform = hit.transform;
                     minDistance = newDist;
                 }
-
-                print("enemy at: " + newDist);
             }
         }
 
@@ -116,38 +119,31 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!ready)
-        {
-            if (isPlayer)
-            {
-            }
-            else
-            {
-                if (!_playerValues.dead && collision.transform.CompareTag("Player"))
-                {
-                    _playerValues.RecieveDamage(respawn);
-                }
-            }
-
-            audioSource.Play();
-            hit.Play();
-            _decallPool.GetDecal().UseDecal(transform.position, -collision.contacts[0].normal, _bulletType);
-        }
-
         if (MyUtils.IsInLayerMask(collision.gameObject, collisionLayers))
         {
+            if (!ready)
+            {
+                if (isPlayer)
+                {
+                }
+                else
+                {
+                    if (!_playerValues.dead && collision.transform.CompareTag("Player"))
+                    {
+                        _playerValues.RecieveDamage(respawn);
+                    }
+                }
+
+                audioSource.Play();
+                hit.Play();
+                _decallPool.GetDecal().UseDecal(transform.position, -collision.contacts[0].normal, _bulletType);
+            }
             ready = true;
             _rigidbody.useGravity = true;
             _rigidbody.drag = 1;
             target = null;
-            StartCoroutine(DelayEnemyHitCoroutine());
+            if (!collision.transform.CompareTag("Enemy"))
+                enemyHit = true;
         }
-    }
-
-    IEnumerator DelayEnemyHitCoroutine()
-    {
-        yield return new WaitForSeconds(0.1f);
-        if (!enemyHit)
-            enemyHit = true;
     }
 }

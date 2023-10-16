@@ -143,6 +143,42 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Prev bullet type"",
+                    ""type"": ""Button"",
+                    ""id"": ""b9d36bd3-474a-4be6-b16b-283255c789b3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Next bullet type"",
+                    ""type"": ""Button"",
+                    ""id"": ""8f9ff380-b927-4908-9d1e-4f5706a7cb5c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Change Shooting Mode"",
+                    ""type"": ""Button"",
+                    ""id"": ""dcee33b2-7a89-4ec9-8802-5efb56c39342"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Change Grenade"",
+                    ""type"": ""Button"",
+                    ""id"": ""f295d699-e2a8-4f01-b777-33b3f0a0acba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -369,7 +405,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a0c06dbe-abf5-43fc-a347-289cfc03aa1b"",
-                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -451,6 +487,94 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""70829722-0c1d-4bb4-8fc3-b19a54292caf"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Prev bullet type"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fa7bfa2d-6c07-4dde-8a77-5da500f41380"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Prev bullet type"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""733c9242-adeb-461e-a5da-2f33484039ac"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Next bullet type"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""12a76cc7-4c98-46cf-bac1-e93f4ae174f4"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Next bullet type"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a692b142-e600-4ed9-87fa-c655fbb8e058"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Shooting Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6fdc67b2-f04d-4020-950a-756f76ec556e"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Shooting Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c3e609fc-3226-42c0-9dcc-4fa138cc7ef2"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Grenade"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6895f038-414a-4efc-ba33-df39b525701b"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Grenade"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1217,6 +1341,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Eddo_Jump = m_Eddo.FindAction("Jump", throwIfNotFound: true);
         m_Eddo_Controls = m_Eddo.FindAction("Controls", throwIfNotFound: true);
         m_Eddo_Select = m_Eddo.FindAction("Select", throwIfNotFound: true);
+        m_Eddo_Prevbullettype = m_Eddo.FindAction("Prev bullet type", throwIfNotFound: true);
+        m_Eddo_Nextbullettype = m_Eddo.FindAction("Next bullet type", throwIfNotFound: true);
+        m_Eddo_ChangeShootingMode = m_Eddo.FindAction("Change Shooting Mode", throwIfNotFound: true);
+        m_Eddo_ChangeGrenade = m_Eddo.FindAction("Change Grenade", throwIfNotFound: true);
         // Basic
         m_Basic = asset.FindActionMap("Basic", throwIfNotFound: true);
         m_Basic_Up = m_Basic.FindAction("Up", throwIfNotFound: true);
@@ -1316,6 +1444,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Eddo_Jump;
     private readonly InputAction m_Eddo_Controls;
     private readonly InputAction m_Eddo_Select;
+    private readonly InputAction m_Eddo_Prevbullettype;
+    private readonly InputAction m_Eddo_Nextbullettype;
+    private readonly InputAction m_Eddo_ChangeShootingMode;
+    private readonly InputAction m_Eddo_ChangeGrenade;
     public struct EddoActions
     {
         private @Controls m_Wrapper;
@@ -1333,6 +1465,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Eddo_Jump;
         public InputAction @Controls => m_Wrapper.m_Eddo_Controls;
         public InputAction @Select => m_Wrapper.m_Eddo_Select;
+        public InputAction @Prevbullettype => m_Wrapper.m_Eddo_Prevbullettype;
+        public InputAction @Nextbullettype => m_Wrapper.m_Eddo_Nextbullettype;
+        public InputAction @ChangeShootingMode => m_Wrapper.m_Eddo_ChangeShootingMode;
+        public InputAction @ChangeGrenade => m_Wrapper.m_Eddo_ChangeGrenade;
         public InputActionMap Get() { return m_Wrapper.m_Eddo; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1381,6 +1517,18 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Select.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnSelect;
                 @Select.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnSelect;
                 @Select.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnSelect;
+                @Prevbullettype.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnPrevbullettype;
+                @Prevbullettype.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnPrevbullettype;
+                @Prevbullettype.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnPrevbullettype;
+                @Nextbullettype.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnNextbullettype;
+                @Nextbullettype.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnNextbullettype;
+                @Nextbullettype.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnNextbullettype;
+                @ChangeShootingMode.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnChangeShootingMode;
+                @ChangeShootingMode.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnChangeShootingMode;
+                @ChangeShootingMode.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnChangeShootingMode;
+                @ChangeGrenade.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnChangeGrenade;
+                @ChangeGrenade.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnChangeGrenade;
+                @ChangeGrenade.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnChangeGrenade;
             }
             m_Wrapper.m_EddoActionsCallbackInterface = instance;
             if (instance != null)
@@ -1424,6 +1572,18 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Select.started += instance.OnSelect;
                 @Select.performed += instance.OnSelect;
                 @Select.canceled += instance.OnSelect;
+                @Prevbullettype.started += instance.OnPrevbullettype;
+                @Prevbullettype.performed += instance.OnPrevbullettype;
+                @Prevbullettype.canceled += instance.OnPrevbullettype;
+                @Nextbullettype.started += instance.OnNextbullettype;
+                @Nextbullettype.performed += instance.OnNextbullettype;
+                @Nextbullettype.canceled += instance.OnNextbullettype;
+                @ChangeShootingMode.started += instance.OnChangeShootingMode;
+                @ChangeShootingMode.performed += instance.OnChangeShootingMode;
+                @ChangeShootingMode.canceled += instance.OnChangeShootingMode;
+                @ChangeGrenade.started += instance.OnChangeGrenade;
+                @ChangeGrenade.performed += instance.OnChangeGrenade;
+                @ChangeGrenade.canceled += instance.OnChangeGrenade;
             }
         }
     }
@@ -1713,6 +1873,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnControls(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
+        void OnPrevbullettype(InputAction.CallbackContext context);
+        void OnNextbullettype(InputAction.CallbackContext context);
+        void OnChangeShootingMode(InputAction.CallbackContext context);
+        void OnChangeGrenade(InputAction.CallbackContext context);
     }
     public interface IBasicActions
     {

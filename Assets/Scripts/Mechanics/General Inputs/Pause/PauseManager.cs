@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(5)]
 public class PauseManager : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -18,13 +19,15 @@ public class PauseManager : MonoBehaviour
     //settings
     private List<Slider> _sliders;
     private SoundManager soundManager;
-    [SerializeField] private Slider masterVolumeSlider, vfxVolumeSlider, musicVolumeSlider, uiVolumeSlider;
+
+    [SerializeField]
+    private Slider masterVolumeSlider, vfxVolumeSlider, musicVolumeSlider, uiVolumeSlider, camSensitivitySlider;
+
     [SerializeField] private Button continueButon, exitButton, reconectButton;
 
     //sliders and buttons
     private int index = 0;
     private float targetSliderValue;
-    private float tX;
     private bool updateValue;
 
     private void Awake()
@@ -62,7 +65,8 @@ public class PauseManager : MonoBehaviour
             reconectButton.onClick.AddListener(() => cubeConectionManager.ReEstablish());
         else reconectButton.gameObject.SetActive(false);
 
-        _sliders.AddRange(new[] { masterVolumeSlider, vfxVolumeSlider, musicVolumeSlider, uiVolumeSlider });
+        _sliders.AddRange(new[]
+            { masterVolumeSlider, vfxVolumeSlider, musicVolumeSlider, uiVolumeSlider, camSensitivitySlider });
         //previus game sound values
 
         masterVolumeSlider.value = playerValues.gameData.GetMasterVolume();
@@ -73,11 +77,14 @@ public class PauseManager : MonoBehaviour
         soundManager.SetMusicVolume(playerValues.gameData.GetMusicVolume());
         uiVolumeSlider.value = playerValues.gameData.GetUiVolume();
         soundManager.SetUiVolume(playerValues.gameData.GetUiVolume());
+        camSensitivitySlider.value = playerValues.gameData.GetCamSensitivity();
+        cameraController.SetCameraSpeed(playerValues.gameData.GetCamSensitivity());
 
         masterVolumeSlider.onValueChanged.AddListener(MasterSliderAction);
         vfxVolumeSlider.onValueChanged.AddListener(VfxSliderAction);
         musicVolumeSlider.onValueChanged.AddListener(MusicSliderAction);
         uiVolumeSlider.onValueChanged.AddListener(UiSliderAction);
+        camSensitivitySlider.onValueChanged.AddListener(camSliderAction);
     }
 
     // Update is called once per frame
@@ -167,6 +174,9 @@ public class PauseManager : MonoBehaviour
 
     private void MasterSliderAction(float value)
     {
+        index = 0;
+        Highlight();
+        updateValue = false;
         soundManager.SetMasterVolume(value);
         playerValues.gameData.SetMasterVolume(value);
         playerValues.SaveGame();
@@ -174,6 +184,9 @@ public class PauseManager : MonoBehaviour
 
     private void VfxSliderAction(float value)
     {
+        index = 1;
+        Highlight();
+        updateValue = false;
         soundManager.SetVfxVolume(value);
         playerValues.gameData.SetVfxVolume(value);
         playerValues.SaveGame();
@@ -181,6 +194,9 @@ public class PauseManager : MonoBehaviour
 
     private void MusicSliderAction(float value)
     {
+        index = 2;
+        Highlight();
+        updateValue = false;
         soundManager.SetMusicVolume(value);
         playerValues.gameData.SetMusicVolume(value);
         playerValues.SaveGame();
@@ -188,8 +204,21 @@ public class PauseManager : MonoBehaviour
 
     private void UiSliderAction(float value)
     {
+        index = 3;
+        Highlight();
+        updateValue = false;
         soundManager.SetUiVolume(value);
         playerValues.gameData.SetUiVolume(value);
+        playerValues.SaveGame();
+    }
+
+    private void camSliderAction(float value)
+    {
+        index = 4;
+        Highlight();
+        updateValue = false;
+        cameraController.SetCameraSpeed(value);
+        playerValues.gameData.SetCamSensitivity(value);
         playerValues.SaveGame();
     }
 
@@ -294,7 +323,6 @@ public class PauseManager : MonoBehaviour
     {
         if (index < _sliders.Count)
         {
-            tX = 0f;
             updateValue = true;
             targetSliderValue = Mathf.Min(1, _sliders[index].value + 0.05f);
         }
@@ -304,7 +332,6 @@ public class PauseManager : MonoBehaviour
     {
         if (index < _sliders.Count)
         {
-            tX = 0f;
             updateValue = true;
             targetSliderValue = Mathf.Max(0, _sliders[index].value - 0.05f);
         }
@@ -312,11 +339,10 @@ public class PauseManager : MonoBehaviour
 
     private void UpdatesliderValue()
     {
-        _sliders[index].value = Mathf.Lerp(_sliders[index].value, targetSliderValue, tX);
-        tX += 0.5f * Time.unscaledDeltaTime;
-        if (tX > 1.0f)
+        _sliders[index].value =
+            Mathf.MoveTowards(_sliders[index].value, targetSliderValue, 0.5f * Time.unscaledDeltaTime);
+        if (Mathf.Abs(_sliders[index].value - targetSliderValue) <= 0.01f)
         {
-            tX = 1.0f;
             updateValue = false;
         }
     }

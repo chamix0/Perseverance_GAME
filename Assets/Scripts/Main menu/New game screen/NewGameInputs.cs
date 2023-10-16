@@ -56,7 +56,8 @@ namespace Main_menu.New_game_screen
                     _newGameManager.HideUI();
                     _camerasController.SetCamera(MenuCameras.EDDO);
                     _menuManager.CheckForContinueAndNewGame();
-                    _myInputManager.SetCurrentInput(CurrentMenuInput.PreArcade);
+                    _menuManager.UpdateColors();
+                    _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
                     _newGameManager.HideUI();
                 }
             }
@@ -64,7 +65,7 @@ namespace Main_menu.New_game_screen
 
         public void PerformAction(Move move)
         {
-            if (_myInputManager.GetCurrentInput() == CurrentMenuInput.Arcade && _myInputManager.GetInputsEnabled())
+            if (_myInputManager.GetCurrentInput() == CurrentMenuInput.NewGame && _myInputManager.GetInputsEnabled())
             {
                 FACES face = move.face;
                 int dir = move.direction;
@@ -91,7 +92,7 @@ namespace Main_menu.New_game_screen
                         _newGameManager.HideUI();
                         _camerasController.SetCamera(MenuCameras.EDDO);
                         _menuManager.CheckForContinueAndNewGame();
-                        _myInputManager.SetCurrentInput(CurrentMenuInput.PreArcade);
+                        _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
                     }
                 }
             }

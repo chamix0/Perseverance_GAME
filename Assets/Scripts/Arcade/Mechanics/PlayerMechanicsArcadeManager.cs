@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Arcade.Mechanics.Bullets;
 using Mechanics.General_Inputs.Machine_gun_mode;
+using Mechanics.Shoot.Bullets;
 using UnityEngine;
 
 public class PlayerMechanicsArcadeManager : MonoBehaviour
@@ -159,10 +159,20 @@ public class PlayerMechanicsArcadeManager : MonoBehaviour
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    machine.ActualShotArcadeRandom(BulletType.NormalBullet);
+                    if (machine.isAiming())
+                        machine.ActualShotArcadeRandom(BulletType.NormalBullet, 0.1f);
+                    else
+                        machine.ActualShotArcadeRandom(BulletType.NormalBullet, 0.2f);
                 }
             }
-            else machine.ActualShotArcade(bulletType);
+
+            else
+            {
+                if (machine.isAiming())
+                    machine.ActualShotArcadeRandom(bulletType, 0.01f);
+                else
+                    machine.ActualShotArcadeRandom(bulletType, 0.05f);
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 using System.Collections;
-using Arcade.Mechanics.Bullets;
 using Arcade.Mechanics.Granades;
 using Mechanics.General_Inputs;
+using Mechanics.Shoot.Bullets;
 using UnityEngine;
 [DefaultExecutionOrder(4)]
 public class BulletShopBase : MonoBehaviour

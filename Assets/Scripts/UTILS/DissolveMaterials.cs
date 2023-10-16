@@ -17,7 +17,7 @@ public class DissolveMaterials : MonoBehaviour
     private List<MeshRenderer> meshRenderers;
     private List<SkinnedMeshRenderer> skinnedMeshRenderers;
     private Material hitMaterial, freezeMaterial;
-    private bool updateValue;
+    private bool updateValue, freeze;
 
     private float currentVal = 1, targetValue;
 
@@ -193,6 +193,7 @@ public class DissolveMaterials : MonoBehaviour
     public void DissolveIn()
     {
         int lastId = 0;
+        freeze = false;
         foreach (var meshRenderer in meshRenderers)
         {
             if (!exceptions.Contains(meshRenderer.gameObject))
@@ -212,26 +213,18 @@ public class DissolveMaterials : MonoBehaviour
                     mat.SetFloat(TimeStep, 1);
             }
         }
-
-        // if (dissolveMaterials.ContainsKey(lastId))
-        // {
-        //     foreach (var mat in dissolveMaterials[lastId])
-        //     {
-        //         currentVal = mat.GetFloat(TimeStep);
-        //     }
-        // }
+        
 
         currentVal = 1;
 
         targetValue = 0;
-        // _tA = 0.0f;
         updateValue = true;
     }
 
     public void DissolveOut()
     {
         int lastId = 0;
-
+        freeze = false;
         foreach (var skinnedMeshRenderer in skinnedMeshRenderers)
         {
             if (dissolveMaterials.ContainsKey(skinnedMeshRenderer.GetInstanceID()) &&
@@ -299,6 +292,7 @@ public class DissolveMaterials : MonoBehaviour
         StopAllCoroutines();
         if (updateValue == false)
         {
+            freeze = true;
             foreach (var skinnedMeshRenderer in meshRenderers)
             {
                 if (!exceptions.Contains(skinnedMeshRenderer.gameObject))
@@ -322,7 +316,11 @@ public class DissolveMaterials : MonoBehaviour
     {
         if (updateValue == false)
         {
-            PutOriginalMaterials();
+            if (freeze)
+            {
+                freeze = false;
+                PutOriginalMaterials();
+            }
         }
     }
 
@@ -331,7 +329,10 @@ public class DissolveMaterials : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         if (updateValue == false)
         {
-            PutOriginalMaterials();
+            if (freeze)
+                Freeze();
+            else
+                PutOriginalMaterials();
         }
     }
 

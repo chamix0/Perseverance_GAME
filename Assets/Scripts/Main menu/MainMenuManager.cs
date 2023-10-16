@@ -36,7 +36,7 @@ public class MainMenuManager : MonoBehaviour
     private List<TMP_Text> _texts;
     private List<Material> _materials;
 
-   
+
     //shader properties
     private static readonly int MyAlpha = Shader.PropertyToID("_MyAlpha");
     private static readonly int BackgroundColor = Shader.PropertyToID("_Background_color");
@@ -71,36 +71,27 @@ public class MainMenuManager : MonoBehaviour
             selectedButton = 1;
         UpdateColors();
         Time.timeScale = 1;
+        print("a");
     }
 
     public void clicked(int button)
     {
         _sounds.SelectOptionSound();
-
         _loadGameManager.HideUI();
-        _menuInputManager.SetCurrentInput(CurrentMenuInput.Menu);
-        int aux = button;
-        selectedButton = aux;
+        selectedButton = button;
         UpdateColors();
-
-        if (_texts[aux].color == Color.black)
-            _texts[aux].color = Color.white;
-
-        _materials[aux].SetColor(BackgroundColor, _colorSelected);
-        StartCoroutine(ActionForButtonCoroutine(aux));
+        if (_texts[button].color == Color.black)
+            _texts[button].color = Color.white;
+        _materials[button].SetColor(BackgroundColor, _colorSelected);
+        StartCoroutine(ActionForButton(button));
+        _buttons[selectedButton].interactable = false;
     }
 
     public void PressEnter()
     {
-        _sounds.SelectOptionSound();
-
-
-        int aux = selectedButton;
-        UpdateColors();
-        if (_texts[aux].color == Color.black)
-            _texts[aux].color = Color.white;
-        _materials[aux].SetColor(BackgroundColor, _colorSelected);
-        StartCoroutine(ActionForButtonCoroutine(aux));
+        Button button = _buttons[selectedButton];
+        if (button.interactable)
+            button.onClick.Invoke();
     }
 
     /// <summary>
@@ -142,10 +133,9 @@ public class MainMenuManager : MonoBehaviour
     /// </summary>
     /// <param name="index">index of the selected button</param>
     /// <returns></returns>
-    IEnumerator ActionForButtonCoroutine(int index)
+    IEnumerator ActionForButton(int index)
     {
         CheckForContinueAndNewGame();
-
         //cameras
         if (index != 2)
             _loadGameManager.HideUI();
@@ -161,9 +151,7 @@ public class MainMenuManager : MonoBehaviour
             _camerasController.SetCamera(MenuCameras.Gallery);
         else if (index == 7)
             _camerasController.SetCamera(MenuCameras.Credits);
-
-
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.1f);
         switch (index)
         {
             //continue
@@ -186,12 +174,10 @@ public class MainMenuManager : MonoBehaviour
             case 3:
                 _menuInputManager.SetCurrentInput(CurrentMenuInput.PreArcade);
                 _arcadeMenuManager.ShowUi();
-
                 break;
             //tutorial
             case 4:
                 _menuInputManager.SetCurrentInput(CurrentMenuInput.Tutorial);
-
                 break;
             //settings
             case 5:
@@ -247,8 +233,8 @@ public class MainMenuManager : MonoBehaviour
         selectedButton = aux;
         UpdateColors();
     }
-    
-    private void UpdateColors()
+
+    public void UpdateColors()
     {
         for (int i = 0; i < _buttons.Count; i++)
         {
@@ -270,6 +256,8 @@ public class MainMenuManager : MonoBehaviour
             _texts[0].color = _notInteracctableColor;
         if (!NewGameInteractable)
             _texts[1].color = _notInteracctableColor;
+
+        _buttons[selectedButton].interactable = true;
     }
 
     private void SetButtons()
@@ -281,7 +269,7 @@ public class MainMenuManager : MonoBehaviour
             _materials.Add(material);
             _texts.Add(_buttons[i].GetComponentInChildren<TMP_Text>());
             int aux = i;
-            _buttons[i].onClick.AddListener(() => clicked(aux));
+            _buttons[aux].onClick.AddListener(() => clicked(aux));
         }
     }
 }

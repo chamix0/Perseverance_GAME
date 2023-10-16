@@ -66,7 +66,7 @@ public class DontTouchWallsManager : Minigame
 
     private void Update()
     {
-        if (minigameStarted)
+        if (minigameStarted && !_playerValues.GetPaused())
         {
             Vector2 dir = Vector2.zero;
             if (verticaGear < 0)
@@ -175,7 +175,7 @@ public class DontTouchWallsManager : Minigame
     {
         _player.transform.localRotation =
             Quaternion.Slerp(_player.transform.localRotation, Quaternion.Euler(0, 0, MyUtils.Clamp0360(angle)),
-                Time.deltaTime * 10f);
+                Time.unscaledDeltaTime * 10f);
     }
 
     public void SpriteRotation(Vector2 direction)
@@ -213,7 +213,7 @@ public class DontTouchWallsManager : Minigame
         {
             if (_player.transform.localPosition.y < (_arenaMeasures[0] - _arenaMeasures[0] / 100) / 2)
                 _player.transform.localPosition +=
-                    new Vector3(0, speed * Time.deltaTime, 0);
+                    new Vector3(0, speed * Time.unscaledDeltaTime, 0);
             else
             {
                 _player.transform.localPosition =
@@ -225,7 +225,7 @@ public class DontTouchWallsManager : Minigame
         {
             if (_player.transform.localPosition.y > (-_arenaMeasures[0] + _arenaMeasures[0] / 100) / 2)
                 _player.transform.localPosition -=
-                    new Vector3(0, speed * Time.deltaTime, 0);
+                    new Vector3(0, speed * Time.unscaledDeltaTime, 0);
             else
             {
                 _player.transform.localPosition =
@@ -241,7 +241,7 @@ public class DontTouchWallsManager : Minigame
         {
             if (_player.transform.localPosition.x < (_arenaMeasures[1] - _arenaMeasures[1] / 100) / 2)
                 _player.transform.localPosition +=
-                    new Vector3(speed * Time.deltaTime, 0, 0);
+                    new Vector3(speed * Time.unscaledDeltaTime, 0, 0);
             else
             {
                 _player.transform.localPosition =
@@ -253,7 +253,7 @@ public class DontTouchWallsManager : Minigame
         {
             if (_player.transform.localPosition.x > (-_arenaMeasures[1] + _arenaMeasures[1] / 100) / 2)
                 _player.transform.localPosition -=
-                    new Vector3(speed * Time.deltaTime, 0, 0);
+                    new Vector3(speed * Time.unscaledDeltaTime, 0, 0);
             else
             {
                 _player.transform.localPosition =
@@ -398,15 +398,15 @@ public class DontTouchWallsManager : Minigame
         //enseñar nombre del minijuego
         _genericScreenUi.SetText(_name, 30);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         //enseñar tutorial del minijuego
         _genericScreenUi.SetText(_tutorial, 20);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSecondsRealtime(4f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         ShowUI();
         minigameStarted = true;
         _player.SetActive(true);

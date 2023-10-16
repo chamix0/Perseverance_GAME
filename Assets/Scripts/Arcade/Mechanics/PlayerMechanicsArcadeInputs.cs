@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using Mechanics.General_Inputs;
+using Mechanics.General_Inputs.Machine_gun_mode;
 using Player.Observer_pattern;
 using UnityEngine;
+using UTILS;
 
 public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
 {
@@ -10,7 +12,6 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
     private PlayerValues _playerValues;
     private PlayerMechanicsArcadeManager _manager;
     private ArcadePlayerData _arcadePlayerData;
-    private CameraChanger _cameraChanger;
     private CameraController _cameraController;
     private GuiManager guiManager;
     private ArmorWheel _armorWheel;
@@ -21,12 +22,12 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
     [SerializeField] private ParticleSystem turboParticles;
 
     //shoot stuff
-    private Stopwatch shootTimer;
+    private MyStopWatch shootTimer;
 
     private void Awake()
     {
-        shootTimer = new Stopwatch();
-        shootTimer.Start();
+        shootTimer = gameObject.AddComponent<MyStopWatch>();
+        shootTimer.StartStopwatch();
     }
 
     void Start()
@@ -37,7 +38,6 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
         _playerValues = FindObjectOfType<PlayerValues>();
         _arcadePlayerData = FindObjectOfType<ArcadePlayerData>();
         _cameraController = FindObjectOfType<CameraController>();
-        _cameraChanger = FindObjectOfType<CameraChanger>();
         stamina = FindObjectOfType<Stamina>();
         _manager = FindObjectOfType<PlayerMechanicsArcadeManager>();
         _armorWheel = FindObjectOfType<ArmorWheel>();
@@ -61,8 +61,15 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
         if (_playerValues.GetCurrentInput() is CurrentInput.ArcadeMechanics)
             _manager.ShowMachineGuns();
         else
+        {
+            _manager.StopAim();
+            _manager.StopAutomaticShooting();
             _manager.HideMachineGuns();
+        }
 
+        if (_playerValues.GetPaused())
+            _manager.StopAutomaticShooting();
+        
         if (_playerValues.GetCurrentInput() == CurrentInput.ArcadeMechanics && _playerValues.GetInputsEnabled() &&
             !_playerValues.GetPaused())
         {
@@ -95,14 +102,29 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
                 }
 
                 //shoot
-                if (_playerNewInputs.Shoot())
+                if (_arcadePlayerData.GetShootingMode() is ShootingMode.Automatic)
                 {
-                    if (shootTimer.Elapsed.TotalMilliseconds > _arcadePlayerData.GetShootingCooldown())
+                    if (_playerNewInputs.ShootAutomatic())
                     {
-                        shootTimer.Restart();
-                        _manager.Shoot();
+                        if (shootTimer.GetElapsedMiliseconds() > _arcadePlayerData.GetShootingCooldown())
+                        {
+                            shootTimer.Restart();
+                            _manager.Shoot();
+                        }
                     }
                 }
+                else
+                {
+                    if (_playerNewInputs.Shoot())
+                    {
+                        if (shootTimer.GetElapsedMiliseconds() > _arcadePlayerData.GetShootingCooldown())
+                        {
+                            shootTimer.Restart();
+                            _manager.Shoot();
+                        }
+                    }
+                }
+
 
                 //stop  shooting
                 if (_playerNewInputs.ShootReleased())
@@ -113,7 +135,7 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
                 //aim
                 if (_playerNewInputs.Aim())
                 {
-                    _cameraController.SlowCamera(50);
+                    _cameraController.SlowCamera(3);
                     _manager.Aim();
                 }
 
@@ -129,6 +151,22 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
                 {
                     _manager.ThrowGrenade();
                 }
+
+                if (_playerNewInputs.NextBulletType())
+                    _armorWheel.SelectNextBullets();
+
+
+                if (_playerNewInputs.PrevBulletType())
+                    _armorWheel.SelectPrevBullets();
+
+
+                if (_playerNewInputs.ChangeShootingMode())
+                    _armorWheel.SelectNextShootingMode();
+
+
+                if (_playerNewInputs.ChangeGrenade())
+                    _armorWheel.SelectNextGrenade();
+
 
                 //open armor wheel
                 if (_playerNewInputs.ShowArmorWheel())
@@ -213,7 +251,7 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
                 }
                 else
                 {
-                    if (shootTimer.Elapsed.TotalMilliseconds > _arcadePlayerData.GetShootingCooldown())
+                    if (shootTimer.GetElapsedMiliseconds() > _arcadePlayerData.GetShootingCooldown())
                     {
                         shootTimer.Restart();
                         _manager.Shoot();
@@ -278,6 +316,9 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
             _playerNewInputs.CamMovementText() + "- Camera |" + _playerNewInputs.LightsText() + "- Lights |" +
             _playerNewInputs.AimText() + "- Aim |" + _playerNewInputs.ShootText() + "- Shoot |" +
             _playerNewInputs.ArmorWheelText() +
-            "- Armor Wheel |" + _playerNewInputs.GrenadeDistractionText() + "- Grenade");
+            "- Armor Wheel |" + _playerNewInputs.GrenadeDistractionText() + "- Grenade |" +
+            _playerNewInputs.NextBulletTypeText() + "/" + _playerNewInputs.PrevBulletTypeText() + "- bullet type |" +
+            _playerNewInputs.ChangeGrenadeText() + "- Grenade type |" + _playerNewInputs.ChangeShootModeText() +
+            "- Shoot mode");
     }
 }

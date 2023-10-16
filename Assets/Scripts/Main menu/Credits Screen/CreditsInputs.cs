@@ -35,6 +35,7 @@ public class CreditsInputs : MonoBehaviour, IObserver
                 _sounds.ReturnSound();
                 _camerasController.SetCamera(MenuCameras.EDDO);
                 _menuManager.CheckForContinueAndNewGame();
+                _menuManager.UpdateColors();
                 _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
             }
         }

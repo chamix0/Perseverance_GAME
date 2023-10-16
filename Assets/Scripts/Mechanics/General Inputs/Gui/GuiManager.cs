@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Mechanics.General_Inputs;
+using Mechanics.Shoot.Bullets;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -93,8 +94,20 @@ public class GuiManager : Subject
 
     //round
     [Header("rounds")] [SerializeField] private CanvasGroup roundCanvas;
+
     [SerializeField] private TMP_Text roundText;
 
+    //Consumible
+    [Header("consumible")] [SerializeField]
+    private CanvasGroup consumibleCanvas;
+
+    //armor icons
+    [Header("armor icons")] [SerializeField]
+    private CanvasGroup armorIconsCanvas;
+
+    [SerializeField] private Image bulletTypeImage, grenadeIconImage;
+    [SerializeField] private List<Sprite> bulletTypeSprites, grandeImageSprites;
+    [SerializeField] private TMP_Text shootingModeIconText;
 
     void Start()
     {
@@ -128,6 +141,8 @@ public class GuiManager : Subject
             HideMessage();
         if (roundCanvas)
             HideRound();
+        if (consumibleCanvas)
+            HideConsumible();
     }
 
     private void Update()
@@ -351,7 +366,7 @@ public class GuiManager : Subject
         pausePanel.alpha = 1;
         pausePanel.interactable = true;
         crosshair.alpha = 0;
-        _cameraController.SlowCameraSpeed(0);
+        _cameraController.SlowCameraSpeed(10);
         _soundManager.SetMuteVFX(true);
         _playerValues.StopRelativeTime();
         CursorManager.ShowCursor();
@@ -567,6 +582,68 @@ public class GuiManager : Subject
     public void SetRound(string text)
     {
         roundText.text = text;
+    }
+
+    #endregion
+
+    #region Consumible
+
+    public void ShowConsumible()
+    {
+        consumibleCanvas.alpha = 1;
+    }
+
+    public void HideConsumible()
+    {
+        consumibleCanvas.alpha = 0;
+    }
+
+    #endregion
+
+    #region shooting icons
+
+    public void ShowArmorIcons()
+    {
+        armorIconsCanvas.alpha = 1;
+    }
+
+    public void HideArmorIcons()
+    {
+        armorIconsCanvas.alpha = 0;
+    }
+
+    public void SetBulletTypeIcon(BulletType bulletType)
+    {
+        bulletTypeImage.sprite = bulletType switch
+        {
+            BulletType.NormalBullet => bulletTypeSprites[0],
+            BulletType.FreezeBullet => bulletTypeSprites[1],
+            BulletType.BurnBullet => bulletTypeSprites[2],
+            BulletType.GuidedBullet => bulletTypeSprites[3],
+            BulletType.InstaKillBullet => bulletTypeSprites[4],
+            BulletType.ShotgunBullet => bulletTypeSprites[5],
+            BulletType.ExplosiveBullet => bulletTypeSprites[6],
+            BulletType.None => bulletTypeSprites[0],
+        };
+    }
+
+    public void SetShootingModeIcon(int mode)
+    {
+        shootingModeIconText.text = mode switch
+        {
+            0 => "M",
+            1 => "A",
+            2 => "B"
+        };
+    }
+
+    public void SetGrenadeIcon(int mode)
+    {
+        grenadeIconImage.sprite = grandeImageSprites[mode];
+        if (grenadeIconImage.sprite == null)
+            grenadeIconImage.color = Color.clear;
+        else
+            grenadeIconImage.color = Color.white;
     }
 
     #endregion

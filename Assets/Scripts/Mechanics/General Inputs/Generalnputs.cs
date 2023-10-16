@@ -39,7 +39,7 @@ namespace General_Inputs
                         playerValues.CheckIfStuck(false);
                         if (playerValues.GetIsStucked())
                         {
-                            if (timer.Elapsed.TotalSeconds > 1)
+                            if (timer.Elapsed.TotalSeconds > 0.5f)
                             {
                                 timer.Restart();
                                 playerValues._rigidbody.AddForce(Vector3.up * 12, ForceMode.Impulse);

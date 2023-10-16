@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Arcade.Mechanics.Bullets;
+using Mechanics.Shoot.Bullets;
 using UnityEngine;
 
 public class BulletPool : MonoBehaviour
@@ -77,7 +77,6 @@ public class BulletPool : MonoBehaviour
         };
         Bullet bulletComp = newBullet.GetComponent<Bullet>();
         InsertNewBullet(type, bulletComp);
-
         return bulletComp;
     }
 

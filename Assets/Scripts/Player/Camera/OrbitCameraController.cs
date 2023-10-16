@@ -8,7 +8,7 @@ public class OrbitCameraController : MonoBehaviour
     [SerializeField, Range(1f, 20f)] private float distance = 5f;
     [SerializeField, Min(0f)] float focusRadius = 1f;
     [SerializeField, Range(0f, 1f)] float focusCentering = 0.5f;
-    [SerializeField, Range(1f, 360f)] float rotationSpeed = 90f,  normalSpeed;
+    [SerializeField, Range(1f, 360f)] float rotationSpeed = 90f, normalSpeed;
     [SerializeField, Range(-89f, 89f)] float minVerticalAngle = -30f, maxVerticalAngle = 60f;
     [SerializeField] private bool invertX, invertY;
     [SerializeField, Min(0f)] float alignDelay = 5f;
@@ -29,7 +29,7 @@ public class OrbitCameraController : MonoBehaviour
     private void Awake()
     {
         _newInputs = FindObjectOfType<PlayerNewInputs>();
-        normalSpeed = rotationSpeed;
+        // normalSpeed = rotationSpeed;
         audioListener = GetComponent<AudioListener>();
         regularCamera = GetComponent<Camera>();
         focusPoint = focus.position;
@@ -195,9 +195,20 @@ public class OrbitCameraController : MonoBehaviour
         return direction.x < 0f ? 360f - angle : angle;
     }
 
-    public void SlowCameraSpeed(int speed)
+    public void SlowCameraSpeed(int factor)
     {
-        rotationSpeed = speed;
+        rotationSpeed = normalSpeed / (factor);
+    }
+
+    public void SetCameraSpeed(float val)
+    {
+        normalSpeed = Mathf.Clamp(val * 360, 1f, 360f);
+        rotationSpeed = normalSpeed;
+    }
+
+    public float NormailizedCamSpeedValue()
+    {
+        return normalSpeed / 360;
     }
 
     public void ReturnToNormalCameraSpeed()

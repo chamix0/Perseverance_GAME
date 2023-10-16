@@ -131,6 +131,11 @@ public class EnemyBee : Enemy, IObserver
     }
 
 
+    public override void RecieveDamage(int damage, int points)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void Hide()
     {
         outlineTimer.Stop();

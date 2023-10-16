@@ -238,15 +238,15 @@ public class ColorsManager : Minigame
         //enseñar nombre del minijuego
         _genericScreenUi.SetText(_name, 50);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         //enseñar tutorial del minijuego
         _genericScreenUi.SetText(_tutorial, 10);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSecondsRealtime(4f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         ShowGameUi();
         _playerValues.NotifyAction(PlayerActions.ColorsMinigame);
     }

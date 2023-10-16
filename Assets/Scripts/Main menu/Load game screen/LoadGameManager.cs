@@ -72,7 +72,6 @@ namespace Main_menu.Load_game_screen
                     _saveData.SetLastSessionSlotIndex(_slotIndex);
                     _jsoNsaving.SaveTheData();
                     loadScreen.LoadLevels();
-                    print(index);
                 }
             }
             else

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using Arcade.Mechanics.Bullets;
+using System.Linq;
 using Arcade.Mechanics.Doors;
 using Arcade.Mechanics.Granades;
 using Mechanics.General_Inputs.Machine_gun_mode;
+using Mechanics.Shoot.Bullets;
 using Player.Observer_pattern;
 using UnityEngine;
+using UnityEngine.AI;
 
 [DefaultExecutionOrder(2)]
 public class ArcadePlayerData : Subject, IObserver
@@ -13,7 +15,7 @@ public class ArcadePlayerData : Subject, IObserver
     #region DATA
 
     [SerializeField] private int points;
-    float pointMultiplier = 1, maxPointMultiplier = 4;
+    float pointMultiplier = 1, maxPointMultiplier = 6, consumibleMultiplier = 1;
     private int totalPoints;
     private int rounds = 0;
 
@@ -30,7 +32,7 @@ public class ArcadePlayerData : Subject, IObserver
     [SerializeField] private int unlockedBulletSlots = 1;
 
     //grenades
-    private GrenadeType currentGrenadeType = GrenadeType.NormalGrenade;
+    private GrenadeType currentGrenadeType = GrenadeType.None;
     private Dictionary<GrenadeType, int> grenadesAmmo, GrenadesCurrentMaxAmmo, grenadesMaxAmmo;
     [SerializeField] private int unlockedGrenadeSlots = 0;
     private List<GrenadeType> grenadeSlots;
@@ -52,6 +54,9 @@ public class ArcadePlayerData : Subject, IObserver
     private JSONsaving _jsoNsaving;
     private SaveData _saveData;
     private LoadScreen _loadScreen;
+
+    private NavMeshSurface _navMeshSurface;
+    //navmesh
 
     #endregion
 
@@ -109,20 +114,20 @@ public class ArcadePlayerData : Subject, IObserver
         bulletsCurrentMaxAmmo = new Dictionary<BulletType, int>();
         bulletsCurrentMaxAmmo.Add(BulletType.NormalBullet, 100);
         bulletsCurrentMaxAmmo.Add(BulletType.FreezeBullet, 20);
-        bulletsCurrentMaxAmmo.Add(BulletType.InstaKillBullet, 5);
+        bulletsCurrentMaxAmmo.Add(BulletType.InstaKillBullet, 1);
         bulletsCurrentMaxAmmo.Add(BulletType.BurnBullet, 20);
         bulletsCurrentMaxAmmo.Add(BulletType.GuidedBullet, 30);
         bulletsCurrentMaxAmmo.Add(BulletType.ShotgunBullet, 10);
-        bulletsCurrentMaxAmmo.Add(BulletType.ExplosiveBullet, 20);
+        bulletsCurrentMaxAmmo.Add(BulletType.ExplosiveBullet, 5);
         //max ammo
         bulletsMaxAmmo = new Dictionary<BulletType, int>();
         bulletsMaxAmmo.Add(BulletType.NormalBullet, 1000);
         bulletsMaxAmmo.Add(BulletType.FreezeBullet, 200);
-        bulletsMaxAmmo.Add(BulletType.InstaKillBullet, 50);
+        bulletsMaxAmmo.Add(BulletType.InstaKillBullet, 10);
         bulletsMaxAmmo.Add(BulletType.BurnBullet, 200);
         bulletsMaxAmmo.Add(BulletType.GuidedBullet, 300);
-        bulletsMaxAmmo.Add(BulletType.ShotgunBullet, 100);
-        bulletsMaxAmmo.Add(BulletType.ExplosiveBullet, 200);
+        bulletsMaxAmmo.Add(BulletType.ShotgunBullet, 150);
+        bulletsMaxAmmo.Add(BulletType.ExplosiveBullet, 25);
         //BulletSlots
         bulletSlots = new List<BulletType>(4)
             { BulletType.NormalBullet, BulletType.None, BulletType.None, BulletType.None };
@@ -136,8 +141,8 @@ public class ArcadePlayerData : Subject, IObserver
         currentShootCooldown.Add(ShootingMode.Burst, 3000);
         minShootCooldown = new Dictionary<ShootingMode, int>();
         minShootCooldown.Add(ShootingMode.Manual, 250);
-        minShootCooldown.Add(ShootingMode.Automatic, 500);
-        minShootCooldown.Add(ShootingMode.Burst, 750);
+        minShootCooldown.Add(ShootingMode.Automatic, 250);
+        minShootCooldown.Add(ShootingMode.Burst, 500);
     }
 
     public void SetBulletSlot(BulletType bulletType, int index)
@@ -426,7 +431,7 @@ public class ArcadePlayerData : Subject, IObserver
 
     public void AddPoints(int val)
     {
-        int updatedVal = (int)(val * pointMultiplier);
+        int updatedVal = (int)(val * pointMultiplier * consumibleMultiplier);
         totalPoints += updatedVal;
         points += updatedVal;
         _guiManager.InsertPoints("+" + GetPointsReduced(updatedVal));
@@ -443,6 +448,23 @@ public class ArcadePlayerData : Subject, IObserver
     public void IncreasePointMultiplier()
     {
         pointMultiplier = Mathf.Min(maxPointMultiplier, pointMultiplier + 0.25f);
+    }
+
+    #endregion
+
+    #region Consumibles
+
+    public void FillAmmo()
+    {
+        foreach (var slot in bulletSlots.Where(slot => slot is not BulletType.None))
+            bulletsAmmo[slot] = bulletsCurrentMaxAmmo[slot];
+        foreach (var slot in grenadeSlots.Where(slot => slot is not GrenadeType.None))
+            grenadesAmmo[slot] = GrenadesCurrentMaxAmmo[slot];
+    }
+
+    public void SetConsumibleMultipler(float val)
+    {
+        consumibleMultiplier = val;
     }
 
     #endregion
@@ -632,4 +654,5 @@ public class ArcadePlayerData : Subject, IObserver
         yield return new WaitForSeconds(0.1f);
         _loadScreen.LoadArcadeStatsScreen();
     }
+    
 }

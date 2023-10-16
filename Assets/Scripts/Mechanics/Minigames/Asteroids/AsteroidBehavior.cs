@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 [DefaultExecutionOrder(3)]
 public class AsteroidBehavior : MonoBehaviour
@@ -16,8 +15,8 @@ public class AsteroidBehavior : MonoBehaviour
     public Image _image;
     private Color initColor;
     private AudioSource audioSource;
+    private PlayerValues _playerValues;
     [SerializeField] private List<AudioClip> clips;
-
     private static readonly int MainTex = Shader.PropertyToID("_MainTex");
 
 
@@ -25,6 +24,7 @@ public class AsteroidBehavior : MonoBehaviour
     {
         initColor = _image.color;
         _asteroidsManager = FindObjectOfType<AsteroidsManager>();
+        _playerValues = FindObjectOfType<PlayerValues>();
         audioSource = GetComponent<AudioSource>();
         Spawn();
     }
@@ -32,7 +32,7 @@ public class AsteroidBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (active)
+        if (active && !_playerValues.GetPaused())
         {
             Movement();
             CheckIfKillPlayer();
@@ -80,7 +80,8 @@ public class AsteroidBehavior : MonoBehaviour
 
         SelfRotation();
         transform.localPosition +=
-            new Vector3(speed * direction.x * Time.deltaTime, speed * direction.y * Time.deltaTime, 0);
+            new Vector3(speed * direction.x * Time.unscaledDeltaTime,
+                speed * direction.y * Time.unscaledDeltaTime, 0);
     }
 
     private void AddBounce()
@@ -142,9 +143,9 @@ public class AsteroidBehavior : MonoBehaviour
     private void SelfRotation()
     {
         if (direction.x > 0)
-            transform.Rotate(0, 0, MyUtils.Clamp0360(-speed * 100 * Time.deltaTime));
+            transform.Rotate(0, 0, MyUtils.Clamp0360(-speed * 100 * Time.unscaledDeltaTime));
         else
-            transform.Rotate(0, 0, MyUtils.Clamp0360(speed * 100 * Time.deltaTime));
+            transform.Rotate(0, 0, MyUtils.Clamp0360(speed * 100 * Time.unscaledDeltaTime));
     }
 
     public void Die()

@@ -33,7 +33,6 @@ public class RollTheNutManager : Minigame
     //components
     [SerializeField] private GameObject uiObject;
     private PlayerValues _playerValues;
-    private CameraChanger _cameraChanger;
     private GameObject _nut;
     private MinigameManager _minigameManager;
     private GenericScreenUi _genericScreenUi;
@@ -52,7 +51,6 @@ public class RollTheNutManager : Minigame
         _mEventSystem = FindObjectOfType<EventSystem>();
         soundManager = GetComponent<MinigameSoundManager>();
         _playerValues = FindObjectOfType<PlayerValues>();
-        _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         _nut = uiObject.transform.Find("nut").gameObject;
@@ -207,15 +205,15 @@ public class RollTheNutManager : Minigame
         //enseñar nombre del minijuego
         _genericScreenUi.SetText(_name, 40);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         //enseñar tutorial del minijuego
         _genericScreenUi.SetText(_tutorial, 10);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSecondsRealtime(4f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         ShowUI();
         _isEnabled = true;
         _playerValues.SetInputsEnabled(true);

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Arcade.Mechanics.Bullets;
 using Arcade.Mechanics.Granades;
 using Mechanics.General_Inputs.Machine_gun_mode;
+using Mechanics.Shoot.Bullets;
 using Player.Observer_pattern;
 using TMPro;
 using UnityEngine;
@@ -103,6 +103,9 @@ public class ArmorWheel : MonoBehaviour, IObserver
         HighlightButtons(0, bulletSlotImages);
         HighlightButtons(0, shootingModeImages);
         HighlightButtons(-1, grenadeSlotImages);
+        _guiManager.SetBulletTypeIcon(_playerData.GetCurrentBulletType());
+        _guiManager.SetShootingModeIcon((int)_playerData.GetShootingMode());
+        _guiManager.SetGrenadeIcon((int)_playerData.GetCurrentGrenadeType());
     }
 
     // Update is called once per frame
@@ -160,7 +163,6 @@ public class ArmorWheel : MonoBehaviour, IObserver
     private void UpdateBulletButtons()
     {
         BulletType[] slots = _playerData.GetBulletSlotsArray();
-
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i] == BulletType.None)
@@ -179,7 +181,6 @@ public class ArmorWheel : MonoBehaviour, IObserver
     private void UpdateGrenadesButtons()
     {
         GrenadeType[] slots = _playerData.GetGrenadeSlotsArray();
-
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i] == GrenadeType.None)
@@ -198,6 +199,7 @@ public class ArmorWheel : MonoBehaviour, IObserver
         _playerData.SetCurrentBulletType(_playerData.GetBulletSlot(index));
         HighlightButtons(index, bulletSlotImages);
         HighlightFrame(index, 0);
+        _guiManager.SetBulletTypeIcon(_playerData.GetCurrentBulletType());
     }
 
     private void OnClickShootingMode(ShootingMode shootingMode)
@@ -207,6 +209,7 @@ public class ArmorWheel : MonoBehaviour, IObserver
         HighlightButtons(ShootingModeToIndex(shootingMode), shootingModeImages);
         HighlightFrame(ShootingModeToIndex(shootingMode), 1);
         //select 
+        _guiManager.SetShootingModeIcon((int)_playerData.GetShootingMode());
     }
 
     private void OnClickGrenades(int index)
@@ -216,6 +219,7 @@ public class ArmorWheel : MonoBehaviour, IObserver
         HighlightButtons(index, grenadeSlotImages);
         HighlightFrame(index, 2);
         _mechanicsArcadeManager.PrepareGrenade();
+        _guiManager.SetGrenadeIcon((int)_playerData.GetCurrentGrenadeType());
     }
 
     public void SelectNext()
@@ -243,6 +247,39 @@ public class ArmorWheel : MonoBehaviour, IObserver
                 break;
         }
     }
+
+    public void SelectNextBullets()
+    {
+        selectedBulletIndex = (selectedBulletIndex + 1) % _playerData.GetBulletSlotsFilled();
+        OnClickBullets(selectedBulletIndex);
+        HighlightButtons(selectedBulletIndex, bulletSlotImages);
+    }
+
+    public void SelectPrevBullets()
+    {
+        selectedBulletIndex =
+            selectedBulletIndex - 1 < 0 ? _playerData.GetBulletSlotsFilled() - 1 : selectedBulletIndex - 1;
+        OnClickBullets(selectedBulletIndex);
+        HighlightButtons(selectedBulletIndex, bulletSlotImages);
+    }
+
+    public void SelectNextShootingMode()
+    {
+        selectedShootingModeIndex = (selectedShootingModeIndex + 1) % 3;
+        OnClickShootingMode(IndexToShootingMode(selectedShootingModeIndex));
+        HighlightButtons(selectedShootingModeIndex, shootingModeImages);
+    }
+
+    public void SelectNextGrenade()
+    {
+        if (_playerData.GetGrenadeSlotsFilled() > 0)
+        {
+            selectedGrenadeIndex = (selectedGrenadeIndex + 1) % _playerData.GetGrenadeSlotsFilled();
+            OnClickGrenades(selectedGrenadeIndex);
+            HighlightButtons(selectedGrenadeIndex, grenadeSlotImages);
+        }
+    }
+
 
     public void SelectPrev()
     {

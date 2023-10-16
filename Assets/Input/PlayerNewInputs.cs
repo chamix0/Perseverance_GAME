@@ -37,6 +37,7 @@ public class PlayerNewInputs : MonoBehaviour
     {
         _controls.Enable();
     }
+
     public void DisableControls()
     {
         _controls.Disable();
@@ -88,6 +89,11 @@ public class PlayerNewInputs : MonoBehaviour
         return _controls.Eddo.GearDown1.WasPressedThisFrame();
     }
 
+    public bool ShootAutomatic()
+    {
+        return _controls.Eddo.Shoot.IsPressed();
+    }
+
     public bool Shoot()
     {
         return _controls.Eddo.Shoot.WasPressedThisFrame();
@@ -122,6 +128,7 @@ public class PlayerNewInputs : MonoBehaviour
     {
         return _controls.Eddo.ArmorWheel.WasReleasedThisFrame();
     }
+
     public bool HideArmorPressed()
     {
         return _controls.Eddo.ArmorWheel.IsPressed();
@@ -152,6 +159,26 @@ public class PlayerNewInputs : MonoBehaviour
         return _controls.Eddo.Lights.WasPressedThisFrame();
     }
 
+    public bool PrevBulletType()
+    {
+        return _controls.Eddo.Prevbullettype.WasPressedThisFrame();
+    }
+
+    public bool NextBulletType()
+    {
+        return _controls.Eddo.Nextbullettype.WasPressedThisFrame();
+    }
+
+    public bool ChangeShootingMode()
+    {
+        return _controls.Eddo.ChangeShootingMode.WasPressedThisFrame();
+    }
+
+    public bool ChangeGrenade()
+    {
+        return _controls.Eddo.ChangeGrenade.WasPressedThisFrame();
+    }
+
     public Vector2 CameraAxis()
     {
         float x = _controls.Eddo.RotationX.ReadValue<float>();
@@ -162,6 +189,50 @@ public class PlayerNewInputs : MonoBehaviour
     #endregion
 
     #region EDDO actions text
+
+    public string NextBulletTypeText()
+    {
+        return currentDevice switch
+        {
+            MyDevices.GamePad => "<color=white> R D-pad </color>",
+            MyDevices.KeyBoard => "<color=white> 2 </color>",
+            MyDevices.Cube => "<color=white>  </color>",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
+    public string PrevBulletTypeText()
+    {
+        return currentDevice switch
+        {
+            MyDevices.GamePad => "<color=white> L D-pad </color>",
+            MyDevices.KeyBoard => "<color=white> 1 </color>",
+            MyDevices.Cube => "<color=white>  </color>",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
+    public string ChangeShootModeText()
+    {
+        return currentDevice switch
+        {
+            MyDevices.GamePad => "<color=white> U D-pad </color>",
+            MyDevices.KeyBoard => "<color=white> LShift </color>",
+            MyDevices.Cube => "<color=white>  </color>",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
+    public string ChangeGrenadeText()
+    {
+        return currentDevice switch
+        {
+            MyDevices.GamePad => "<color=white> D D-pad </color>",
+            MyDevices.KeyBoard => "<color=white> 3 </color>",
+            MyDevices.Cube => "<color=white>  </color>",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
 
     public string PauseText()
     {
@@ -222,7 +293,7 @@ public class PlayerNewInputs : MonoBehaviour
     {
         return currentDevice switch
         {
-            MyDevices.GamePad => "<color=white> DPad up </color>",
+            MyDevices.GamePad => "<color=white> R3 </color>",
             MyDevices.KeyBoard => "<color=white> L </color>",
             MyDevices.Cube => "<color=white> B </color>",
             _ => throw new ArgumentOutOfRangeException()

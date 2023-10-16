@@ -85,7 +85,7 @@ public class ShopInputs : MonoBehaviour, IObserver
         _guiManager.SetTutorial(
             _newInputs.LeftText() + "- Prev |" + _newInputs.RightText() +
             "- Next |" +
-            _newInputs.SelectBasic() + "- select |" +
+            _newInputs.SelectBasicText() + "- select |" +
             _newInputs.ExitBasicText() + "- exit ");
     }
 }

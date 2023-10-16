@@ -6,6 +6,9 @@ public abstract class Enemy : MonoBehaviour
     public bool isDead;
     public abstract void RecieveDamage(int damage);
 
+    public abstract void RecieveDamage(int damage, int points);
+
+
     public abstract void Hide();
 
     public abstract void Spawn(int node);

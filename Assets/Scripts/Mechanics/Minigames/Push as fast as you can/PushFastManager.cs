@@ -20,19 +20,18 @@ public class PushFastManager : Minigame
     //components
     [SerializeField] private GameObject uiObject;
     private PlayerValues _playerValues;
-    private CameraChanger _cameraChanger;
     private MinigameManager _minigameManager;
     private GenericScreenUi _genericScreenUi;
     private MinigameSoundManager soundManager;
 
     [SerializeField] private Button button;
-    private MyStopWatch _timer;
+    private Stopwatch _timer;
     [SerializeField] private Slider timeSlider;
 
     //variables
     private int _clickCount;
     private int _targetClicks;
-    private int _maxTime=10;
+    private int _maxTime = 10;
     private bool minigameActive = false;
 
 
@@ -47,10 +46,9 @@ public class PushFastManager : Minigame
     {
         soundManager = GetComponent<MinigameSoundManager>();
         _playerValues = FindObjectOfType<PlayerValues>();
-        _cameraChanger = FindObjectOfType<CameraChanger>();
         _minigameManager = FindObjectOfType<MinigameManager>();
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
-        _timer = gameObject.AddComponent<MyStopWatch>();
+        _timer = new Stopwatch();
         button.onClick.AddListener(Click);
         _genericScreenUi.SetTextAlpha(0);
         HideUI();
@@ -61,11 +59,17 @@ public class PushFastManager : Minigame
     {
         if (minigameActive)
         {
-            if (_timer.GetElapsedSeconds() > _maxTime)
+            if (_playerValues.GetPaused() && _timer.IsRunning && minigameActive)
+                _timer.Stop();
+            else if (!_playerValues.GetPaused() && !_timer.IsRunning && minigameActive)
+                _timer.Start();
+
+            if (_timer.Elapsed.TotalSeconds > _maxTime)
             {
                 soundManager.PlayInCorrectSound();
                 ResetMinigame();
             }
+
             UpdateTimeSlider();
         }
     }
@@ -81,7 +85,7 @@ public class PushFastManager : Minigame
 
     private void UpdateTimeSlider()
     {
-        float aux = (float)(_maxTime - _timer.GetElapsedSeconds()) / _maxTime;
+        float aux = (float)(_maxTime - _timer.Elapsed.TotalSeconds) / _maxTime;
         timeSlider.value = aux;
     }
 
@@ -130,7 +134,6 @@ public class PushFastManager : Minigame
         uiObject.SetActive(false);
     }
 
- 
 
     private void EndMinigame()
     {
@@ -150,15 +153,15 @@ public class PushFastManager : Minigame
         //enseñar nombre del minijuego
         _genericScreenUi.SetText(_name, 10);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         //enseñar tutorial del minijuego
         _genericScreenUi.SetText(_tutorial, 10);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSecondsRealtime(4f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         ShowUI();
         _playerValues.SetInputsEnabled(true);
         //empezar minijuego

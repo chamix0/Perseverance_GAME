@@ -57,6 +57,7 @@ namespace Main_menu.Load_game_screen
                 {
                     _sounds.ReturnSound();
                     _loadGameManager.HideUI();
+                    _mainMenuManager.UpdateColors();
                     _myInputManager.SetCurrentInput(CurrentMenuInput.Menu);
                 }
             }

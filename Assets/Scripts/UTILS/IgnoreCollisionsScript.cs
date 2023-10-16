@@ -13,6 +13,8 @@ public class IgnoreCollisionsScript : MonoBehaviour
         Physics.IgnoreLayerCollision(8, 13);
         Physics.IgnoreLayerCollision(2, 13);
         Physics.IgnoreLayerCollision(8, 8);
+        Physics.IgnoreLayerCollision(8, 9);
+        Physics.IgnoreLayerCollision(8, 19);
         Physics.IgnoreLayerCollision(18, 11);
 
     }

@@ -24,7 +24,7 @@ public class JustWaitManager : Minigame
     private MinigameManager _minigameManager;
     private GenericScreenUi _genericScreenUi;
     private MinigameSoundManager soundManager;
-    private MyStopWatch _timer;
+    private Stopwatch _timer;
     [SerializeField] private Slider timeSlider;
 
     //variables
@@ -35,7 +35,7 @@ public class JustWaitManager : Minigame
     //lists
     private void Awake()
     {
-        _timer = gameObject.AddComponent<MyStopWatch>();
+        _timer = new Stopwatch();
     }
 
     void Start()
@@ -52,6 +52,12 @@ public class JustWaitManager : Minigame
 
     void Update()
     {
+        
+        if (_playerValues.GetPaused() && _timer.IsRunning && minigameActive)
+            _timer.Stop();
+        else if (!_playerValues.GetPaused() && !_timer.IsRunning && minigameActive)
+            _timer.Start();
+        
         if (minigameActive)
         {
             UpdateTimeSlider();
@@ -62,13 +68,13 @@ public class JustWaitManager : Minigame
 
     private void UpdateTimeSlider()
     {
-        float aux = (float)(_maxTime - _timer.GetElapsedSeconds()) / _maxTime;
+        float aux = (float)(_maxTime - _timer.Elapsed.TotalSeconds) / _maxTime;
         timeSlider.value = aux;
     }
 
     private void CheckSol()
     {
-        if (_timer.GetElapsedSeconds() >= _maxTime)
+        if (_timer.Elapsed.TotalSeconds >= _maxTime)
         {
             EndMinigame();
             _timer.Stop();
@@ -100,7 +106,7 @@ public class JustWaitManager : Minigame
         soundManager.PlayFinishedSound();
         minigameActive = false;
         _timer.Stop();
-        _timer.ResetStopwatch();
+        _timer.Reset();
         _minigameManager.UpdateCounter(0);
         _playerValues.SetInputsEnabled(false);
         HideUI();
@@ -112,15 +118,15 @@ public class JustWaitManager : Minigame
         //enseñar nombre del minijuego
         _genericScreenUi.SetText(_name, 35);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         //enseñar tutorial del minijuego
         _genericScreenUi.SetText(_tutorial, 10);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSecondsRealtime(4f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         ShowUI();
         //empezar minijuego
         _timer.Restart();

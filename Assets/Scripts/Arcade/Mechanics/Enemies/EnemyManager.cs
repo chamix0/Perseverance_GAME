@@ -46,15 +46,13 @@ public class EnemyManager : MonoBehaviour
 
     public void StartRound(int minNumEnemies, int maxNumEnemies, int minLives, int maxLives, float minSpeed,
         float maxSpeed,
-        int minDamage, int maxDamage, float minSpawnTime, float maxSpawnTime)
+        int minDamage, int maxDamage, float spawnTime)
     {
         currentEnemies.Clear();
         int numEnemies = Random.Range(minNumEnemies, maxNumEnemies + 1);
         StartCoroutine(StartRoundCoroutine(numEnemies, minLives, maxLives, minSpeed, maxSpeed, minDamage, maxDamage,
-            minSpawnTime, maxSpawnTime));
+            spawnTime));
     }
-
-
 
 
     private Vector3 GetSpawnPoint()
@@ -84,11 +82,11 @@ public class EnemyManager : MonoBehaviour
     IEnumerator StartRoundCoroutine(int numEnem, int minLives, int maxLives,
         float minSpeed,
         float maxSpeed,
-        int minDamage, int maxDamage, float minSpawnTime, float maxSpawnTime)
+        int minDamage, int maxDamage, float spawnTime)
     {
         for (int i = 0; i < numEnem; i++)
         {
-            yield return new WaitForSeconds(Random.Range(minSpawnTime, maxSpawnTime));
+            yield return new WaitForSeconds(spawnTime);
             int lives = Random.Range(minLives, maxLives + 1);
             float speed = Random.Range(minSpeed, maxSpeed);
             int damage = Random.Range(minDamage, maxDamage + 1);

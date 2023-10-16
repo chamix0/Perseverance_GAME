@@ -255,6 +255,7 @@ public class PuzzleManager : Minigame
         {
             correctCount++;
             _minigameManager.UpdateCounter(correctCount);
+            soundManager.PlayCorrectSound();
             if (correctCount >= 5)
             {
                 EndMinigame();
@@ -365,15 +366,15 @@ public class PuzzleManager : Minigame
         //enseñar nombre del minijuego
         _genericScreenUi.SetText(_name, 35);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         //enseñar tutorial del minijuego
         _genericScreenUi.SetText(_tutorial, 10);
         _genericScreenUi.FadeInText();
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSecondsRealtime(4f);
         _genericScreenUi.FadeOutText();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         ShowUI();
         _playerValues.SetInputsEnabled(true);
         minigameStarted = true;

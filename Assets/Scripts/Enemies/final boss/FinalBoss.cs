@@ -193,6 +193,11 @@ public class FinalBoss : Enemy, IObserver
     #endregion
 
 
+    public override void RecieveDamage(int damage, int points)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void Hide()
     {
         // dissolveMaterials.DissolveOut();

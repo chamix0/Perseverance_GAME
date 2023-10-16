@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Arcade.Mechanics.Bullets;
 using Arcade.Mechanics.Granades;
 using Mechanics.General_Inputs;
+using Mechanics.Shoot.Bullets;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -27,6 +27,7 @@ public class BulletShopManager : MonoBehaviour
     private BulletShopBase shopBase;
     private ArmorWheel armorWheel;
     private MinigameSoundManager minigameSoundManager;
+    private GuiManager _guiManager;
 
     //canvas groups
     [SerializeField] private CanvasGroup slotScreen;
@@ -54,6 +55,7 @@ public class BulletShopManager : MonoBehaviour
         _genericScreenUi = FindObjectOfType<GenericScreenUi>();
         _playerData = FindObjectOfType<ArcadePlayerData>();
         armorWheel = FindObjectOfType<ArmorWheel>();
+        _guiManager = FindObjectOfType<GuiManager>();
         //button listeners
         //slots
         for (int i = 0; i < slots.Count; i++)
@@ -91,6 +93,8 @@ public class BulletShopManager : MonoBehaviour
         minigameSoundManager.PlayClickSound();
         HideSlotScreen();
         ShowBuyScreen();
+        _guiManager.SetGrenadeIcon((int)_playerData.GetCurrentGrenadeType());
+        _guiManager.SetBulletTypeIcon(_playerData.GetCurrentBulletType());
     }
 
     private void buyButtonAction(int quantity)
@@ -123,6 +127,9 @@ public class BulletShopManager : MonoBehaviour
 
         //update buttons
         UpdateButtons();
+
+        _guiManager.SetGrenadeIcon((int)_playerData.GetCurrentGrenadeType());
+        _guiManager.SetBulletTypeIcon(_playerData.GetCurrentBulletType());
     }
 
 
@@ -156,6 +163,9 @@ public class BulletShopManager : MonoBehaviour
 
         //updateButtons
         UpdateButtons();
+        
+        _guiManager.SetGrenadeIcon((int)_playerData.GetCurrentGrenadeType());
+        _guiManager.SetBulletTypeIcon(_playerData.GetCurrentBulletType());
     }
 
     public void ExitButtonAction()
@@ -207,7 +217,6 @@ public class BulletShopManager : MonoBehaviour
         else
             plusTenPrizeText.color = Color.red;
 
-          
 
         for (int i = 0; i < slotTexts.Count; i++)
         {
@@ -239,13 +248,13 @@ public class BulletShopManager : MonoBehaviour
             plusOne.interactable = false;
         else
             plusOne.interactable = true;
-        
+
 
         if (prizeMax > _playerData.GetPoints() || playerIsFullAmmo)
             plusMax.interactable = false;
         else
             plusMax.interactable = true;
-        
+
         if (prize * 10 > _playerData.GetPoints() || playerIsFullAmmo)
             plusTen.interactable = false;
         else
