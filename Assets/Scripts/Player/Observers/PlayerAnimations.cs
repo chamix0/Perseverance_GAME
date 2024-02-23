@@ -8,6 +8,7 @@ public class PlayerAnimations : MonoBehaviour, IObserver
     private float gearAnim, gearAnimTarget, _tG;
     private static readonly int Sit = Animator.StringToHash("Sit");
     private static readonly int Gear = Animator.StringToHash("Gear");
+    private static readonly int GamePadSpeed = Animator.StringToHash("GamePadSpeed");
 
     // Start is called before the first frame update
     private void Awake()
@@ -50,6 +51,11 @@ public class PlayerAnimations : MonoBehaviour, IObserver
         _tG = 0.0f;
         gearAnim = oldGear;
         gearAnimTarget = newGear;
+    }
+
+    public void UpdateGamePadSpeedAnim(float value)
+    {
+        _animator.SetFloat(GamePadSpeed, value);
     }
 
     #endregion

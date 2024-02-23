@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.IO;
 
@@ -5,7 +6,7 @@ using System.IO;
 public class JSONsaving : MonoBehaviour
 {
     // Start is called before the first frame update
-    public SaveData _saveData;
+   public SaveData _saveData;
     private string path = "";
 
     void Awake()

@@ -89,6 +89,41 @@ public class PlayerNewInputs : MonoBehaviour
         return _controls.Eddo.GearDown1.WasPressedThisFrame();
     }
 
+    public bool GearUpPressed()
+    {
+        return _controls.Eddo.GearUp1.IsPressed();
+    }
+
+    public bool GearDownPressed()
+    {
+        return _controls.Eddo.GearDown1.IsPressed();
+    }
+
+    public bool GearLeftPressed()
+    {
+        return _controls.Eddo.GearLeft.IsPressed();
+    }
+
+    public bool GearRightPressed()
+    {
+        return _controls.Eddo.GearRight.IsPressed();
+    }
+
+    public Vector2 GetMovementAxis()
+    {
+        return _controls.Eddo.Movement.ReadValue<Vector2>();
+    }
+
+    public bool GetRun()
+    {
+        return _controls.Eddo.Run.IsPressed();
+    }
+
+    public bool GetTurbo()
+    {
+        return _controls.Eddo.Turbo.IsPressed();
+    }
+
     public bool ShootAutomatic()
     {
         return _controls.Eddo.Shoot.IsPressed();
@@ -222,7 +257,16 @@ public class PlayerNewInputs : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException()
         };
     }
-
+    public string RunText()
+    {
+        return currentDevice switch
+        {
+            MyDevices.GamePad => "<color=white> L3 </color>",
+            MyDevices.KeyBoard => "<color=white> LShift </color>",
+            MyDevices.Cube => "<color=white>  </color>",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
     public string ChangeGrenadeText()
     {
         return currentDevice switch
@@ -266,7 +310,17 @@ public class PlayerNewInputs : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException()
         };
     }
-
+    
+    public string MovementText()
+    {
+        return currentDevice switch
+        {
+            MyDevices.GamePad => "<color=white> LStick </color>",
+            MyDevices.KeyBoard => "<color=white> WASD </color>",
+            MyDevices.Cube => "<color=white> RR' </color>",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
     public string GearDownText()
     {
         return currentDevice switch
@@ -318,6 +372,16 @@ public class PlayerNewInputs : MonoBehaviour
             MyDevices.GamePad => "<color=white> RT </color>",
             MyDevices.KeyBoard => "<color=white> Mouse L Click </color>",
             MyDevices.Cube => "<color=white> F </color>",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+    public string TurboText()
+    {
+        return currentDevice switch
+        {
+            MyDevices.GamePad => "<color=white> B </color>",
+            MyDevices.KeyBoard => "<color=white> Space </color>",
+            MyDevices.Cube => "<color=white> R </color>",
             _ => throw new ArgumentOutOfRangeException()
         };
     }

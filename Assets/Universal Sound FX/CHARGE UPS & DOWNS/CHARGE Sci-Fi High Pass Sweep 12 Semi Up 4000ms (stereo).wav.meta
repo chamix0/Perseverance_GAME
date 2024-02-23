@@ -1,0 +1,29 @@
+fileFormatVersion: 2
+guid: 656d87adf539f6e45bf68d51acd68add
+labels:
+- USFX
+- charge
+- stereo
+- v1.1
+- sci-fi
+- scifi
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 6
+  defaultSettings:
+    loadType: 1
+    sampleRateSetting: 0
+    sampleRateOverride: 0
+    compressionFormat: 0
+    quality: 1
+    conversionMode: 0
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 1
+  preloadAudioData: 1
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

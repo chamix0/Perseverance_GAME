@@ -41,6 +41,16 @@ public class SoundManager : MonoBehaviour
         sliderValue = Mathf.Clamp(sliderValue, 0.001f, 1);
         audioMixer.SetFloat("UiVolume", Mathf.Log10(sliderValue) * 20);
     }
+    public void SetGearsVolume(float sliderValue)
+    {
+        sliderValue = Mathf.Clamp(sliderValue, 0.001f, 1);
+        audioMixer.SetFloat("GearVolume", Mathf.Log10(sliderValue) * 20);
+    }
+
+    public void SetMoveSoundSpeed(float value)
+    {
+        audioMixer.SetFloat("WalkPitch",value);
+    }
 
     public void SetMuteVFX(bool value)
     {

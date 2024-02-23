@@ -8,9 +8,11 @@ public class PlayerSounds : MonoBehaviour, IObserver
     // Start is called before the first frame update
     [SerializeField] private AudioSource audioSourceInstantSounds, audioSourceContinuousSounds, audioSourceNoiseSounds;
     [SerializeField] private List<AudioClip> audioClips;
+    private SoundManager _soundManager;
 
     void Start()
     {
+        _soundManager = FindObjectOfType<SoundManager>();
     }
 
     // Update is called once per frame
@@ -22,11 +24,13 @@ public class PlayerSounds : MonoBehaviour, IObserver
     {
         if (playerAction is PlayerActions.RiseGear)
         {
+            _soundManager.SetGearsVolume(0.05f);
             audioSourceInstantSounds.clip = audioClips[0];
             audioSourceInstantSounds.Play();
         }
         else if (playerAction is PlayerActions.DecreaseGear)
         {
+            _soundManager.SetGearsVolume(0.05f);
             audioSourceInstantSounds.clip = audioClips[1];
             audioSourceInstantSounds.Play();
         }
@@ -37,6 +41,7 @@ public class PlayerSounds : MonoBehaviour, IObserver
         }
         else if (playerAction is PlayerActions.RecuperateDistraction)
         {
+            _soundManager.SetGearsVolume(0.55f);
             audioSourceInstantSounds.clip = audioClips[7];
             audioSourceInstantSounds.Play();
         }
@@ -62,6 +67,7 @@ public class PlayerSounds : MonoBehaviour, IObserver
         }
         else if (playerAction is PlayerActions.ThrowDistraction)
         {
+            _soundManager.SetGearsVolume(0.55f);
             audioSourceInstantSounds.clip = audioClips[6];
             audioSourceInstantSounds.Play();
         }
@@ -86,16 +92,19 @@ public class PlayerSounds : MonoBehaviour, IObserver
         }
         else if (playerAction is PlayerActions.Sit)
         {
+            _soundManager.SetGearsVolume(0.55f);
             audioSourceInstantSounds.clip = audioClips[13];
             audioSourceInstantSounds.Play();
         }
         else if (playerAction is PlayerActions.StandUp)
         {
+            _soundManager.SetGearsVolume(0.55f);
             audioSourceInstantSounds.clip = audioClips[12];
             audioSourceInstantSounds.Play();
         }
         else if (playerAction is PlayerActions.TurnOnLights or PlayerActions.TurnOffLights)
         {
+            _soundManager.SetGearsVolume(0.55f);
             audioSourceInstantSounds.clip = audioClips[14];
             audioSourceInstantSounds.Play();
         }

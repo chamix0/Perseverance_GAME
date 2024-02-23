@@ -46,6 +46,24 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""GearLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""e14145bd-129b-428a-921e-cfecf1e5d563"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GearRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""18fe08e6-f750-4e03-a322-3992e03afbc0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Shoot"",
                     ""type"": ""Button"",
                     ""id"": ""b8d245c7-4b95-4b8d-9d8a-bd5b894f4379"",
@@ -118,15 +136,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""02d221b6-8419-4e96-b130-7dac9aceecb9"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Controls"",
                     ""type"": ""Button"",
                     ""id"": ""37bbbe15-5dc0-4805-b7b0-75e60e1597ad"",
@@ -175,6 +184,42 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""name"": ""Change Grenade"",
                     ""type"": ""Button"",
                     ""id"": ""f295d699-e2a8-4f01-b777-33b3f0a0acba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""8b11f519-e67e-4448-8e6f-d54ecb9e628c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Run"",
+                    ""type"": ""Button"",
+                    ""id"": ""98a94775-ba66-4628-b1c8-65f7fe94a00c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Turbo"",
+                    ""type"": ""Button"",
+                    ""id"": ""027857ee-bbf9-476b-9139-053f09b1b1fb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""7e14593b-593a-4d17-9bcb-dbf740f65ab5"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -426,28 +471,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""eab96346-e4f8-4e5e-abe9-56f0a016972c"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5dc64579-c05a-4528-a2fc-ed09651446c5"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""3e48d36f-cbac-47fc-bb7a-80a1f48d72d9"",
                     ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
@@ -548,7 +571,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6fdc67b2-f04d-4020-950a-756f76ec556e"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -575,6 +598,105 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Change Grenade"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""df412758-a028-40df-b8cd-6c4c3d9fe3a5"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e9db909a-0385-49f3-a702-dda1759ba68c"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GearLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c3e53645-a585-44a8-883b-23124587181a"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GearRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e29cd473-0637-4bd2-9ff6-595246f4877a"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26db1e83-1ccd-4459-bc73-f4dc5b007ead"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6aa2fe4-b936-49dd-bd35-d23b66ec261a"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyBoard"",
+                    ""action"": ""Turbo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d639ebc9-5207-4702-b1cd-232dfd48073e"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""Turbo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""685c304b-6b30-4d8a-a689-0b6209f21e92"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62b72ed3-0699-4449-a08a-67ce5ea289c9"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1330,6 +1452,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Eddo = asset.FindActionMap("Eddo", throwIfNotFound: true);
         m_Eddo_GearUp1 = m_Eddo.FindAction("Gear Up1", throwIfNotFound: true);
         m_Eddo_GearDown1 = m_Eddo.FindAction("Gear Down1", throwIfNotFound: true);
+        m_Eddo_GearLeft = m_Eddo.FindAction("GearLeft", throwIfNotFound: true);
+        m_Eddo_GearRight = m_Eddo.FindAction("GearRight", throwIfNotFound: true);
         m_Eddo_Shoot = m_Eddo.FindAction("Shoot", throwIfNotFound: true);
         m_Eddo_Aim = m_Eddo.FindAction("Aim", throwIfNotFound: true);
         m_Eddo_RotationX = m_Eddo.FindAction("Rotation X", throwIfNotFound: true);
@@ -1338,13 +1462,16 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Eddo_Pause = m_Eddo.FindAction("Pause", throwIfNotFound: true);
         m_Eddo_ArmorWheel = m_Eddo.FindAction("Armor Wheel", throwIfNotFound: true);
         m_Eddo_Lights = m_Eddo.FindAction("Lights", throwIfNotFound: true);
-        m_Eddo_Jump = m_Eddo.FindAction("Jump", throwIfNotFound: true);
         m_Eddo_Controls = m_Eddo.FindAction("Controls", throwIfNotFound: true);
         m_Eddo_Select = m_Eddo.FindAction("Select", throwIfNotFound: true);
         m_Eddo_Prevbullettype = m_Eddo.FindAction("Prev bullet type", throwIfNotFound: true);
         m_Eddo_Nextbullettype = m_Eddo.FindAction("Next bullet type", throwIfNotFound: true);
         m_Eddo_ChangeShootingMode = m_Eddo.FindAction("Change Shooting Mode", throwIfNotFound: true);
         m_Eddo_ChangeGrenade = m_Eddo.FindAction("Change Grenade", throwIfNotFound: true);
+        m_Eddo_Movement = m_Eddo.FindAction("Movement", throwIfNotFound: true);
+        m_Eddo_Run = m_Eddo.FindAction("Run", throwIfNotFound: true);
+        m_Eddo_Turbo = m_Eddo.FindAction("Turbo", throwIfNotFound: true);
+        m_Eddo_Jump = m_Eddo.FindAction("Jump", throwIfNotFound: true);
         // Basic
         m_Basic = asset.FindActionMap("Basic", throwIfNotFound: true);
         m_Basic_Up = m_Basic.FindAction("Up", throwIfNotFound: true);
@@ -1433,6 +1560,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private IEddoActions m_EddoActionsCallbackInterface;
     private readonly InputAction m_Eddo_GearUp1;
     private readonly InputAction m_Eddo_GearDown1;
+    private readonly InputAction m_Eddo_GearLeft;
+    private readonly InputAction m_Eddo_GearRight;
     private readonly InputAction m_Eddo_Shoot;
     private readonly InputAction m_Eddo_Aim;
     private readonly InputAction m_Eddo_RotationX;
@@ -1441,19 +1570,24 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Eddo_Pause;
     private readonly InputAction m_Eddo_ArmorWheel;
     private readonly InputAction m_Eddo_Lights;
-    private readonly InputAction m_Eddo_Jump;
     private readonly InputAction m_Eddo_Controls;
     private readonly InputAction m_Eddo_Select;
     private readonly InputAction m_Eddo_Prevbullettype;
     private readonly InputAction m_Eddo_Nextbullettype;
     private readonly InputAction m_Eddo_ChangeShootingMode;
     private readonly InputAction m_Eddo_ChangeGrenade;
+    private readonly InputAction m_Eddo_Movement;
+    private readonly InputAction m_Eddo_Run;
+    private readonly InputAction m_Eddo_Turbo;
+    private readonly InputAction m_Eddo_Jump;
     public struct EddoActions
     {
         private @Controls m_Wrapper;
         public EddoActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @GearUp1 => m_Wrapper.m_Eddo_GearUp1;
         public InputAction @GearDown1 => m_Wrapper.m_Eddo_GearDown1;
+        public InputAction @GearLeft => m_Wrapper.m_Eddo_GearLeft;
+        public InputAction @GearRight => m_Wrapper.m_Eddo_GearRight;
         public InputAction @Shoot => m_Wrapper.m_Eddo_Shoot;
         public InputAction @Aim => m_Wrapper.m_Eddo_Aim;
         public InputAction @RotationX => m_Wrapper.m_Eddo_RotationX;
@@ -1462,13 +1596,16 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Pause => m_Wrapper.m_Eddo_Pause;
         public InputAction @ArmorWheel => m_Wrapper.m_Eddo_ArmorWheel;
         public InputAction @Lights => m_Wrapper.m_Eddo_Lights;
-        public InputAction @Jump => m_Wrapper.m_Eddo_Jump;
         public InputAction @Controls => m_Wrapper.m_Eddo_Controls;
         public InputAction @Select => m_Wrapper.m_Eddo_Select;
         public InputAction @Prevbullettype => m_Wrapper.m_Eddo_Prevbullettype;
         public InputAction @Nextbullettype => m_Wrapper.m_Eddo_Nextbullettype;
         public InputAction @ChangeShootingMode => m_Wrapper.m_Eddo_ChangeShootingMode;
         public InputAction @ChangeGrenade => m_Wrapper.m_Eddo_ChangeGrenade;
+        public InputAction @Movement => m_Wrapper.m_Eddo_Movement;
+        public InputAction @Run => m_Wrapper.m_Eddo_Run;
+        public InputAction @Turbo => m_Wrapper.m_Eddo_Turbo;
+        public InputAction @Jump => m_Wrapper.m_Eddo_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Eddo; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1484,6 +1621,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @GearDown1.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnGearDown1;
                 @GearDown1.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnGearDown1;
                 @GearDown1.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnGearDown1;
+                @GearLeft.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnGearLeft;
+                @GearLeft.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnGearLeft;
+                @GearLeft.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnGearLeft;
+                @GearRight.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnGearRight;
+                @GearRight.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnGearRight;
+                @GearRight.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnGearRight;
                 @Shoot.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnShoot;
@@ -1508,9 +1651,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Lights.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnLights;
                 @Lights.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnLights;
                 @Lights.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnLights;
-                @Jump.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnJump;
-                @Jump.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnJump;
-                @Jump.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnJump;
                 @Controls.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnControls;
                 @Controls.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnControls;
                 @Controls.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnControls;
@@ -1529,6 +1669,18 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @ChangeGrenade.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnChangeGrenade;
                 @ChangeGrenade.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnChangeGrenade;
                 @ChangeGrenade.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnChangeGrenade;
+                @Movement.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnMovement;
+                @Run.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnRun;
+                @Run.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnRun;
+                @Run.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnRun;
+                @Turbo.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnTurbo;
+                @Turbo.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnTurbo;
+                @Turbo.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnTurbo;
+                @Jump.started -= m_Wrapper.m_EddoActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_EddoActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_EddoActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_EddoActionsCallbackInterface = instance;
             if (instance != null)
@@ -1539,6 +1691,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @GearDown1.started += instance.OnGearDown1;
                 @GearDown1.performed += instance.OnGearDown1;
                 @GearDown1.canceled += instance.OnGearDown1;
+                @GearLeft.started += instance.OnGearLeft;
+                @GearLeft.performed += instance.OnGearLeft;
+                @GearLeft.canceled += instance.OnGearLeft;
+                @GearRight.started += instance.OnGearRight;
+                @GearRight.performed += instance.OnGearRight;
+                @GearRight.canceled += instance.OnGearRight;
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
@@ -1563,9 +1721,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Lights.started += instance.OnLights;
                 @Lights.performed += instance.OnLights;
                 @Lights.canceled += instance.OnLights;
-                @Jump.started += instance.OnJump;
-                @Jump.performed += instance.OnJump;
-                @Jump.canceled += instance.OnJump;
                 @Controls.started += instance.OnControls;
                 @Controls.performed += instance.OnControls;
                 @Controls.canceled += instance.OnControls;
@@ -1584,6 +1739,18 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @ChangeGrenade.started += instance.OnChangeGrenade;
                 @ChangeGrenade.performed += instance.OnChangeGrenade;
                 @ChangeGrenade.canceled += instance.OnChangeGrenade;
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
+                @Run.started += instance.OnRun;
+                @Run.performed += instance.OnRun;
+                @Run.canceled += instance.OnRun;
+                @Turbo.started += instance.OnTurbo;
+                @Turbo.performed += instance.OnTurbo;
+                @Turbo.canceled += instance.OnTurbo;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -1862,6 +2029,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     {
         void OnGearUp1(InputAction.CallbackContext context);
         void OnGearDown1(InputAction.CallbackContext context);
+        void OnGearLeft(InputAction.CallbackContext context);
+        void OnGearRight(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnRotationX(InputAction.CallbackContext context);
@@ -1870,13 +2039,16 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnArmorWheel(InputAction.CallbackContext context);
         void OnLights(InputAction.CallbackContext context);
-        void OnJump(InputAction.CallbackContext context);
         void OnControls(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnPrevbullettype(InputAction.CallbackContext context);
         void OnNextbullettype(InputAction.CallbackContext context);
         void OnChangeShootingMode(InputAction.CallbackContext context);
         void OnChangeGrenade(InputAction.CallbackContext context);
+        void OnMovement(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
+        void OnTurbo(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
     public interface IBasicActions
     {

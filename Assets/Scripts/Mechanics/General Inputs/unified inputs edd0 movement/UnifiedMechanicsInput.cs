@@ -25,6 +25,7 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
     //run mode
     private Stamina _stamina;
     [SerializeField] private ParticleSystem turboParticles;
+    private bool isRunning = false;
 
     private void Awake()
     {
@@ -82,11 +83,33 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
                 UpdateTutorial();
 
             //common actions
-            if (_newInputs.GearUp())
+            //get movement vector
+            Vector2 movementVector = Vector2.zero;
+            Vector2 movementVectorGamepad = _newInputs.GetMovementAxis();
+            if (_newInputs.GearUpPressed())
+                movementVector.y = 1;
+            if (_newInputs.GearDownPressed())
+                movementVector.y = -1;
+            if (_newInputs.GearLeftPressed())
+                movementVector.x = -1;
+            else if (_newInputs.GearRightPressed())
+                movementVector.x = 1;
+
+            float magnitude = movementVector.magnitude + movementVectorGamepad.magnitude;
+
+            if (magnitude > 0)
             {
                 if (currentInput is CurrentInput.RaceMovement)
                 {
-                    _playerValues.RiseGear();
+                    if (_newInputs.GetTurbo())
+                    {
+                        _playerValues.SetGear(4);
+                    }
+                    else
+                    {
+                        WalkAndRun();
+                    }
+
                     if (_playerValues.GetGear() == 4)
                         turboParticles.Play();
                     else
@@ -94,19 +117,15 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
                 }
                 else
                 {
-                    if (_playerValues.GetGear() < 3)
-                        _playerValues.RiseGear();
+                    WalkAndRun();
+                    _playerValues.CheckIfStuck(true);
                 }
-
-                _playerValues.CheckIfStuck(true);
             }
-
-            if (_newInputs.GearDown())
+            else
             {
-                _playerValues.DecreaseGear();
-                turboParticles.Stop();
-                _playerValues.CheckIfStuck(true);
+                _playerValues.SetGear(1);
             }
+            
 
             if (_newInputs.Lights())
             {
@@ -335,25 +354,83 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
         guiManager.ShowTutorial();
         if (currentInput is CurrentInput.Movement or CurrentInput.RaceMovement)
         {
-            guiManager.SetTutorial(
-                _newInputs.GearUpText() + "- Gear Up |" + _newInputs.GearDownText() + "- Gear Down |" +
-                _newInputs.CamMovementText() + "- Camera |" + _newInputs.LightsText() + "- Lights |" +
-                _newInputs.PauseText() + "- Pause");
+            if (_newInputs.currentDevice is MyDevices.Cube)
+            {
+                guiManager.SetTutorial(
+                    _newInputs.GearUpText() + "- Gear Up |" + _newInputs.GearDownText() + "- Gear Down |" +
+                    _newInputs.CamMovementText() + "- Camera |" + _newInputs.LightsText() + "- Lights |" +
+                    _newInputs.PauseText() + "- Pause");
+            }
+            else
+            {
+                guiManager.SetTutorial(
+                    _newInputs.MovementText() + "- Movement |" + _newInputs.RunText() + "- Run |" +
+                    _newInputs.TurboText() + "- Turbo |" +
+                    _newInputs.CamMovementText() + "- Camera |" + _newInputs.LightsText() + "- Lights |" +
+                    _newInputs.PauseText() + "- Pause");
+            }
         }
         else if (currentInput is CurrentInput.ShootMovement)
         {
-            guiManager.SetTutorial(
-                _newInputs.GearUpText() + "- Gear Up |" + _newInputs.GearDownText() + "- Gear Down |" +
-                _newInputs.CamMovementText() + "- Camera |" + _newInputs.LightsText() + "- Lights |" +
-                _newInputs.AimText() + "- Aim |" + _newInputs.ShootText() + "- Shoot |" + _newInputs.ArmorWheelText() +
-                "- Change Shooting Mode");
+            if (_newInputs.currentDevice is MyDevices.Cube)
+            {
+                guiManager.SetTutorial(
+                    _newInputs.GearUpText() + "- Gear Up |" + _newInputs.GearDownText() + "- Gear Down |" +
+                    _newInputs.CamMovementText() + "- Camera |" + _newInputs.LightsText() + "- Lights |" +
+                    _newInputs.AimText() + "- Aim |" + _newInputs.ShootText() + "- Shoot |" +
+                    _newInputs.ArmorWheelText() +
+                    "- Change Shooting Mode");
+            }
+            else
+            {
+                guiManager.SetTutorial(
+                    _newInputs.MovementText() + "- Movement |" + _newInputs.RunText() + "- Run |" +
+                    _newInputs.CamMovementText() + "- Camera |" + _newInputs.LightsText() + "- Lights |" +
+                    _newInputs.AimText() + "- Aim |" + _newInputs.ShootText() + "- Shoot |" +
+                    _newInputs.ArmorWheelText() +
+                    "- Change Shooting Mode");
+            }
         }
         else if (currentInput is CurrentInput.StealthMovement)
         {
-            guiManager.SetTutorial(
-                _newInputs.GearUpText() + "- Gear Up |" + _newInputs.GearDownText() + "- Gear Down |" +
-                _newInputs.CamMovementText() + "- Camera |" + _newInputs.LightsText() + "- Lights |" +
-                _newInputs.GrenadeDistractionText() + "- Distraction");
+            if (_newInputs.currentDevice is MyDevices.Cube)
+            {
+                guiManager.SetTutorial(
+                    _newInputs.GearUpText() + "- Gear Up |" + _newInputs.GearDownText() + "- Gear Down |" +
+                    _newInputs.CamMovementText() + "- Camera |" + _newInputs.LightsText() + "- Lights |" +
+                    _newInputs.GrenadeDistractionText() + "- Distraction");
+            }
+            else
+            {
+                guiManager.SetTutorial(
+                    _newInputs.MovementText() + "- Movement |" + _newInputs.RunText() + "- Run |" +
+                    _newInputs.CamMovementText() + "- Camera |" + _newInputs.LightsText() + "- Lights |" +
+                    _newInputs.GrenadeDistractionText() + "- Distraction");
+            }
+        }
+    }
+
+    private void WalkAndRun()
+    {
+        if (_newInputs.GetRun() && _playerValues.gampadAddedSpeed > 0.5f)
+        {
+            isRunning = true;
+            _playerValues.SetGear(3);
+        }
+        else
+        {
+            if (isRunning)
+            {
+                if (_newInputs.currentDevice is not MyDevices.GamePad || _playerValues.gampadAddedSpeed < 0.5f)
+                {
+                    isRunning = false;
+                    _playerValues.SetGear(2);
+                }
+            }
+            else
+            {
+                _playerValues.SetGear(2);
+            }
         }
     }
 }

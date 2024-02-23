@@ -13,7 +13,7 @@ public class GameArcadeManager : MonoBehaviour
     private GuiManager _guiManager;
 
     [SerializeField] private MyStopWatch _betweenRoundsTimer;
-    [SerializeField] private float timeBetweenRounds = 30f;
+    [SerializeField] private float timeBetweenRounds = 20f;
 
     //shops
     private List<BulletShopBase> _bulletShopBases;

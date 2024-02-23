@@ -22,7 +22,7 @@ public class ArcadePlayerData : Subject, IObserver
     private PlayerValues _playerValues;
     public ShootingMode currentShootingMode = ShootingMode.Manual;
     private int level = 0;
-    public int unlockedGear = 2;
+    public int unlockedGear = 3;
 
     //bullets
     private BulletType currentBulletType = BulletType.NormalBullet;
@@ -140,9 +140,9 @@ public class ArcadePlayerData : Subject, IObserver
         currentShootCooldown.Add(ShootingMode.Automatic, 1250);
         currentShootCooldown.Add(ShootingMode.Burst, 3000);
         minShootCooldown = new Dictionary<ShootingMode, int>();
-        minShootCooldown.Add(ShootingMode.Manual, 250);
-        minShootCooldown.Add(ShootingMode.Automatic, 250);
-        minShootCooldown.Add(ShootingMode.Burst, 500);
+        minShootCooldown.Add(ShootingMode.Manual, 150);
+        minShootCooldown.Add(ShootingMode.Automatic, 175);
+        minShootCooldown.Add(ShootingMode.Burst, 400);
     }
 
     public void SetBulletSlot(BulletType bulletType, int index)
@@ -654,5 +654,4 @@ public class ArcadePlayerData : Subject, IObserver
         yield return new WaitForSeconds(0.1f);
         _loadScreen.LoadArcadeStatsScreen();
     }
-    
 }

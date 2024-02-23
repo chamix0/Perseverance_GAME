@@ -180,7 +180,6 @@ public class UpgradeManager : MonoBehaviour, IObserver
     {
         _upgrades = new List<Upgrade>();
         _upgrades.Add(new Upgrade(UpgradeType.MoreGears, _playerData));
-        _upgrades.Add(new Upgrade(UpgradeType.MoreGears, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MoreLives, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MoreLives, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MoreLives, _playerData));
@@ -214,6 +213,7 @@ public class UpgradeManager : MonoBehaviour, IObserver
         _upgrades.Add(new Upgrade(UpgradeType.MoreGrenadeSlots, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MoreBulletSlots, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.MoreBulletSlots, _playerData));
+        _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));
         _upgrades.Add(new Upgrade(UpgradeType.PointMultiplier, _playerData));

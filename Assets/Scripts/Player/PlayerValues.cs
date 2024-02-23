@@ -16,7 +16,10 @@ public class PlayerValues : Subject
     //status values
     [Header("VALUES")] [SerializeField] private List<float> movementSpeeds;
     [SerializeField] [Range(0, 4)] private int gear = 1;
-    private bool isGrounded, lightsOn, cameraIsFreezed, stucked;
+    private bool lightsOn, cameraIsFreezed, stucked;
+    public float gampadAddedSpeed = 1;
+
+
     private bool canMove;
     [SerializeField] private bool isArcade;
 
@@ -29,7 +32,7 @@ public class PlayerValues : Subject
     private Stopwatch stuckTimer;
     private Vector3 stuckedPos, prevStuckedPos;
     private Vector3 lastValidPos;
-    float stuckTime = 0.5f; 
+    float stuckTime = 0.5f;
 
     //compontes
     [Header("COMPONENTES")] [NonSerialized]
@@ -66,6 +69,9 @@ public class PlayerValues : Subject
     public Vector3 RayOffset;
     [SerializeField] private LayerMask colisionLayers;
 
+
+    private bool isGrounded;
+
     //animator parameters
     private static readonly int Gear = Animator.StringToHash("Gear");
     private DissolveMaterials dissolveMaterials;
@@ -100,6 +106,7 @@ public class PlayerValues : Subject
         prevStuckedPos = transform.position;
         lives = MaxLives;
         SetCanMove(true);
+        SetGear(1);
     }
 
     private void Update()
@@ -227,17 +234,47 @@ public class PlayerValues : Subject
         NotifyMovementAction();
     }
 
+    [NonSerialized] public bool stomp = false;
+
     public void SetGear(int value)
     {
+        int old = gear;
+        
+        if (gear == value)
+            return;
+        
+        if (stomp)
+        {
+            gear = 1;
+            _playerAnimations.ChangeGearAnim(old, gear);
+            NotifyMovementAction();
+            return;
+        }
+
+        
         if (isGrounded)
         {
-            int old = gear;
-            gear = Mathf.Clamp(value, 0, 4);
-            _playerAnimations.ChangeGearAnim(old, gear);
+            if (canMove)
+            {
+                ResetRigidBodyConstraints();
+                if (allStaminaUsed)
+                {
+                    gear = Mathf.Min(value, 3);
+                }
+                else
+                {
+                    gear = Mathf.Min(value, 4);
+                }
+
+                if (old < value)
+                    NotifyObservers(PlayerActions.RiseGear);
+                else
+                    NotifyObservers(PlayerActions.DecreaseGear);
+                _playerAnimations.ChangeGearAnim(old, gear);
+            }
         }
         else
         {
-            int old = gear;
             gear = 1;
             _playerAnimations.ChangeGearAnim(old, gear);
         }
@@ -538,6 +575,11 @@ public class PlayerValues : Subject
         return isGrounded;
     }
 
+    public void SetIsGrounded(bool value)
+    {
+        isGrounded = value;
+    }
+
     public bool GetIsStucked()
     {
         return stucked;
@@ -552,7 +594,7 @@ public class PlayerValues : Subject
             if (!isGrounded)
             {
                 SetCanMove(true);
-                isGrounded = true;
+                SetIsGrounded(true);
                 stucked = false;
                 if (transform.up == Vector3.up)
                     _rigidbody.constraints = _originalRigidBodyConstraints;
@@ -571,7 +613,7 @@ public class PlayerValues : Subject
                 SetGear(1);
                 SetCanMove(false);
                 _rigidbody.constraints = RigidbodyConstraints.None;
-                isGrounded = false;
+                SetIsGrounded(false);
             }
 
             stuckedPos = transform.position;
@@ -622,7 +664,8 @@ public class PlayerValues : Subject
 
     #region Time
 
-    private float timeScale=1;
+    private float timeScale = 1;
+
     public void StopGeneralTime()
     {
         timeScale = 0;

@@ -366,7 +366,7 @@ public class GuiManager : Subject
         pausePanel.alpha = 1;
         pausePanel.interactable = true;
         crosshair.alpha = 0;
-        _cameraController.SlowCameraSpeed(10);
+        _cameraController.SlowCameraSpeed(100);
         _soundManager.SetMuteVFX(true);
         _playerValues.StopRelativeTime();
         CursorManager.ShowCursor();

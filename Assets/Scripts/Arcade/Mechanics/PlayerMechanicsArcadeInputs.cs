@@ -18,6 +18,7 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
 
     //run mode
     private Stamina stamina;
+    private bool running = false;
 
     [SerializeField] private ParticleSystem turboParticles;
 
@@ -69,7 +70,7 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
 
         if (_playerValues.GetPaused())
             _manager.StopAutomaticShooting();
-        
+
         if (_playerValues.GetCurrentInput() == CurrentInput.ArcadeMechanics && _playerValues.GetInputsEnabled() &&
             !_playerValues.GetPaused())
         {
@@ -78,28 +79,65 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
 
             if (!_arcadePlayerData.isArmorWheelDisplayed)
             {
-                //gear up
-                if (_playerNewInputs.GearUp())
+                //common actions
+                //get movement vector
+                Vector2 movementVector = Vector2.zero;
+                Vector2 movementVectorGamepad = _playerNewInputs.GetMovementAxis();
+                if (_playerNewInputs.GearUpPressed())
+                    movementVector.y = 1;
+                if (_playerNewInputs.GearDownPressed())
+                    movementVector.y = -1;
+                if (_playerNewInputs.GearLeftPressed())
+                    movementVector.x = -1;
+                else if (_playerNewInputs.GearRightPressed())
+                    movementVector.x = 1;
+
+                float magnitude = movementVector.magnitude + movementVectorGamepad.magnitude;
+
+                if (magnitude > 0)
                 {
-                    int gear = _playerValues.GetGear();
-                    if (gear < _arcadePlayerData.unlockedGear)
-                        _playerValues.RiseGear();
+                    if (_arcadePlayerData.unlockedGear == 4 && _playerNewInputs.GetTurbo())
+                    {
+                        _playerValues.SetGear(4);
+                    }
+                    else
+                    {
+                        if (_playerNewInputs.GetRun() && _playerValues.gampadAddedSpeed > 0.5f)
+                        {
+                            running = true;
+                            _playerValues.SetGear(3);
+                        }
+                        else
+                        {
+                            if (running)
+                            {
+                                if (_playerNewInputs.currentDevice is not MyDevices.GamePad ||
+                                    _playerValues.gampadAddedSpeed < 0.5f)
+                                {
+                                    running = false;
+                                    _playerValues.SetGear(2);
+                                }
+                            }
+                            else
+                            {
+                                _playerValues.SetGear(2);
+                            }
+                        }
+                    }
 
                     if (_playerValues.GetGear() == 4)
                         turboParticles.Play();
                     else
                         turboParticles.Stop();
-
                     _playerValues.CheckIfStuck(true);
                 }
 
-                //gear down
-                if (_playerNewInputs.GearDown())
+                else
                 {
-                    _playerValues.DecreaseGear();
-                    turboParticles.Stop();
-                    _playerValues.CheckIfStuck(true);
+                    running = false;
+                    _playerValues.SetGear(1);
                 }
+
 
                 //shoot
                 if (_arcadePlayerData.GetShootingMode() is ShootingMode.Automatic)
@@ -311,14 +349,32 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
     private void UpdateTutorial()
     {
         guiManager.ShowTutorial();
-        guiManager.SetTutorial(
-            _playerNewInputs.GearUpText() + "- Gear Up |" + _playerNewInputs.GearDownText() + "- Gear Down |" +
-            _playerNewInputs.CamMovementText() + "- Camera |" + _playerNewInputs.LightsText() + "- Lights |" +
-            _playerNewInputs.AimText() + "- Aim |" + _playerNewInputs.ShootText() + "- Shoot |" +
-            _playerNewInputs.ArmorWheelText() +
-            "- Armor Wheel |" + _playerNewInputs.GrenadeDistractionText() + "- Grenade |" +
-            _playerNewInputs.NextBulletTypeText() + "/" + _playerNewInputs.PrevBulletTypeText() + "- bullet type |" +
-            _playerNewInputs.ChangeGrenadeText() + "- Grenade type |" + _playerNewInputs.ChangeShootModeText() +
-            "- Shoot mode");
+        if (_playerNewInputs.currentDevice is MyDevices.Cube)
+        {
+            guiManager.SetTutorial(
+                _playerNewInputs.GearUpText() + "- Gear Up |" + _playerNewInputs.GearDownText() + "- Gear Down |" +
+                _playerNewInputs.CamMovementText() + "- Camera |" + _playerNewInputs.LightsText() + "- Lights |" +
+                _playerNewInputs.AimText() + "- Aim |" + _playerNewInputs.ShootText() + "- Shoot |" +
+                _playerNewInputs.ArmorWheelText() +
+                "- Armor Wheel |" + _playerNewInputs.GrenadeDistractionText() + "- Grenade |" +
+                _playerNewInputs.NextBulletTypeText() + "/" + _playerNewInputs.PrevBulletTypeText() +
+                "- bullet type |" +
+                _playerNewInputs.ChangeGrenadeText() + "- Grenade type |" + _playerNewInputs.ChangeShootModeText() +
+                "- Shoot mode");
+        }
+        else
+        {
+            guiManager.SetTutorial(
+                _playerNewInputs.MovementText() + "- Movement |" + _playerNewInputs.CamMovementText() + "- Camera |" +
+                _playerNewInputs.LightsText() + "- Lights |" +
+                _playerNewInputs.AimText() + "- Aim |" + _playerNewInputs.ShootText() + "- Shoot |" +
+                _playerNewInputs.TurboText() + "- Turbo |" +
+                _playerNewInputs.ArmorWheelText() +
+                "- Armor Wheel |" + _playerNewInputs.GrenadeDistractionText() + "- Grenade |" +
+                _playerNewInputs.NextBulletTypeText() + "/" + _playerNewInputs.PrevBulletTypeText() +
+                "- bullet type |" +
+                _playerNewInputs.ChangeGrenadeText() + "- Grenade type |" + _playerNewInputs.ChangeShootModeText() +
+                "- Shoot mode");
+        }
     }
 }

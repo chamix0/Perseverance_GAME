@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: 47e1e77f7622f56438953540175cd316
+labels:
+- USFX
+- blaster
+- sci-fi
+- stereo
+- weapon
+- energy
+- fire
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 6
+  defaultSettings:
+    loadType: 1
+    sampleRateSetting: 0
+    sampleRateOverride: 0
+    compressionFormat: 0
+    quality: 1
+    conversionMode: 0
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 1
+  preloadAudioData: 1
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

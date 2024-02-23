@@ -88,7 +88,7 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
             Vector3[] initLaserPos = new Vector3[2] { Vector3.zero, Vector3.zero };
             // laserRay = GetComponent<LineRenderer>();
             laserRay.SetPositions(initLaserPos);
-            laserRay.SetWidth(laserWidth, laserWidth);
+            laserRay.SetWidth(0, 0);
             shootingMode = (ShootingMode)modeIndex;
             _rigidbody.isKinematic = true;
         }

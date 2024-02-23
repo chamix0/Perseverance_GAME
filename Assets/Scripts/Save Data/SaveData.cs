@@ -19,6 +19,7 @@ public class SaveData
     private const int Version = 1;
 
     //general settings
+    
 
     public SaveData()
     {
