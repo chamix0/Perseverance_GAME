@@ -24,7 +24,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3445094}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.000011178599}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2392,7 +2392,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094773427}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2401,7 +2401,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00085132, y: 18.051}
+  m_AnchoredPosition: {x: 1, y: 18}
   m_SizeDelta: {x: 72.204, y: 36.103}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1094773430
@@ -3081,7 +3081,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1485029907}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.00000054637}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000016284506}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3089,11 +3089,11 @@ RectTransform:
   m_Father: {fileID: 8813333371353065930}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00001923, y: -205.85}
-  m_SizeDelta: {x: 800, y: 38.31}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0.000015050608, y: -36.005005}
+  m_SizeDelta: {x: 800, y: 38.309998}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &5366511493656712439
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4203,7 +4203,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1705019621925847975}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.000023754525}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7161,7 +7161,7 @@ MonoBehaviour:
   raceImage: {fileID: 2033377117}
   raceText: {fileID: 1884883270}
   dialogObject: {fileID: 623970495}
-  name: {fileID: 226759466}
+  nameDialog: {fileID: 0}
   message: {fileID: 935729745}
   answers:
   - {fileID: 7483319242956154551}
@@ -7194,6 +7194,15 @@ MonoBehaviour:
   _emergingPoints: {fileID: 0}
   livesCanvas: {fileID: 0}
   livesText: {fileID: 0}
+  roundCanvas: {fileID: 0}
+  roundText: {fileID: 0}
+  consumibleCanvas: {fileID: 0}
+  armorIconsCanvas: {fileID: 0}
+  bulletTypeImage: {fileID: 0}
+  grenadeIconImage: {fileID: 0}
+  bulletTypeSprites: []
+  grandeImageSprites: []
+  shootingModeIconText: {fileID: 0}
 --- !u!1 &8854964104836340720
 GameObject:
   m_ObjectHideFlags: 0
