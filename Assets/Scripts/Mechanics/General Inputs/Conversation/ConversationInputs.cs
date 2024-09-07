@@ -30,13 +30,19 @@ public class ConversationInputs : MonoBehaviour, IObserver
             !_playerValues.GetPaused())
         {
             if (_newInputs.CheckInputChanged())
+            {
                 UpdateTutorial();
+            }
 
             if (_newInputs.SelectBasic())
+            {
                 _conversationManager.NextDialog();
+            }
 
             if (_newInputs.UpTap() || _newInputs.DownTap())
+            {
                 _conversationManager.ChangeAnswer();
+            }
         }
     }
 
@@ -76,7 +82,8 @@ public class ConversationInputs : MonoBehaviour, IObserver
 
     public void OnNotify(PlayerActions playerAction)
     {
-        if (playerAction is PlayerActions.ChangeInputMode && _playerValues.GetCurrentInput()==CurrentInput.Conversation)
+        if (playerAction is PlayerActions.ChangeInputMode &&
+            _playerValues.GetCurrentInput() == CurrentInput.Conversation)
             UpdateTutorial();
     }
 

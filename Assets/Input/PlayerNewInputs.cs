@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,6 +20,14 @@ public class PlayerNewInputs : MonoBehaviour
     private void Awake()
     {
         _controls = new Controls();
+    }
+
+    private void Update()
+    {
+        if (AnyInput())
+        {
+            UpdateDevice();
+        }
     }
 
     #region Enable
@@ -49,29 +58,19 @@ public class PlayerNewInputs : MonoBehaviour
 
     public bool CheckInputChanged()
     {
-        if (InputChanged)
-        {
-            InputChanged = false;
-            return true;
-        }
-
-        return false;
-    }
-
-    public void SetCurrentDevice(MyDevices device)
-    {
-        currentDevice = device;
+        return InputChanged;
     }
 
     public void UpdateDevice()
     {
-        InputChanged = true;
+        MyDevices oldDevice = currentDevice;
         currentDevice = _playerInput.currentControlScheme == "KeyBoard" ? MyDevices.KeyBoard : MyDevices.GamePad;
+        InputChanged = oldDevice != currentDevice;
     }
 
     public void SetCubeAsDevice()
     {
-        InputChanged = true;
+        InputChanged = currentDevice != MyDevices.Cube;
         currentDevice = MyDevices.Cube;
     }
 
@@ -79,34 +78,39 @@ public class PlayerNewInputs : MonoBehaviour
 
     #region Eddo movement and actions
 
+    public bool AnyInput()
+    {
+        return ValidateInput(_controls.Eddo.Any.IsPressed());
+    }
+
     public bool GearUp()
     {
-        return _controls.Eddo.GearUp1.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.GearUp1.WasPressedThisFrame());
     }
 
     public bool GearDown()
     {
-        return _controls.Eddo.GearDown1.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.GearDown1.WasPressedThisFrame());
     }
 
     public bool GearUpPressed()
     {
-        return _controls.Eddo.GearUp1.IsPressed();
+        return ValidateInput(_controls.Eddo.GearUp1.IsPressed());
     }
 
     public bool GearDownPressed()
     {
-        return _controls.Eddo.GearDown1.IsPressed();
+        return ValidateInput(_controls.Eddo.GearDown1.IsPressed());
     }
 
     public bool GearLeftPressed()
     {
-        return _controls.Eddo.GearLeft.IsPressed();
+        return ValidateInput(_controls.Eddo.GearLeft.IsPressed());
     }
 
     public bool GearRightPressed()
     {
-        return _controls.Eddo.GearRight.IsPressed();
+        return ValidateInput(_controls.Eddo.GearRight.IsPressed());
     }
 
     public Vector2 GetMovementAxis()
@@ -116,57 +120,57 @@ public class PlayerNewInputs : MonoBehaviour
 
     public bool GetRun()
     {
-        return _controls.Eddo.Run.IsPressed();
+        return ValidateInput(_controls.Eddo.Run.IsPressed());
     }
 
     public bool GetTurbo()
     {
-        return _controls.Eddo.Turbo.IsPressed();
+        return ValidateInput(_controls.Eddo.Turbo.IsPressed());
     }
 
     public bool ShootAutomatic()
     {
-        return _controls.Eddo.Shoot.IsPressed();
+        return ValidateInput(_controls.Eddo.Shoot.IsPressed());
     }
 
     public bool Shoot()
     {
-        return _controls.Eddo.Shoot.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.Shoot.WasPressedThisFrame());
     }
 
     public bool ShootReleased()
     {
-        return _controls.Eddo.Shoot.WasReleasedThisFrame();
+        return ValidateInput(_controls.Eddo.Shoot.WasReleasedThisFrame());
     }
 
     public bool Aim()
     {
-        return _controls.Eddo.Aim.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.Aim.WasPressedThisFrame());
     }
 
     public bool AimRelease()
     {
-        return _controls.Eddo.Aim.WasReleasedThisFrame();
+        return ValidateInput(_controls.Eddo.Aim.WasReleasedThisFrame());
     }
 
     public bool GrenadeDistraction()
     {
-        return _controls.Eddo.Grenade.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.Grenade.WasPressedThisFrame());
     }
 
     public bool ShowArmorWheel()
     {
-        return _controls.Eddo.ArmorWheel.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.ArmorWheel.WasPressedThisFrame());
     }
 
     public bool HideArmorWheel()
     {
-        return _controls.Eddo.ArmorWheel.WasReleasedThisFrame();
+        return ValidateInput(_controls.Eddo.ArmorWheel.WasReleasedThisFrame());
     }
 
     public bool HideArmorPressed()
     {
-        return _controls.Eddo.ArmorWheel.IsPressed();
+        return ValidateInput(_controls.Eddo.ArmorWheel.IsPressed());
     }
 
     public bool ChangeWeapon()
@@ -176,42 +180,42 @@ public class PlayerNewInputs : MonoBehaviour
 
     public bool Pause()
     {
-        return _controls.Eddo.Pause.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.Pause.WasPressedThisFrame());
     }
 
     public bool PlayerSelect()
     {
-        return _controls.Eddo.Select.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.Select.WasPressedThisFrame());
     }
 
     public bool Jump()
     {
-        return _controls.Eddo.Jump.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.Jump.WasPressedThisFrame());
     }
 
     public bool Lights()
     {
-        return _controls.Eddo.Lights.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.Lights.WasPressedThisFrame());
     }
 
     public bool PrevBulletType()
     {
-        return _controls.Eddo.Prevbullettype.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.Prevbullettype.WasPressedThisFrame());
     }
 
     public bool NextBulletType()
     {
-        return _controls.Eddo.Nextbullettype.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.Nextbullettype.WasPressedThisFrame());
     }
 
     public bool ChangeShootingMode()
     {
-        return _controls.Eddo.ChangeShootingMode.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.ChangeShootingMode.WasPressedThisFrame());
     }
 
     public bool ChangeGrenade()
     {
-        return _controls.Eddo.ChangeGrenade.WasPressedThisFrame();
+        return ValidateInput(_controls.Eddo.ChangeGrenade.WasPressedThisFrame());
     }
 
     public Vector2 CameraAxis()
@@ -257,6 +261,7 @@ public class PlayerNewInputs : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException()
         };
     }
+
     public string RunText()
     {
         return currentDevice switch
@@ -267,6 +272,7 @@ public class PlayerNewInputs : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException()
         };
     }
+
     public string ChangeGrenadeText()
     {
         return currentDevice switch
@@ -310,7 +316,7 @@ public class PlayerNewInputs : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException()
         };
     }
-    
+
     public string MovementText()
     {
         return currentDevice switch
@@ -321,6 +327,7 @@ public class PlayerNewInputs : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException()
         };
     }
+
     public string GearDownText()
     {
         return currentDevice switch
@@ -375,6 +382,7 @@ public class PlayerNewInputs : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException()
         };
     }
+
     public string TurboText()
     {
         return currentDevice switch
@@ -414,17 +422,17 @@ public class PlayerNewInputs : MonoBehaviour
 
     public bool RotateWallClockWise()
     {
-        return _controls.RotatingWall.RotateCW.WasPressedThisFrame();
+        return ValidateInput(_controls.RotatingWall.RotateCW.WasPressedThisFrame());
     }
 
     public bool RotateWallCounterClockWise()
     {
-        return _controls.RotatingWall.RotateCCW.WasPressedThisFrame();
+        return ValidateInput(_controls.RotatingWall.RotateCCW.WasPressedThisFrame());
     }
 
     public bool ExitWall()
     {
-        return _controls.RotatingWall.Exit.WasPressedThisFrame();
+        return ValidateInput(_controls.RotatingWall.Exit.WasPressedThisFrame());
     }
 
     #endregion
@@ -470,62 +478,62 @@ public class PlayerNewInputs : MonoBehaviour
 
     public bool UpTap()
     {
-        return _controls.Basic.Up.WasPressedThisFrame();
+        return ValidateInput(_controls.Basic.Up.WasPressedThisFrame());
     }
 
     public bool DownTap()
     {
-        return _controls.Basic.Down.WasPressedThisFrame();
+        return ValidateInput(_controls.Basic.Down.WasPressedThisFrame());
     }
 
     public bool LeftTap()
     {
-        return _controls.Basic.Left.WasPressedThisFrame();
+        return ValidateInput(_controls.Basic.Left.WasPressedThisFrame());
     }
 
     public bool RightTap()
     {
-        return _controls.Basic.Right.WasPressedThisFrame();
+        return ValidateInput(_controls.Basic.Right.WasPressedThisFrame());
     }
 
     public bool UpHold()
     {
-        return _controls.Basic.Up.IsPressed();
+        return ValidateInput(_controls.Basic.Up.IsPressed());
     }
 
     public bool DownHold()
     {
-        return _controls.Basic.Down.IsPressed();
+        return ValidateInput(_controls.Basic.Down.IsPressed());
     }
 
     public bool LeftHold()
     {
-        return _controls.Basic.Left.IsPressed();
+        return ValidateInput(_controls.Basic.Left.IsPressed());
     }
 
     public bool RightHold()
     {
-        return _controls.Basic.Right.IsPressed();
+        return ValidateInput(_controls.Basic.Right.IsPressed());
     }
 
     public bool SelectBasic()
     {
-        return _controls.Basic.Select.WasPressedThisFrame();
+        return ValidateInput(_controls.Basic.Select.WasPressedThisFrame());
     }
 
     public bool ReturnBasic()
     {
-        return _controls.Basic.Return.WasPressedThisFrame();
+        return ValidateInput(_controls.Basic.Return.WasPressedThisFrame());
     }
 
     public bool EnableLoad()
     {
-        return _controls.Basic.EnableLoad.WasPressedThisFrame();
+        return ValidateInput(_controls.Basic.EnableLoad.WasPressedThisFrame());
     }
 
     public bool EnableErase()
     {
-        return _controls.Basic.EnableErase.WasPressedThisFrame();
+        return ValidateInput(_controls.Basic.EnableErase.WasPressedThisFrame());
     }
 
     #endregion
@@ -637,22 +645,22 @@ public class PlayerNewInputs : MonoBehaviour
 
     public bool AttackMiniBoss()
     {
-        return _controls.Miniboss.Attack.WasPressedThisFrame();
+        return ValidateInput(_controls.Miniboss.Attack.WasPressedThisFrame());
     }
 
     public bool SpecialAttackMiniBoss()
     {
-        return _controls.Miniboss.SpecialAttack.WasPressedThisFrame();
+        return ValidateInput(_controls.Miniboss.SpecialAttack.WasPressedThisFrame());
     }
 
     public bool DefendMiniBoss()
     {
-        return _controls.Miniboss.Defend.WasPressedThisFrame();
+        return ValidateInput(_controls.Miniboss.Defend.WasPressedThisFrame());
     }
 
     public bool SpecialDefendMiniBoss()
     {
-        return _controls.Miniboss.SpecialDefense.WasPressedThisFrame();
+        return ValidateInput(_controls.Miniboss.SpecialDefense.WasPressedThisFrame());
     }
 
     #endregion
@@ -709,22 +717,22 @@ public class PlayerNewInputs : MonoBehaviour
 
     public bool Sprint()
     {
-        return _controls.Minigames.Sprint.IsPressed();
+        return ValidateInput(_controls.Minigames.Sprint.IsPressed());
     }
 
     public bool RollClockWise()
     {
-        return _controls.Minigames.RollCW.WasPressedThisFrame();
+        return ValidateInput(_controls.Minigames.RollCW.WasPressedThisFrame());
     }
 
     public bool RollCounterClockWise()
     {
-        return _controls.Minigames.RollCCW.WasPressedThisFrame();
+        return ValidateInput(_controls.Minigames.RollCCW.WasPressedThisFrame());
     }
 
     public bool ReRoll()
     {
-        return _controls.Minigames.Reroll.WasPressedThisFrame();
+        return ValidateInput(_controls.Minigames.Reroll.WasPressedThisFrame());
     }
 
     #endregion
@@ -765,4 +773,14 @@ public class PlayerNewInputs : MonoBehaviour
     }
 
     #endregion
+
+    private bool ValidateInput(bool input)
+    {
+        if (input)
+        {
+            UpdateDevice();
+        }
+
+        return input;
+    }
 }

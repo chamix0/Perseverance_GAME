@@ -26,29 +26,16 @@ namespace General_Inputs
             //keyboard inputs
             if (playerValues.GetCurrentInput() is not CurrentInput.None)
             {
+                //pause input
                 if (_playerNewInputs.Pause())
                 {
                     pauseManager.Pause();
                 }
+
+                // small jump to exit stuck state
                 else if (_playerNewInputs.Jump())
                 {
-                    if (!playerValues.GetIsGrounded() && playerValues.GetCurrentInput() is CurrentInput.Movement
-                            or CurrentInput.RaceMovement or CurrentInput.StealthMovement or CurrentInput.ShootMovement
-                            or CurrentInput.ArcadeMechanics)
-                    {
-                        playerValues.CheckIfStuck(false);
-                        if (playerValues.GetIsStucked())
-                        {
-                            if (timer.Elapsed.TotalSeconds > 0.5f)
-                            {
-                                timer.Restart();
-                                playerValues._rigidbody.AddForce(Vector3.up * 12, ForceMode.Impulse);
-                                playerValues._rigidbody.AddTorque(
-                                    Vector3.Cross(Vector3.up, -playerValues.transform.up) * 10,
-                                    ForceMode.Impulse);
-                            }
-                        }
-                    }
+                    JumpWhenStucked();
                 }
             }
         }
@@ -57,6 +44,27 @@ namespace General_Inputs
         {
             if (pauseManager.CheckCubePause(move))
                 pauseManager.Pause();
+        }
+
+        private void JumpWhenStucked()
+        {
+            if (!playerValues.GetIsGrounded() && playerValues.GetCurrentInput() is CurrentInput.Movement
+                    or CurrentInput.RaceMovement or CurrentInput.StealthMovement or CurrentInput.ShootMovement
+                    or CurrentInput.ArcadeMechanics)
+            {
+                playerValues.CheckIfStuck(false);
+                if (playerValues.GetIsStucked())
+                {
+                    if (timer.Elapsed.TotalSeconds > 0.5f)
+                    {
+                        timer.Restart();
+                        playerValues._rigidbody.AddForce(Vector3.up * 12, ForceMode.Impulse);
+                        playerValues._rigidbody.AddTorque(
+                            Vector3.Cross(Vector3.up, -playerValues.transform.up) * 10,
+                            ForceMode.Impulse);
+                    }
+                }
+            }
         }
     }
 }

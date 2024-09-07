@@ -13,10 +13,10 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
         RaycastHit hit;
         private CameraController _cameraController;
 
-        private PlayerValues playerValues;
+        private PlayerValues _playerValues;
 
         //visibility
-        bool isVisible = false;
+        bool _isVisible = false;
 
         //laser
         [SerializeField] LineRenderer laserRay;
@@ -74,7 +74,7 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
 
         void Start()
         {
-            playerValues = FindObjectOfType<PlayerValues>();
+            _playerValues = FindObjectOfType<PlayerValues>();
             dissolveMaterials = GetComponentInChildren<DissolveMaterials>();
             _cameraController = FindObjectOfType<CameraController>();
             guiManager = FindObjectOfType<GuiManager>();
@@ -96,40 +96,75 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
         // Update is called once per frame
         void Update()
         {
-            if (isVisible)
+            CurrentInput currentInput = _playerValues.GetCurrentInput();
+
+            //show machine guns its its on machine gun mode and hide it if not
+            if (currentInput == CurrentInput.ShootMovement && !_isVisible)
             {
-                if (_isAutomaticShooting)
-                    automaticShooting();
+                ShowMachineGun();
+            }
+            else if (currentInput != CurrentInput.ShootMovement)
+            {
+                HideMachinegun();
             }
 
-            if (playerValues.GetPaused())
+
+            //dont do anything if machinegun is not visible
+            if (!_isVisible)
+            {
+                return;
+            }
+
+            //do automatic shooting
+            if (_isAutomaticShooting)
+            {
+                automaticShooting();
+            }
+
+            //stop aiming if its paused
+            if (_playerValues.GetPaused())
+            {
                 StopAim();
+            }
 
-
+            //update look at    
             _rigidbody.transform.LookAt(aimPoint);
+
+            //roll the drum
             drumRigidbody.transform.localRotation = Quaternion.Euler(90, 0, drumRigidbody.transform
                 .rotation.eulerAngles.z);
         }
 
         private void FixedUpdate()
         {
-            if (isVisible)
+            if (!_isVisible)
             {
-                if (updateHook)
-                    HookPosition();
-                if (aiming)
-                    RotateDrum();
+                return;
+            }
+
+            if (updateHook)
+            {
+                HookPosition();
+            }
+
+            if (aiming)
+            {
+                RotateDrum();
             }
         }
 
         private void LateUpdate()
         {
-            if (playerValues.GetCurrentInput() is CurrentInput.ShootMovement or CurrentInput.ArcadeMechanics)
+            if (_playerValues.GetCurrentInput() is CurrentInput.ShootMovement or CurrentInput.ArcadeMechanics)
             {
-                if (!playerValues.dead && isVisible && aiming)
+                if (!_playerValues.dead && _isVisible && aiming)
+                {
                     Laser();
+                }
                 else
+                {
                     StopAim();
+                }
             }
         }
 
@@ -208,21 +243,21 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
 
         public void ShowMachineGun()
         {
-            if (!isVisible)
+            if (!_isVisible)
             {
                 dissolveMaterials.DissolveIn();
-                isVisible = true;
+                _isVisible = true;
                 guiManager.SetMachinegun((int)shootingMode);
             }
         }
 
         public bool HideMachinegun()
         {
-            bool aux = isVisible;
-            if (isVisible)
+            bool aux = _isVisible;
+            if (_isVisible)
             {
                 dissolveMaterials.DissolveOut();
-                isVisible = false;
+                _isVisible = false;
                 StopLaser();
                 guiManager.SetMachinegun(-1);
             }
@@ -241,7 +276,7 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
 
         public void ResetShootingMode()
         {
-            if (isVisible)
+            if (_isVisible)
             {
                 _isAutomaticShooting = false;
                 shootingMode = ShootingMode.Manual;

@@ -2,18 +2,20 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //components
     private PlayerValues _playerValues;
     private Rigidbody _rigidbody;
-    private float speed, _turnSmoothVel;
-    public float stompUmbral, rayOffset;
     private SoundManager _soundManager;
-
-    public float staminaUsage = 1f, staminaRecovery = 0.5f;
-    [SerializeField] private float turnSmoothTime = 0.1f;
-    [SerializeField] private LayerMask rayLayers;
     private CameraChanger cameraChanger;
     private PlayerNewInputs _playerNewInputs;
     private PlayerAnimations _playerAnimations;
+
+    //values
+    private float speed, _turnSmoothVel;
+    public float stompUmbral, rayOffset;
+    public float staminaUsage = 1f, staminaRecovery = 0.5f;
+    [SerializeField] private float turnSmoothTime = 0.1f;
+    [SerializeField] private LayerMask rayLayers;
 
 
     private void Start()
@@ -27,58 +29,79 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Update()
-
-
     {
+        //check if its moving and stomped then it should stop
         if (_playerValues.GetGear() > 1 && CheckIfStopm())
         {
             _playerValues.stomp = true;
             _playerValues.StopMovement();
         }
+
+        //check if its not moving and it exited from stomp
         else if (_playerValues.GetGear() == 1 && CheckIfExitedFromStopm())
         {
             _playerValues.stomp = false;
         }
 
-
+        //if it fell for any reason then reset its pos
         if (_playerValues.GetPos().y < -100)
+        {
             _playerValues.ResetPos();
+        }
     }
 
     private void FixedUpdate()
     {
-        //move on ground
+        //moving on ground
         if (_playerValues.GetCanMove() && _playerValues.GetGear() != 1)
         {
+            //all the stamina was used reset the value when it reaches full stamina so it can be used again
             if (_playerValues.allStaminaUsed)
+            {
                 _playerValues.allStaminaUsed = !(_playerValues.stamina >= 100);
+            }
 
+            //goes on gear 4 max speed
             if (_playerValues.GetGear() == 4)
             {
+                //reduce stamina
                 if (_playerValues.stamina > 0)
                 {
                     _playerValues.stamina = Mathf.Max(_playerValues.stamina - staminaUsage, 0);
                 }
+                //all stamina has been used so stop gear 4 and mark all stamina used so it cans refill
                 else
                 {
                     _playerValues.allStaminaUsed = true;
                     _playerValues.DecreaseGear();
                 }
             }
+            //goes at any other gear
             else
             {
+                //recover stamina slower as its running
                 if (_playerValues.GetGear() == 3)
+                {
                     _playerValues.stamina =
                         Mathf.Min(_playerValues.stamina + staminaRecovery / 4, _playerValues.maxStamina);
+                }
+                //recover stamina faster as is stopped or walking
                 else
+                {
                     _playerValues.stamina =
                         Mathf.Min(_playerValues.stamina + staminaRecovery, _playerValues.maxStamina);
+                }
             }
 
+            //get move direction
             Vector3 moveDirection = GetMoveDirection() * _playerValues.gampadAddedSpeed;
+            
+            //apply movement
             _rigidbody.AddForce(moveDirection * _playerValues.GetSpeed() - _rigidbody.velocity,
                 ForceMode.VelocityChange);
         }
+
+        //recover stamina
         else
         {
             _playerValues.stamina = Mathf.Min(_playerValues.stamina + staminaRecovery, _playerValues.maxStamina);
@@ -164,14 +187,23 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             if (_playerNewInputs.GearUpPressed())
+            {
                 direction.z = 1;
+            }
             else if (_playerNewInputs.GearDownPressed())
+            {
                 direction.z = -1;
+            }
 
             if (_playerNewInputs.GearLeftPressed())
+            {
                 direction.x = -1;
+            }
             else if (_playerNewInputs.GearRightPressed())
+            {
                 direction.x = 1;
+            }
+
             speed = 1;
         }
 

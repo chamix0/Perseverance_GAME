@@ -55,47 +55,46 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
     {
         CurrentInput currentInput = _playerValues.GetCurrentInput();
         //show machine guns
-        if (currentInput == CurrentInput.ShootMovement)
-            ShowMachineGuns();
-        else
-            HideMachineGuns();
+        // if (currentInput == CurrentInput.ShootMovement)
+        //     ShowMachineGuns();
+        // else
+        //     HideMachineGuns();
 
-        //show distraction
-        if (currentInput == CurrentInput.StealthMovement)
+        // //show distraction
+        // if (currentInput == CurrentInput.StealthMovement && !_distraction.GetIsVisible())
+        // {
+        //     _distraction.SetVisible(true);
+        // }
+
+        // //show stamina bar
+        // if (currentInput is CurrentInput.RaceMovement && !_stamina.beingShown)
+        // {
+        //     _stamina.ShowStamina();
+        // }
+        //dont do anthing avobe if its using the cube
+        if (_newInputs.currentDevice is MyDevices.Cube)
         {
-            if (!_distraction.GetIsVisible())
-                _distraction.SetVisible(true);
+            return;
         }
 
-        //show stamina
-        if (currentInput is CurrentInput.RaceMovement)
-        {
-            if (!_stamina.beingShown)
-                _stamina.ShowStamina();
-        }
+        bool isMovementInput = currentInput is CurrentInput.ShootMovement or CurrentInput.RaceMovement
+            or CurrentInput.Movement or CurrentInput.StealthMovement;
 
-        if (currentInput is CurrentInput.ShootMovement or CurrentInput.RaceMovement or CurrentInput.Movement
-                or CurrentInput.StealthMovement &&
-            _playerValues.GetInputsEnabled() &&
-            !_playerValues.GetPaused())
+        //movement input and game is not paused
+        if (isMovementInput && _playerValues.GetInputsEnabled() && !_playerValues.GetPaused())
         {
-            if (_newInputs.CheckInputChanged())
-                UpdateTutorial();
+            // if (_newInputs.CheckInputChanged())
+            // {
+            UpdateTutorial();
+            // }
 
             //common actions
-            //get movement vector
-            Vector2 movementVector = Vector2.zero;
-            Vector2 movementVectorGamepad = _newInputs.GetMovementAxis();
-            if (_newInputs.GearUpPressed())
-                movementVector.y = 1;
-            if (_newInputs.GearDownPressed())
-                movementVector.y = -1;
-            if (_newInputs.GearLeftPressed())
-                movementVector.x = -1;
-            else if (_newInputs.GearRightPressed())
-                movementVector.x = 1;
 
-            float magnitude = movementVector.magnitude + movementVectorGamepad.magnitude;
+            //get movement vector
+            Vector2 movementVectorGamepad = _newInputs.GetMovementAxis();
+            var keyboardMovmentVector = KeyboardMovementVector();
+
+            float magnitude = keyboardMovmentVector.magnitude + movementVectorGamepad.magnitude;
 
             if (magnitude > 0)
             {
@@ -111,9 +110,13 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
                     }
 
                     if (_playerValues.GetGear() == 4)
+                    {
                         turboParticles.Play();
+                    }
                     else
+                    {
                         turboParticles.Stop();
+                    }
                 }
                 else
                 {
@@ -125,7 +128,7 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
             {
                 _playerValues.SetGear(1);
             }
-            
+
 
             if (_newInputs.Lights())
             {
@@ -150,27 +153,35 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
                 if (_newInputs.ShootReleased())
                 {
                     foreach (var machineGun in machineGuns)
+                    {
                         machineGun.StopAutomaticShooting();
+                    }
                 }
 
                 if (_newInputs.Aim())
                 {
                     _cameraController.SlowCamera(3);
                     foreach (var machineGun in machineGuns)
+                    {
                         machineGun.Aim();
+                    }
                 }
 
                 if (_newInputs.AimRelease())
                 {
                     _cameraController.NormalCameraSpeed();
                     foreach (var machineGun in machineGuns)
+                    {
                         machineGun.StopAim();
+                    }
                 }
 
                 if (_newInputs.ChangeWeapon())
                 {
                     foreach (var machineGun in machineGuns)
+                    {
                         machineGun.NextShootingMode();
+                    }
                 }
             }
 
@@ -178,27 +189,40 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
             if (currentInput is CurrentInput.StealthMovement)
             {
                 if (_newInputs.GrenadeDistraction())
+                {
                     _distraction.ThrowDistraction();
+                }
             }
             else
             {
                 //hide distraction
                 if (_distraction.GetIsVisible())
+                {
                     _distraction.SetVisible(false);
+                }
             }
 
             //run movement
             if (currentInput is not CurrentInput.RaceMovement)
             {
                 if (_stamina.beingShown)
+                {
                     _stamina.HideStamina();
+                }
+
                 if (turboParticles.isPlaying)
+                {
                     turboParticles.Stop();
+                }
+
                 if (_playerValues.GetGear() == 4)
+                {
                     _playerValues.DecreaseGear();
+                }
             }
         }
     }
+
 
     public void PerformAction(Move move)
     {
@@ -218,23 +242,24 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
             {
                 if (move.direction == 1)
                 {
-                    if (currentInput is CurrentInput.RaceMovement)
+                    if (currentInput is CurrentInput.RaceMovement || _playerValues.GetGear() < 3)
                     {
                         _playerValues.RiseGear();
                     }
-                    else
-                    {
-                        if (_playerValues.GetGear() < 3)
-                            _playerValues.RiseGear();
-                    }
 
                     if (_playerValues.GetGear() == 4)
+                    {
                         turboParticles.Play();
+                    }
                     else
+                    {
                         turboParticles.Stop();
+                    }
                 }
                 else
+                {
                     _playerValues.DecreaseGear();
+                }
             }
             //lights
             else if (move.face == FACES.B)
@@ -317,6 +342,16 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
 
     #region private  methods
 
+    private Vector2 KeyboardMovementVector()
+    {
+        Vector2 keyboardMovmentVector = Vector2.zero;
+
+        keyboardMovmentVector.y = (_newInputs.GearUpPressed() ? 1 : 0) + (_newInputs.GearDownPressed() ? -1 : 0);
+        keyboardMovmentVector.x = (_newInputs.GearLeftPressed() ? -1 : 0) + (_newInputs.GearRightPressed() ? 1 : 0);
+
+        return keyboardMovmentVector;
+    }
+
     private void HideMachineGuns()
     {
         bool changeCam = false;
@@ -334,7 +369,9 @@ public class UnifiedMechanicsInput : MonoBehaviour, IObserver
     private void ShowMachineGuns()
     {
         foreach (var machineGun in machineGuns)
+        {
             machineGun.ShowMachineGun();
+        }
     }
 
     #endregion

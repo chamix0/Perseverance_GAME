@@ -1,38 +1,46 @@
+using Mechanics.General_Inputs;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Stamina : MonoBehaviour
 {
     // Start is called before the first frame update
-    private PlayerValues playerValues;
+    private PlayerValues _playerValues;
     [SerializeField] private Slider slider;
     [SerializeField] private Image fill;
     [SerializeField] private Color greenColor, recoverColor;
     [SerializeField] private CanvasGroup canvasGroup;
-    private bool staminaChanged;
+    private bool _staminaChanged;
     public bool beingShown;
 
     void Start()
     {
-        playerValues = FindObjectOfType<PlayerValues>();
-        staminaChanged = playerValues.allStaminaUsed;
+        _playerValues = FindObjectOfType<PlayerValues>();
+        _staminaChanged = _playerValues.allStaminaUsed;
 
-        fill.color = playerValues.allStaminaUsed ? recoverColor : greenColor;
+        fill.color = _playerValues.allStaminaUsed ? recoverColor : greenColor;
         canvasGroup.alpha = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //show stamina bar
+        CurrentInput currentInput = _playerValues.GetCurrentInput();
+        if (currentInput is CurrentInput.RaceMovement && !beingShown)
+        {
+            ShowStamina();
+        }
+        
         if (beingShown)
         {
-            if (playerValues.allStaminaUsed != staminaChanged)
+            if (_playerValues.allStaminaUsed != _staminaChanged)
             {
-                fill.color= playerValues.allStaminaUsed ? recoverColor : greenColor;
-                staminaChanged = playerValues.allStaminaUsed;
+                fill.color= _playerValues.allStaminaUsed ? recoverColor : greenColor;
+                _staminaChanged = _playerValues.allStaminaUsed;
             }
 
-            slider.value = playerValues.stamina / 100;
+            slider.value = _playerValues.stamina / 100;
         }
     }
 

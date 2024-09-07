@@ -111,7 +111,9 @@ public class PlayerValues : Subject
 
     private void Update()
     {
+        //check if its on the ground
         CheckIfGrounded();
+
         if (_updateSnap)
         {
             transform.position = UpdateSnapPosition();
@@ -224,7 +226,9 @@ public class PlayerValues : Subject
             gear = Mathf.Max(gear - 1, 0);
             _playerAnimations.ChangeGearAnim(old, gear);
             if (old - 1 >= 0)
+            {
                 NotifyObservers(PlayerActions.DecreaseGear);
+            }
         }
         else
         {
@@ -239,10 +243,10 @@ public class PlayerValues : Subject
     public void SetGear(int value)
     {
         int old = gear;
-        
+
         if (gear == value)
             return;
-        
+
         if (stomp)
         {
             gear = 1;
@@ -251,7 +255,7 @@ public class PlayerValues : Subject
             return;
         }
 
-        
+
         if (isGrounded)
         {
             if (canMove)
@@ -421,7 +425,13 @@ public class PlayerValues : Subject
             NotifyCameraLives();
             NotifyAction(PlayerActions.Damage);
             if (lives <= 0)
+            {
                 Die(spawnPos);
+            }
+        }
+        else
+        {
+            Die(spawnPos);
         }
     }
 
@@ -433,20 +443,34 @@ public class PlayerValues : Subject
             NotifyCameraLives();
             NotifyAction(PlayerActions.Damage);
             if (lives <= 0)
+            {
                 Die(spawnPos);
+            }
+        }
+        else
+        {
+            Die(spawnPos);
         }
     }
 
     public void NotifyCameraLives()
     {
         if (lives == 1)
+        {
             NotifyAction(PlayerActions.HighDamage);
+        }
         else if (lives == 2)
+        {
             NotifyAction(PlayerActions.MediumDamage);
+        }
         else if (lives == 3)
+        {
             NotifyAction(PlayerActions.LowDamage);
+        }
         else if (lives > 3)
+        {
             NotifyAction(PlayerActions.NoDamage);
+        }
     }
 
     public void Die(Vector3 spawnPos)

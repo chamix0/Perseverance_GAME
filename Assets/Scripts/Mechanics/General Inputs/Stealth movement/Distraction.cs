@@ -1,4 +1,5 @@
 using System.Collections;
+using Mechanics.General_Inputs;
 using UnityEngine;
 using UTILS;
 
@@ -58,13 +59,32 @@ public class Distraction : Subject
 
     private void Update()
     {
+        CurrentInput currentInput = _playerValues.GetCurrentInput();
+
+        //show distraction
+        if (currentInput == CurrentInput.StealthMovement && !GetIsVisible())
+        {
+            SetVisible(true);
+        }
+        //hide it if not visible
+        else if (currentInput != CurrentInput.StealthMovement)
+        {
+            SetVisible(false);
+        }
+
+
         if (_updateAlpha)
+        {
             SmoothAlpha();
+        }
 
         if (!playedEffects && _timer.GetElapsedSeconds() > distractionCooldown)
         {
             if (!particles)
+            {
                 particles = Instantiate(popParticles, transform).GetComponent<ParticleSystem>();
+            }
+
             playedEffects = true;
             _timer.Stop();
             popSound.Play();
@@ -75,7 +95,9 @@ public class Distraction : Subject
     private void FixedUpdate()
     {
         if (!beingUsed)
+        {
             HoldObject();
+        }
     }
 
 
@@ -91,7 +113,6 @@ public class Distraction : Subject
         }
         else
             RecuperateDistraction();
-        
     }
 
     public void RecuperateDistraction()

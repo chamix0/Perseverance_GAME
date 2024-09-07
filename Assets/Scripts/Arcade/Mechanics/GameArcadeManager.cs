@@ -22,7 +22,7 @@ public class GameArcadeManager : MonoBehaviour
     private BulletShopManager _bulletShopManager;
 
     //enemy parameters
-    [SerializeField] private int minNumEnemies, maxNumEnemies = 6, numEnemyCap = 70;
+    [SerializeField] private int minNumEnemies, maxNumEnemies = 1;
     [SerializeField] private int minLives = 6, maxLives = 10;
     [SerializeField] float minSpeed, maxSpeed = 3f, speedCap = 7f;
     [SerializeField] private int minDamage = 1, maxDamage = 1;
@@ -50,9 +50,14 @@ public class GameArcadeManager : MonoBehaviour
     void Update()
     {
         if (displayRace)
+        {
             _guiManager.SetRaceTime(GetRemainingTime(), 60.7f);
+        }
+
         if (!roundStarted && _betweenRoundsTimer.GetElapsedSeconds() > timeBetweenRounds)
+        {
             StartRound();
+        }
     }
 
     #region rounds
@@ -124,17 +129,23 @@ public class GameArcadeManager : MonoBehaviour
     private void IncreaseDifficulty(int numRound)
     {
         //num enemies
-        if (numRound < 10)
-            maxNumEnemies = Mathf.Min(numEnemyCap, maxNumEnemies + 1);
-        else if (numRound < 20)
-            maxNumEnemies = Mathf.Min(numEnemyCap, maxNumEnemies + 3);
+        if (numRound < 25)
+        {
+            maxNumEnemies += 1;
+        }
+        else if (numRound < 35)
+        {
+            maxNumEnemies += 2;
+        }
         else
-            maxNumEnemies = Mathf.Min(numEnemyCap, maxNumEnemies + 4);
+        {
+            maxNumEnemies += 4;
+        }
 
-        minNumEnemies = maxNumEnemies / 2;
+        minNumEnemies = maxNumEnemies;
 
         //lives
-        if (numRound < 25)
+        if (numRound < 35)
         {
             minLives += 1;
             maxLives += 2;
@@ -159,6 +170,7 @@ public class GameArcadeManager : MonoBehaviour
         {
             maxSpeed = Mathf.Min(speedCap, maxSpeed + 1f);
         }
+
         minSpeed = maxSpeed / 2;
 
         //spawn time

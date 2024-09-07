@@ -639,8 +639,11 @@ public class ArcadePlayerData : Subject, IObserver
     public void OnNotify(PlayerActions playerAction)
     {
         if (playerAction is PlayerActions.TurnOnPower)
+        {
             SetPower(true);
-        else if (playerAction is PlayerActions.Die)
+        }
+
+        if (playerAction is PlayerActions.Die)
         {
             _saveData.AddScoreToSortedLeaderboard(new Score(_saveData.GetArcadeName(), rounds, totalPoints));
             _saveData.SetArcadeStats(GetArcadeStats());
