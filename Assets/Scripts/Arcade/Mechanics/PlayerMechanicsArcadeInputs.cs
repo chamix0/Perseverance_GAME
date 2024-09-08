@@ -49,27 +49,28 @@ public class PlayerMechanicsArcadeInputs : MonoBehaviour, IObserver
     void Update()
     {
         //Show stamina
-        if (_arcadePlayerData.unlockedGear == 4)
-        {
-            if (!stamina.beingShown)
-                stamina.ShowStamina();
-            if (_playerValues.GetGear() < 4 && turboParticles.isPlaying)
-                turboParticles.Stop();
-        }
+        // if (_arcadePlayerData.unlockedGear == 4)
+        // {
+        //     if (!stamina.beingShown)
+        //         stamina.ShowStamina();
+        //     if (_playerValues.GetGear() < 4 && turboParticles.isPlaying)
+        //         turboParticles.Stop();
+        // }
 
         //keyboard inputs
         //accelerate and decelerate
-        if (_playerValues.GetCurrentInput() is CurrentInput.ArcadeMechanics)
-            _manager.ShowMachineGuns();
-        else
+        if (_playerValues.GetCurrentInput() is not CurrentInput.ArcadeMechanics)
         {
             _manager.StopAim();
             _manager.StopAutomaticShooting();
-            _manager.HideMachineGuns();
+            // _manager.HideMachineGuns();
         }
 
+
         if (_playerValues.GetPaused())
+        {
             _manager.StopAutomaticShooting();
+        }
 
         if (_playerValues.GetCurrentInput() == CurrentInput.ArcadeMechanics && _playerValues.GetInputsEnabled() &&
             !_playerValues.GetPaused())

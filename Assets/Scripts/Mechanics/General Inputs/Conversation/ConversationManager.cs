@@ -67,6 +67,7 @@ public class ConversationManager : MonoBehaviour
         prevInput = playerValues.GetCurrentInput();
         playerValues.SetCurrentInput(CurrentInput.Conversation);
         ShowDialog();
+        
         //alice things
     }
 

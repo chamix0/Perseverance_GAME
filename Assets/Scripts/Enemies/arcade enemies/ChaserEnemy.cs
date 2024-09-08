@@ -117,7 +117,7 @@ public class ChaserEnemy : Enemy
         {
             burnTimer.Restart();
             burnCount++;
-            RecieveDamage(1, 10);
+            RecieveDamage(1, 20);
         }
 
         if (Vector3.Distance(transform.position, playerValues.GetPos()) < minDistToPlayer && !isDead)
@@ -162,31 +162,31 @@ public class ChaserEnemy : Enemy
                 {
                     case BulletType.NormalBullet:
 
-                        RecieveDamage(1,15);
+                        RecieveDamage(1,30);
                         HitSlow();
                         break;
                     case BulletType.FreezeBullet:
-                        RecieveDamage(1,15);
+                        RecieveDamage(1,30);
                         Freeze();
                         break;
                     case BulletType.BurnBullet:
                         Burn();
-                        RecieveDamage(1,15);
+                        RecieveDamage(1,30);
                         HitSlow();
                         break;
                     case BulletType.GuidedBullet:
-                        RecieveDamage(1,15);
+                        RecieveDamage(1,30);
                         HitSlow();
                         break;
                     case BulletType.InstaKillBullet:
-                        RecieveDamage(maxLives, maxLives * 10);
+                        RecieveDamage(maxLives, maxLives * 20);
                         break;
                     case BulletType.ShotgunBullet:
-                        RecieveDamage(1, 15);
+                        RecieveDamage(1, 30);
                         HitSlow();
                         break;
                     case BulletType.ExplosiveBullet:
-                        RecieveDamage(5, 50);
+                        RecieveDamage(5, 100);
                         HitSlow();
                         break;
                     case BulletType.None:

@@ -99,11 +99,12 @@ namespace Mechanics.General_Inputs.Machine_gun_mode
             CurrentInput currentInput = _playerValues.GetCurrentInput();
 
             //show machine guns its its on machine gun mode and hide it if not
-            if (currentInput == CurrentInput.ShootMovement && !_isVisible)
+            if ((currentInput == CurrentInput.ShootMovement || currentInput == CurrentInput.ArcadeMechanics) &&
+                !_isVisible)
             {
                 ShowMachineGun();
             }
-            else if (currentInput != CurrentInput.ShootMovement)
+            else if ((currentInput is not CurrentInput.ShootMovement && currentInput is not CurrentInput.ArcadeMechanics)&&_isVisible)
             {
                 HideMachinegun();
             }
